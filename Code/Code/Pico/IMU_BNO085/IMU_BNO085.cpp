@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
+#include "pico/cyw43_arch.h"
 #include "bno08x.h"
 #include "hardware/i2c.h"
-// #include "hardware/spi.h"
+#include "hardware/spi.h"
 #include "math.h"
 
 float rad2deg(float);

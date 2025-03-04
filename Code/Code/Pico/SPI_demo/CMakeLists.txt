@@ -28,38 +28,37 @@ set(PICO_BOARD pico2_w CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(IMU_BNO085 C CXX ASM)
+project(SPI_demo C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(IMU_BNO085 IMU_BNO085.cpp )
+add_executable(SPI_demo SPI_demo.cpp )
 
-pico_set_program_name(IMU_BNO085 "IMU_BNO085")
-pico_set_program_version(IMU_BNO085 "0.1")
+pico_set_program_name(SPI_demo "SPI_demo")
+pico_set_program_version(SPI_demo "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(IMU_BNO085 0)
-pico_enable_stdio_usb(IMU_BNO085 1)
+pico_enable_stdio_uart(SPI_demo 0)
+pico_enable_stdio_usb(SPI_demo 1)
 
 # Add the standard library to the build
-target_link_libraries(IMU_BNO085
+target_link_libraries(SPI_demo
         pico_stdlib)
 
 # Add the standard include files to the build
-target_include_directories(IMU_BNO085 PRIVATE
+target_include_directories(SPI_demo PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
 )
 
-add_subdirectory(
-	BNO08x_Pico_Library
-)
-
 # Add any user requested libraries
-target_link_libraries(IMU_BNO085 pico_stdlib BNO08x_Pico_Library pico_cyw43_arch_none hardware_spi
+target_link_libraries(SPI_demo 
+        hardware_spi
+        hardware_i2c
+        
         )
 
-pico_add_extra_outputs(IMU_BNO085)
+pico_add_extra_outputs(SPI_demo)
 
