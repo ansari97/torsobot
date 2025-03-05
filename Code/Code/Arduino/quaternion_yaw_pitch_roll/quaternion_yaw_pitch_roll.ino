@@ -10,12 +10,14 @@
 #define BNO08X_MOSI 3
 #define BNO08X_MISO 4
 #define BNO08X_CS 5
-#define BNO08X_INT 6
+#define BNO08X_INT 10
+// For SPI mode, we also need a RESET
+#define BNO08X_RESET 11
 
 #define FAST_MODE
 
 // For SPI mode, we also need a RESET
-#define BNO08X_RESET 7
+// #define BNO08X_RESET 7
 // but not for I2C or UART
 // #define BNO08X_RESET -1
 
