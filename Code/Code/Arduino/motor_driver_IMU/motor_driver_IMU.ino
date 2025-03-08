@@ -18,9 +18,9 @@
 //  The following pins are selected for the CANBed FD board.
 //——————————————————————————————————————————————————————————————————————————————
 
-#define MCP2517_SCK 6   // SCK input of MCP2517
-#define MCP2517_MOSI 7  //  input of MCP2517
-#define MCP2517_MISO 0  // SDO output of MCP2517
+#define MCP2517_SCK 2   // SCK input of MCP2517
+#define MCP2517_MOSI 3  //  input of MCP2517
+#define MCP2517_MISO 4  // SDO output of MCP2517
 
 #define MCP2517_CS 1    // CS input of MCP2517
 #define MCP2517_INT 12  // INT output of MCP2517
@@ -69,10 +69,11 @@ Moteus moteus1(can, []() {
 
 void setup(void) {
   pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(BNO08X_CS, OUTPUT);
-  pinMode(MCP2517_CS, OUTPUT);
-  digitalWrite(BNO08X_CS, HIGH);  // Disable both devices initially
-  digitalWrite(MCP2517_CS, HIGH);
+  // pinMode(BNO08X_CS, OUTPUT);
+  // pinMode(MCP2517_CS, OUTPUT);
+
+  // digitalWrite(BNO08X_CS, HIGH);  // Disable both devices initially
+  // digitalWrite(MCP2517_CS, HIGH);
 
   digitalWrite(LED_BUILTIN, HIGH);
   delay(1000);
@@ -216,7 +217,7 @@ void loop() {
 
   auto print_moteus = [](const Moteus::Query::Result& query) {
     Serial.print(static_cast<int>(query.mode));
-    Serial.print(F(" "));
+    Serial.print(F("  position "));
     Serial.print(query.position);
     Serial.print(F("  velocity "));
     Serial.print(query.velocity);
@@ -225,7 +226,6 @@ void loop() {
   };
 
   print_moteus(moteus1.last_result().values);
-  Serial.print(F(" / "));
   // print_moteus(moteus2.last_result().values);
   Serial.println();
 
