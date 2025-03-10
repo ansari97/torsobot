@@ -13,7 +13,7 @@
 // Master CK  GP2 <-> GP10  Slave CK
 // Master TX  GP3 <-> GP8   Slave RX
 
-const uint SPI_SPEED = 500*1000; // hertz
+const uint SPI_SPEED = 500 * 1000;  // hertz
 
 SPISettings spisettings(SPI_SPEED, MSBFIRST, SPI_MODE0);
 
@@ -40,7 +40,7 @@ void loop() {
   SPI.endTransaction();
   Serial.printf("M-RECV: '%s'\n", msg);
   transmits++;
-  delay(5000);
+  delay(1000);
 }
 
 // Core 1 will be SPI slave
@@ -49,6 +49,11 @@ volatile bool recvBuffReady = false;
 char recvBuff[42] = "";
 int recvIdx = 0;
 void recvCallback(uint8_t *data, size_t len) {
+  Serial.print("inside callback: \n");
+  Serial.print(len);
+  Serial.print("\t");
+  Serial.println(*data);
+
   memcpy(recvBuff + recvIdx, data, len);
   recvIdx += len;
   if (recvIdx == sizeof(recvBuff)) {
@@ -63,7 +68,7 @@ char sendBuff[42];
 void sentCallback() {
   memset(sendBuff, 0, sizeof(sendBuff));
   sprintf(sendBuff, "Slave to Master Xmission %d", sendcbs++);
-  SPISlave1.setData((uint8_t*)sendBuff, sizeof(sendBuff));
+  SPISlave1.setData((uint8_t *)sendBuff, sizeof(sendBuff));
 }
 
 // Note that we use SPISlave1 here **not** because we're running on
