@@ -56,9 +56,9 @@ int main()
         }
         cout << endl;
 
-        int spiReturnVal = spiXfer(spiHandle, spiTxData, spiRxData, data_len);
+        int spiReturnVal = spiWrite(spiHandle, spiTxData, data_len);
         cout << "spiReturnVal = " << spiReturnVal << endl;
-
+        spiReturnVal = spiRead(spiHandle, spiRxData, data_len);
         cout << "Printing Rx data: " << endl;
         for (int i = 0; i < data_len; i++)
         {
