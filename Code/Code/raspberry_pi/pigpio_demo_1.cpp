@@ -3,14 +3,16 @@
 #include <unistd.h>
 #include <vector>
 #include <cstdlib>
+#include <stdlib.h>
+#include <cstring>
 // #include <wiringPi.h>
 // #include <wiringPiSPI.h>
 
 using namespace std;
 
-const uint spiChannel = 0;        // CE_0 on SPI0
-const uint spiSpeed = 100 * 1000; // hertz
-const uint spiFlags = 0;          // SPI mode
+const uint spiChannel = 0;         // CE_0 on SPI0
+const uint spiSpeed = 1000 * 1000; // hertz
+const uint spiFlags = 0;           // SPI mode
 
 const int data_len = 2;
 char spiTxData[data_len];
@@ -45,37 +47,41 @@ int main()
     while (true)
     {
         cout << "Running loop num: " << iter++ << endl;
+        int spiHandle = spiOpen(spiChannel, spiSpeed, 0);
+        memset(spiTxData, '\0', sizeof(spiTxData));
+        memset(spiRxData, '\0', sizeof(spiRxData));
 
         // Set data values to send
-        cout << "Printing Tx data: " << endl;
-        for (int i = 0; i < data_len; i++)
+        // int rand_no = rand() % 1000 + 100;
+        // cout << (rand_no) << endl;
+
+        char num[4];
+        cout << "Enter a number: ";
+        cin >> num;
+
+        sprintf(spiTxData, "ha");
+
+        for (int i = 0; i < sizeof(spiTxData); i++)
         {
-            // random data between 0 and 256
-            spiTxData[i] = static_cast<char>(rand() % 256);
-            cout << static_cast<int>(spiTxData[i]) << "\t";
+            cout << spiTxData[i] << "\t";
         }
         cout << endl;
+        cout << "size of buffer: " << sizeof(spiTxData) << endl;
 
         // int spiReturnVal = spiWrite(spiHandle, spiTxData, data_len);
         int spiReturnVal = spiXfer(spiHandle, spiTxData, spiRxData, data_len);
         cout << "spiReturnVal = " << spiReturnVal << endl;
 
-        cout << "Printing Tx data again: " << endl;
-        for (int i = 0; i < data_len; i++)
-        {
-            // random data between 0 and 256
-            // spiTxData[i] = static_cast<char>(rand() % 256);
-            cout << static_cast<int>(spiTxData[i]) << "\t";
-        }
-        cout << endl;
-
-        cout << spiTxData<<endl;
-
-        // spiReturnVal = spiRead(spiHandle, spiRxData, data_len);
+        // // spiReturnVal = spiRead(spiHandle, spiRxData, data_len);
         cout << "Printing Rx data: " << endl;
-        for (int i = 0; i < data_len; i++)
+        for (int i = 0; i < sizeof(spiRxData); i++)
         {
-            cout << static_cast<int>(spiRxData[i]) << "\t";
+            // if (spiRxData[i] == '\0')
+            // {
+            //     cout << "emp" << "\t";
+            // }
+            // else
+            cout << (spiRxData[i]) << "\t";
         }
         cout << endl;
 
@@ -91,7 +97,9 @@ int main()
 
         cout << "\n----------------" << endl;
         // iter++;
-        usleep(10000 * 1000);
+        usleep(2000 * 1000);
+
+        spiClose(spiHandle);
     }
 
     spiClose(spiHandle);
