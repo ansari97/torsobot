@@ -1,0 +1,51 @@
+[0.013s] Invoking command in '/home/aansari/torsobot/Code/Code/ros2_ws/build/my_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aansari/ros2_prac/install/xarmrob:/home/aansari/ros2_prac/install/mobrob:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/aansari/torsobot/Code/Code/ros2_ws/src/my_package -DCMAKE_INSTALL_PREFIX=/home/aansari/torsobot/Code/Code/ros2_ws/install/my_package
+[0.082s] -- The C compiler identification is GNU 13.3.0
+[0.148s] -- The CXX compiler identification is GNU 13.3.0
+[0.169s] -- Detecting C compiler ABI info
+[0.269s] -- Detecting C compiler ABI info - done
+[0.281s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.282s] -- Detecting C compile features
+[0.282s] -- Detecting C compile features - done
+[0.293s] -- Detecting CXX compiler ABI info
+[0.403s] -- Detecting CXX compiler ABI info - done
+[0.415s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.416s] -- Detecting CXX compile features
+[0.416s] -- Detecting CXX compile features - done
+[0.432s] -- Found ament_cmake: 2.5.3 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[0.618s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[0.756s] -- Found ament_lint_auto: 0.17.1 (/opt/ros/jazzy/share/ament_lint_auto/cmake)
+[0.889s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.889s] -- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/aansari/torsobot/Code/Code/ros2_ws/src/my_package/include>
+[0.890s] -- Configured cppcheck exclude dirs and/or files: 
+[0.891s] -- Added test 'lint_cmake' to check CMake code style
+[0.892s] -- Added test 'uncrustify' to check C / C++ code style
+[0.892s] -- Configured uncrustify additional arguments: 
+[0.893s] -- Added test 'xmllint' to check XML markup files
+[0.895s] -- Configuring done (0.9s)
+[0.903s] -- Generating done (0.0s)
+[0.906s] -- Build files have been written to: /home/aansari/torsobot/Code/Code/ros2_ws/build/my_package
+[0.913s] Invoked command in '/home/aansari/torsobot/Code/Code/ros2_ws/build/my_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aansari/ros2_prac/install/xarmrob:/home/aansari/ros2_prac/install/mobrob:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/aansari/torsobot/Code/Code/ros2_ws/src/my_package -DCMAKE_INSTALL_PREFIX=/home/aansari/torsobot/Code/Code/ros2_ws/install/my_package
+[0.915s] Invoking command in '/home/aansari/torsobot/Code/Code/ros2_ws/build/my_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aansari/ros2_prac/install/xarmrob:/home/aansari/ros2_prac/install/mobrob:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/aansari/torsobot/Code/Code/ros2_ws/build/my_package -- -j4 -l4
+[0.971s] [ 50%] [32mBuilding CXX object CMakeFiles/my_node.dir/src/my_node.cpp.o[0m
+[1.006s] [100%] [32m[1mLinking CXX executable my_node[0m
+[1.061s] [100%] Built target my_node
+[1.074s] Invoked command in '/home/aansari/torsobot/Code/Code/ros2_ws/build/my_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aansari/ros2_prac/install/xarmrob:/home/aansari/ros2_prac/install/mobrob:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/aansari/torsobot/Code/Code/ros2_ws/build/my_package -- -j4 -l4
+[1.085s] Invoking command in '/home/aansari/torsobot/Code/Code/ros2_ws/build/my_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aansari/ros2_prac/install/xarmrob:/home/aansari/ros2_prac/install/mobrob:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/aansari/torsobot/Code/Code/ros2_ws/build/my_package
+[1.095s] -- Install configuration: ""
+[1.096s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/lib/my_package/my_node
+[1.096s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/ament_index/resource_index/package_run_dependencies/my_package
+[1.096s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/ament_index/resource_index/parent_prefix_path/my_package
+[1.096s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/environment/ament_prefix_path.sh
+[1.097s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/environment/ament_prefix_path.dsv
+[1.097s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/environment/path.sh
+[1.097s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/environment/path.dsv
+[1.097s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/local_setup.bash
+[1.097s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/local_setup.sh
+[1.097s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/local_setup.zsh
+[1.098s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/local_setup.dsv
+[1.098s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/package.dsv
+[1.098s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/ament_index/resource_index/packages/my_package
+[1.098s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/cmake/my_packageConfig.cmake
+[1.098s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/cmake/my_packageConfig-version.cmake
+[1.098s] -- Installing: /home/aansari/torsobot/Code/Code/ros2_ws/install/my_package/share/my_package/package.xml
+[1.101s] Invoked command in '/home/aansari/torsobot/Code/Code/ros2_ws/build/my_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/aansari/ros2_prac/install/xarmrob:/home/aansari/ros2_prac/install/mobrob:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/aansari/torsobot/Code/Code/ros2_ws/build/my_package
