@@ -1,5 +1,6 @@
 #include <iostream>
-#include <pigpio.h>
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
 #include <unistd.h>
 #include <vector>
 #include <cstdlib>
@@ -27,17 +28,16 @@ int GetSensorValue(int, float *);
 int main()
 {
     // initialize pigpio
-    int pi = gpioInitialise();
-    cout << pi << endl;
-    if (pi < 0)
-    {
-        cerr << "Error initializing pigpio" << endl;
-        usleep(100);
-        return -1;
-    };
-    cout << "Initialized pigpio" << endl;
+    // int pi = wiringPiI2CSetup(PICO_SLAVE_ADDRESS);
+    // if (pi < 0)
+    // {
+    //     cerr << "Error initializing pigpio" << endl;
+    //     usleep(100);
+    //     return -1;
+    // };
+    // cout << "Initialized pigpio" << endl;
 
-    i2c_handle = i2cOpen(I2C_BUS, PICO_SLAVE_ADDRESS, 0);
+    i2c_handle = wiringPiI2CSetup(PICO_SLAVE_ADDRESS);
 
     if (i2c_handle < 0)
     {
@@ -57,7 +57,7 @@ int main()
         }
 
         cout << "Sensor 1 data: " << IMU_val << endl;
-
+        
         usleep(1000 * 1000);
     }
 }
