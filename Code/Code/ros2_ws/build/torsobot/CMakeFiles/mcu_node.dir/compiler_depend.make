@@ -210,7 +210,33 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
   /usr/include/c++/12/bits/ostream.tcc \
   /usr/include/c++/12/istream \
   /usr/include/c++/12/bits/istream.tcc \
-  /usr/include/pigpio.h \
+  /usr/include/linux/i2c-dev.h \
+  /usr/include/linux/types.h \
+  /usr/lib/linux/uapi/arm64/asm/types.h \
+  /usr/include/asm-generic/types.h \
+  /usr/include/asm-generic/int-ll64.h \
+  /usr/lib/linux/uapi/arm64/asm/bitsperlong.h \
+  /usr/include/asm-generic/bitsperlong.h \
+  /usr/include/linux/posix_types.h \
+  /usr/include/linux/stddef.h \
+  /usr/lib/linux/uapi/arm64/asm/posix_types.h \
+  /usr/include/asm-generic/posix_types.h \
+  /usr/include/aarch64-linux-gnu/sys/ioctl.h \
+  /usr/include/aarch64-linux-gnu/bits/ioctls.h \
+  /usr/lib/linux/uapi/arm64/asm/ioctls.h \
+  /usr/include/asm-generic/ioctls.h \
+  /usr/include/linux/ioctl.h \
+  /usr/lib/linux/uapi/arm64/asm/ioctl.h \
+  /usr/include/asm-generic/ioctl.h \
+  /usr/include/aarch64-linux-gnu/bits/ioctl-types.h \
+  /usr/include/aarch64-linux-gnu/sys/ttydefaults.h \
+  /usr/include/fcntl.h \
+  /usr/include/aarch64-linux-gnu/bits/fcntl.h \
+  /usr/include/aarch64-linux-gnu/bits/fcntl-linux.h \
+  /usr/include/aarch64-linux-gnu/bits/types/struct_iovec.h \
+  /usr/include/linux/falloc.h \
+  /usr/include/aarch64-linux-gnu/bits/stat.h \
+  /usr/include/aarch64-linux-gnu/bits/struct_stat.h \
   /usr/include/unistd.h \
   /usr/include/aarch64-linux-gnu/bits/posix_opt.h \
   /usr/include/aarch64-linux-gnu/bits/environments.h \
@@ -219,11 +245,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
   /usr/include/aarch64-linux-gnu/bits/getopt_core.h \
   /usr/include/aarch64-linux-gnu/bits/unistd_ext.h \
   /usr/include/linux/close_range.h \
-  /usr/include/c++/12/vector \
-  /usr/include/c++/12/bits/stl_vector.h \
-  /usr/include/c++/12/bits/stl_bvector.h \
-  /usr/include/c++/12/bits/vector.tcc \
-  /usr/include/c++/12/stdlib.h \
   /usr/include/c++/12/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
@@ -244,16 +265,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
   /usr/include/aarch64-linux-gnu/bits/sigaction.h \
   /usr/include/aarch64-linux-gnu/bits/sigcontext.h \
   /usr/lib/linux/uapi/arm64/asm/sigcontext.h \
-  /usr/include/linux/types.h \
-  /usr/lib/linux/uapi/arm64/asm/types.h \
-  /usr/include/asm-generic/types.h \
-  /usr/include/asm-generic/int-ll64.h \
-  /usr/lib/linux/uapi/arm64/asm/bitsperlong.h \
-  /usr/include/asm-generic/bitsperlong.h \
-  /usr/include/linux/posix_types.h \
-  /usr/include/linux/stddef.h \
-  /usr/lib/linux/uapi/arm64/asm/posix_types.h \
-  /usr/include/asm-generic/posix_types.h \
   /usr/lib/linux/uapi/arm64/asm/sve_context.h \
   /usr/include/aarch64-linux-gnu/bits/types/stack_t.h \
   /usr/include/aarch64-linux-gnu/sys/ucontext.h \
@@ -271,6 +282,10 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
   /usr/include/aarch64-linux-gnu/bits/sigthread.h \
   /usr/include/aarch64-linux-gnu/bits/signal_ext.h \
   /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/copy_all_parameter_values.hpp \
+  /usr/include/c++/12/vector \
+  /usr/include/c++/12/bits/stl_vector.h \
+  /usr/include/c++/12/bits/stl_bvector.h \
+  /usr/include/c++/12/bits/vector.tcc \
   /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/srv/list_parameters.hpp \
   /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/srv/detail/list_parameters__struct.hpp \
   /usr/include/c++/12/algorithm \
@@ -359,6 +374,7 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
   /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/error_handling.h \
   /home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/error_handling.h \
   /usr/include/assert.h \
+  /usr/include/c++/12/stdlib.h \
   /home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/snprintf.h \
   /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/types.h \
   /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/types.h \
@@ -808,8 +824,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/srv/detail/set_parameters_atomically__traits.hpp:
 
-/home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/srv/detail/set_parameters_atomically__builder.hpp:
-
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/srv/detail/set_parameters_atomically__struct.hpp:
 
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/srv/detail/set_parameters__type_support.hpp:
@@ -1010,8 +1024,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/experimental/subscription_intra_process_base.hpp:
 
-/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/experimental/ros_message_intra_process_buffer.hpp:
-
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/experimental/buffers/buffer_implementation_base.hpp:
 
 /usr/include/aarch64-linux-gnu/bits/mathcalls-narrow.h:
@@ -1037,8 +1049,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/any_service_callback.hpp:
 
 /home/pi/ros2_jazzy/build/tracetools/include/tracetools/config.h:
-
-/home/pi/ros2_jazzy/build/tracetools/include/tracetools/tracetools.h:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/service.hpp:
 
@@ -1074,9 +1084,53 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/event.hpp:
 
-/usr/include/aarch64-linux-gnu/sys/procfs.h:
+/usr/include/math.h:
 
-/usr/include/c++/12/array:
+/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/topic_endpoint_info.h:
+
+/home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/graph.h:
+
+/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/node_interfaces/node_graph_interface.hpp:
+
+/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/expand_topic_or_service_name.hpp:
+
+/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/detail/cpp_callback_trampoline.hpp:
+
+/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/detail/duration__type_support.hpp:
+
+/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/detail/duration__traits.hpp:
+
+/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/detail/duration__builder.hpp:
+
+/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/detail/duration__struct.hpp:
+
+/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/intra_process_buffer_type.hpp:
+
+/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/duration.hpp:
+
+/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp:
+
+/usr/include/aarch64-linux-gnu/bits/types/__sigval_t.h:
+
+/usr/include/aarch64-linux-gnu/bits/signum-generic.h:
+
+/usr/include/c++/12/csignal:
+
+/usr/include/ctype.h:
+
+/home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/msg/detail/set_parameters_result__traits.hpp:
+
+/usr/include/unistd.h:
+
+/home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/visibility_control_macros.h:
+
+/usr/include/aarch64-linux-gnu/bits/struct_stat.h:
+
+/home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/visibility_control.h:
+
+/usr/lib/linux/uapi/arm64/asm/ioctl.h:
+
+/home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/wait.h:
 
 /usr/include/linux/stddef.h:
 
@@ -1090,23 +1144,7 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/asm-generic/bitsperlong.h:
 
-/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/detail/duration__builder.hpp:
-
-/usr/include/linux/types.h:
-
-/usr/include/c++/12/cstdio:
-
-/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/visibility_control.h:
-
-/usr/include/aarch64-linux-gnu/bits/sigcontext.h:
-
-/home/pi/ros2_jazzy/src/ros2/rcpputils/include/rcpputils/thread_safety_annotations.hpp:
-
-/usr/include/aarch64-linux-gnu/sys/select.h:
-
-/usr/include/aarch64-linux-gnu/c++/12/bits/os_defines.h:
-
-/home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/arguments.h:
+/usr/include/aarch64-linux-gnu/bits/siginfo-consts.h:
 
 /usr/lib/linux/uapi/arm64/asm/bitsperlong.h:
 
@@ -1116,31 +1154,21 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/typeinfo:
 
-/usr/include/aarch64-linux-gnu/bits/siginfo-consts.h:
+/home/pi/ros2_jazzy/build/statistics_msgs/rosidl_generator_cpp/statistics_msgs/msg/detail/metrics_message__traits.hpp:
 
-/usr/include/aarch64-linux-gnu/bits/types/__sigval_t.h:
+/usr/include/signal.h:
 
-/usr/include/aarch64-linux-gnu/bits/signum-generic.h:
+/home/pi/ros2_jazzy/build/rclcpp/include/rclcpp/logging.hpp:
 
-/usr/include/c++/12/csignal:
+/usr/include/linux/types.h:
 
-/usr/include/ctype.h:
-
-/home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/msg/detail/set_parameters_result__traits.hpp:
-
-/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/network_flow_endpoint.h:
-
-/usr/include/c++/12/bits/streambuf.tcc:
-
-/usr/include/c++/12/bits/stl_bvector.h:
-
-/usr/include/unistd.h:
-
-/home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/visibility_control_macros.h:
+/usr/include/c++/12/cstdio:
 
 /usr/include/asm-generic/errno.h:
 
-/usr/include/c++/12/vector:
+/usr/include/aarch64-linux-gnu/gnu/stubs.h:
+
+/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/copy_all_parameter_values.hpp:
 
 /usr/include/c++/12/bits/streambuf_iterator.h:
 
@@ -1162,8 +1190,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/aarch64-linux-gnu/c++/12/bits/c++config.h:
 
-/usr/include/c++/12/bits/locale_facets.tcc:
-
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include/rosidl_typesupport_introspection_cpp/visibility_control.h:
 
 /usr/include/aarch64-linux-gnu/bits/errno.h:
@@ -1182,6 +1208,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_typesupport_interface/include/rosidl_typesupport_interface/macros.h:
 
+/usr/include/aarch64-linux-gnu/bits/fcntl-linux.h:
+
 /usr/include/aarch64-linux-gnu/bits/types/__fpos64_t.h:
 
 /usr/include/c++/12/tr1/legendre_function.tcc:
@@ -1193,6 +1221,14 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/events_statuses/incompatible_type.h:
 
 /usr/include/c++/12/cassert:
+
+/home/pi/ros2_jazzy/src/ros2/rcpputils/include/rcpputils/thread_safety_annotations.hpp:
+
+/usr/include/aarch64-linux-gnu/sys/select.h:
+
+/usr/include/aarch64-linux-gnu/c++/12/bits/os_defines.h:
+
+/home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/arguments.h:
 
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/type_hash.h:
 
@@ -1230,6 +1266,10 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/bits/predefined_ops.h:
 
+/usr/lib/linux/uapi/arm64/asm/ioctls.h:
+
+/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/visibility_control.h:
+
 /usr/include/c++/12/bits/cxxabi_forced.h:
 
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/message_sequence.h:
@@ -1255,14 +1295,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /usr/include/c++/12/sstream:
 
 /usr/include/c++/12/pstl/execution_defs.h:
-
-/usr/include/aarch64-linux-gnu/sys/ucontext.h:
-
-/usr/include/c++/12/bit:
-
-/home/pi/ros2_jazzy/src/ros-tooling/libstatistics_collector/include/libstatistics_collector/visibility_control.hpp:
-
-/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/event_callback_type.h:
 
 /usr/include/c++/12/bits/shared_ptr_atomic.h:
 
@@ -1297,8 +1329,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /usr/include/aarch64-linux-gnu/bits/floatn.h:
 
 /usr/include/c++/12/bits/parse_numbers.h:
-
-/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/node_interfaces/node_graph_interface.hpp:
 
 /usr/include/c++/12/bits/stl_algobase.h:
 
@@ -1360,6 +1390,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/bits/ptr_traits.h:
 
+/usr/include/aarch64-linux-gnu/sys/ttydefaults.h:
+
 /usr/include/aarch64-linux-gnu/bits/types/struct_timespec.h:
 
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/type_description/field_type__struct.h:
@@ -1367,8 +1399,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/msg/parameter_value.hpp:
 
 /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/timer.h:
-
-/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/detail/duration__struct.hpp:
 
 /usr/include/c++/12/new:
 
@@ -1388,6 +1418,12 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/primitives_sequence.h:
 
+/home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/srv/detail/set_parameters_atomically__builder.hpp:
+
+/usr/include/aarch64-linux-gnu/bits/types/struct_iovec.h:
+
+/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/memory_strategy.hpp:
+
 /usr/include/c++/12/bits/istream.tcc:
 
 /usr/include/c++/12/bits/shared_ptr_base.h:
@@ -1406,6 +1442,10 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/bits/node_handle.h:
 
+/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/experimental/ros_message_intra_process_buffer.hpp:
+
+/usr/include/aarch64-linux-gnu/bits/ioctls.h:
+
 /home/pi/ros2_jazzy/build/tracetools/include/tracetools/visibility_control.hpp:
 
 /usr/include/c++/12/bits/exception_ptr.h:
@@ -1423,10 +1463,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /usr/include/c++/12/cctype:
 
 /usr/include/aarch64-linux-gnu/bits/select.h:
-
-/home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/types/array_list.h:
-
-/usr/include/c++/12/bits/atomic_base.h:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/subscription_base.hpp:
 
@@ -1490,15 +1526,15 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/bits/stl_iterator_base_funcs.h:
 
-/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp:
+/usr/include/aarch64-linux-gnu/sys/ioctl.h:
+
+/usr/include/aarch64-linux-gnu/bits/endianness.h:
+
+/usr/include/aarch64-linux-gnu/bits/thread-shared-types.h:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/publisher.hpp:
 
 /usr/include/c++/12/ratio:
-
-/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/detail/duration__traits.hpp:
-
-/usr/include/pigpio.h:
 
 /usr/include/aarch64-linux-gnu/bits/timesize.h:
 
@@ -1509,6 +1545,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/executor.hpp:
 
 /usr/lib/gcc/aarch64-linux-gnu/12/include/stdint.h:
+
+/usr/include/aarch64-linux-gnu/bits/ioctl-types.h:
 
 /usr/include/c++/12/bits/uses_allocator.h:
 
@@ -1527,6 +1565,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/guard_condition.h:
 
 /usr/include/c++/12/bits/move.h:
+
+/usr/include/linux/i2c-dev.h:
 
 /usr/include/aarch64-linux-gnu/bits/getopt_posix.h:
 
@@ -1586,8 +1626,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/executors.hpp:
 
-/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/detail/cpp_callback_trampoline.hpp:
-
 /usr/include/stdc-predef.h:
 
 /usr/include/c++/12/bits/basic_string.h:
@@ -1598,7 +1636,7 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/ext/alloc_traits.h:
 
-/usr/include/aarch64-linux-gnu/bits/typesizes.h:
+/usr/include/asm-generic/ioctls.h:
 
 /usr/include/aarch64-linux-gnu/bits/pthreadtypes-arch.h:
 
@@ -1606,17 +1644,11 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/serialized_message.h:
 
-/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/time.hpp:
-
 /home/pi/ros2_jazzy/src/ros2/rosidl_dynamic_typesupport/include/rosidl_dynamic_typesupport/api/serialization_support_interface.h:
 
 /usr/include/c++/12/bits/basic_ios.tcc:
 
 /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/node.h:
-
-/usr/include/aarch64-linux-gnu/gnu/stubs.h:
-
-/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/copy_all_parameter_values.hpp:
 
 /usr/include/aarch64-linux-gnu/bits/stdint-intn.h:
 
@@ -1645,6 +1677,10 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/srv/detail/get_parameters__type_support.hpp:
 
 /usr/include/c++/12/bits/stl_iterator.h:
+
+/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/get_topic_names_and_types.h:
+
+/usr/include/aarch64-linux-gnu/bits/types/time_t.h:
 
 /usr/include/c++/12/bits/concept_check.h:
 
@@ -1678,17 +1714,35 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/bits/locale_conv.h:
 
-/usr/include/c++/12/stdlib.h:
+/usr/include/aarch64-linux-gnu/bits/typesizes.h:
+
+/usr/lib/linux/uapi/arm64/asm/types.h:
+
+/usr/include/c++/12/bits/atomic_lockfree_defines.h:
+
+/home/pi/ros2_jazzy/src/ros2/rcpputils/include/rcpputils/scope_exit.hpp:
 
 /usr/include/c++/12/cerrno:
 
 /usr/include/c++/12/bits/refwrap.h:
+
+/home/pi/ros2_jazzy/build/tracetools/include/tracetools/tracetools.h:
+
+/usr/include/fcntl.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/struct_tm.h:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/experimental/create_intra_process_buffer.hpp:
 
 /usr/include/c++/12/bits/align.h:
+
+/usr/include/c++/12/bit:
+
+/usr/include/aarch64-linux-gnu/sys/ucontext.h:
+
+/home/pi/ros2_jazzy/src/ros-tooling/libstatistics_collector/include/libstatistics_collector/visibility_control.hpp:
+
+/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/event_callback_type.h:
 
 /usr/include/c++/12/cwctype:
 
@@ -1752,6 +1806,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/aarch64-linux-gnu/bits/struct_mutex.h:
 
+/usr/include/c++/12/bits/locale_facets.tcc:
+
 /usr/include/c++/12/bits/localefwd.h:
 
 /home/pi/ros2_jazzy/src/ros2/rosidl_dynamic_typesupport/include/rosidl_dynamic_typesupport/uchar.h:
@@ -1760,39 +1816,35 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/aarch64-linux-gnu/bits/cpu-set.h:
 
-/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/expand_topic_or_service_name.hpp:
-
 /usr/include/aarch64-linux-gnu/bits/signal_ext.h:
 
 /usr/include/aarch64-linux-gnu/bits/waitstatus.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/FILE.h:
 
-/home/pi/ros2_jazzy/src/ros2/rosidl_dynamic_typesupport/include/rosidl_dynamic_typesupport/types.h:
-
-/usr/include/aarch64-linux-gnu/c++/12/bits/gthr-default.h:
-
 /usr/include/c++/12/iostream:
-
-/usr/lib/linux/uapi/arm64/asm/types.h:
-
-/usr/include/c++/12/bits/atomic_lockfree_defines.h:
-
-/home/pi/ros2_jazzy/src/ros2/rcpputils/include/rcpputils/scope_exit.hpp:
-
-/usr/include/aarch64-linux-gnu/bits/types/sigval_t.h:
-
-/home/pi/ros2_jazzy/src/ros2/rosidl_dynamic_typesupport/include/rosidl_dynamic_typesupport/api/serialization_support.h:
-
-/usr/include/aarch64-linux-gnu/bits/endianness.h:
-
-/usr/include/aarch64-linux-gnu/bits/thread-shared-types.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/__sigset_t.h:
 
 /home/pi/ros2_jazzy/build/statistics_msgs/rosidl_generator_cpp/statistics_msgs/msg/rosidl_generator_cpp__visibility_control.hpp:
 
 /usr/include/aarch64-linux-gnu/c++/12/bits/atomic_word.h:
+
+/usr/include/aarch64-linux-gnu/bits/types/sigval_t.h:
+
+/home/pi/ros2_jazzy/src/ros2/rosidl_dynamic_typesupport/include/rosidl_dynamic_typesupport/api/serialization_support.h:
+
+/usr/include/aarch64-linux-gnu/bits/sigcontext.h:
+
+/usr/include/aarch64-linux-gnu/c++/12/bits/gthr-default.h:
+
+/home/pi/ros2_jazzy/src/ros2/rosidl_dynamic_typesupport/include/rosidl_dynamic_typesupport/types.h:
+
+/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/time.hpp:
+
+/usr/include/aarch64-linux-gnu/sys/procfs.h:
+
+/usr/include/c++/12/array:
 
 /usr/include/aarch64-linux-gnu/sys/user.h:
 
@@ -1814,6 +1866,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/aarch64-linux-gnu/bits/procfs-prregset.h:
 
+/usr/include/linux/falloc.h:
+
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/dynamic_message_type_support.h:
 
 /usr/include/aarch64-linux-gnu/bits/sigstksz.h:
@@ -1834,6 +1888,18 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/msg/parameter_descriptor.hpp:
 
+/usr/include/c++/12/vector:
+
+/usr/include/c++/12/bits/atomic_base.h:
+
+/home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/types/array_list.h:
+
+/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/network_flow_endpoint.h:
+
+/usr/include/c++/12/bits/streambuf.tcc:
+
+/usr/include/c++/12/bits/stl_bvector.h:
+
 /home/pi/ros2_jazzy/build/rclcpp/include/rclcpp/node_interfaces/node_topics_interface_traits.hpp:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/create_client.hpp:
@@ -1851,6 +1917,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/topic_endpoint_info_array.h:
 
 /usr/include/c++/12/bits/algorithmfwd.h:
+
+/usr/include/aarch64-linux-gnu/bits/stat.h:
 
 /home/pi/ros2_jazzy/build/type_description_interfaces/rosidl_generator_c/type_description_interfaces/msg/detail/field_type__struct.h:
 
@@ -1982,8 +2050,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/bits/erase_if.h:
 
-/home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/visibility_control.h:
-
 /home/pi/ros2_jazzy/build/rclcpp/include/rclcpp/node_interfaces/get_node_parameters_interface.hpp:
 
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/msg/detail/floating_point_range__struct.hpp:
@@ -2015,10 +2081,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/ret_types.h:
 
 /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/service.h:
-
-/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/intra_process_buffer_type.hpp:
-
-/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/duration.hpp:
 
 /usr/include/asm-generic/types.h:
 
@@ -2058,6 +2120,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/assert.h:
 
+/usr/include/c++/12/stdlib.h:
+
 /home/pi/ros2_jazzy/src/ros-tooling/libstatistics_collector/include/libstatistics_collector/topic_statistics_collector/constants.hpp:
 
 /home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/snprintf.h:
@@ -2069,8 +2133,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /usr/include/c++/12/stdexcept:
 
 /home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/logging.h:
-
-/home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/detail/duration__type_support.hpp:
 
 /usr/include/aarch64-linux-gnu/bits/locale.h:
 
@@ -2101,6 +2163,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/events_statuses/liveliness_lost.h:
 
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/events_statuses/matched.h:
+
+/usr/include/aarch64-linux-gnu/bits/fcntl.h:
 
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/events_statuses/offered_deadline_missed.h:
 
@@ -2198,12 +2262,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/src/ros2/rcpputils/include/rcpputils/visibility_control.hpp:
 
-/home/pi/ros2_jazzy/build/statistics_msgs/rosidl_generator_cpp/statistics_msgs/msg/detail/metrics_message__traits.hpp:
-
-/usr/include/signal.h:
-
-/home/pi/ros2_jazzy/build/rclcpp/include/rclcpp/logging.hpp:
-
 /home/pi/ros2_jazzy/build/rcutils/include/rcutils/logging_macros.h:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/utilities.hpp:
@@ -2242,8 +2300,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/bits/unordered_set.h:
 
-/home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/wait.h:
-
 /usr/lib/linux/uapi/arm64/asm/sigcontext.h:
 
 /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/event_callback.h:
@@ -2253,6 +2309,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/publisher.h:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/message_info.hpp:
+
+/usr/include/linux/ioctl.h:
 
 /usr/include/c++/12/bits/unique_ptr.h:
 
@@ -2292,6 +2350,8 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/macros.hpp:
 
+/usr/include/asm-generic/ioctl.h:
+
 /usr/include/c++/12/map:
 
 /usr/include/c++/12/future:
@@ -2312,6 +2372,12 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/c++/12/list:
 
+/home/pi/ros2_jazzy/src/ros-tooling/libstatistics_collector/include/libstatistics_collector/collector/generate_statistics_message.hpp:
+
+/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/names_and_types.h:
+
+/usr/include/c++/12/bits/stl_map.h:
+
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/executors/executor_notify_waitable.hpp:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/contexts/default_context.hpp:
@@ -2322,28 +2388,10 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/executor_options.hpp:
 
-/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/memory_strategy.hpp:
-
 /usr/include/c++/12/optional:
-
-/usr/include/aarch64-linux-gnu/bits/types/time_t.h:
-
-/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/get_topic_names_and_types.h:
 
 /usr/include/c++/12/variant:
 
 /home/pi/ros2_jazzy/src/ros2/rosidl_dynamic_typesupport/include/rosidl_dynamic_typesupport/api/dynamic_type.h:
 
 /home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_cpp/builtin_interfaces/msg/time.hpp:
-
-/home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/graph.h:
-
-/home/pi/ros2_jazzy/src/ros-tooling/libstatistics_collector/include/libstatistics_collector/collector/generate_statistics_message.hpp:
-
-/usr/include/c++/12/bits/stl_map.h:
-
-/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/names_and_types.h:
-
-/usr/include/math.h:
-
-/home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/topic_endpoint_info.h:

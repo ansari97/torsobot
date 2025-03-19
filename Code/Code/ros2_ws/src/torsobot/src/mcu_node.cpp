@@ -2,12 +2,12 @@
 #include <memory>
 #include <string>
 #include <iostream>
-#include <pigpio.h>
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
 #include <unistd.h>
-#include <vector>
-#include <cstdlib>
-#include <stdlib.h>
 #include <cstring>
+#include <cstdint>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -44,24 +44,23 @@ public:
     // Create publisher for "torso_angle" topic
     publisher_ = this->create_publisher<std_msgs::msg::Float32>("torso_angle", 10);
 
-    // initialize pigpio
-    pi_gpio = gpioInitialise();
-    if (pi_gpio < 0)
+    char filename[20];
+    snprintf(filename, 19, "/dev/i2c-%d", I2C_BUS);
+    // initialize i2c
+    if ((i2c_handle = open(filename, O_RDWR)) < 0)
     {
-      RCLCPP_ERROR(this->get_logger(), "Error initializing pigpio");
-      // cerr << "Error initializing pigpio" << endl;
-      usleep(100);
-      // return -1;
-    };
-    RCLCPP_INFO(this->get_logger(), "Initialized pigpio");
+      RCLCPP_ERROR(this->get_logger(), "Error opening i2c");
+      // return 1;
+    }
+    RCLCPP_INFO(this->get_logger(), "Opened i2c");
     // cout << "Initialized pigpio" << endl;
 
     // open I2C channel
-    i2c_handle = i2cOpen(I2C_BUS, PICO_SLAVE_ADDRESS, 0);
-    if (i2c_handle < 0)
+    // Specify slave address
+    if (ioctl(i2c_handle, I2C_SLAVE, PICO_SLAVE_ADDRESS) < 0)
     {
       RCLCPP_ERROR(this->get_logger(), "Failed to open I2C device: %d", i2c_handle);
-      // cerr << "Failed to open I2C device: " << i2c_handle << endl;
+      close(i2c_handle);
       // return 1;
     }
     RCLCPP_INFO(this->get_logger(), "Successfully opened I2C device: %d", i2c_handle);
@@ -101,30 +100,25 @@ private:
     memset(read_buff, 0, data_len);
 
     // Write command to slave
-    int write_request = i2cWriteByte(i2c_handle, cmd);
-    if (write_request != 0)
+    uint8_t commandByte = static_cast<uint8_t>(cmd);
+    if (write(i2c_handle, &commandByte, 1) != 1)
     {
-      RCLCPP_ERROR(this->get_logger(), "I2C write failed! %d", write_request);
-      // cerr << "I2C write failed! " << write_request << endl;
-      return write_request;
+      RCLCPP_ERROR(this->get_logger(), "I2C write failed! ");
+      return -1; // Indicate error
     }
 
-    // Rrequest sensor data from slave
-    int read_result = i2cReadDevice(i2c_handle, read_buff, data_len);
-
-    if (read_result != data_len)
+    // Request sensor data from slave
+    if (read(i2c_handle, read_buff, data_len) != data_len)
     {
-      RCLCPP_ERROR(this->get_logger(), "I2C read failed! %d", read_result);
-      // cerr << "I2C read failed! " << read_result << endl;
-      return read_result;
+      RCLCPP_ERROR(this->get_logger(), "I2C read failed! ");
+      return -2; // Indicate error
     }
     else
     {
       memcpy(sensor_val_addr, read_buff, data_len);
-      // cout << "Read data: " << *sensor_val_addr << endl;
     }
 
-    return 1;
+    return 1; // Success
   }
 };
 

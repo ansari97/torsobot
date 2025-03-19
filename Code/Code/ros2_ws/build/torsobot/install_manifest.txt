@@ -1,9 +1,7 @@
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/mcu_node
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/package_run_dependencies/torsobot
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/parent_prefix_path/torsobot
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/ament_prefix_path.sh
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/ament_prefix_path.dsv
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/path.sh
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/path.dsv
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.bash
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.sh
