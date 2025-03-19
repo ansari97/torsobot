@@ -6,11 +6,25 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # find dependencies
+find_library(PIGPIO_LIBRARY NAMES pigpio PATHS /usr/lib/libpigpio.so)
+find_path(PIGPIO_INCLUDE_DIR NAMES pigpio.h PATHS usr/include/pigpio.h)
+
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
+# Find pigpio library
+find_library(PIGPIO_LIBRARY NAMES pigpio)
+
 add_executable(mcu_node src/mcu_node.cpp)
+
+if(PIGPIO_LIBRARY)
+    message(STATUS "pigpio library found: ${PIGPIO_LIBRARY}")
+    target_link_libraries(mcu_node ${PIGPIO_LIBRARY})
+else()
+    message(FATAL_ERROR "pigpio library not found")
+endif()
+
 ament_target_dependencies(mcu_node rclcpp std_msgs)
 
 install(TARGETS

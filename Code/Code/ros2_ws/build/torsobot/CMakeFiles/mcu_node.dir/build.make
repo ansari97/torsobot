@@ -92,6 +92,7 @@ mcu_node_EXTERNAL_OBJECTS =
 
 mcu_node: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o
 mcu_node: CMakeFiles/mcu_node.dir/build.make
+mcu_node: /usr/lib/libpigpio.so
 mcu_node: /home/pi/ros2_jazzy/install/rclcpp/lib/librclcpp.so
 mcu_node: /home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_typesupport_fastrtps_c.so
 mcu_node: /home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so
