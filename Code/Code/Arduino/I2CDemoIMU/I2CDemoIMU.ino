@@ -147,7 +147,7 @@ void loop() {
 
   memcpy(sensor_data, &ypr.pitch, sizeof(float));
 
-  delay(5);
+  // delay(5);
 }
 
 
