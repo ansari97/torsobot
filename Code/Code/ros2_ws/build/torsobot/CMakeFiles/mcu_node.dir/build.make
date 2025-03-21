@@ -92,7 +92,12 @@ mcu_node_EXTERNAL_OBJECTS =
 
 mcu_node: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o
 mcu_node: CMakeFiles/mcu_node.dir/build.make
-mcu_node: /usr/lib/libpigpio.so
+mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_introspection_c.so
+mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_fastrtps_c.so
+mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_introspection_cpp.so
+mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_fastrtps_cpp.so
+mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_cpp.so
+mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_generator_py.so
 mcu_node: /home/pi/ros2_jazzy/install/rclcpp/lib/librclcpp.so
 mcu_node: /home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_typesupport_fastrtps_c.so
 mcu_node: /home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so
@@ -145,6 +150,8 @@ mcu_node: /home/pi/ros2_jazzy/install/statistics_msgs/lib/libstatistics_msgs__ro
 mcu_node: /home/pi/ros2_jazzy/install/statistics_msgs/lib/libstatistics_msgs__rosidl_generator_c.so
 mcu_node: /home/pi/ros2_jazzy/install/tracetools/lib/libtracetools.so
 mcu_node: /home/pi/ros2_jazzy/install/rcl_logging_interface/lib/librcl_logging_interface.so
+mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_c.so
+mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_generator_c.so
 mcu_node: /home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_typesupport_c.so
 mcu_node: /home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_generator_c.so
 mcu_node: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_c.so

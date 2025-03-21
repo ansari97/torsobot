@@ -12,19 +12,11 @@ find_path(PIGPIO_INCLUDE_DIR NAMES pigpio.h PATHS usr/include/pigpio.h)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-
-# Find pigpio library
-find_library(PIGPIO_LIBRARY NAMES pigpio)
+find_package(torsobot_interfaces REQUIRED)
 
 add_executable(mcu_node src/mcu_node.cpp)
 
-if(PIGPIO_LIBRARY)
-    message(STATUS "pigpio library found: ${PIGPIO_LIBRARY}")
-    target_link_libraries(mcu_node ${PIGPIO_LIBRARY})
-else()
-    message(FATAL_ERROR "pigpio library not found")
-endif()
-
+ament_target_dependencies(mcu_node rclcpp torsobot_interfaces)
 ament_target_dependencies(mcu_node rclcpp std_msgs)
 
 install(TARGETS

@@ -51,7 +51,7 @@ CMAKE_BUILD_TYPE:STRING=
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //CXX compiler
-CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/c++
+CMAKE_CXX_COMPILER:STRING=/usr/bin/c++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -77,7 +77,7 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
 //C compiler
-CMAKE_C_COMPILER:FILEPATH=/usr/bin/cc
+CMAKE_C_COMPILER:STRING=/usr/bin/cc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -278,7 +278,7 @@ SITE:STRING=torsobot
 TinyXML2_DIR:PATH=/usr/lib/aarch64-linux-gnu/cmake/tinyxml2
 
 //Path to a library.
-_lib:FILEPATH=/home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so
+_lib:FILEPATH=/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_fastrtps_cpp.so
 
 //The directory containing a CMake configuration file for ament_cmake.
 ament_cmake_DIR:PATH=/home/pi/ros2_jazzy/install/ament_cmake/share/ament_cmake/cmake
@@ -498,6 +498,9 @@ torsobot_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 torsobot_SOURCE_DIR:STATIC=/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot
+
+//The directory containing a CMake configuration file for torsobot_interfaces.
+torsobot_interfaces_DIR:PATH=/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake
 
 //The directory containing a CMake configuration file for tracetools.
 tracetools_DIR:PATH=/home/pi/ros2_jazzy/install/tracetools/share/tracetools/cmake

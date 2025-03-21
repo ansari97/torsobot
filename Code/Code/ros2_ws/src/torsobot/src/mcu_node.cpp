@@ -11,10 +11,9 @@
 #include <functional>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/float32.hpp"
+#include "torsobot_interfaces/msg/data.hpp"
 
 using namespace std::chrono_literals;
-// using namespace std;
 
 // pico slave address
 #define PICO_SLAVE_ADDRESS 0X30
@@ -38,7 +37,7 @@ public:
   mcuNode() : Node("mcu_node")
   {
     // Create publisher for "torso_angle" topic
-    publisher_ = this->create_publisher<std_msgs::msg::Float32>("torso_angle", 10);
+    publisher_ = this->create_publisher<torsobot_interfaces::msg::Data>("pico_data", 10);
 
     char filename[20];
     snprintf(filename, 19, "/dev/i2c-%d", I2C_BUS);
@@ -57,6 +56,10 @@ public:
     {
       RCLCPP_ERROR(this->get_logger(), "Failed to open I2C device!");
       close(i2c_handle);
+
+      RCLCPP_FATAL(this->get_logger(), "Failed to open I2C device! Exiting! :(");
+      rclcpp::shutdown();
+      exit(EXIT_FAILURE); // Terminate the program
       // return 1;
     }
     RCLCPP_INFO(this->get_logger(), "Successfully opened I2C device!");
@@ -67,23 +70,24 @@ public:
 
 private:
   rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr publisher_;
+  rclcpp::Publisher<torsobot_interfaces::msg::Data>::SharedPtr publisher_;
 
   // timer callback for getting data on i2c
   void timer_callback(void)
   {
     // Read / request sensor data from pico
     int get_sensor_val_result1 = GetSensorValue(IMU_CMD, &IMU_val);
-    if (get_sensor_val_result1 <= 0)
+    if (get_sensor_val_result1 > 0)
+    {
+      auto message = torsobot_interfaces::msg::Data();
+      message.torso_pitch = IMU_val;
+      RCLCPP_INFO(this->get_logger(), "Publishing: '%f'", message.torso_pitch);
+      this->publisher_->publish(message);
+    }
+    else
     {
       RCLCPP_ERROR(this->get_logger(), "Error reading sensor value");
-      // return 0;
     }
-
-    auto message = std_msgs::msg::Float32();
-    message.data = IMU_val;
-    RCLCPP_INFO(this->get_logger(), "Publishing: '%f'", message.data);
-    this->publisher_->publish(message);
   };
 
   // Get sensor data over I2C
