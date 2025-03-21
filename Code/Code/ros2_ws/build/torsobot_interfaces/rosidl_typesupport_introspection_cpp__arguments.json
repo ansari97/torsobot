@@ -1,0 +1,19 @@
+{
+  "package_name": "torsobot_interfaces",
+  "output_dir": "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_introspection_cpp/torsobot_interfaces",
+  "template_dir": "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/share/rosidl_typesupport_introspection_cpp/resource",
+  "idl_tuples": [
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/Data.idl"
+  ],
+  "target_dependencies": [
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/lib/rosidl_typesupport_introspection_cpp/rosidl_typesupport_introspection_cpp",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/lib/python3.11/site-packages/rosidl_typesupport_introspection_cpp/__init__.py",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/share/rosidl_typesupport_introspection_cpp/resource/idl__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/share/rosidl_typesupport_introspection_cpp/resource/idl__type_support.cpp.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/share/rosidl_typesupport_introspection_cpp/resource/msg__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/share/rosidl_typesupport_introspection_cpp/resource/msg__type_support.cpp.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/share/rosidl_typesupport_introspection_cpp/resource/srv__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/share/rosidl_typesupport_introspection_cpp/resource/srv__type_support.cpp.em",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/Data.idl"
+  ]
+}

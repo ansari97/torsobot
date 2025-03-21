@@ -1,0 +1,242 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-cf95847b39a0c9aee10e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "torsobot_interfaces__py",
+					"jsonFile" : "directory-torsobot_interfaces__py-0b6e9fa7370c516ab1f6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "torsobot_interfaces",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_torsobot_interfaces_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_torsobot_interfaces_egg-a2f0c4fbe45f3811a2d4.json",
+					"name" : "ament_cmake_python_build_torsobot_interfaces_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_torsobot_interfaces::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_torsobot_interfaces-a3c9168ea9bf45404e8a.json",
+					"name" : "ament_cmake_python_copy_torsobot_interfaces",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces-233f2c87b770eaa6d940.json",
+					"name" : "torsobot_interfaces",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__cpp-f1afff5a69f8f1415ee6.json",
+					"name" : "torsobot_interfaces__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "torsobot_interfaces__py::@dec268f2b0cb52a2d500",
+					"jsonFile" : "target-torsobot_interfaces__py-7c5028c41f0a08032606.json",
+					"name" : "torsobot_interfaces__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_generator_c-871d21ea9981200442d8.json",
+					"name" : "torsobot_interfaces__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_generator_py-51e5bb7b34ce5a45a927.json",
+					"name" : "torsobot_interfaces__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_generator_type_description::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_generator_type_description-f09c34b9238c8b2adc2e.json",
+					"name" : "torsobot_interfaces__rosidl_generator_type_description",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_typesupport_c-02a57b4a86c2720fd95d.json",
+					"name" : "torsobot_interfaces__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_typesupport_cpp-27b6b70e44fc5882b9e0.json",
+					"name" : "torsobot_interfaces__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_typesupport_fastrtps_c-8bf9241b489878ee8966.json",
+					"name" : "torsobot_interfaces__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_typesupport_fastrtps_cpp-3123887544151c125379.json",
+					"name" : "torsobot_interfaces__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_typesupport_introspection_c-2e79c3bb421436d60f4e.json",
+					"name" : "torsobot_interfaces__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces__rosidl_typesupport_introspection_cpp-09bed11d1bb46597d627.json",
+					"name" : "torsobot_interfaces__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces_s__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces_s__rosidl_typesupport_c-67c21dbf9fcd6f01a8f4.json",
+					"name" : "torsobot_interfaces_s__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces_s__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces_s__rosidl_typesupport_fastrtps_c-0ad3a6531a146a4691c1.json",
+					"name" : "torsobot_interfaces_s__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces_s__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces_s__rosidl_typesupport_introspection_c-508d8addded55e88cdb0.json",
+					"name" : "torsobot_interfaces_s__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "torsobot_interfaces_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-torsobot_interfaces_uninstall-5875a049687c3b07cad6.json",
+					"name" : "torsobot_interfaces_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-dd3630376ec3412a587b.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces",
+		"source" : "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
