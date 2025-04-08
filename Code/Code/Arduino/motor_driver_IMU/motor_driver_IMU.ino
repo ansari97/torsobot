@@ -1,5 +1,4 @@
-#include <Arduino.h>
-#include <SPI.h>
+
 #include <Adafruit_BNO08x.h>
 #include <ACAN2517FD.h>
 #include <Moteus.h>

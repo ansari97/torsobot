@@ -1,0 +1,29 @@
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:[m[K In constructor ‘[01m[KmcuNode::mcuNode()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:54:14:[m[K [01;31m[Kerror: [m[Kreturning a value from a constructor
+   54 |       return [01;31m[K-1[m[K;
+      |              [01;31m[K^~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:63:14:[m[K [01;31m[Kerror: [m[Kreturning a value from a constructor
+   63 |       return [01;31m[K1[m[K;
+      |              [01;31m[K^[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:[m[K In lambda function:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:74:16:[m[K [01;31m[Kerror: [m[Kreturn-statement with a value, in function returning ‘[01m[Kvoid[m[K’ [[01;31m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-fpermissive-fpermissive]8;;[m[K]
+   74 |         return [01;31m[K0[m[K;
+      |                [01;31m[K^[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:[m[K In constructor ‘[01m[KmcuNode::mcuNode()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:85:37:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KmcuNode::create_wall_timer(int, mcuNode::mcuNode()::<lambda()>&)[m[K’
+   85 |     timer_ = [01;31m[Kthis->create_wall_timer(100, timer_callback)[m[K;
+      |              [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/executors/single_threaded_executor.hpp:28[m[K,
+                 from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/executors.hpp:22[m[K,
+                 from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/rclcpp.hpp:172[m[K,
+                 from [01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:12[m[K:
+[01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/node.hpp:241:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class DurationRepT, class DurationT, class CallbackT> typename rclcpp::WallTimer<CallbackT>::SharedPtr rclcpp::Node::create_wall_timer(std::chrono::duration<_Rep1, _Period1>, CallbackT, rclcpp::CallbackGroup::SharedPtr, bool)[m[K’
+  241 |   [01;36m[Kcreate_wall_timer[m[K(
+      |   [01;36m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/node.hpp:241:3:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:85:37:[m[K [01;36m[Knote: [m[K  mismatched types ‘[01m[Kstd::chrono::duration<_Rep1, _Period1>[m[K’ and ‘[01m[Kint[m[K’
+   85 |     timer_ = [01;36m[Kthis->create_wall_timer(100, timer_callback)[m[K;
+      |              [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/mcu_node.dir/build.make:76: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/mcu_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

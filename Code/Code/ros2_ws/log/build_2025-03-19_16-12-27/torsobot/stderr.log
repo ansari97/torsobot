@@ -1,0 +1,10 @@
+/usr/bin/ld: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: in function `mcuNode::mcuNode()':
+mcu_node.cpp:(.text._ZN7mcuNodeC2Ev[_ZN7mcuNodeC5Ev]+0x164): undefined reference to `gpioInitialise'
+/usr/bin/ld: mcu_node.cpp:(.text._ZN7mcuNodeC2Ev[_ZN7mcuNodeC5Ev]+0x480): undefined reference to `i2cOpen'
+/usr/bin/ld: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: in function `mcuNode::GetSensorValue(int, float*)':
+mcu_node.cpp:(.text._ZN7mcuNode14GetSensorValueEiPf[_ZN7mcuNode14GetSensorValueEiPf]+0x50): undefined reference to `i2cWriteByte'
+/usr/bin/ld: mcu_node.cpp:(.text._ZN7mcuNode14GetSensorValueEiPf[_ZN7mcuNode14GetSensorValueEiPf]+0x1f0): undefined reference to `i2cReadDevice'
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/mcu_node.dir/build.make:171: mcu_node] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/mcu_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

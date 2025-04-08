@@ -1,0 +1,47 @@
+[ 50%] [32mBuilding CXX object CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o[0m
+In file included from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/copy_all_parameter_values.hpp:27[m[K,
+                 from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/rclcpp.hpp:171[m[K,
+                 from [01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:12[m[K:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:[m[K In function ‘[01m[Kint GetSensorValue(int, float*)[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:116:20:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+  116 |       RCLCPP_ERROR([01;31m[Kthis[m[K->get_logger(), "I2C write failed! %d", write_request);
+      |                    [01;31m[K^~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:116:20:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:116:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  116 |       [01;31m[KRCLCPP_ERROR[m[K(this->get_logger(), "I2C write failed! %d", write_request);
+      |       [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:116:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  116 |       [01;31m[KRCLCPP_ERROR[m[K(this->get_logger(), "I2C write failed! %d", write_request);
+      |       [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:116:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  116 |       [01;31m[KRCLCPP_ERROR[m[K(this->get_logger(), "I2C write failed! %d", write_request);
+      |       [01;31m[K^~~~~~~~~~~~[m[K
+In file included from [01m[K/home/pi/ros2_jazzy/build/rclcpp/include/rclcpp/logging.hpp:24[m[K:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:116:20:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+  116 |       RCLCPP_ERROR([01;31m[Kthis[m[K->get_logger(), "I2C write failed! %d", write_request);
+      |                    [01;31m[K^~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:116:20:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+  116 |       RCLCPP_ERROR([01;31m[Kthis[m[K->get_logger(), "I2C write failed! %d", write_request);
+      |                    [01;31m[K^~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:126:20:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+  126 |       RCLCPP_ERROR([01;31m[Kthis[m[K->get_logger(), "I2C read failed! %d", read_result);
+      |                    [01;31m[K^~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:126:20:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:126:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  126 |       [01;31m[KRCLCPP_ERROR[m[K(this->get_logger(), "I2C read failed! %d", read_result);
+      |       [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:126:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  126 |       [01;31m[KRCLCPP_ERROR[m[K(this->get_logger(), "I2C read failed! %d", read_result);
+      |       [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:126:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  126 |       [01;31m[KRCLCPP_ERROR[m[K(this->get_logger(), "I2C read failed! %d", read_result);
+      |       [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:126:20:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+  126 |       RCLCPP_ERROR([01;31m[Kthis[m[K->get_logger(), "I2C read failed! %d", read_result);
+      |                    [01;31m[K^~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:126:20:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+  126 |       RCLCPP_ERROR([01;31m[Kthis[m[K->get_logger(), "I2C read failed! %d", read_result);
+      |                    [01;31m[K^~~~[m[K
+gmake[2]: *** [CMakeFiles/mcu_node.dir/build.make:76: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/mcu_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

@@ -1,0 +1,10 @@
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:[m[K In constructor ‘[01m[KmcuNode::mcuNode()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:67:44:[m[K [01;31m[Kerror: [m[Kinvalid use of non-static member function ‘[01m[Kvoid mcuNode::timer_callback()[m[K’
+   67 |     timer_ = this->create_wall_timer(10ms, [01;31m[Ktimer_callback[m[K);
+      |                                            [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:75:8:[m[K [01;36m[Knote: [m[Kdeclared here
+   75 |   void [01;36m[Ktimer_callback[m[K(void)
+      |        [01;36m[K^~~~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/mcu_node.dir/build.make:76: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/mcu_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2
