@@ -1,7 +1,0 @@
-{
-  "package_name": "torsobot_interfaces",
-  "output_dir": "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces",
-  "idl_tuples": [
-    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/Data.idl"
-  ]
-}

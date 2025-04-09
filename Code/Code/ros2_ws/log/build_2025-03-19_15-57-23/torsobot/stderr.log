@@ -1,7 +1,0 @@
-[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:14:10:[m[K [01;31m[Kfatal error: [m[Kstd_msgs/msg/Float32.hpp: No such file or directory
-   14 | #include [01;31m[K"std_msgs/msg/Float32.hpp"[m[K
-      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-compilation terminated.
-gmake[2]: *** [CMakeFiles/mcu_node.dir/build.make:76: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o] Error 1
-gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/mcu_node.dir/all] Error 2
-gmake: *** [Makefile:146: all] Error 2

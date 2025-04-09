@@ -1,3 +1,0 @@
-float64 torso_pitch
-float64 wheel_pitch
-float64 motor_current
