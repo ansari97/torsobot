@@ -14,7 +14,7 @@
 #define BNO08X_INT 10
 // For SPI mode, we also need a RESET
 #define BNO08X_RESET 11
-#define BNO08X_FAST_MODE
+// #define BNO08X_FAST_MODE
 
 // I2C
 #define PICO_SLAVE_ADDRESS 0x30
