@@ -27,9 +27,11 @@ int i2c_handle;
 const int data_len = sizeof(float);
 char read_buff[data_len];
 float IMU_val;
+float mot_vel;
 
 // I2C write cmd for IMU data
 const int IMU_CMD = 0x01;
+const int MOTOR_VAL_CMD = 0x2;
 
 class mcuNode : public rclcpp::Node
 {
@@ -77,11 +79,14 @@ private:
   {
     // Read / request sensor data from pico
     int get_sensor_val_result1 = GetSensorValue(IMU_CMD, &IMU_val);
-    if (get_sensor_val_result1 > 0)
+    int get_sensor_val_result2 = GetSensorValue(MOTOR_VAL_CMD, &mot_vel);
+    if (get_sensor_val_result1 > 0 && get_sensor_val_result2 > 0)
     {
       auto message = torsobot_interfaces::msg::Data();
       message.torso_pitch = IMU_val;
-      RCLCPP_INFO(this->get_logger(), "Publishing: '%f'", message.torso_pitch);
+      message.motor_vel = mot_vel;
+      RCLCPP_INFO(this->get_logger(), "Publishing IMU pitch: '%f'", message.torso_pitch);
+      RCLCPP_INFO(this->get_logger(), "Publishing motor velocity '%f'", message.motor_vel);
       this->publisher_->publish(message);
     }
     else
