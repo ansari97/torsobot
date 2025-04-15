@@ -3,20 +3,20 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <Adafruit_BNO08x.h>
-// #include <ACAN2517FD.h>
-// #include <Moteus.h>
 
 // For BNO085 SPI mode, we need a CS pin
 #define BNO08X_SCK 2
 #define BNO08X_MOSI 3
 #define BNO08X_MISO 4
 #define BNO08X_CS 5
-#define BNO08X_INT 10
+#define BNO08X_INT 6
 // For SPI mode, we also need a RESET
-#define BNO08X_RESET 11
+#define BNO08X_RESET 7
+
+// Defining fast mode runs the IMU at a higher frequency but causes values to drift
 // #define BNO08X_FAST_MODE
 
-// I2C
+// I2C slave address
 #define PICO_SLAVE_ADDRESS 0x30
 
 // Sensor value cmd bytes
@@ -60,6 +60,7 @@ static uint32_t gNextSendMillis = 0;
 
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
+// bool resetOccurred = false;
 
 #ifdef BNO08X_FAST_MODE
 // Top frequency is reported to be 1000Hz (but freq is somewhat variable)
@@ -75,9 +76,13 @@ void setReports(sh2_SensorId_t reportType, long report_interval) {
   if (!bno08x.enableReport(reportType, report_interval)) {
     Serial.println("Could not enable stabilized remote vector");
   }
+  delay(100);
 }
 
 void setup() {
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
   Serial.begin(115200);
   delay(5000);
 
@@ -94,7 +99,7 @@ void setup() {
   SPI.setSCK(BNO08X_SCK);
   SPI.setMOSI(BNO08X_MOSI);
   SPI.setMISO(BNO08X_MISO);
-  SPI.setCS(BNO08X_CS);
+  // SPI.setCS(BNO08X_CS);
 
   if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
     Serial.println(F("Failed to find BNO08x chip"));
@@ -102,15 +107,26 @@ void setup() {
   }
   Serial.println(F("BNO08x Found!"));
 
+  bno08x.hardwareReset();
+  Serial.print("Sensor reset?");
+  Serial.println(bno08x.wasReset());
+  
   setReports(reportType, reportIntervalUs);
+
+  delay(1500);
 }
 
 void loop() {
 
   if (bno08x.wasReset()) {
-    Serial.print("sensor was reset ");
+    Serial.print("Sensor was reset during loop!");
+    // Serial.println(resetOccurred);
     setReports(reportType, reportIntervalUs);
-  }
+   
+  } 
+  // else {}
+    // resetOccurred = false;  // Reset the flag if the sensor is no longer reporting a reset
+  // }
 
   if (bno08x.getSensorEvent(&sensorValue)) {
     // in this demo only one report type will be received depending on BNO08X_FAST_MODE define (above)
@@ -125,29 +141,28 @@ void loop() {
     static long last = 0;
     long now = micros();
 
-    Serial.print(gLoopCount++);
-    Serial.print("\t");
+    // Serial.print(gLoopCount++);
+    // Serial.print("\t");
 
-    Serial.print(now - last);
-    Serial.print("\t");
-    last = now;
-    Serial.print(sensorValue.status);
-    Serial.print("\t");  // This is accuracy in the range of 0 to 3
-    Serial.print(ypr.yaw);
-    Serial.print("\t");
-    Serial.print(ypr.pitch);
-    Serial.print("\t");
-    Serial.print(ypr.roll);
-    Serial.print("\t");
-    Serial.println(i);
-    // Serial.println(sensorValue.un.tiltDetector.tilt);
-    Serial.println();
+    // Serial.print(now - last);
+    // Serial.print("\t");
+    // last = now;
+    // Serial.print(sensorValue.status);
+    // Serial.print("\t");  // This is accuracy in the range of 0 to 3
+    // Serial.print(ypr.yaw);
+    // Serial.print("\t");
+    Serial.println(ypr.pitch);
+    // Serial.print("\t");
+    // Serial.print(ypr.roll);
+    // Serial.print("\t");
+    // Serial.println(i);
+    // // Serial.println(sensorValue.un.tiltDetector.tilt);
+    // Serial.println();
     // gLoopCount++;
   }
 
   memcpy(sensor_data, &ypr.pitch, sizeof(float));
-
-  // delay(5);
+  // Serial.println(gLoopCount++);
 }
 
 
