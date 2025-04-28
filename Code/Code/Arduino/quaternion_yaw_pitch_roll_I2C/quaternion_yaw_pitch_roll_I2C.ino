@@ -3,33 +3,26 @@
 // quartenion and euler (yaw, pitch roll) angles.  Toggle the FAST_MODE define to see other report.
 // Note sensorValue.status gives calibration accuracy (which improves over time)
 #include <Adafruit_BNO08x.h>
-#include <SPI.h>
+
+#define BNO08X_SDA 16
+#define BNO08X_SCL 17
 
 // For SPI mode, we need a CS pin
-#define BNO08X_SCK 2
-#define BNO08X_MOSI 3
-#define BNO08X_MISO 4
-#define BNO08X_CS 5
-#define BNO08X_INT 6
-// For SPI mode, we also need a RESET
-#define BNO08X_RESET 7
+#define BNO08X_CS 10
+#define BNO08X_INT 9
 
 // #define FAST_MODE
 
 // For SPI mode, we also need a RESET
-// #define BNO08X_RESET 7
+//#define BNO08X_RESET 5
 // but not for I2C or UART
-// #define BNO08X_RESET -1
+#define BNO08X_RESET -1
 
 struct euler_t {
   float yaw;
   float pitch;
   float roll;
-};
-
-euler_t ypr;
-
-unsigned int loop_no = 0;
+} ypr;
 
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
@@ -51,21 +44,19 @@ void setReports(sh2_SensorId_t reportType, long report_interval) {
 }
 
 void setup(void) {
-  SPI.setMISO(BNO08X_MISO);
-  SPI.setCS(BNO08X_CS);
-  SPI.setSCK(BNO08X_SCK);
-  SPI.setMOSI(BNO08X_MOSI);
-
-
+  delay(5000);
   Serial.begin(115200);
   while (!Serial) delay(10);  // will pause Zero, Leonardo, etc until serial console opens
 
   Serial.println("Adafruit BNO08x test!");
 
+  Wire.setSCL(BNO08X_SCL);
+  Wire.setSDA(BNO08X_SDA);
+
   // Try to initialize!
-  // if (!bno08x.begin_I2C()) {
-  //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
-  if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
+  if (!bno08x.begin_I2C()) {
+    //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
+    //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
     Serial.println("Failed to find BNO08x chip");
     while (1) { delay(10); }
   }
@@ -123,10 +114,6 @@ void loop() {
     }
     static long last = 0;
     long now = micros();
-
-    Serial.print(loop_no);
-    Serial.print("\t");
-
     Serial.print(now - last);
     Serial.print("\t");
     last = now;
@@ -136,10 +123,6 @@ void loop() {
     Serial.print("\t");
     Serial.print(ypr.pitch);
     Serial.print("\t");
-    Serial.print(ypr.roll);
-    // Serial.print("\t");
-    // Serial.println(sensorValue.un.tiltDetector.tilt);
-    Serial.println();
-    loop_no++;
+    Serial.println(ypr.roll);
   }
 }

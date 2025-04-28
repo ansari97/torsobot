@@ -182,54 +182,38 @@ void loop() {
 
   digitalWrite(LED_BUILTIN, LOW);
 
-  // if (bno08x.wasReset()) {
-  //   Serial.print("Sensor was reset during loop!");
-  //   setReports(reportType, reportIntervalUs);
-  //   // resetOccurred = true;
-  // }
-  // // else {
-  // //   // resetOccurred = false;  // Reset the flag if the sensor is no longer reporting a reset
-  // // }
+  if (bno08x.wasReset()) {
+    Serial.print("Sensor was reset during loop!");
+    setReports(reportType, reportIntervalUs);
+    // resetOccurred = true;
+  }
 
-  // if (bno08x.getSensorEvent(&sensorValue)) {
-  //   // in this demo only one report type will be received depending on BNO08X_FAST_MODE define (above)
-  //   switch (sensorValue.sensorId) {
-  //     case SH2_ARVR_STABILIZED_RV:
-  //       quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
-  //     case SH2_GYRO_INTEGRATED_RV:
-  //       // faster (more noise?)
-  //       quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
-  //       break;
-  //   }
-  //   static long last = 0;
-  //   long now = micros();
+  if (bno08x.getSensorEvent(&sensorValue)) {
+    // in this demo only one report type will be received depending on BNO08X_FAST_MODE define (above)
+    switch (sensorValue.sensorId) {
+      case SH2_ARVR_STABILIZED_RV:
+        quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
+      case SH2_GYRO_INTEGRATED_RV:
+        // faster (more noise?)
+        quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
+        break;
+    }
 
-  //   // Serial.print(gLoopCount);
-  //   // Serial.print("\t");
+    Serial.println(ypr.pitch);
 
-  //   // Serial.print(now - last);
-  //   // Serial.print("\t");
-  //   // last = now;
-  //   // Serial.print(sensorValue.status);
-  //   // Serial.print("\t");  // This is accuracy in the range of 0 to 3
-  //   // Serial.print(ypr.yaw);
-  //   // Serial.print("\t");
-  //   Serial.println(ypr.pitch);
-  //   // Serial.print("\t");
-  //   // Serial.print(ypr.roll);
-  //   // Serial.print("\t");
-  //   // Serial.println(ctr);
-  //   // Serial.println(sensorValue.un.tiltDetector.tilt);
-  //   // gLoopCount++;
-  // }
+    // memcpy(imu_data, &ypr.pitch, sizeof(float));
+  }
   // // Serial.println();
 
-  // memcpy(imu_data, &ypr.pitch, sizeof(float));
 
   // We intend to send control frames every 20ms.
   const auto time = millis();
 
   if (gNextSendMillis >= time) { return; }
+
+  if (static_cast<int>(moteus.last_result().values.mode) == 11) {
+    moteus.SetStop();
+  }
 
   gNextSendMillis += 20;
   gLoopCount++;
@@ -237,7 +221,8 @@ void loop() {
   Moteus::PositionMode::Command cmd;
   cmd.position = NaN;
   // cmd.position = degToCycles(ypr.pitch);
-  cmd.velocity = 2 * ::sin(time / 1000.0);
+  // cmd.velocity = 2 * ::sin(time / 1000.0);
+  cmd.velocity = 2 * ::sin(time * degToCycles(ypr.pitch) / 1000.0);
   // cmd.velocity = 0;
 
   moteus.SetPosition(cmd);
