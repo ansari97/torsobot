@@ -1,0 +1,16 @@
+[StartTime]
+10mm_d_shaft_hub-Static 2 from [Static 1].MFC=1s
+[SolverState]
+10mm_d_shaft_hub-Static 2 from [Static 1].MFC=2
+[MainFrame]
+10mm_d_shaft_hub-Static 2 from [Static 1].MFC=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPMECAAAAAHEBAAAAAELDAAAAAKBCAAAAA
+[ShowMin]
+10mm_d_shaft_hub-Static 2 from [Static 1].MFC=No
+[SolverType]
+10mm_d_shaft_hub-Static 2 from [Static 1].MFC=Linear Analysis
+[StudyType]
+10mm_d_shaft_hub-Static 2 from [Static 1].MFC=0
+[StudyName]
+10mm_d_shaft_hub-Static 2 from [Static 1].MFC=Static 2 from [Static 1]
+[Solver]
+10mm_d_shaft_hub-Static 2 from [Static 1].MFC=Sparse
