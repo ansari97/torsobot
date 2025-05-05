@@ -14,18 +14,17 @@
 //  The following pins are selected for the CANBed FD board.
 //——————————————————————————————————————————————————————————————————————————————
 
-static const byte MCP2517_SCK = 2;  // SCK input of MCP2517
-static const byte MCP2517_SDI = 3;  // SDI input of MCP2517
-static const byte MCP2517_SDO = 4;  // SDO output of MCP2517
-
-static const byte MCP2517_CS = 5;   // CS input of MCP2517
-static const byte MCP2517_INT = 7;  // INT output of MCP2517
+#define MCP2517_SCK 10
+#define MCP2517_MOSI 11
+#define MCP2517_MISO 12
+#define MCP2517_CS 13  // CS input of MCP2517
+#define MCP2517_INT 9  // INT output of MCP2517
 
 //——————————————————————————————————————————————————————————————————————————————
 //  ACAN2517FD Driver object
 //——————————————————————————————————————————————————————————————————————————————
 
-ACAN2517FD can(MCP2517_CS, SPI, MCP2517_INT);
+ACAN2517FD can(MCP2517_CS, SPI1, MCP2517_INT);
 
 Moteus moteus1(can, []() {
   Moteus::Options options;
@@ -41,17 +40,17 @@ Moteus::PositionMode::Format position_fmt;
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
-  SPI.setCS(MCP2517_CS);
-  SPI.setSCK(MCP2517_SCK);
-  SPI.setTX(MCP2517_SDI);
-  SPI.setRX(MCP2517_SDO);
-
   // Let the world know we have begun!
   Serial.begin(115200);
   while (!Serial) {}
   Serial.println(F("started"));
 
-  SPI.begin();
+  SPI1.setSCK(MCP2517_SCK);
+  SPI1.setMOSI(MCP2517_MOSI);
+  SPI1.setMISO(MCP2517_MISO);
+  SPI1.setCS(MCP2517_CS);
+
+  SPI1.begin();
 
   // This operates the CAN-FD bus at 1Mbit for both the arbitration
   // and data rate.  Most arduino shields cannot operate at 5Mbps
@@ -101,16 +100,14 @@ void loop() {
     Serial.print(v.torque);
     Serial.println();
   };
-  Serial.println("here");
-  print_state();
 
-  position_cmd.position = 0.1;
+  position_cmd.position = 10;
   moteus1.SetPositionWaitComplete(position_cmd, 0.02, &position_fmt);
 
   Serial.print(F("sent 0.1 "));
   print_state();
 
-  position_cmd.position = 0.5;
+  position_cmd.position = 1;
   moteus1.SetPositionWaitComplete(position_cmd, 0.02, &position_fmt);
 
   Serial.print(F("sent 0.5 "));
