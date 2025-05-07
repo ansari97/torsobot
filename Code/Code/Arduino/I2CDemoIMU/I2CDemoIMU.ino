@@ -99,7 +99,7 @@ void setup() {
   SPI.setSCK(BNO08X_SCK);
   SPI.setMOSI(BNO08X_MOSI);
   SPI.setMISO(BNO08X_MISO);
-  // SPI.setCS(BNO08X_CS);
+  SPI.setCS(BNO08X_CS);
 
   if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
     Serial.println(F("Failed to find BNO08x chip"));

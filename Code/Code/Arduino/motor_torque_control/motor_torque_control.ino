@@ -30,6 +30,20 @@
 // I2C slave address
 #define PICO_SLAVE_ADDRESS 0x30
 
+struct euler_t {
+  float yaw;
+  float pitch;
+  float roll;
+};
+
+void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees);
+void quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool deegrees);
+void quaternionToEulerGI(sh2_GyroIntegratedRV_t* rotational_vector, euler_t* ypr, bool degrees);
+void setReports(long report_interval);
+float degToCycles(float);
+float imuAngleCorrection(float);
+float degToRad(float);
+
 static uint32_t gNextSendMillis = 0;
 
 // Sensor value cmd bytes
@@ -47,26 +61,25 @@ char read_command;
 
 int mode;
 float imu_pitch;
+float imu_pitch_rate;
 float mot_vel;
-float pos_vel;
+float mot_pos;
+float mot_torque;
+
+float desired_pitch = degToRad(10);
+
+float kp = 0.5;
+float kd = 0.0;
+
+float max_torque = 0.5;
 
 int ctr = 0;
 
-struct euler_t {
-  float yaw;
-  float pitch;
-  float roll;
-};
-
-void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees);
-void quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool deegrees);
-void quaternionToEulerGI(sh2_GyroIntegratedRV_t* rotational_vector, euler_t* ypr, bool degrees);
-void setReports(sh2_SensorId_t reportType, long report_interval);
-float degToCycles(float);
-
 euler_t ypr;
 
-uint16_t gLoopCount = 0;
+uint16_t gLoopCount = 3;
+
+float ff_torque;
 
 //——————————————————————————————————————————————————————————————————————————————
 //  BNO08X object
@@ -76,15 +89,15 @@ Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
 bool resetOccurred = false;
 
-#ifdef BNO08X_FAST_MODE
-// Top frequency is reported to be 1000Hz (but freq is somewhat variable)
-sh2_SensorId_t reportType = SH2_GYRO_INTEGRATED_RV;
-long reportIntervalUs = 2000;
-#else
+// #ifdef BNO08X_FAST_MODE
+// // Top frequency is reported to be 1000Hz (but freq is somewhat variable)
+// sh2_SensorId_t reportType = SH2_GYRO_INTEGRATED_RV;
+// long reportIntervalUs = 2000;
+// #else
 // Top frequency is about 250Hz but this report is more accurate
 sh2_SensorId_t reportType = SH2_ARVR_STABILIZED_RV;
 long reportIntervalUs = 5000;
-#endif
+// #endif
 
 //——————————————————————————————————————————————————————————————————————————————
 //  ACAN2517FD Driver object
@@ -100,6 +113,10 @@ Moteus moteus(can, []() {
 
 Moteus::PositionMode::Command position_cmd;
 Moteus::PositionMode::Format position_fmt;
+Moteus::CurrentMode::Command current_cmd;
+Moteus::CurrentMode::Format current_fmt;
+
+// Moteus::Ve
 
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -144,7 +161,7 @@ void setup() {
   Serial.print("Sensor reset?\t");
   Serial.println(bno08x.wasReset());
 
-  setReports(reportType, reportIntervalUs);
+  setReports(reportIntervalUs);
 
   // This operates the CAN-FD bus at 1Mbit for both the arbitration
   // and data rate.  Most arduino shields cannot operate at 5Mbps
@@ -176,20 +193,30 @@ void setup() {
   moteus.SetStop();
   Serial.println("motor stopped");
 
-  position_fmt.velocity_limit = Moteus::kFloat;
-  position_fmt.accel_limit = Moteus::kFloat;
+  // position_fmt.velocity_limit = Moteus::kFloat;
+  // position_fmt.accel_limit = Moteus::kFloat;
 
-  position_cmd.velocity_limit = 2.0;
-  position_cmd.accel_limit = 3.0;
-
+  // position_cmd.velocity_limit = 2.0;
+  // position_cmd.accel_limit = 3.0;
 
 
   Serial.println("wait...");
   // delay(5000);
 
-  position_cmd.position = 0.0;
-  moteus.SetPositionWaitComplete(position_cmd, 0.02, &position_fmt);
-  Serial.println("motor at zero!");
+  position_fmt.kp_scale = Moteus::kFloat;
+  position_fmt.kd_scale = Moteus::kFloat;
+  position_fmt.feedforward_torque = Moteus::kFloat;
+  // position_fmt.velocity = Moteus::kIgnore;
+
+  position_cmd.position = NaN;
+  position_cmd.velocity = 0.0f;  // Not required as resolution is set to ignore
+  position_cmd.kp_scale = 0.0f;
+  position_cmd.kd_scale = 0.0f;
+  position_cmd.maximum_torque = max_torque;
+
+  // moteus.SetPositionWaitComplete(position_cmd, 0.02, &position_fmt);
+
+  Serial.println("starting program!");
   delay(5000);
 }
 
@@ -200,28 +227,41 @@ void loop() {
 
   if (bno08x.wasReset()) {
     Serial.print("Sensor was reset during loop!");
-    setReports(reportType, reportIntervalUs);
+    setReports(reportIntervalUs);
     // resetOccurred = true;
   }
 
   if (bno08x.getSensorEvent(&sensorValue)) {
     // in this demo only one report type will be received depending on BNO08X_FAST_MODE define (above)
+
+    Serial.print("Sensor ID:");
+    Serial.println(sensorValue.sensorId);
     switch (sensorValue.sensorId) {
       case SH2_ARVR_STABILIZED_RV:
         quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
-      case SH2_GYRO_INTEGRATED_RV:
-        // faster (more noise?)
-        quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
+        imu_pitch = degToRad(imuAngleCorrection(ypr.pitch));
+        break;
+
+      case SH2_GYROSCOPE_CALIBRATED:
+        imu_pitch_rate = sensorValue.un.gyroscope.z;
         break;
     }
+    //   case SH2_GYRO_INTEGRATED_RV:
+    //     // faster (more noise?)
+    //     quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
+    //     break;
+    // }
 
-    imu_pitch = ypr.pitch;
+    // imu_pitch_rate = sensorValue.un.gyroscope.z;
+    Serial.print(imu_pitch_rate);
+    Serial.print(",\t");
+
+    // imu_pitch = imuAngleCorrection(ypr.pitch);
     Serial.println(imu_pitch);
 
     memcpy(imu_data, &imu_pitch, sizeof(float));
   }
   // // Serial.println();
-
 
   // We intend to send control frames every 20ms.
   const auto time = millis();
@@ -236,30 +276,28 @@ void loop() {
   gNextSendMillis += 20;
   gLoopCount++;
 
-  position_cmd.position = degToCycles(imu_pitch);
+  ff_torque = -kp * (imu_pitch - desired_pitch) - kd * (imu_pitch_rate - 0);
+  ff_torque = min(max_torque, ff_torque);
+  position_cmd.feedforward_torque = ff_torque;
   moteus.SetPosition(position_cmd, &position_fmt);
 
   if (gLoopCount % 5 != 0) { return; }
   digitalWrite(LED_BUILTIN, HIGH);
 
-  // auto print_moteus = [](const Moteus::Query::Result& query) {
-  //   Serial.print("mode: ");
-  //   Serial.print(static_cast<int>(query.mode));
-  //   //   Serial.print("\tposition: ");
-  //   //   Serial.print(query.position);
-  //   //   Serial.print("\tvelocity: ");
-  //   //   Serial.print(query.velocity);
-  // };
-
   // print_moteus(moteus.last_result().values);
   mode = static_cast<int>(moteus.last_result().values.mode);
   mot_vel = moteus.last_result().values.velocity;
-  pos_vel = moteus.last_result().values.position;
+  mot_pos = moteus.last_result().values.position;
+  mot_torque = moteus.last_result().values.torque;
 
   Serial.print("mode: ");
   Serial.print(mode);
-  Serial.print("\tpos_vel: ");
-  Serial.print(pos_vel);
+  Serial.print("\tcommand_torque: ");
+  Serial.print(ff_torque);
+  Serial.print("\tmot_torque: ");
+  Serial.print(mot_torque);
+  Serial.print("\tmot_pos: ");
+  Serial.print(mot_pos);
   Serial.print("\tmot_vel: ");
   Serial.println(mot_vel);
 
@@ -291,10 +329,13 @@ void req() {
   }
 }
 
-void setReports(sh2_SensorId_t reportType, long report_interval) {
+void setReports(long report_interval) {
   Serial.println("Setting desired reports");
-  if (!bno08x.enableReport(reportType, report_interval)) {
+  if (!bno08x.enableReport(SH2_ARVR_STABILIZED_RV, report_interval)) {
     Serial.println("Could not enable stabilized remote vector");
+  }
+  if (!bno08x.enableReport(SH2_GYROSCOPE_CALIBRATED, report_interval)) {
+    Serial.println("Could not enable gyroscope");
   }
   delay(100);
 }
@@ -328,4 +369,12 @@ void quaternionToEulerGI(sh2_GyroIntegratedRV_t* rotational_vector, euler_t* ypr
 
 float degToCycles(float deg) {
   return deg / 360;
+}
+
+float degToRad(float deg) {
+  return deg / 180 * PI;
+}
+
+float imuAngleCorrection(float pitch) {
+  return 90 - pitch;
 }
