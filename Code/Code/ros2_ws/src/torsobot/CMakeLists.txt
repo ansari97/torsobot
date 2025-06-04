@@ -6,8 +6,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # find dependencies
-find_library(PIGPIO_LIBRARY NAMES pigpio PATHS /usr/lib/libpigpio.so)
-find_path(PIGPIO_INCLUDE_DIR NAMES pigpio.h PATHS usr/include/pigpio.h)
+# find_library(PIGPIO_LIBRARY NAMES pigpio PATHS /usr/lib/libpigpio.so)
+# find_path(PIGPIO_INCLUDE_DIR NAMES pigpio.h PATHS usr/include/pigpio.h)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -15,12 +15,14 @@ find_package(std_msgs REQUIRED)
 find_package(torsobot_interfaces REQUIRED)
 
 add_executable(mcu_node src/mcu_node.cpp)
+add_executable(i2c_manager_node src/i2c_manager_node.cpp)
 
-ament_target_dependencies(mcu_node rclcpp torsobot_interfaces)
-ament_target_dependencies(mcu_node rclcpp std_msgs)
+ament_target_dependencies(mcu_node rclcpp torsobot_interfaces std_msgs)
+ament_target_dependencies(i2c_manager_node rclcpp torsobot_interfaces std_msgs)
 
 install(TARGETS
   mcu_node
+  i2c_manager_node
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
