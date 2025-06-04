@@ -41,10 +41,17 @@ void quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* y
 void quaternionToEulerGI(sh2_GyroIntegratedRV_t* rotational_vector, euler_t* ypr, bool degrees);
 void setReports(long report_interval);
 float degToCycles(float);
-float imuAngleCorrection(float);
+float imuAngleCorrection(float, float, float, float);
+float gravityMagnitude(float, float, float);
 float degToRad(float);
 
 static uint32_t gNextSendMillis = 0;
+
+// heartbeat variables
+const uint8_t HEARTBEAT_ID = 0X00;
+uint8_t heartbeat_rcvd_ID;
+uint8_t heartbeat_ctr;
+uint8_t heartbeat_rcvd_checksum;
 
 // Sensor value cmd bytes
 const int IMU_CMD = 0x1;
@@ -65,6 +72,9 @@ float imu_pitch_rate;
 float mot_vel;
 float mot_pos;
 float mot_torque;
+float gravity_x = 0;
+float gravity_y = 0;
+float gravity_z = 0;
 
 float desired_pitch = degToRad(10);
 
@@ -223,7 +233,24 @@ void setup() {
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
 void loop() {
-  digitalWrite(LED_BUILTIN, LOW);
+
+  Serial.print("rcvd heartbeat: ");
+  Serial.print("ID = 0x");
+  Serial.print(heartbeat_rcvd_ID);
+  Serial.print(" Counter = 0x");
+  Serial.print(heartbeat_ctr);
+  Serial.print(" Checksum = 0x");
+  Serial.print(heartbeat_rcvd_checksum);
+  Serial.print("\t");
+  uint8_t heartbeat_expected_checksum = heartbeat_ctr ^ heartbeat_rcvd_ID;
+
+  if (heartbeat_expected_checksum != heartbeat_rcvd_checksum) {
+    Serial.println("very sad");
+  } else {
+    Serial.println("very happy");
+  }
+
+  // digitalWrite(LED_BUILTIN, LOW);
 
   if (bno08x.wasReset()) {
     Serial.print("Sensor was reset during loop!");
@@ -234,16 +261,23 @@ void loop() {
   if (bno08x.getSensorEvent(&sensorValue)) {
     // in this demo only one report type will be received depending on BNO08X_FAST_MODE define (above)
 
-    Serial.print("Sensor ID:");
-    Serial.println(sensorValue.sensorId);
+    // Serial.print("Sensor ID:");
+    // Serial.println(sensorValue.sensorId);
+
     switch (sensorValue.sensorId) {
       case SH2_ARVR_STABILIZED_RV:
         quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
-        imu_pitch = degToRad(imuAngleCorrection(ypr.pitch));
+        imu_pitch = degToRad(imuAngleCorrection(ypr.pitch, gravity_x, gravity_y, gravity_z));
         break;
 
       case SH2_GYROSCOPE_CALIBRATED:
         imu_pitch_rate = sensorValue.un.gyroscope.z;
+        break;
+
+      case SH2_GRAVITY:
+        gravity_x = sensorValue.un.gravity.x;
+        gravity_y = sensorValue.un.gravity.y;
+        gravity_z = sensorValue.un.gravity.z;
         break;
     }
     //   case SH2_GYRO_INTEGRATED_RV:
@@ -253,11 +287,14 @@ void loop() {
     // }
 
     // imu_pitch_rate = sensorValue.un.gyroscope.z;
-    Serial.print(imu_pitch_rate);
-    Serial.print(",\t");
+    Serial.print(imu_pitch, 4);
+    Serial.print(", ");
 
     // imu_pitch = imuAngleCorrection(ypr.pitch);
-    Serial.println(imu_pitch);
+    Serial.print(imu_pitch_rate, 4);
+    Serial.print(", ");
+
+    Serial.println(gravity_y, 4);
 
     memcpy(imu_data, &imu_pitch, sizeof(float));
   }
@@ -279,7 +316,7 @@ void loop() {
   ff_torque = -kp * (imu_pitch - desired_pitch) - kd * (imu_pitch_rate - 0);
   ff_torque = min(max_torque, ff_torque);
   position_cmd.feedforward_torque = ff_torque;
-  moteus.SetPosition(position_cmd, &position_fmt);
+  // moteus.SetPosition(position_cmd, &position_fmt);
 
   if (gLoopCount % 5 != 0) { return; }
   digitalWrite(LED_BUILTIN, HIGH);
@@ -290,16 +327,16 @@ void loop() {
   mot_pos = moteus.last_result().values.position;
   mot_torque = moteus.last_result().values.torque;
 
-  Serial.print("mode: ");
-  Serial.print(mode);
-  Serial.print("\tcommand_torque: ");
-  Serial.print(ff_torque);
-  Serial.print("\tmot_torque: ");
-  Serial.print(mot_torque);
-  Serial.print("\tmot_pos: ");
-  Serial.print(mot_pos);
-  Serial.print("\tmot_vel: ");
-  Serial.println(mot_vel);
+  // Serial.print("mode: ");
+  // Serial.print(mode);
+  // Serial.print("\tcommand_torque: ");
+  // Serial.print(ff_torque);
+  // Serial.print("\tmot_torque: ");
+  // Serial.print(mot_torque);
+  // Serial.print("\tmot_pos: ");
+  // Serial.print(mot_pos);
+  // Serial.print("\tmot_vel: ");
+  // Serial.println(mot_vel);
 
   memcpy(mot_vel_data, &mot_vel, sizeof(float));
 
@@ -313,7 +350,15 @@ void loop() {
 ///////////////////////////////////////////////////////////////////
 // Called when the I2C slave gets written to
 void recv(int len) {
-  read_command = Wire.read();
+  read_command = Wire.read();  // or the ID
+
+  if (static_cast<uint8_t>(read_command) == HEARTBEAT_ID) {
+    if (len == 3) {
+      heartbeat_rcvd_ID = read_command;
+      heartbeat_ctr = Wire.read();
+      heartbeat_rcvd_checksum = Wire.read();
+    }
+  }
 }
 
 // Called when the I2C slave is read from
@@ -336,6 +381,9 @@ void setReports(long report_interval) {
   }
   if (!bno08x.enableReport(SH2_GYROSCOPE_CALIBRATED, report_interval)) {
     Serial.println("Could not enable gyroscope");
+  }
+  if (!bno08x.enableReport(SH2_GRAVITY, report_interval)) {
+    Serial.println("Could not enable gravity vector");
   }
   delay(100);
 }
@@ -375,6 +423,25 @@ float degToRad(float deg) {
   return deg / 180 * PI;
 }
 
-float imuAngleCorrection(float pitch) {
-  return 90 - pitch;
+float radToDeg(float rad) {
+  return rad * 180 / PI;
+}
+
+float imuAngleCorrection(float pitch, float gravity_x, float gravity_y, float gravity_z) {
+  pitch = 90 - pitch;
+
+  // pitch is always positive so no need to take abs
+
+  // Evaluate angle from gravity vector when close to vertical
+  if (abs(gravity_y) < 1.0) pitch = abs(radToDeg(asin(gravity_y / gravityMagnitude(gravity_x, gravity_y, gravity_z))));
+
+  // Change sign of angle based on gravity vector's j component
+  if (gravity_y
+      < 0) pitch = -pitch;
+
+  return pitch;
+}
+
+float gravityMagnitude(float gravity_x, float gravity_y, float gravity_z) {
+  return sqrt(pow(gravity_x, 2) + pow(gravity_y, 2) + pow(gravity_z, 2));
 }
