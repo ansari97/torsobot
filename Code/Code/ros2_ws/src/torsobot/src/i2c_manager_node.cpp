@@ -34,7 +34,7 @@ const int IMU_CMD = 0x01;
 const int MOTOR_VAL_CMD = 0x2;
 
 // Heartbeat variables
-uint8_t HEARTBEAT_ID = 0x00;
+uint8_t HEARTBEAT_ID = 0xAA;
 uint8_t heartbeat_ctr = 0;
 uint8_t heartbeat_checksum = 0;
 
