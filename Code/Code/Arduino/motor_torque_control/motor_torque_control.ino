@@ -44,14 +44,28 @@ float degToCycles(float);
 float imuAngleCorrection(float, float, float, float);
 float gravityMagnitude(float, float, float);
 float degToRad(float);
+bool checkHeartbeatValidity(void);
+void emergencyStop(void);
+
+//——————————————————————————————————————————————————————————————————————————————
+//  Varible declarations
+//——————————————————————————————————————————————————————————————————————————————
 
 static uint32_t gNextSendMillis = 0;
 
 // heartbeat variables
-const uint8_t HEARTBEAT_ID = 0X00;
+const uint8_t HEARTBEAT_ID = 0XAA;
 uint8_t heartbeat_rcvd_ID;
 uint8_t heartbeat_ctr;
+uint8_t heartbeat_expected_checksum;
 uint8_t heartbeat_rcvd_checksum;
+uint8_t heartbeat_last_ctr;
+volatile bool was_heartbeat_rcvd = false;
+volatile bool is_heartbeat_valid = false;
+bool is_heartbeat_ctr_valid = false;
+const int HEARTBEAT_FREQ = 100;                           //hz
+const int HEARTBEAT_TIMEOUT = 5 * 1000 / HEARTBEAT_FREQ;  //miliseconds
+unsigned long long heartbeat_timer = millis();
 
 // Sensor value cmd bytes
 const int IMU_CMD = 0x1;
@@ -226,29 +240,33 @@ void setup() {
 
   // moteus.SetPositionWaitComplete(position_cmd, 0.02, &position_fmt);
 
+
+  Serial.println("Waiting for heartbeat from the PI...");
+
+  // waits for heatrbeat
+  while (!was_heartbeat_rcvd) {}  //Serial.println(was_heartbeat_rcvd); }
+
+  // save the last counter value
+  heartbeat_last_ctr = heartbeat_ctr;
+  was_heartbeat_rcvd = false;
+
+  Serial.println("Heartbeat received!");
   Serial.println("starting program!");
-  delay(5000);
+  delay(1000);
 }
 
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
 void loop() {
 
-  Serial.print("rcvd heartbeat: ");
-  Serial.print("ID = 0x");
-  Serial.print(heartbeat_rcvd_ID);
-  Serial.print(" Counter = 0x");
-  Serial.print(heartbeat_ctr);
-  Serial.print(" Checksum = 0x");
-  Serial.print(heartbeat_rcvd_checksum);
-  Serial.print("\t");
-  uint8_t heartbeat_expected_checksum = heartbeat_ctr ^ heartbeat_rcvd_ID;
 
-  if (heartbeat_expected_checksum != heartbeat_rcvd_checksum) {
-    Serial.println("very sad");
-  } else {
-    Serial.println("very happy");
+  // is_heartbeat_valid = checkHeartbeatValidity();
+
+  if (!is_heartbeat_valid || (millis() - heartbeat_timer > HEARTBEAT_TIMEOUT)) {
+    emergencyStop();
   }
+
+  // is_heartbeat_valid = false;
 
   // digitalWrite(LED_BUILTIN, LOW);
 
@@ -357,6 +375,22 @@ void recv(int len) {
       heartbeat_rcvd_ID = read_command;
       heartbeat_ctr = Wire.read();
       heartbeat_rcvd_checksum = Wire.read();
+      was_heartbeat_rcvd = true;
+
+      heartbeat_expected_checksum = heartbeat_ctr ^ heartbeat_rcvd_ID;
+
+      if ((heartbeat_expected_checksum == heartbeat_rcvd_checksum))  // && (heartbeat_ctr == (heartbeat_last_ctr + 1) % 256)) {
+      {
+        is_heartbeat_valid = true;
+
+        if (heartbeat_ctr == (heartbeat_last_ctr + 1) % 256) {
+          is_heartbeat_ctr_valid = true;
+          heartbeat_last_ctr = heartbeat_ctr;
+          heartbeat_timer = millis();
+        }
+      } else {
+        is_heartbeat_valid = false;
+      }
     }
   }
 }
@@ -444,4 +478,47 @@ float imuAngleCorrection(float pitch, float gravity_x, float gravity_y, float gr
 
 float gravityMagnitude(float gravity_x, float gravity_y, float gravity_z) {
   return sqrt(pow(gravity_x, 2) + pow(gravity_y, 2) + pow(gravity_z, 2));
+}
+
+bool checkHeartbeatValidity(void) {
+  Serial.print("rcvd heartbeat: ");
+  Serial.print("ID = 0x");
+  Serial.print(heartbeat_rcvd_ID);
+  Serial.print(" Counter = 0x");
+  Serial.print(heartbeat_ctr);
+  Serial.print(" Checksum = 0x");
+  Serial.print(heartbeat_rcvd_checksum);
+
+
+  // if (!was_heartbeat_rcvd) {
+  //   return false;
+  // } else was_heartbeat_rcvd = false;
+
+  // Evaluate expected checksum
+  heartbeat_expected_checksum = heartbeat_ctr ^ heartbeat_rcvd_ID;
+
+  Serial.print(" Expected Checksum = 0x");
+  Serial.print(heartbeat_expected_checksum);
+  Serial.println("\t");
+
+  if ((heartbeat_expected_checksum == heartbeat_rcvd_checksum))  // && (heartbeat_ctr == (heartbeat_last_ctr + 1) % 256)) {
+  {
+    return true;
+  }
+
+  return false;
+}
+
+void emergencyStop(void) {
+  Serial.println("Stopping program! :(");
+  Serial.println(is_heartbeat_valid);
+  moteus.SetStop();
+  Serial.println("motor stopped");
+
+  delay(500);
+  Serial.println("Entering infinite while loop!");
+
+  while (true) {
+    // infinite while loop
+  }
 }
