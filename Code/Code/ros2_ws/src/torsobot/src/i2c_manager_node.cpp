@@ -1,3 +1,4 @@
+#include "rclcpp/rclcpp.hpp"
 #include <chrono>
 #include <memory>
 #include <string>
@@ -5,15 +6,20 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
-// #include <unistd.h>
+#include <unistd.h>
 #include <cstring>
 #include <cstdint>
 #include <functional>
+#include <gpiod.hpp> //for GPIO control
 
 #include "rclcpp/rclcpp.hpp"
 #include "torsobot_interfaces/msg/data.hpp"
 
 using namespace std::chrono_literals;
+
+// Configuration for the GPIO pin
+const std::string GPIO_CHIP_NAME = "gpiochip0"; // Verify with 'ls /dev/gpiochip*' on your Pi5
+const unsigned int RPI_GPIO_FOR_PICO_RUN = 14;  // GPIO14
 
 // pico slave address
 #define PICO_SLAVE_ADDRESS 0X30
@@ -38,11 +44,14 @@ uint8_t HEARTBEAT_ID = 0xAA;
 uint8_t heartbeat_ctr = 0;
 uint8_t heartbeat_checksum = 0;
 
-class mcuNode : public rclcpp::Node
+class I2CNode : public rclcpp::Node
 {
 public:
-    mcuNode() : Node("i2c_manager_node")
+    I2CNode() : Node("i2c_manager_node")
     {
+        // call the reset mcu function
+        this->resetMCU();
+
         // Create publisher for "torso_angle" topic
         publisher_ = this->create_publisher<torsobot_interfaces::msg::Data>("pico_data", 10);
 
@@ -72,12 +81,14 @@ public:
         RCLCPP_INFO(this->get_logger(), "Successfully opened I2C device!");
 
         // Timer for 10ms (100Hz)
-        timer_ = this->create_wall_timer(10ms, std::bind(&mcuNode::timer_callback, this)); // Use std::bind
+        timer_ = this->create_wall_timer(10ms, std::bind(&I2CNode::timer_callback, this)); // Use std::bind
     }
 
 private:
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<torsobot_interfaces::msg::Data>::SharedPtr publisher_;
+    gpiod::chip chip_;
+    gpiod::line mcu_run_line_;
 
     // timer callback for getting data on i2c
     void timer_callback(void)
@@ -151,12 +162,29 @@ private:
         heartbeat_ctr = heartbeat_ctr % 256; // wrap around 255
         return 1;
     }
+
+    // Reset pico using the run pin
+    void resetMCU(void)
+    {
+        chip_.open(GPIO_CHIP_NAME);
+        mcu_run_line_ = chip_.get_line(RPI_GPIO_FOR_PICO_RUN);
+
+        gpiod::line_request request_config;
+        request_config.consumer = "ros2_mcu_run_toggle";                     // Set the consumer name
+        request_config.request_type = gpiod::line_request::DIRECTION_OUTPUT; // Set the direction
+
+        mcu_run_line_.request(request_config, true);
+        mcu_run_line_.set_value(false); // set to low
+        usleep(100 * 1000);             // 100 miliseconds
+        mcu_run_line_.set_value(true);  // reset state
+        usleep(3 * 1000 * 1000);        // wait for 3 seconds
+    }
 };
 
 int main(int argc, char *argv[])
 {
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<mcuNode>());
+    rclcpp::spin(std::make_shared<I2CNode>());
     rclcpp::shutdown();
     return 0;
 }
