@@ -149,7 +149,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   Serial.begin(115200);
-  delay(5000);
+  delay(2000);
 
   Serial.println("Staring I2C slave...IMU and motor driver test");
 
