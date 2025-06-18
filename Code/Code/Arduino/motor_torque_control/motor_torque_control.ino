@@ -27,6 +27,10 @@
 // Defining fast mode runs the IMU at a higher frequency but causes values to drift
 // #define BNO08X_FAST_MODE
 
+// State LED
+#define STOP_LED 19
+#define OK_LED 18
+
 // I2C slave address
 #define PICO_SLAVE_ADDRESS 0x30
 
@@ -55,30 +59,36 @@ static uint32_t gNextSendMillis = 0;
 
 // heartbeat variables
 const uint8_t HEARTBEAT_ID = 0XAA;
-uint8_t heartbeat_rcvd_ID;
-uint8_t heartbeat_ctr;
-uint8_t heartbeat_expected_checksum;
-uint8_t heartbeat_rcvd_checksum;
-uint8_t heartbeat_last_ctr;
+volatile uint8_t heartbeat_rcvd_ID;
+volatile uint8_t heartbeat_ctr;
+volatile uint8_t heartbeat_expected_checksum;
+volatile uint8_t heartbeat_rcvd_checksum;
+volatile uint8_t heartbeat_last_ctr;
 volatile bool was_heartbeat_rcvd = false;
 volatile bool is_heartbeat_valid = false;
-bool is_heartbeat_ctr_valid = false;
+volatile bool is_heartbeat_ctr_valid = false;
 const int HEARTBEAT_FREQ = 100;                           //hz
 const int HEARTBEAT_TIMEOUT = 5 * 1000 / HEARTBEAT_FREQ;  //miliseconds
 unsigned long long heartbeat_timer = millis();
 
-// Sensor value cmd bytes
-const int IMU_CMD = 0x1;
-const int MOTOR_VAL_CMD = 0x2;
+// I2C cmd for mcu data
+const uint8_t IMU_PITCH_CMD = 0x01;       // torso_pitch
+const uint8_t IMU_PITCH_RATE_CMD = 0x02;  // torso_pitch_rate
+const uint8_t MOTOR_POS_CMD = 0x03;       // motor rotor position (not wheel)
+const uint8_t MOTOR_VEL_CMD = 0x04;       // motor velocity position (not wheel)
+const uint8_t MOTOR_TORQUE_CMD = 0X05;    // motor torque at motor shaft (not wheel)
 
 const int data_len = sizeof(float);  // 4 bytes
-char imu_data[data_len];
+char imu_pitch_data[data_len];
+char imu_pitch_rate_data[data_len];
+char mot_pos_data[data_len];
 char mot_vel_data[data_len];
+char mot_torque_data[data_len];
 
 // char write_buff[data_len + 10];
 // char write_buff2[data_len + 10];
 
-char read_command;
+volatile char read_command;
 
 int mode;
 float imu_pitch;
@@ -147,6 +157,12 @@ Moteus::CurrentMode::Format current_fmt;
 void setup() {
 
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(OK_LED, OUTPUT);
+  pinMode(STOP_LED, OUTPUT);
+
+  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(OK_LED, LOW);
+  digitalWrite(STOP_LED, LOW);
 
   Serial.begin(115200);
   delay(2000);
@@ -224,7 +240,7 @@ void setup() {
   // position_cmd.accel_limit = 3.0;
 
 
-  Serial.println("wait...");
+  // Serial.println("wait...");
   // delay(5000);
 
   position_fmt.kp_scale = Moteus::kFloat;
@@ -244,7 +260,10 @@ void setup() {
   Serial.println("Waiting for heartbeat from the PI...");
 
   // waits for heatrbeat
-  while (!was_heartbeat_rcvd) {}  //Serial.println(was_heartbeat_rcvd); }
+  while (!was_heartbeat_rcvd) { digitalWrite(STOP_LED, HIGH); }  //Serial.println(was_heartbeat_rcvd); }
+
+  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(OK_LED, LOW);
 
   // save the last counter value
   heartbeat_last_ctr = heartbeat_ctr;
@@ -253,6 +272,8 @@ void setup() {
   Serial.println("Heartbeat received!");
   Serial.println("starting program!");
   delay(1000);
+  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(OK_LED, HIGH);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -314,7 +335,8 @@ void loop() {
 
     Serial.println(gravity_y, 4);
 
-    memcpy(imu_data, &imu_pitch, sizeof(float));
+    memcpy(imu_pitch_data, &imu_pitch, sizeof(float));
+    memcpy(imu_pitch_rate_data, &imu_pitch_rate, sizeof(float));
   }
   // // Serial.println();
 
@@ -334,10 +356,11 @@ void loop() {
   ff_torque = -kp * (imu_pitch - desired_pitch) - kd * (imu_pitch_rate - 0);
   ff_torque = min(max_torque, ff_torque);
   position_cmd.feedforward_torque = ff_torque;
+  
   // moteus.SetPosition(position_cmd, &position_fmt);
 
   if (gLoopCount % 5 != 0) { return; }
-  digitalWrite(LED_BUILTIN, HIGH);
+  // digitalWrite(LED_BUILTIN, HIGH);
 
   // print_moteus(moteus.last_result().values);
   mode = static_cast<int>(moteus.last_result().values.mode);
@@ -356,7 +379,9 @@ void loop() {
   // Serial.print("\tmot_vel: ");
   // Serial.println(mot_vel);
 
+  memcpy(mot_pos_data, &mot_pos, sizeof(float));
   memcpy(mot_vel_data, &mot_vel, sizeof(float));
+  memcpy(mot_torque_data, &mot_torque, sizeof(float));
 
   // Delay function messes with the IMU data and causes buffers to overflow(?);
   // bno085 goes into reset state and needs a hardwareReset() call;
@@ -399,11 +424,20 @@ void recv(int len) {
 void req() {
   ctr++;
   switch (read_command) {
-    case IMU_CMD:
-      Wire.write(imu_data, sizeof(imu_data));
+    case IMU_PITCH_CMD:
+      Wire.write(imu_pitch_data, sizeof(imu_pitch_data));
       break;
-    case MOTOR_VAL_CMD:
+    case IMU_PITCH_RATE_CMD:
+      Wire.write(imu_pitch_rate_data, sizeof(imu_pitch_rate_data));
+      break;
+    case MOTOR_POS_CMD:
+      Wire.write(mot_pos_data, sizeof(mot_pos_data));
+      break;
+    case MOTOR_VEL_CMD:
       Wire.write(mot_vel_data, sizeof(mot_vel_data));
+      break;
+    case MOTOR_TORQUE_CMD:
+      Wire.write(mot_torque_data, sizeof(mot_torque_data));
       break;
   }
 }
@@ -514,6 +548,9 @@ void emergencyStop(void) {
   Serial.println(is_heartbeat_valid);
   moteus.SetStop();
   Serial.println("motor stopped");
+  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(OK_LED, LOW);
+  digitalWrite(STOP_LED, HIGH);
 
   delay(500);
   Serial.println("Entering infinite while loop!");
