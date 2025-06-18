@@ -10,7 +10,7 @@
 //  The following pins are selected for the CAN Controller and the IMU board.
 //——————————————————————————————————————————————————————————————————————————————
 
-// For BNO085 SPI mode, we need a CS pin
+// For BNO085 SPI drv_mode, we need a CS pin
 #define BNO08X_SCK 2
 #define BNO08X_MOSI 3
 #define BNO08X_MISO 4
@@ -24,7 +24,7 @@
 #define MCP2517_CS 13  // CS input of MCP2517
 #define MCP2517_INT 9  // INT output of MCP2517
 
-// Defining fast mode runs the IMU at a higher frequency but causes values to drift
+// Defining fast drv_mode runs the IMU at a higher frequency but causes values to drift
 // #define BNO08X_FAST_MODE
 
 // State LED
@@ -77,6 +77,7 @@ const uint8_t IMU_PITCH_RATE_CMD = 0x02;  // torso_pitch_rate
 const uint8_t MOTOR_POS_CMD = 0x03;       // motor rotor position (not wheel)
 const uint8_t MOTOR_VEL_CMD = 0x04;       // motor velocity position (not wheel)
 const uint8_t MOTOR_TORQUE_CMD = 0X05;    // motor torque at motor shaft (not wheel)
+const uint8_t MOTOR_DRV_MODE_CMD = 0X06;  // motor driver mode
 
 const int data_len = sizeof(float);  // 4 bytes
 char imu_pitch_data[data_len];
@@ -84,13 +85,14 @@ char imu_pitch_rate_data[data_len];
 char mot_pos_data[data_len];
 char mot_vel_data[data_len];
 char mot_torque_data[data_len];
+char drv_mode_data[sizeof(int8_t)];
 
 // char write_buff[data_len + 10];
 // char write_buff2[data_len + 10];
 
 volatile char read_command;
 
-int mode;
+int8_t drv_mode;
 float imu_pitch;
 float imu_pitch_rate;
 float mot_vel;
@@ -345,7 +347,7 @@ void loop() {
 
   if (gNextSendMillis >= time) { return; }
 
-  // Fault mode
+  // Fault drv_mode
   if (static_cast<int>(moteus.last_result().values.mode) == 11) {
     moteus.SetStop();
   }
@@ -356,20 +358,20 @@ void loop() {
   ff_torque = -kp * (imu_pitch - desired_pitch) - kd * (imu_pitch_rate - 0);
   ff_torque = min(max_torque, ff_torque);
   position_cmd.feedforward_torque = ff_torque;
-  
+
   // moteus.SetPosition(position_cmd, &position_fmt);
 
   if (gLoopCount % 5 != 0) { return; }
   // digitalWrite(LED_BUILTIN, HIGH);
 
   // print_moteus(moteus.last_result().values);
-  mode = static_cast<int>(moteus.last_result().values.mode);
+  drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
   mot_vel = moteus.last_result().values.velocity;
   mot_pos = moteus.last_result().values.position;
   mot_torque = moteus.last_result().values.torque;
 
-  // Serial.print("mode: ");
-  // Serial.print(mode);
+  // Serial.print("drv_mode: ");
+  // Serial.print(drv_mode);
   // Serial.print("\tcommand_torque: ");
   // Serial.print(ff_torque);
   // Serial.print("\tmot_torque: ");
@@ -382,6 +384,7 @@ void loop() {
   memcpy(mot_pos_data, &mot_pos, sizeof(float));
   memcpy(mot_vel_data, &mot_vel, sizeof(float));
   memcpy(mot_torque_data, &mot_torque, sizeof(float));
+  memcpy(drv_mode_data, &drv_mode, sizeof(int8_t));
 
   // Delay function messes with the IMU data and causes buffers to overflow(?);
   // bno085 goes into reset state and needs a hardwareReset() call;
@@ -438,6 +441,9 @@ void req() {
       break;
     case MOTOR_TORQUE_CMD:
       Wire.write(mot_torque_data, sizeof(mot_torque_data));
+      break;
+    case MOTOR_DRV_MODE_CMD:
+      Wire.write(drv_mode_data, sizeof(drv_mode_data));
       break;
   }
 }
