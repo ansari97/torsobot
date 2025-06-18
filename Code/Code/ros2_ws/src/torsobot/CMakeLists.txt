@@ -27,18 +27,20 @@ if(NOT GPIODCXX_INCLUDE_DIR OR NOT GPIODCXX_LIBRARY)
 endif()
 
 add_executable(mcu_node src/mcu_node.cpp)
-add_executable(i2c_manager_node src/i2c_manager_node.cpp)
+# add_executable(i2c_manager_node src/i2c_manager_node.cpp)
 
 ament_target_dependencies(mcu_node rclcpp torsobot_interfaces std_msgs)
-ament_target_dependencies(i2c_manager_node rclcpp torsobot_interfaces std_msgs)
+# ament_target_dependencies(i2c_manager_node rclcpp torsobot_interfaces std_msgs)
 
 # Link against libgpiodcxx manually
-target_include_directories(i2c_manager_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
-target_link_libraries(i2c_manager_node ${GPIODCXX_LIBRARY})
+# target_include_directories(i2c_manager_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
+# target_link_libraries(i2c_manager_node ${GPIODCXX_LIBRARY})
+
+target_include_directories(mcu_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
+target_link_libraries(mcu_node ${GPIODCXX_LIBRARY})
 
 install(TARGETS
   mcu_node
-  i2c_manager_node
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
@@ -52,7 +54,5 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
-
-
 
 ament_package()

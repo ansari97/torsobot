@@ -1,0 +1,20 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from torsobot_interfaces/msg/TorsobotData.msg
+// generated code does not contain a copyright notice
+
+
+module torsobot_interfaces {
+  module msg {
+    struct TorsobotData {
+      double torso_pitch;
+
+      double torso_pitch_rate;
+
+      double motor_pos;
+
+      double motor_vel;
+
+      double motor_torque;
+    };
+  };
+};

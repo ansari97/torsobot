@@ -1,0 +1,4 @@
+[ 25%] [32m[1mLinking CXX executable i2c_manager_node[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o[0m
+[ 75%] [32m[1mLinking CXX executable mcu_node[0m
+[ 75%] Built target mcu_node
