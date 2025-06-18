@@ -1,2 +1,4 @@
 msg/TorsobotData.idl
 msg/TorsobotData.msg
+msg/TorsobotState.idl
+msg/TorsobotState.msg

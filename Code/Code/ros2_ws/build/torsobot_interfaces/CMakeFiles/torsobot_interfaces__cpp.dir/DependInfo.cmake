@@ -16,7 +16,12 @@ set(CMAKE_MULTIPLE_OUTPUT_PAIRS
   "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_data__struct.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
   "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_data__traits.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
   "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_data__type_support.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
+  "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__builder.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
+  "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
+  "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__traits.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
+  "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
   "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
+  "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_state.hpp" "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
   )
 
 

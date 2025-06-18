@@ -67,6 +67,7 @@ include CMakeFiles/torsobot_interfaces.dir/compiler_depend.make
 include CMakeFiles/torsobot_interfaces.dir/progress.make
 
 CMakeFiles/torsobot_interfaces: /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotData.msg
+CMakeFiles/torsobot_interfaces: /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotState.msg
 
 torsobot_interfaces: CMakeFiles/torsobot_interfaces
 torsobot_interfaces: CMakeFiles/torsobot_interfaces.dir/build.make

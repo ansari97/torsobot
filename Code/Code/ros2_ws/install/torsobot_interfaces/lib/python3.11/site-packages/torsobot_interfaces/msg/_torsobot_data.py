@@ -69,6 +69,7 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         '_motor_pos',
         '_motor_vel',
         '_motor_torque',
+        '_motor_drv_mode',
         '_check_fields',
     ]
 
@@ -78,6 +79,7 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         'motor_pos': 'double',
         'motor_vel': 'double',
         'motor_torque': 'double',
+        'motor_drv_mode': 'int8',
     }
 
     # This attribute is used to store an rosidl_parser.definition variable
@@ -88,6 +90,7 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
+        rosidl_parser.definition.BasicType('int8'),  # noqa: E501
     )
 
     def __init__(self, **kwargs):
@@ -104,6 +107,7 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         self.motor_pos = kwargs.get('motor_pos', float())
         self.motor_vel = kwargs.get('motor_vel', float())
         self.motor_torque = kwargs.get('motor_torque', float())
+        self.motor_drv_mode = kwargs.get('motor_drv_mode', int())
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -144,6 +148,8 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         if self.motor_vel != other.motor_vel:
             return False
         if self.motor_torque != other.motor_torque:
+            return False
+        if self.motor_drv_mode != other.motor_drv_mode:
             return False
         return True
 
@@ -226,3 +232,18 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
             assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
                 "The 'motor_torque' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
         self._motor_torque = value
+
+    @builtins.property
+    def motor_drv_mode(self):
+        """Message field 'motor_drv_mode'."""
+        return self._motor_drv_mode
+
+    @motor_drv_mode.setter
+    def motor_drv_mode(self, value):
+        if self._check_fields:
+            assert \
+                isinstance(value, int), \
+                "The 'motor_drv_mode' field must be of type 'int'"
+            assert value >= -128 and value < 128, \
+                "The 'motor_drv_mode' field must be an integer in [-128, 127]"
+        self._motor_drv_mode = value

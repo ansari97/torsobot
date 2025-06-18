@@ -210,6 +210,43 @@ mcu_node/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mcu_node.dir/build.make CMakeFiles/mcu_node.dir/build
 .PHONY : mcu_node/fast
 
+#=============================================================================
+# Target rules for targets named data_logger_node
+
+# Build rule for target.
+data_logger_node: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 data_logger_node
+.PHONY : data_logger_node
+
+# fast build rule for target.
+data_logger_node/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/data_logger_node.dir/build.make CMakeFiles/data_logger_node.dir/build
+.PHONY : data_logger_node/fast
+
+src/data_logger_node.o: src/data_logger_node.cpp.o
+.PHONY : src/data_logger_node.o
+
+# target to build an object file
+src/data_logger_node.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/data_logger_node.dir/build.make CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o
+.PHONY : src/data_logger_node.cpp.o
+
+src/data_logger_node.i: src/data_logger_node.cpp.i
+.PHONY : src/data_logger_node.i
+
+# target to preprocess a source file
+src/data_logger_node.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/data_logger_node.dir/build.make CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.i
+.PHONY : src/data_logger_node.cpp.i
+
+src/data_logger_node.s: src/data_logger_node.cpp.s
+.PHONY : src/data_logger_node.s
+
+# target to generate assembly for a file
+src/data_logger_node.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/data_logger_node.dir/build.make CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.s
+.PHONY : src/data_logger_node.cpp.s
+
 src/mcu_node.o: src/mcu_node.cpp.o
 .PHONY : src/mcu_node.o
 
@@ -249,7 +286,11 @@ help:
 	@echo "... test"
 	@echo "... torsobot_uninstall"
 	@echo "... uninstall"
+	@echo "... data_logger_node"
 	@echo "... mcu_node"
+	@echo "... src/data_logger_node.o"
+	@echo "... src/data_logger_node.i"
+	@echo "... src/data_logger_node.s"
 	@echo "... src/mcu_node.o"
 	@echo "... src/mcu_node.i"
 	@echo "... src/mcu_node.s"

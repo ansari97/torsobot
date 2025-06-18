@@ -1,0 +1,58 @@
+-- Found ament_cmake: 2.5.2 (/home/pi/ros2_jazzy/install/ament_cmake/share/ament_cmake/cmake)
+-- Found rclcpp: 28.1.3 (/home/pi/ros2_jazzy/install/rclcpp/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 4.6.3 (/home/pi/ros2_jazzy/install/rosidl_generator_c/share/rosidl_generator_c/cmake)
+-- Found rosidl_generator_cpp: 4.6.3 (/home/pi/ros2_jazzy/install/rosidl_generator_cpp/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_introspection_c;rosidl_typesupport_fastrtps_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_introspection_cpp;rosidl_typesupport_fastrtps_cpp
+-- Found rmw_implementation_cmake: 7.3.1 (/home/pi/ros2_jazzy/install/rmw_implementation_cmake/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 8.4.1 (/home/pi/ros2_jazzy/install/rmw_fastrtps_cpp/share/rmw_fastrtps_cpp/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Found std_msgs: 5.3.5 (/home/pi/ros2_jazzy/install/std_msgs/share/std_msgs/cmake)
+-- Found torsobot_interfaces: 0.0.0 (/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake)
+-- Found ament_lint_auto: 0.17.1 (/home/pi/ros2_jazzy/install/ament_lint_auto/share/ament_lint_auto/cmake)
+-- Added test 'cppcheck' to perform static code analysis on C / C++ code
+-- Configured cppcheck include dirs: 
+-- Configured cppcheck exclude dirs and/or files: 
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'uncrustify' to check C / C++ code style
+-- Configured uncrustify additional arguments: 
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot
+[ 25%] [32mBuilding CXX object CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o[0m
+[ 75%] Built target mcu_node
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:45:2:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ after class definition
+   45 | }
+      |  [01;31m[K^[m[K
+      |  [32m[K;[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:[m[K In constructor ‘[01m[KDataLoggerNode::DataLoggerNode()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:29:75:[m[K [01;31m[Kerror: [m[Kinvalid operands of types ‘[01m[Kconst char [35][m[K’ and ‘[01m[Kconst char [19][m[K’ to binary ‘[01m[Koperator+[m[K’
+   29 |     std::string directory_name_str = [32m[K"~/torsobot/Code/Code/ros2_ws/data/"[m[K [01;31m[K+[m[K [34m[K"torsobot_data_csv_"[m[K + timestamp_str;
+      |                                      [32m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K [01;31m[K^[m[K [34m[K~~~~~~~~~~~~~~~~~~~~[m[K
+      |                                      [32m[K|[m[K                                      [34m[K|[m[K
+      |                                      [32m[Kconst char [35][m[K                        [34m[Kconst char [19][m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:32:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ksubscriber_[m[K’ was not declared in this scope
+   32 |     [01;31m[Ksubscriber_[m[K = this->create_subscription<torsobot_interfaces::msg::TorsobotData>(
+      |     [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:35:9:[m[K [01;31m[Kerror: [m[Kinvalid use of non-static member function ‘[01m[Kvoid DataLoggerNode::dataCallback()[m[K’
+   35 |         [01;31m[KdataCallback[m[K);
+      |         [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:41:8:[m[K [01;36m[Knote: [m[Kdeclared here
+   41 |   void [01;36m[KdataCallback[m[K(void)
+      |        [01;36m[K^~~~~~~~~~~~[m[K
+In file included from [01m[K/home/pi/ros2_jazzy/build/rclcpp/include/rclcpp/logging.hpp:24[m[K,
+                 from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/copy_all_parameter_values.hpp:27[m[K,
+                 from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/rclcpp.hpp:171[m[K,
+                 from [01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:3[m[K:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:37:37:[m[K [01;35m[Kwarning: [m[Kformat ‘[01m[K%s[m[K’ expects argument of type ‘[01m[Kchar*[m[K’, but argument 5 has type ‘[01m[Kstd::string[m[K’ {aka ‘[01m[Kstd::__cxx11::basic_string<char>[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wformat=-Wformat=]8;;[m[K]
+   37 |     RCLCPP_INFO(this->get_logger(), [01;35m[K"Data Logger Node started, recording to '%s'"[m[K,directory_name_str);
+      |                                     [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:37:79:[m[K [01;36m[Knote: [m[Kformat string is defined here
+   37 |     RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '[01;36m[K%s[m[K'",directory_name_str);
+      |                                                                              [01;36m[K~^[m[K
+      |                                                                               [01;36m[K|[m[K
+      |                                                                               [01;36m[Kchar*[m[K
+gmake[2]: *** [CMakeFiles/data_logger_node.dir/build.make:76: CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/data_logger_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

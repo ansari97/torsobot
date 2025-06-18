@@ -12,7 +12,12 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+# find_package(rosbag2_cpp REQUIRED)
+# find_package(rosbag2_storage REQUIRED)
+# find_package(rosbag2_transport REQUIRED)
+
 find_package(torsobot_interfaces REQUIRED)
+
 # find_package(gpiodcxx REQUIRED) # For libgpiod C++ bindings 
 
 # --- Manual Find for libgpiodcxx (if find_package fails) ---
@@ -27,20 +32,35 @@ if(NOT GPIODCXX_INCLUDE_DIR OR NOT GPIODCXX_LIBRARY)
 endif()
 
 add_executable(mcu_node src/mcu_node.cpp)
+add_executable(data_logger_node src/data_logger_node.cpp)
 # add_executable(i2c_manager_node src/i2c_manager_node.cpp)
 
-ament_target_dependencies(mcu_node rclcpp torsobot_interfaces std_msgs)
+ament_target_dependencies(mcu_node
+  rclcpp
+  torsobot_interfaces
+  std_msgs)
+# torsobot_interfaces_rosidl_typesupport_fastrtps_cpp
+# rosbag2_cpp
+# rosbag2_storage
+# rosbag2_transport)
+
+target_include_directories(mcu_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
+target_link_libraries(mcu_node ${GPIODCXX_LIBRARY})
+
+ament_target_dependencies(data_logger_node
+  rclcpp
+  torsobot_interfaces
+  std_msgs)
+
 # ament_target_dependencies(i2c_manager_node rclcpp torsobot_interfaces std_msgs)
 
 # Link against libgpiodcxx manually
 # target_include_directories(i2c_manager_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
 # target_link_libraries(i2c_manager_node ${GPIODCXX_LIBRARY})
 
-target_include_directories(mcu_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
-target_link_libraries(mcu_node ${GPIODCXX_LIBRARY})
-
 install(TARGETS
   mcu_node
+  data_logger_node
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

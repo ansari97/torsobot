@@ -694,4 +694,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/uninstall.dir/DependInfo.cmake"
   "CMakeFiles/torsobot_uninstall.dir/DependInfo.cmake"
   "CMakeFiles/mcu_node.dir/DependInfo.cmake"
+  "CMakeFiles/data_logger_node.dir/DependInfo.cmake"
   )

@@ -1,0 +1,21 @@
+[ 50%] Built target mcu_node
+[ 75%] [32mBuilding CXX object CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o[0m
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:47:2:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ after class definition
+   47 | }
+      |  [01;31m[K^[m[K
+      |  [32m[K;[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:[m[K In constructor ‘[01m[KDataLoggerNode::DataLoggerNode()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:29:75:[m[K [01;31m[Kerror: [m[Kinvalid operands of types ‘[01m[Kconst char [35][m[K’ and ‘[01m[Kconst char [19][m[K’ to binary ‘[01m[Koperator+[m[K’
+   29 |     std::string directory_name_str = [32m[K"~/torsobot/Code/Code/ros2_ws/data/"[m[K [01;31m[K+[m[K [34m[K"torsobot_data_csv_"[m[K + timestamp_str;
+      |                                      [32m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K [01;31m[K^[m[K [34m[K~~~~~~~~~~~~~~~~~~~~[m[K
+      |                                      [32m[K|[m[K                                      [34m[K|[m[K
+      |                                      [32m[Kconst char [35][m[K                        [34m[Kconst char [19][m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:35:9:[m[K [01;31m[Kerror: [m[Kinvalid use of non-static member function ‘[01m[Kvoid DataLoggerNode::dataCallback()[m[K’
+   35 |         [01;31m[KdataCallback[m[K);
+      |         [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:43:8:[m[K [01;36m[Knote: [m[Kdeclared here
+   43 |   void [01;36m[KdataCallback[m[K(void)
+      |        [01;36m[K^~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/data_logger_node.dir/build.make:76: CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/data_logger_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

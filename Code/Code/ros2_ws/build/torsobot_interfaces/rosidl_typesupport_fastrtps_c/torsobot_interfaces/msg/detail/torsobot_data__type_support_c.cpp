@@ -73,6 +73,11 @@ bool cdr_serialize_torsobot_interfaces__msg__TorsobotData(
     cdr << ros_message->motor_torque;
   }
 
+  // Field name: motor_drv_mode
+  {
+    cdr << ros_message->motor_drv_mode;
+  }
+
   return true;
 }
 
@@ -104,6 +109,11 @@ bool cdr_deserialize_torsobot_interfaces__msg__TorsobotData(
   // Field name: motor_torque
   {
     cdr >> ros_message->motor_torque;
+  }
+
+  // Field name: motor_drv_mode
+  {
+    cdr >> ros_message->motor_drv_mode;
   }
 
   return true;
@@ -155,6 +165,13 @@ size_t get_serialized_size_torsobot_interfaces__msg__TorsobotData(
   // Field name: motor_torque
   {
     size_t item_size = sizeof(ros_message->motor_torque);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Field name: motor_drv_mode
+  {
+    size_t item_size = sizeof(ros_message->motor_drv_mode);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -221,6 +238,13 @@ size_t max_serialized_size_torsobot_interfaces__msg__TorsobotData(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
+  // Field name: motor_drv_mode
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint8_t);
+    current_alignment += array_size * sizeof(uint8_t);
+  }
+
 
   size_t ret_val = current_alignment - initial_alignment;
   if (is_plain) {
@@ -230,7 +254,7 @@ size_t max_serialized_size_torsobot_interfaces__msg__TorsobotData(
     using DataType = torsobot_interfaces__msg__TorsobotData;
     is_plain =
       (
-      offsetof(DataType, motor_torque) +
+      offsetof(DataType, motor_drv_mode) +
       last_member_size
       ) == ret_val;
   }
@@ -265,6 +289,11 @@ bool cdr_serialize_key_torsobot_interfaces__msg__TorsobotData(
   // Field name: motor_torque
   {
     cdr << ros_message->motor_torque;
+  }
+
+  // Field name: motor_drv_mode
+  {
+    cdr << ros_message->motor_drv_mode;
   }
 
   return true;
@@ -316,6 +345,13 @@ size_t get_serialized_size_key_torsobot_interfaces__msg__TorsobotData(
   // Field name: motor_torque
   {
     size_t item_size = sizeof(ros_message->motor_torque);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Field name: motor_drv_mode
+  {
+    size_t item_size = sizeof(ros_message->motor_drv_mode);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -380,6 +416,13 @@ size_t max_serialized_size_key_torsobot_interfaces__msg__TorsobotData(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
+  // Field name: motor_drv_mode
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint8_t);
+    current_alignment += array_size * sizeof(uint8_t);
+  }
+
   size_t ret_val = current_alignment - initial_alignment;
   if (is_plain) {
     // All members are plain, and type is not empty.
@@ -388,7 +431,7 @@ size_t max_serialized_size_key_torsobot_interfaces__msg__TorsobotData(
     using DataType = torsobot_interfaces__msg__TorsobotData;
     is_plain =
       (
-      offsetof(DataType, motor_torque) +
+      offsetof(DataType, motor_drv_mode) +
       last_member_size
       ) == ret_val;
   }

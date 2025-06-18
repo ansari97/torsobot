@@ -1,4 +1,3 @@
-#include "rclcpp/rclcpp.hpp"
 #include <chrono>
 #include <memory>
 #include <string>
@@ -14,6 +13,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "torsobot_interfaces/msg/torsobot_data.hpp"
+#include "torsobot_interfaces/msg/torsobot_state.hpp"
 
 using namespace std::chrono_literals;
 
@@ -37,6 +37,7 @@ float IMU_pitch_rate;
 float mot_pos;
 float mot_vel;
 float mot_torque;
+int8_t mot_drv_mode;
 
 // I2C write cmd for mcu data
 const uint8_t IMU_PITCH_CMD = 0x01;      // torso_pitch
@@ -44,6 +45,7 @@ const uint8_t IMU_PITCH_RATE_CMD = 0x02; // torso_pitch_rate
 const uint8_t MOTOR_POS_CMD = 0x03;      // motor rotor position (not wheel)
 const uint8_t MOTOR_VEL_CMD = 0x04;      // motor velocity position (not wheel)
 const uint8_t MOTOR_TORQUE_CMD = 0X05;   // motor torque at motor shaft (not wheel)
+const uint8_t MOTOR_DRV_MODE_CMD = 0X06; // motor driver mode
 
 // Heartbeat variables
 const uint8_t HEARTBEAT_ID = 0xAA;
@@ -58,8 +60,11 @@ public:
     // call the reset mcu function to reset the mcu
     this->resetMCU();
 
-    // Create publisher for "torso_angle" topic
-    state_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotData>("torsobot_state", 10);
+    // Create publisher for "torsobot_state" topic
+    state_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotState>("torsobot_state", 10);
+
+    // Create publisher for "torsobot_state" topic
+    data_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotData>("torsobot_data", 10);
 
     char filename[20];
     snprintf(filename, 19, "/dev/i2c-%d", I2C_BUS);
@@ -94,7 +99,8 @@ public:
 private:
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;
   rclcpp::TimerBase::SharedPtr data_timer_;
-  rclcpp::Publisher<torsobot_interfaces::msg::TorsobotData>::SharedPtr state_publisher_;
+  rclcpp::Publisher<torsobot_interfaces::msg::TorsobotState>::SharedPtr state_publisher_;
+  rclcpp::Publisher<torsobot_interfaces::msg::TorsobotData>::SharedPtr data_publisher_;
   gpiod::chip chip_;
   gpiod::line mcu_run_line_;
   int heartbeat_check;
@@ -124,28 +130,48 @@ private:
     int get_sensor_val_motor_pos = getSensorValue(MOTOR_POS_CMD, &mot_pos);
     int get_sensor_val_motor_vel = getSensorValue(MOTOR_VEL_CMD, &mot_vel);
     int get_sensor_val_motor_torque = getSensorValue(MOTOR_TORQUE_CMD, &mot_torque);
+    int get_sensor_val_motor_drv_mode = getSensorValue(MOTOR_DRV_MODE_CMD, &mot_drv_mode);
+
+    if (mot_drv_mode == 0)
+    {
+      RCLCPP_ERROR(this->get_logger(), "Driver mode is 0");
+      // exitNode();
+    }
 
     // if sensor return values not 0
-    bool sensor_val_okay = get_sensor_val_IMU_pitch || get_sensor_val_IMU_pitch_rate || get_sensor_val_motor_pos || get_sensor_val_motor_vel || get_sensor_val_motor_torque;
-    sensor_val_okay = !sensor_val_okay;
+    bool sensor_val_okay = get_sensor_val_IMU_pitch || get_sensor_val_IMU_pitch_rate || get_sensor_val_motor_pos || get_sensor_val_motor_vel || get_sensor_val_motor_torque || get_sensor_val_motor_drv_mode;
+    sensor_val_okay = !sensor_val_okay; // invert logic
 
     // if sensor_val_okay is 1
     if (sensor_val_okay)
     {
-      auto message = torsobot_interfaces::msg::TorsobotData();
-      message.torso_pitch = IMU_pitch;
-      message.torso_pitch_rate = IMU_pitch_rate;
-      message.motor_pos = mot_pos;
-      message.motor_vel = mot_vel;
-      message.motor_torque = mot_torque;
+      auto state_message = torsobot_interfaces::msg::TorsobotState();
+      state_message.torso_pitch = IMU_pitch;
+      state_message.torso_pitch_rate = IMU_pitch_rate;
+      state_message.motor_pos = mot_pos;
+      state_message.motor_vel = mot_vel;
+      // state_message.motor_torque = mot_torque;
+      // state_message.motor_drv_mode = mot_drv_mode;
 
-      RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", message.torso_pitch);
-      RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", message.torso_pitch_rate);
-      RCLCPP_INFO(this->get_logger(), "Motor position: '%f'", message.motor_pos);
-      RCLCPP_INFO(this->get_logger(), "Motor velocity: '%f'", message.motor_vel);
-      RCLCPP_INFO(this->get_logger(), "Motor torque: '%f'", message.motor_torque);
+      this->state_publisher_->publish(state_message);
 
-      this->state_publisher_->publish(message);
+      auto data_message = torsobot_interfaces::msg::TorsobotData();
+      data_message.torso_pitch = IMU_pitch;
+      data_message.torso_pitch_rate = IMU_pitch_rate;
+      data_message.motor_pos = mot_pos;
+      data_message.motor_vel = mot_vel;
+      data_message.motor_torque = mot_torque;
+      data_message.motor_drv_mode = mot_drv_mode;
+      
+      this->data_publisher_->publish(data_message);
+
+      RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", IMU_pitch);
+      RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", IMU_pitch_rate);
+      RCLCPP_INFO(this->get_logger(), "Motor position: '%f'", mot_pos);
+      RCLCPP_INFO(this->get_logger(), "Motor velocity: '%f'", mot_vel);
+      RCLCPP_INFO(this->get_logger(), "Motor torque: '%f'", mot_torque);
+      RCLCPP_INFO(this->get_logger(), "Motor driver mode: '%d'", mot_drv_mode);
+
     }
     else
     {
@@ -176,13 +202,41 @@ private:
     {
       float temp_sensor_val; // temporary variable to check for nan
       memcpy(&temp_sensor_val, read_buff, data_len);
-      if (!std::isnan(temp_sensor_val)) //if okay
+      if (!std::isnan(temp_sensor_val)) // if okay
       {
         memcpy(sensor_val_addr, read_buff, data_len);
       }
-      else{
+      else
+      {
         RCLCPP_ERROR(this->get_logger(), "nan value received for %d!", cmd);
       }
+    }
+
+    return 0; // Success
+  }
+
+  // Get sensor data over I2C for int data types
+  int getSensorValue(uint8_t cmd, int8_t *sensor_val_addr_int)
+  {
+    // Clear the read buffer
+    memset(read_buff, 0, data_len);
+
+    // Write command to slave
+    if (write(i2c_handle, &cmd, sizeof(cmd)) != 1)
+    {
+      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed!");
+      return -1; // Indicate error
+    }
+
+    // Request sensor data from slave
+    if (read(i2c_handle, read_buff, sizeof(uint8_t)) != sizeof(uint8_t))
+    {
+      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed!");
+      return -2; // Indicate error
+    }
+    else
+    {
+      memcpy(sensor_val_addr_int, read_buff, sizeof(uint8_t));
     }
 
     return 0; // Success
@@ -191,21 +245,21 @@ private:
   //   Send heartbeat to pico
   void sendHearbeat(void)
   {
-    uint8_t message[3];
-    message[0] = HEARTBEAT_ID;                 // always constant
-    message[1] = heartbeat_ctr;                // incremented by 1
-    message[2] = heartbeat_ctr ^ HEARTBEAT_ID; // checksum to guard against data corrurption during i2c communication
+    uint8_t hbt_message[3];
+    hbt_message[0] = HEARTBEAT_ID;                 // always constant
+    hbt_message[1] = heartbeat_ctr;                // incremented by 1
+    hbt_message[2] = heartbeat_ctr ^ HEARTBEAT_ID; // checksum to guard against data corrurption during i2c communication
 
     // write heatrbeat to i2c
-    if (write(i2c_handle, &message, sizeof(message)) != sizeof(message))
+    if (write(i2c_handle, &hbt_message, sizeof(hbt_message)) != sizeof(hbt_message))
     {
-      RCLCPP_ERROR(this->get_logger(), "I2C write failed! ");
+      RCLCPP_ERROR(this->get_logger(), "I2C heartbeat write failed! ");
       exitNode();
       // return 1; // Indicate error
     }
 
     RCLCPP_INFO(this->get_logger(), "Sent hbeat: ID=0x%x, ctr=%d, csum=0x%x",
-                (int)message[0], (int)message[1], (int)message[2]);
+                (int)hbt_message[0], (int)hbt_message[1], (int)hbt_message[2]);
 
     heartbeat_ctr++;
     heartbeat_ctr = heartbeat_ctr % 256; // wrap around 255

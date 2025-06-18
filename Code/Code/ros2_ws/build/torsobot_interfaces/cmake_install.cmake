@@ -51,6 +51,10 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/torsobot_interfaces/msg" TYPE FILE FILES "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotState.json")
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/torsobot_interfaces/torsobot_interfaces" TYPE DIRECTORY FILES "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/" REGEX "/[^/]*\\.h$")
 endif()
 
@@ -355,7 +359,15 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/torsobot_interfaces/msg" TYPE FILE FILES "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl")
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/torsobot_interfaces/msg" TYPE FILE FILES "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotData.msg")
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/torsobot_interfaces/msg" TYPE FILE FILES "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotState.msg")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)

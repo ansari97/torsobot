@@ -38,7 +38,7 @@ void TorsobotData_fini_function(void * message_memory)
   typed_message->~TorsobotData();
 }
 
-static const ::rosidl_typesupport_introspection_cpp::MessageMember TorsobotData_message_member_array[5] = {
+static const ::rosidl_typesupport_introspection_cpp::MessageMember TorsobotData_message_member_array[6] = {
   {
     "torso_pitch",  // name
     ::rosidl_typesupport_introspection_cpp::ROS_TYPE_DOUBLE,  // type
@@ -128,13 +128,31 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TorsobotData_
     nullptr,  // fetch(index, &value) function pointer
     nullptr,  // assign(index, value) function pointer
     nullptr  // resize(index) function pointer
+  },
+  {
+    "motor_drv_mode",  // name
+    ::rosidl_typesupport_introspection_cpp::ROS_TYPE_INT8,  // type
+    0,  // upper bound of string
+    nullptr,  // members of sub message
+    false,  // is key
+    false,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(torsobot_interfaces::msg::TorsobotData, motor_drv_mode),  // bytes offset in struct
+    nullptr,  // default value
+    nullptr,  // size() function pointer
+    nullptr,  // get_const(index) function pointer
+    nullptr,  // get(index) function pointer
+    nullptr,  // fetch(index, &value) function pointer
+    nullptr,  // assign(index, value) function pointer
+    nullptr  // resize(index) function pointer
   }
 };
 
 static const ::rosidl_typesupport_introspection_cpp::MessageMembers TorsobotData_message_members = {
   "torsobot_interfaces::msg",  // message namespace
   "TorsobotData",  // message name
-  5,  // number of fields
+  6,  // number of fields
   sizeof(torsobot_interfaces::msg::TorsobotData),
   false,  // has_any_key_member_
   TorsobotData_message_member_array,  // message members

@@ -22,6 +22,7 @@ torsobot_interfaces__msg__TorsobotData__init(torsobot_interfaces__msg__TorsobotD
   // motor_pos
   // motor_vel
   // motor_torque
+  // motor_drv_mode
   return true;
 }
 
@@ -36,6 +37,7 @@ torsobot_interfaces__msg__TorsobotData__fini(torsobot_interfaces__msg__TorsobotD
   // motor_pos
   // motor_vel
   // motor_torque
+  // motor_drv_mode
 }
 
 bool
@@ -64,6 +66,10 @@ torsobot_interfaces__msg__TorsobotData__are_equal(const torsobot_interfaces__msg
   if (lhs->motor_torque != rhs->motor_torque) {
     return false;
   }
+  // motor_drv_mode
+  if (lhs->motor_drv_mode != rhs->motor_drv_mode) {
+    return false;
+  }
   return true;
 }
 
@@ -85,6 +91,8 @@ torsobot_interfaces__msg__TorsobotData__copy(
   output->motor_vel = input->motor_vel;
   // motor_torque
   output->motor_torque = input->motor_torque;
+  // motor_drv_mode
+  output->motor_drv_mode = input->motor_drv_mode;
   return true;
 }
 

@@ -13,6 +13,9 @@
   <depend>std_msgs</depend>
   <depend>torsobot_interfaces</depend>
   <depend>libgpio-dev</depend>
+  <depend>rosbag2_cpp</depend>
+  <depend>rosbag2_storage</depend>
+  <depend>rosbag2_transport</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

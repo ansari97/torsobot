@@ -3,10 +3,12 @@
   "output_dir": "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces",
   "template_dir": "/home/pi/ros2_jazzy/install/rosidl_generator_c/share/rosidl_generator_c/cmake/../resource",
   "idl_tuples": [
-    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotData.idl"
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotData.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotState.idl"
   ],
   "ros_interface_files": [
-    "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotData.msg"
+    "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotData.msg",
+    "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotState.msg"
   ],
   "target_dependencies": [
     "/home/pi/ros2_jazzy/install/rosidl_generator_c/share/rosidl_generator_c/cmake/../../../lib/rosidl_generator_c/rosidl_generator_c",
@@ -28,9 +30,11 @@
     "/home/pi/ros2_jazzy/install/rosidl_generator_c/share/rosidl_generator_c/cmake/../resource/msg__type_support.h.em",
     "/home/pi/ros2_jazzy/install/rosidl_generator_c/share/rosidl_generator_c/cmake/../resource/srv__type_support.c.em",
     "/home/pi/ros2_jazzy/install/rosidl_generator_c/share/rosidl_generator_c/cmake/../resource/srv__type_support.h.em",
-    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl"
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl"
   ],
   "type_description_tuples": [
-    "msg/TorsobotData.idl:/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json"
+    "msg/TorsobotData.idl:/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json",
+    "msg/TorsobotState.idl:/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotState.json"
   ]
 }

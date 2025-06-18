@@ -1,0 +1,164 @@
+[  2%] Built target torsobot_interfaces__rosidl_generator_type_description
+[  2%] Built target ament_cmake_python_copy_torsobot_interfaces
+[  4%] Built target torsobot_interfaces__cpp
+[ 22%] Built target torsobot_interfaces__rosidl_generator_c
+[ 31%] Built target torsobot_interfaces__rosidl_typesupport_fastrtps_c
+[ 40%] Built target torsobot_interfaces__rosidl_typesupport_introspection_c
+[ 50%] Built target torsobot_interfaces__rosidl_typesupport_fastrtps_cpp
+[ 59%] Built target torsobot_interfaces__rosidl_typesupport_c
+[ 68%] Built target torsobot_interfaces__rosidl_typesupport_cpp
+[ 77%] Built target torsobot_interfaces__rosidl_typesupport_introspection_cpp
+[ 77%] Built target torsobot_interfaces
+[ 79%] Built target torsobot_interfaces__py
+[ 86%] Built target torsobot_interfaces__rosidl_generator_py
+[ 95%] Built target torsobot_interfaces_s__rosidl_typesupport_c
+[ 95%] Built target torsobot_interfaces_s__rosidl_typesupport_introspection_c
+[100%] Built target torsobot_interfaces_s__rosidl_typesupport_fastrtps_c
+running egg_info
+writing torsobot_interfaces.egg-info/PKG-INFO
+writing dependency_links to torsobot_interfaces.egg-info/dependency_links.txt
+writing top-level names to torsobot_interfaces.egg-info/top_level.txt
+reading manifest file 'torsobot_interfaces.egg-info/SOURCES.txt'
+writing manifest file 'torsobot_interfaces.egg-info/SOURCES.txt'
+[100%] Built target ament_cmake_python_build_torsobot_interfaces_egg
+-- Install configuration: ""
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/ament_index/resource_index/rosidl_interfaces/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/msg/TorsobotData.json
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/msg/TorsobotState.json
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/torsobot_data.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__type_support.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__functions.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__functions.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__description.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__functions.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__struct.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__functions.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__struct.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__type_support.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__description.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/torsobot_state.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/library_path.sh
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/library_path.dsv
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_generator_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__type_support.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_introspection_c.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_introspection_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_fastrtps_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__type_support.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__struct.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__builder.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__traits.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__traits.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__builder.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/torsobot_data.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/torsobot_state.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.cpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__type_support.cpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_introspection_cpp.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/dds_fastrtps
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_fastrtps_cpp.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_cpp.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/pythonpath.sh
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/pythonpath.dsv
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces-0.0.0-py3.11.egg-info
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces-0.0.0-py3.11.egg-info/PKG-INFO
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces-0.0.0-py3.11.egg-info/SOURCES.txt
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces-0.0.0-py3.11.egg-info/top_level.txt
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces-0.0.0-py3.11.egg-info/dependency_links.txt
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/torsobot_interfaces_s__rosidl_typesupport_introspection_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/msg/_torsobot_state.py
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/msg/_torsobot_state_s.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/msg/_torsobot_data_s.c
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/msg/__init__.py
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/msg/_torsobot_data.py
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/torsobot_interfaces_s__rosidl_typesupport_fastrtps_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/torsobot_interfaces_s__rosidl_typesupport_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/__init__.py
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_c.c
+Listing '/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces'...
+Listing '/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/msg'...
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/torsobot_interfaces_s__rosidl_typesupport_introspection_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/torsobot_interfaces_s__rosidl_typesupport_fastrtps_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages/torsobot_interfaces/torsobot_interfaces_s__rosidl_typesupport_c.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_generator_py.so
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/msg/TorsobotData.idl
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/msg/TorsobotState.idl
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/msg/TorsobotData.msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/msg/TorsobotState.msg
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/ament_index/resource_index/package_run_dependencies/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/ament_index/resource_index/parent_prefix_path/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/path.dsv
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/local_setup.bash
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/local_setup.sh
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/local_setup.zsh
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/local_setup.dsv
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/package.dsv
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/ament_index/resource_index/packages/torsobot_interfaces
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_generator_cExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_generator_cExport-noconfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfaces__rosidl_typesupport_introspection_cExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_typesupport_fastrtps_cExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfaces__rosidl_typesupport_cExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfaces__rosidl_typesupport_cExport-noconfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_generator_cppExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfaces__rosidl_typesupport_introspection_cppExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfaces__rosidl_typesupport_cppExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfaces__rosidl_typesupport_cppExport-noconfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_generator_pyExport.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/export_torsobot_interfaces__rosidl_generator_pyExport-noconfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/rosidl_cmake-extras.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/ament_cmake_export_libraries-extras.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/ament_cmake_export_targets-extras.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfacesConfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/cmake/torsobot_interfacesConfig-version.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/package.xml

@@ -24,16 +24,32 @@ namespace msg
 namespace builder
 {
 
+class Init_TorsobotData_motor_drv_mode
+{
+public:
+  explicit Init_TorsobotData_motor_drv_mode(::torsobot_interfaces::msg::TorsobotData & msg)
+  : msg_(msg)
+  {}
+  ::torsobot_interfaces::msg::TorsobotData motor_drv_mode(::torsobot_interfaces::msg::TorsobotData::_motor_drv_mode_type arg)
+  {
+    msg_.motor_drv_mode = std::move(arg);
+    return std::move(msg_);
+  }
+
+private:
+  ::torsobot_interfaces::msg::TorsobotData msg_;
+};
+
 class Init_TorsobotData_motor_torque
 {
 public:
   explicit Init_TorsobotData_motor_torque(::torsobot_interfaces::msg::TorsobotData & msg)
   : msg_(msg)
   {}
-  ::torsobot_interfaces::msg::TorsobotData motor_torque(::torsobot_interfaces::msg::TorsobotData::_motor_torque_type arg)
+  Init_TorsobotData_motor_drv_mode motor_torque(::torsobot_interfaces::msg::TorsobotData::_motor_torque_type arg)
   {
     msg_.motor_torque = std::move(arg);
-    return std::move(msg_);
+    return Init_TorsobotData_motor_drv_mode(msg_);
   }
 
 private:

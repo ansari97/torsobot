@@ -1,0 +1,38 @@
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:41:23:[m[K [01;31m[Kerror: [m[K‘[01m[Kstd_msgs[m[K’ was not declared in this scope
+   41 |  rclcpp::Subscription<[01;31m[Kstd_msgs[m[K::msg::String>::SharedPtr subscriber_;
+      |                       [01;31m[K^~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:41:44:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   41 |  rclcpp::Subscription<std_msgs::msg::String[01;31m[K>[m[K::SharedPtr subscriber_;
+      |                                            [01;31m[K^[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:41:44:[m[K [01;31m[Kerror: [m[Ktemplate argument 3 is invalid
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:41:44:[m[K [01;31m[Kerror: [m[Ktemplate argument 4 is invalid
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:41:44:[m[K [01;31m[Kerror: [m[Ktemplate argument 5 is invalid
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:41:47:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+   41 |  rclcpp::Subscription<std_msgs::msg::String>::[01;31m[KSharedPtr[m[K subscriber_;
+      |                                               [01;31m[K^~~~~~~~~[m[K
+      |                                                        [32m[K;[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:41:57:[m[K [01;31m[Kerror: [m[K‘[01m[Ksubscriber_[m[K’ does not name a type
+   41 |  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr [01;31m[Ksubscriber_[m[K;
+      |                                                         [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:47:2:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ after class definition
+   47 | }
+      |  [01;31m[K^[m[K
+      |  [32m[K;[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:[m[K In constructor ‘[01m[KDataLoggerNode::DataLoggerNode()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:29:75:[m[K [01;31m[Kerror: [m[Kinvalid operands of types ‘[01m[Kconst char [35][m[K’ and ‘[01m[Kconst char [19][m[K’ to binary ‘[01m[Koperator+[m[K’
+   29 |     std::string directory_name_str = [32m[K"~/torsobot/Code/Code/ros2_ws/data/"[m[K [01;31m[K+[m[K [34m[K"torsobot_data_csv_"[m[K + timestamp_str;
+      |                                      [32m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K [01;31m[K^[m[K [34m[K~~~~~~~~~~~~~~~~~~~~[m[K
+      |                                      [32m[K|[m[K                                      [34m[K|[m[K
+      |                                      [32m[Kconst char [35][m[K                        [34m[Kconst char [19][m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:32:5:[m[K [01;31m[Kerror: [m[K‘[01m[Ksubscriber_[m[K’ was not declared in this scope
+   32 |     [01;31m[Ksubscriber_[m[K = this->create_subscription<torsobot_interfaces::msg::TorsobotData>(
+      |     [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:35:9:[m[K [01;31m[Kerror: [m[Kinvalid use of non-static member function ‘[01m[Kvoid DataLoggerNode::dataCallback()[m[K’
+   35 |         [01;31m[KdataCallback[m[K);
+      |         [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:43:8:[m[K [01;36m[Knote: [m[Kdeclared here
+   43 |   void [01;36m[KdataCallback[m[K(void)
+      |        [01;36m[K^~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/data_logger_node.dir/build.make:76: CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/data_logger_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

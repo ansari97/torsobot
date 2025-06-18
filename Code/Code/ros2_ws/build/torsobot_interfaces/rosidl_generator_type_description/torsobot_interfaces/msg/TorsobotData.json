@@ -52,6 +52,16 @@
             "nested_type_name": ""
           },
           "default_value": ""
+        },
+        {
+          "name": "motor_drv_mode",
+          "type": {
+            "type_id": 2,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
         }
       ]
     },
@@ -60,7 +70,7 @@
   "type_hashes": [
     {
       "type_name": "torsobot_interfaces/msg/TorsobotData",
-      "hash_string": "RIHS01_4f657b0094d8a1b3b411860287ad68a3217f3492a0294d301dc26095445ed91b"
+      "hash_string": "RIHS01_816741ea2ccaa91aa0e158da621536ed065eb0e51228fe3c72d0714afc1b85cb"
     }
   ]
 }

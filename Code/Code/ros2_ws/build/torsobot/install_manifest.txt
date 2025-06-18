@@ -1,4 +1,5 @@
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/mcu_node
+/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/data_logger_node
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/package_run_dependencies/torsobot
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/parent_prefix_path/torsobot
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/ament_prefix_path.dsv

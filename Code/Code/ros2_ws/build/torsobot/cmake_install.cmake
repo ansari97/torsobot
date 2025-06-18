@@ -63,6 +63,26 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/torsobot/data_logger_node" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/torsobot/data_logger_node")
+    file(RPATH_CHECK
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/torsobot/data_logger_node"
+         RPATH "")
+  endif()
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/torsobot" TYPE EXECUTABLE FILES "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot/data_logger_node")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/torsobot/data_logger_node" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/torsobot/data_logger_node")
+    file(RPATH_CHANGE
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/torsobot/data_logger_node"
+         OLD_RPATH "/home/pi/ros2_jazzy/install/rclcpp/lib:/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib:/home/pi/ros2_jazzy/install/std_msgs/lib:/home/pi/ros2_jazzy/install/libstatistics_collector/lib:/home/pi/ros2_jazzy/install/rcl/lib:/home/pi/ros2_jazzy/install/rmw_implementation/lib:/home/pi/ros2_jazzy/install/type_description_interfaces/lib:/home/pi/ros2_jazzy/install/rcl_interfaces/lib:/home/pi/ros2_jazzy/install/service_msgs/lib:/home/pi/ros2_jazzy/install/rcl_yaml_param_parser/lib:/home/pi/ros2_jazzy/install/rosgraph_msgs/lib:/home/pi/ros2_jazzy/install/statistics_msgs/lib:/home/pi/ros2_jazzy/install/tracetools/lib:/home/pi/ros2_jazzy/install/rcl_logging_interface/lib:/home/pi/ros2_jazzy/install/ament_index_cpp/lib:/home/pi/ros2_jazzy/install/builtin_interfaces/lib:/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/lib:/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/lib:/home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_c/lib:/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_cpp/lib:/home/pi/ros2_jazzy/install/rmw/lib:/home/pi/ros2_jazzy/install/rosidl_dynamic_typesupport/lib:/home/pi/ros2_jazzy/install/fastcdr/lib:/home/pi/ros2_jazzy/install/rosidl_typesupport_cpp/lib:/home/pi/ros2_jazzy/install/rosidl_typesupport_c/lib:/home/pi/ros2_jazzy/install/rcpputils/lib:/home/pi/ros2_jazzy/install/rosidl_runtime_c/lib:/home/pi/ros2_jazzy/install/rcutils/lib:"
+         NEW_RPATH "")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/torsobot/data_logger_node")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/package_run_dependencies" TYPE FILE FILES "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/torsobot")
 endif()
 

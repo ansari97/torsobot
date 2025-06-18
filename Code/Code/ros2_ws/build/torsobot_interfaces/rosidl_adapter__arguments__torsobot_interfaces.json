@@ -1,6 +1,7 @@
 {
   "package_name": "torsobot_interfaces",
   "non_idl_tuples": [
-    "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces:msg/TorsobotData.msg"
+    "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces:msg/TorsobotData.msg",
+    "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces:msg/TorsobotState.msg"
   ]
 }

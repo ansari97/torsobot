@@ -67,15 +67,21 @@ include CMakeFiles/torsobot_interfaces__rosidl_generator_type_description.dir/co
 include CMakeFiles/torsobot_interfaces__rosidl_generator_type_description.dir/progress.make
 
 CMakeFiles/torsobot_interfaces__rosidl_generator_type_description: rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json
+CMakeFiles/torsobot_interfaces__rosidl_generator_type_description: rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotState.json
 
 rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json: /home/pi/ros2_jazzy/install/rosidl_generator_type_description/lib/rosidl_generator_type_description/rosidl_generator_type_description
 rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json: /home/pi/ros2_jazzy/install/rosidl_generator_type_description/lib/python3.11/site-packages/rosidl_generator_type_description/__init__.py
 rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json: rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl
+rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json: rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating type hashes for ROS interfaces"
 	/usr/bin/python3 /home/pi/ros2_jazzy/install/rosidl_generator_type_description/lib/rosidl_generator_type_description/rosidl_generator_type_description --generator-arguments-file /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description__arguments.json
 
+rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotState.json: rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotState.json
+
 torsobot_interfaces__rosidl_generator_type_description: CMakeFiles/torsobot_interfaces__rosidl_generator_type_description
 torsobot_interfaces__rosidl_generator_type_description: rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json
+torsobot_interfaces__rosidl_generator_type_description: rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotState.json
 torsobot_interfaces__rosidl_generator_type_description: CMakeFiles/torsobot_interfaces__rosidl_generator_type_description.dir/build.make
 .PHONY : torsobot_interfaces__rosidl_generator_type_description
 

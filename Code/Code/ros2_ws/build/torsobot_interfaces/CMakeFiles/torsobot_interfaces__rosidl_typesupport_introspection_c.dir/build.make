@@ -78,11 +78,18 @@ rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data_
 rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h: /home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_c/share/rosidl_typesupport_introspection_c/resource/srv__rosidl_typesupport_introspection_c.h.em
 rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h: /home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_c/share/rosidl_typesupport_introspection_c/resource/srv__type_support.c.em
 rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h: rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl
+rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h: rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating C introspection for ROS interfaces"
 	/usr/bin/python3 /home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_c/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c --generator-arguments-file /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_introspection_c__arguments.json
 
+rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_introspection_c.h: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_introspection_c.h
+
 rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c
+
+rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c
 
 CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c.o: CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/flags.make
 CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c.o: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c
@@ -98,21 +105,37 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_ty
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c -o CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c.s
 
+CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o: CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/flags.make
+CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c
+CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o: CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o -MF CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o.d -o CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o -c /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c
+
+CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c > CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.i
+
+CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c -o CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.s
+
 # Object files for target torsobot_interfaces__rosidl_typesupport_introspection_c
 torsobot_interfaces__rosidl_typesupport_introspection_c_OBJECTS = \
-"CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c.o"
+"CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c.o" \
+"CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o"
 
 # External object files for target torsobot_interfaces__rosidl_typesupport_introspection_c
 torsobot_interfaces__rosidl_typesupport_introspection_c_EXTERNAL_OBJECTS =
 
 libtorsobot_interfaces__rosidl_typesupport_introspection_c.so: CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c.o
+libtorsobot_interfaces__rosidl_typesupport_introspection_c.so: CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o
 libtorsobot_interfaces__rosidl_typesupport_introspection_c.so: CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/build.make
 libtorsobot_interfaces__rosidl_typesupport_introspection_c.so: libtorsobot_interfaces__rosidl_generator_c.so
 libtorsobot_interfaces__rosidl_typesupport_introspection_c.so: /home/pi/ros2_jazzy/install/rosidl_runtime_c/lib/librosidl_runtime_c.so
 libtorsobot_interfaces__rosidl_typesupport_introspection_c.so: /home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_c/lib/librosidl_typesupport_introspection_c.so
 libtorsobot_interfaces__rosidl_typesupport_introspection_c.so: /home/pi/ros2_jazzy/install/rcutils/lib/librcutils.so
 libtorsobot_interfaces__rosidl_typesupport_introspection_c.so: CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C shared library libtorsobot_interfaces__rosidl_typesupport_introspection_c.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C shared library libtorsobot_interfaces__rosidl_typesupport_introspection_c.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -125,6 +148,8 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/clean:
 
 CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__rosidl_typesupport_introspection_c.h
 CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c
+CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_introspection_c.h
+CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/depend: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c
 	cd /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/depend
 
