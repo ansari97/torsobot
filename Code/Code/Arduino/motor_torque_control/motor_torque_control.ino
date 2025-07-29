@@ -67,9 +67,10 @@ volatile uint8_t heartbeat_last_ctr;
 volatile bool was_heartbeat_rcvd = false;
 volatile bool is_heartbeat_valid = false;
 volatile bool is_heartbeat_ctr_valid = false;
-const int HEARTBEAT_FREQ = 100;                           //hz
-const int HEARTBEAT_TIMEOUT = 5 * 1000 / HEARTBEAT_FREQ;  //miliseconds
-unsigned long long heartbeat_timer = millis();
+const int HEARTBEAT_FREQ = 100;                            //hz; must be same as from pi
+const int HEARTBEAT_TIMEOUT = 10 * 1000 / HEARTBEAT_FREQ;  //miliseconds
+volatile unsigned long long heartbeat_timer = 0;           // = millis();
+long millis_since_last_heartbeat = 0;
 
 // I2C cmd for mcu data
 const uint8_t IMU_PITCH_CMD = 0x01;       // torso_pitch
@@ -169,7 +170,7 @@ void setup() {
   Serial.begin(115200);
   delay(2000);
 
-  Serial.println("Staring I2C slave...IMU and motor driver test");
+  Serial.println("Starting torsobot ...");
 
   // I2C lines
   Wire.setSDA(0);
@@ -271,8 +272,8 @@ void setup() {
   heartbeat_last_ctr = heartbeat_ctr;
   was_heartbeat_rcvd = false;
 
-  Serial.println("Heartbeat received!");
-  Serial.println("starting program!");
+  Serial.println("Heartbeat received from PI!");
+  Serial.println("Setup complete!");
   delay(1000);
   digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(OK_LED, HIGH);
@@ -284,9 +285,18 @@ void loop() {
 
 
   // is_heartbeat_valid = checkHeartbeatValidity();
+  millis_since_last_heartbeat = millis() - heartbeat_timer;
 
-  if (!is_heartbeat_valid || (millis() - heartbeat_timer > HEARTBEAT_TIMEOUT)) {
-    emergencyStop();
+  if (!is_heartbeat_valid || (millis_since_last_heartbeat > HEARTBEAT_TIMEOUT)) {
+    Serial.print("millis_since_last_heartbeat: ");
+    Serial.println(millis_since_last_heartbeat);
+
+    Serial.print("is_heartbeat_valid?: ");
+    Serial.println(is_heartbeat_valid);
+
+    Serial.println("heartbeat not valid or heartbeat timeout reached!");
+
+    // emergencyStop(); // call the stop routine
   }
 
   // is_heartbeat_valid = false;
@@ -349,18 +359,23 @@ void loop() {
 
   // Fault drv_mode
   if (static_cast<int>(moteus.last_result().values.mode) == 11) {
+    Serial.println("motor driver fault");
     moteus.SetStop();
   }
 
   gNextSendMillis += 20;
   gLoopCount++;
 
+  // calculate torque required
   ff_torque = -kp * (imu_pitch - desired_pitch) - kd * (imu_pitch_rate - 0);
-  ff_torque = min(max_torque, ff_torque);
+  ff_torque = min(max_torque, ff_torque);  // second safety net; max torque has already been defined for the board but this line esnures no value greater than max is written
   position_cmd.feedforward_torque = ff_torque;
 
-  // moteus.SetPosition(position_cmd, &position_fmt);
-
+  // Write to the motor
+  Serial.println(millis());
+  moteus.SetPosition(position_cmd, &position_fmt);
+  Serial.println(millis());
+  // Get values every 5 loop iters
   if (gLoopCount % 5 != 0) { return; }
   // digitalWrite(LED_BUILTIN, HIGH);
 
@@ -370,16 +385,18 @@ void loop() {
   mot_pos = moteus.last_result().values.position;
   mot_torque = moteus.last_result().values.torque;
 
-  // Serial.print("drv_mode: ");
-  // Serial.print(drv_mode);
-  // Serial.print("\tcommand_torque: ");
-  // Serial.print(ff_torque);
-  // Serial.print("\tmot_torque: ");
-  // Serial.print(mot_torque);
-  // Serial.print("\tmot_pos: ");
-  // Serial.print(mot_pos);
-  // Serial.print("\tmot_vel: ");
-  // Serial.println(mot_vel);
+  Serial.print("millis_since_last_heartbeat: ");
+  Serial.println(millis_since_last_heartbeat);
+  Serial.print("drv_mode: ");
+  Serial.print(drv_mode);
+  Serial.print("\tcommand_torque: ");
+  Serial.print(ff_torque);
+  Serial.print("\tmot_torque: ");
+  Serial.print(mot_torque);
+  Serial.print("\tmot_pos: ");
+  Serial.print(mot_pos);
+  Serial.print("\tmot_vel: ");
+  Serial.println(mot_vel);
 
   memcpy(mot_pos_data, &mot_pos, sizeof(float));
   memcpy(mot_vel_data, &mot_vel, sizeof(float));
@@ -552,6 +569,11 @@ bool checkHeartbeatValidity(void) {
 void emergencyStop(void) {
   Serial.println("Stopping program! :(");
   Serial.println(is_heartbeat_valid);
+  Serial.println(millis_since_last_heartbeat);
+  Serial.print(heartbeat_last_ctr);
+  Serial.print("\t");
+  Serial.println(heartbeat_ctr);
+  // Serial.print("\t");
   moteus.SetStop();
   Serial.println("motor stopped");
   digitalWrite(LED_BUILTIN, LOW);
