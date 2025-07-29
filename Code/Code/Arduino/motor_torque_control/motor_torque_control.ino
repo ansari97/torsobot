@@ -10,6 +10,9 @@
 //  The following pins are selected for the CAN Controller and the IMU board.
 //——————————————————————————————————————————————————————————————————————————————
 
+#define I2C_SDA 0
+#define I2C_SCL 1
+
 // For BNO085 SPI drv_mode, we need a CS pin
 #define BNO08X_SCK 2
 #define BNO08X_MOSI 3
@@ -56,6 +59,8 @@ void emergencyStop(void);
 //——————————————————————————————————————————————————————————————————————————————
 
 static uint32_t gNextSendMillis = 0;
+
+const int I2C_BAUDRATE = 50000;  // I2C speed in Hz
 
 // heartbeat variables
 const uint8_t HEARTBEAT_ID = 0XAA;
@@ -173,14 +178,17 @@ void setup() {
   Serial.println("Starting torsobot ...");
 
   // I2C lines
-  Wire.setSDA(0);
-  Wire.setSCL(1);
+  Wire.setSDA(I2C_SDA);
+  Wire.setSCL(I2C_SCL);
 
   Wire.begin(PICO_SLAVE_ADDRESS);
+  Wire.setClock(I2C_BAUDRATE);
 
+  // set interrup functions for I2C
   Wire.onReceive(recv);
   Wire.onRequest(req);
 
+  // Set SPI pins
   SPI.setSCK(BNO08X_SCK);
   SPI.setMOSI(BNO08X_MOSI);
   SPI.setMISO(BNO08X_MISO);
@@ -193,6 +201,7 @@ void setup() {
 
   SPI1.begin();
 
+  // bno spi communication
   if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
     Serial.println(F("Failed to find BNO08x chip"));
     while (1) { delay(10); }
