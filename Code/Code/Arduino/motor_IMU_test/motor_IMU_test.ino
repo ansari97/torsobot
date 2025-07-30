@@ -30,6 +30,9 @@
 // I2C slave address
 #define PICO_SLAVE_ADDRESS 0x30
 
+
+const int I2C_BAUDRATE = 50000;  // I2C speed in Hz
+
 static uint32_t gNextSendMillis = 0;
 
 // Sensor value cmd bytes
@@ -113,6 +116,8 @@ void setup() {
   Wire.setSDA(0);
   Wire.setSCL(1);
 
+  Wire.setClock(I2C_BAUDRATE);
+
   Wire.begin(PICO_SLAVE_ADDRESS);
 
   Wire.onReceive(recv);
@@ -172,7 +177,7 @@ void setup() {
   // a stop command to each.
   moteus.SetStop();
   Serial.println("motor stopped");
-  // delay(5000);
+  delay(5000);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -225,7 +230,7 @@ void loop() {
   cmd.velocity = 2 * ::sin(time * degToCycles(ypr.pitch) / 1000.0);
   // cmd.velocity = 0;
 
-  moteus.SetPosition(cmd);
+  // moteus.SetPosition(cmd);
 
   if (gLoopCount % 5 != 0) { return; }
   digitalWrite(LED_BUILTIN, HIGH);

@@ -60,7 +60,7 @@ void emergencyStop(void);
 
 static uint32_t gNextSendMillis = 0;
 
-const int I2C_BAUDRATE = 50000;  // I2C speed in Hz
+const int I2C_BAUDRATE = 10*1000;  // I2C speed in Hz
 
 // heartbeat variables
 const uint8_t HEARTBEAT_ID = 0XAA;
@@ -305,7 +305,7 @@ void loop() {
 
     Serial.println("heartbeat not valid or heartbeat timeout reached!");
 
-    // emergencyStop(); // call the stop routine
+    emergencyStop(); // call the stop routine
   }
 
   // is_heartbeat_valid = false;
