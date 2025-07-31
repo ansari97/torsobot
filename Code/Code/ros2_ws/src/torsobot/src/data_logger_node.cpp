@@ -38,15 +38,14 @@ public:
     {
       // create directory
       RCLCPP_INFO(this->get_logger(), "Directory does not exist");
-
     }
     // create empty csv file
 
     //  Create subscriber
-    subscriber_ = this->create_subscription<torsobot_interfaces::msg::TorsobotData>(
-        "/robot_data",
-        10,
-        std::bind(&DataLoggerNode::dataCallback, this, std::placeholders::_1));
+    // subscriber_ = this->create_subscription<torsobot_interfaces::msg::TorsobotData>(
+    //     "/robot_data",
+    //     10,
+    //     std::bind(&DataLoggerNode::dataCallback, this, std::placeholders::_1));
 
     RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '%s'", full_file_path_str.c_str());
   }
@@ -54,10 +53,10 @@ public:
 private:
   rclcpp::Subscription<torsobot_interfaces::msg::TorsobotData>::SharedPtr subscriber_;
 
-  void dataCallback(torsobot_interfaces::msg::TorsobotData::SharedPtr msg)
-  {
-    //
-  }
+  // void dataCallback(torsobot_interfaces::msg::TorsobotData::SharedPtr msg)
+  // {
+  //   //
+  // }
 };
 
 int main(int argc, char *argv[])

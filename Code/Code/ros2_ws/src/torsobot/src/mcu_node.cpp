@@ -52,6 +52,8 @@ const uint8_t HEARTBEAT_ID = 0xAA;
 uint8_t heartbeat_ctr = 0;
 uint8_t heartbeat_checksum = 0;
 
+int bytes_written;
+
 class MCUNode : public rclcpp::Node
 {
 public:
@@ -90,10 +92,10 @@ public:
     RCLCPP_INFO(this->get_logger(), "Successfully opened I2C device!");
 
     // heartbeat timer for 10ms (100Hz)
-    heartbeat_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::sendHearbeat, this)); // Use std::bind
+    heartbeat_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::sendHearbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
-    data_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::dataCallback, this)); // Use std::bind
+    data_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::dataCallback, this)); // Use std::bind
   }
 
 private:
@@ -162,7 +164,7 @@ private:
       data_message.motor_vel = mot_vel;
       data_message.motor_torque = mot_torque;
       data_message.motor_drv_mode = mot_drv_mode;
-      
+
       this->data_publisher_->publish(data_message);
 
       RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", IMU_pitch);
@@ -171,7 +173,6 @@ private:
       RCLCPP_INFO(this->get_logger(), "Motor velocity: '%f'", mot_vel);
       RCLCPP_INFO(this->get_logger(), "Motor torque: '%f'", mot_torque);
       RCLCPP_INFO(this->get_logger(), "Motor driver mode: '%d'", mot_drv_mode);
-
     }
     else
     {
@@ -186,16 +187,16 @@ private:
     memset(read_buff, 0, data_len);
 
     // Write command to slave
-    if (write(i2c_handle, &cmd, sizeof(cmd)) != 1)
+    if (write(i2c_handle, &cmd, sizeof(cmd)) != sizeof(cmd))
     {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed!");
+      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed for %d! %s (%d)", cmd, strerror(errno), errno);
       return -1; // Indicate error
     }
 
     // Request sensor data from slave
     if (read(i2c_handle, read_buff, data_len) != data_len)
     {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed!");
+      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed for %d! %s (%d)", cmd, strerror(errno), errno);
       return -2; // Indicate error
     }
     else
@@ -222,16 +223,16 @@ private:
     memset(read_buff, 0, data_len);
 
     // Write command to slave
-    if (write(i2c_handle, &cmd, sizeof(cmd)) != 1)
+    if (write(i2c_handle, &cmd, sizeof(cmd)) != sizeof(cmd))
     {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed!");
+      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed for %d! %s (%d)", cmd, strerror(errno), errno);
       return -1; // Indicate error
     }
 
     // Request sensor data from slave
-    if (read(i2c_handle, read_buff, sizeof(uint8_t)) != sizeof(uint8_t))
+    if (read(i2c_handle, read_buff, data_len) != data_len)
     {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed!");
+      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed for %d! %s (%d)", cmd, strerror(errno), errno);
       return -2; // Indicate error
     }
     else

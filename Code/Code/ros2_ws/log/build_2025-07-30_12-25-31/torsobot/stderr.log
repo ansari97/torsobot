@@ -1,0 +1,7 @@
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:[m[K In constructor ‘[01m[KDataLoggerNode::DataLoggerNode()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:48:36:[m[K [01;31m[Kerror: [m[K‘[01m[KdataCallback[m[K’ is not a member of ‘[01m[KDataLoggerNode[m[K’
+   48 |         std::bind(&DataLoggerNode::[01;31m[KdataCallback[m[K, this, std::placeholders::_1));
+      |                                    [01;31m[K^~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/data_logger_node.dir/build.make:76: CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/data_logger_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2
