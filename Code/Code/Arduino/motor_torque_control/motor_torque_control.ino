@@ -7,13 +7,17 @@
 #include <Moteus.h>
 
 //——————————————————————————————————————————————————————————————————————————————
-//  The following pins are selected for the CAN Controller and the IMU board.
+// Pin definition
 //——————————————————————————————————————————————————————————————————————————————
 
+// I2C lines
 #define I2C_SDA 0
 #define I2C_SCL 1
 
-// For BNO085 SPI drv_mode, we need a CS pin
+// I2C slave address
+#define PICO_SLAVE_ADDRESS 0x30
+
+// SPI lines for the IMU and the CAN controller
 #define BNO08X_SCK 2
 #define BNO08X_MOSI 3
 #define BNO08X_MISO 4
@@ -34,9 +38,7 @@
 #define STOP_LED 19
 #define OK_LED 18
 
-// I2C slave address
-#define PICO_SLAVE_ADDRESS 0x30
-
+// Euler angles for the IMU
 struct euler_t {
   float yaw;
   float pitch;
@@ -55,12 +57,12 @@ bool checkHeartbeatValidity(void);
 void emergencyStop(void);
 
 //——————————————————————————————————————————————————————————————————————————————
-//  Varible declarations
+//  Variable declarations
 //——————————————————————————————————————————————————————————————————————————————
 
 static uint32_t gNextSendMillis = 0;
 
-const int I2C_BAUDRATE = 10*1000;  // I2C speed in Hz
+const int I2C_BAUDRATE = 25 * 1000;  // I2C speed in Hz
 
 // heartbeat variables
 const uint8_t HEARTBEAT_ID = 0XAA;
@@ -72,7 +74,7 @@ volatile uint8_t heartbeat_last_ctr;
 volatile bool was_heartbeat_rcvd = false;
 volatile bool is_heartbeat_valid = false;
 volatile bool is_heartbeat_ctr_valid = false;
-const int HEARTBEAT_FREQ = 100;                            //hz; must be same as from pi
+const int HEARTBEAT_FREQ = 1000 / 25;                      //hz; must be same as from pi
 const int HEARTBEAT_TIMEOUT = 10 * 1000 / HEARTBEAT_FREQ;  //miliseconds
 volatile unsigned long long heartbeat_timer = 0;           // = millis();
 long millis_since_last_heartbeat = 0;
@@ -157,8 +159,6 @@ Moteus::PositionMode::Command position_cmd;
 Moteus::PositionMode::Format position_fmt;
 Moteus::CurrentMode::Command current_cmd;
 Moteus::CurrentMode::Format current_fmt;
-
-// Moteus::Ve
 
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -305,7 +305,7 @@ void loop() {
 
     Serial.println("heartbeat not valid or heartbeat timeout reached!");
 
-    emergencyStop(); // call the stop routine
+    emergencyStop();  // call the stop routine
   }
 
   // is_heartbeat_valid = false;
