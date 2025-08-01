@@ -80,14 +80,16 @@ volatile unsigned long long heartbeat_timer = 0;           // = millis();
 long millis_since_last_heartbeat = 0;
 
 // I2C cmd for mcu data
-const uint8_t IMU_PITCH_CMD = 0x01;       // torso_pitch
-const uint8_t IMU_PITCH_RATE_CMD = 0x02;  // torso_pitch_rate
-const uint8_t MOTOR_POS_CMD = 0x03;       // motor rotor position (not wheel)
-const uint8_t MOTOR_VEL_CMD = 0x04;       // motor velocity position (not wheel)
-const uint8_t MOTOR_TORQUE_CMD = 0X05;    // motor torque at motor shaft (not wheel)
-const uint8_t MOTOR_DRV_MODE_CMD = 0X06;  // motor driver mode
+const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00;  // desired torso_pitch
+const uint8_t IMU_PITCH_CMD = 0x01;        // torso_pitch
+const uint8_t IMU_PITCH_RATE_CMD = 0x02;   // torso_pitch_rate
+const uint8_t MOTOR_POS_CMD = 0x03;        // motor rotor position (not wheel)
+const uint8_t MOTOR_VEL_CMD = 0x04;        // motor velocity position (not wheel)
+const uint8_t MOTOR_TORQUE_CMD = 0X05;     // motor torque at motor shaft (not wheel)
+const uint8_t MOTOR_DRV_MODE_CMD = 0X06;   // motor driver mode
 
 const int data_len = sizeof(float);  // 4 bytes
+char desired_torso_pitch_data[data_len];
 char imu_pitch_data[data_len];
 char imu_pitch_rate_data[data_len];
 char mot_pos_data[data_len];
@@ -110,7 +112,7 @@ float gravity_x = 0;
 float gravity_y = 0;
 float gravity_z = 0;
 
-float desired_pitch = degToRad(10);
+volatile float desired_torso_pitch = degToRad(10);
 
 float kp = 0.5;
 float kd = 0.0;
@@ -268,6 +270,8 @@ void setup() {
 
   // moteus.SetPositionWaitComplete(position_cmd, 0.02, &position_fmt);
 
+  // desired pitch angle
+  memcpy(desired_torso_pitch_data, &desired_torso_pitch, sizeof((desired_torso_pitch)));
 
   Serial.println("Waiting for heartbeat from the PI...");
 
@@ -286,6 +290,7 @@ void setup() {
   delay(1000);
   digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(OK_LED, HIGH);
+  
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -376,7 +381,7 @@ void loop() {
   gLoopCount++;
 
   // calculate torque required
-  ff_torque = -kp * (imu_pitch - desired_pitch) - kd * (imu_pitch_rate - 0);
+  ff_torque = -kp * (imu_pitch - desired_torso_pitch) - kd * (imu_pitch_rate - 0);
   ff_torque = min(max_torque, ff_torque);  // second safety net; max torque has already been defined for the board but this line esnures no value greater than max is written
   position_cmd.feedforward_torque = ff_torque;
 
@@ -453,6 +458,9 @@ void recv(int len) {
 void req() {
   ctr++;
   switch (read_command) {
+    case DESIRED_TORSO_PITCH_CMD:
+      Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
+      break;
     case IMU_PITCH_CMD:
       Wire.write(imu_pitch_data, sizeof(imu_pitch_data));
       break;
