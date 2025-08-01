@@ -24,6 +24,9 @@ df = pd.read_csv(csv_file_path)
 time_value = df["timestamp"]
 imu_pitch_data = df["IMU_pitch"]
 
+zero_time = time_value[0]
+time_value = time_value - zero_time
+
 desired_pitch_value = np.ones(len(time_value))*10  # df["desired_pitch_data"]
 
 # change data
@@ -32,9 +35,14 @@ imu_pitch_data = rad2deg(imu_pitch_data)
 
 plt.plot(time_value, imu_pitch_data, label="imu_pitch")
 plt.plot(time_value, desired_pitch_value, label="desired pitch")
+
+plt.minorticks_on()
+plt.grid(which="both")
+
 plt.xlabel("time (ms)")
 plt.ylabel("IMU pitch (deg)")
 plt.ylim([-180, 180])
+plt.xlim(xmin=0)
 plt.legend()
 
 
