@@ -1,0 +1,9 @@
+[ 50%] Built target mcu_node
+[ 75%] [32mBuilding CXX object CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o[0m
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:[m[K In member function ‘[01m[Kvoid DataLoggerNode::dataCallback(torsobot_interfaces::msg::TorsobotData_<std::allocator<void> >::SharedPtr)[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:108:183:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass DataLoggerNode[m[K’ has no member named ‘[01m[Kmotor_drv_mode[m[K’
+  108 |       output_file_ << msg->torso_pitch << "," << msg->torso_pitch_rate << "," << msg->motor_pos << "," << msg->motor_vel << "," << msg->motor_torque << "," << static_cast<int>(this->[01;31m[Kmotor_drv_mode[m[K);
+      |                                                                                                                                                                                       [01;31m[K^~~~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/data_logger_node.dir/build.make:76: CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/data_logger_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2
