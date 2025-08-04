@@ -81,12 +81,12 @@ long millis_since_last_heartbeat = 0;
 
 // I2C cmd for mcu data
 const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00;  // desired torso_pitch
-const uint8_t IMU_PITCH_CMD = 0x01;        // torso_pitch
-const uint8_t IMU_PITCH_RATE_CMD = 0x02;   // torso_pitch_rate
-const uint8_t MOTOR_POS_CMD = 0x03;        // motor rotor position (not wheel)
-const uint8_t MOTOR_VEL_CMD = 0x04;        // motor velocity position (not wheel)
-const uint8_t MOTOR_TORQUE_CMD = 0X05;     // motor torque at motor shaft (not wheel)
-const uint8_t MOTOR_DRV_MODE_CMD = 0X06;   // motor driver mode
+const uint8_t IMU_PITCH_CMD = 0x01;            // torso_pitch
+const uint8_t IMU_PITCH_RATE_CMD = 0x02;       // torso_pitch_rate
+const uint8_t MOTOR_POS_CMD = 0x03;            // motor rotor position (not wheel)
+const uint8_t MOTOR_VEL_CMD = 0x04;            // motor velocity position (not wheel)
+const uint8_t MOTOR_TORQUE_CMD = 0X05;         // motor torque at motor shaft (not wheel)
+const uint8_t MOTOR_DRV_MODE_CMD = 0X06;       // motor driver mode
 
 const int data_len = sizeof(float);  // 4 bytes
 char desired_torso_pitch_data[data_len];
@@ -117,7 +117,7 @@ volatile float desired_torso_pitch = degToRad(10);
 float kp = 0.5;
 float kd = 0.0;
 
-float max_torque = 0.5;
+const float max_torque = 1.0;
 
 int ctr = 0;
 
@@ -125,7 +125,7 @@ euler_t ypr;
 
 uint16_t gLoopCount = 3;
 
-float ff_torque;
+float ff_torque, ff_torque_calc;
 
 //——————————————————————————————————————————————————————————————————————————————
 //  BNO08X object
@@ -290,7 +290,6 @@ void setup() {
   delay(1000);
   digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(OK_LED, HIGH);
-  
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -381,14 +380,23 @@ void loop() {
   gLoopCount++;
 
   // calculate torque required
-  ff_torque = -kp * (imu_pitch - desired_torso_pitch) - kd * (imu_pitch_rate - 0);
-  ff_torque = min(max_torque, ff_torque);  // second safety net; max torque has already been defined for the board but this line esnures no value greater than max is written
+  error = imu_pitch - desired_torso_pitch;
+  ff_torque_calc = -kp * error;
+  ff_torque = min(abs(max_torque), abs(ff_torque_calc));  // always +ve; second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
+
+  // retain sign of ff_torque
+  if (ff_torque_calc <= 0) {
+    ff_torque = -ff_torque
+  }
+
+  // write to cmd
   position_cmd.feedforward_torque = ff_torque;
 
-  // Write to the motor
-  Serial.println(millis());
+  // **Write to the motor
+  // Serial.println(millis());
   moteus.SetPosition(position_cmd, &position_fmt);
-  Serial.println(millis());
+  // Serial.println(millis());
+
   // Get values every 5 loop iters
   if (gLoopCount % 5 != 0) { return; }
   // digitalWrite(LED_BUILTIN, HIGH);
