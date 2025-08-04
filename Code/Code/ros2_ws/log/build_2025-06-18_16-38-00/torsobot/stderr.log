@@ -1,7 +1,0 @@
-[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:[m[K In constructor ‘[01m[KDataLoggerNode::DataLoggerNode()[m[K’:
-[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/data_logger_node.cpp:35:20:[m[K [01;31m[Kerror: [m[K‘[01m[KMCUNode[m[K’ has not been declared
-   35 |         std::bind(&[01;31m[KMCUNode[m[K::dataCallback, this));
-      |                    [01;31m[K^~~~~~~[m[K
-gmake[2]: *** [CMakeFiles/data_logger_node.dir/build.make:76: CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o] Error 1
-gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/data_logger_node.dir/all] Error 2
-gmake: *** [Makefile:146: all] Error 2

@@ -15,6 +15,8 @@
 #include "torsobot_interfaces/msg/torsobot_data.hpp"
 #include "torsobot_interfaces/msg/torsobot_state.hpp"
 
+#include "torsobot_interfaces/srv/request_control_params.hpp"
+
 using namespace std::chrono_literals;
 
 // Configuration for the GPIO pin
@@ -29,7 +31,7 @@ const int I2C_BUS = 1;
 
 int i2c_handle;
 
-// Buffers to read data and store vals
+// Buffers to read data and store vals; only for 4 byte floats
 const int data_len = sizeof(float);
 char read_buff[data_len];
 float IMU_pitch;
@@ -38,14 +40,23 @@ float mot_pos;
 float mot_vel;
 float mot_torque;
 int8_t mot_drv_mode;
+float desired_torso_pitch;
+float mot_max_torque;
+float kp, ki, kd;
 
 // I2C write cmd for mcu data
-const uint8_t IMU_PITCH_CMD = 0x01;      // torso_pitch
-const uint8_t IMU_PITCH_RATE_CMD = 0x02; // torso_pitch_rate
-const uint8_t MOTOR_POS_CMD = 0x03;      // motor rotor position (not wheel)
-const uint8_t MOTOR_VEL_CMD = 0x04;      // motor velocity position (not wheel)
-const uint8_t MOTOR_TORQUE_CMD = 0X05;   // motor torque at motor shaft (not wheel)
-const uint8_t MOTOR_DRV_MODE_CMD = 0X06; // motor driver mode
+const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00; // desired torso_pitch
+const uint8_t IMU_PITCH_CMD = 0x01;           // torso_pitch
+const uint8_t IMU_PITCH_RATE_CMD = 0x02;      // torso_pitch_rate
+const uint8_t MOTOR_POS_CMD = 0x03;           // motor rotor position (not wheel)
+const uint8_t MOTOR_VEL_CMD = 0x04;           // motor velocity position (not wheel)
+const uint8_t MOTOR_TORQUE_CMD = 0X05;        // motor torque at motor shaft (not wheel)
+const uint8_t MOTOR_DRV_MODE_CMD = 0X06;      // motor driver mode
+
+const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07; // motor max torque value
+const uint8_t KP_CMD = 0X08;               // Kp value
+const uint8_t KI_CMD = 0X09;               // Ki value
+const uint8_t KD_CMD = 0X0A;               // Kd value
 
 // Heartbeat variables
 const uint8_t HEARTBEAT_ID = 0xAA;
@@ -67,6 +78,9 @@ public:
 
     // Create publisher for "torsobot_state" topic
     data_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotData>("torsobot_data", 10);
+
+    // Create service server for one-time values
+    control_params_server_ = this->create_service<torsobot_interfaces::srv::RequestControlParams>("control_params", std::bind(&MCUNode::handleServiceRequest, this, std::placeholders::_1, std::placeholders::_2));
 
     char filename[20];
     snprintf(filename, 19, "/dev/i2c-%d", I2C_BUS);
@@ -92,10 +106,12 @@ public:
     RCLCPP_INFO(this->get_logger(), "Successfully opened I2C device!");
 
     // heartbeat timer for 10ms (100Hz)
-    heartbeat_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::sendHearbeat, this)); // Use std::bind
+    heartbeat_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
     data_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::dataCallback, this)); // Use std::bind
+
+    RCLCPP_INFO(this->get_logger(), "Starting node!");
   }
 
 private:
@@ -103,15 +119,19 @@ private:
   rclcpp::TimerBase::SharedPtr data_timer_;
   rclcpp::Publisher<torsobot_interfaces::msg::TorsobotState>::SharedPtr state_publisher_;
   rclcpp::Publisher<torsobot_interfaces::msg::TorsobotData>::SharedPtr data_publisher_;
+  rclcpp::Service<torsobot_interfaces::srv::RequestControlParams>::SharedPtr control_params_server_;
+
+  bool read_control_params_ = false;
+
   gpiod::chip chip_;
   gpiod::line mcu_run_line_;
-  int heartbeat_check;
+  // int heartbeat_check;
 
   // timer callback for sending heartbeat on I2C
   // void heartbeatCallback(void)
   // {
   //   // Read / request sensor data from pico
-  //   heartbeat_check = sendHearbeat();
+  //   heartbeat_check = sendHeartbeat();
   //   if (heartbeat_check == 0)
   //   {
   //     // Do nothing
@@ -123,9 +143,47 @@ private:
   //   }
   // };
 
+  // Service callback for the control parameters
+  void handleServiceRequest(
+      const std::shared_ptr<torsobot_interfaces::srv::RequestControlParams::Request> request,
+      std::shared_ptr<torsobot_interfaces::srv::RequestControlParams::Response> response)
+  {
+    (void)request; // Suppress unused parameter warning
+    response->desired_torso_pitch = desired_torso_pitch;
+    response->mot_max_torque = mot_max_torque;
+    response->kp = kp;
+    response->ki = ki;
+    response->kd = kd;
+  }
+
   // timer callback for getting data on i2c
   void dataCallback(void)
   {
+    if (!read_control_params_)
+    {
+      // request one-time data from the pico
+      // desired imu_angle
+      (void)getSensorValue(DESIRED_TORSO_PITCH_CMD, &desired_torso_pitch);
+
+      // max_torque value
+      (void)getSensorValue(MOTOR_MAX_TORQUE_CMD, &mot_max_torque);
+
+      // PID control gain values
+      (void)getSensorValue(KP_CMD, &kp);
+      (void)getSensorValue(KI_CMD, &ki);
+      (void)getSensorValue(KD_CMD, &kd);
+
+      RCLCPP_INFO(this->get_logger(), "desired_torso_pitch: %f", desired_torso_pitch);
+      RCLCPP_INFO(this->get_logger(), "motor_max_torque: %f", mot_max_torque);
+      RCLCPP_INFO(this->get_logger(), "kp: %f, ki: %f, kd: %f", kp, ki, kd);
+
+      // if all three values are zero, then values weren't received properly
+      if (kp || ki || kd)
+      {
+        read_control_params_ = true;
+      }
+    }
+
     // Read / request sensor data from pico
     int get_sensor_val_IMU_pitch = getSensorValue(IMU_PITCH_CMD, &IMU_pitch);
     int get_sensor_val_IMU_pitch_rate = getSensorValue(IMU_PITCH_RATE_CMD, &IMU_pitch_rate);
@@ -244,7 +302,7 @@ private:
   }
 
   //   Send heartbeat to pico
-  void sendHearbeat(void)
+  void sendHeartbeat(void)
   {
     uint8_t hbt_message[3];
     hbt_message[0] = HEARTBEAT_ID;                 // always constant

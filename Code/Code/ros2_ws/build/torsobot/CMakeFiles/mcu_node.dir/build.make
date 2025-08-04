@@ -125,13 +125,6 @@ mcu_node: /home/pi/ros2_jazzy/install/rcl_interfaces/lib/librcl_interfaces__rosi
 mcu_node: /home/pi/ros2_jazzy/install/rcl_interfaces/lib/librcl_interfaces__rosidl_generator_py.so
 mcu_node: /home/pi/ros2_jazzy/install/rcl_interfaces/lib/librcl_interfaces__rosidl_typesupport_c.so
 mcu_node: /home/pi/ros2_jazzy/install/rcl_interfaces/lib/librcl_interfaces__rosidl_generator_c.so
-mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_fastrtps_c.so
-mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_introspection_c.so
-mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_introspection_cpp.so
-mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_fastrtps_cpp.so
-mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_cpp.so
-mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_c.so
-mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_generator_c.so
 mcu_node: /home/pi/ros2_jazzy/install/rcl_yaml_param_parser/lib/librcl_yaml_param_parser.so
 mcu_node: /home/pi/ros2_jazzy/install/rosgraph_msgs/lib/librosgraph_msgs__rosidl_typesupport_fastrtps_c.so
 mcu_node: /home/pi/ros2_jazzy/install/rosgraph_msgs/lib/librosgraph_msgs__rosidl_typesupport_fastrtps_cpp.so
@@ -153,6 +146,13 @@ mcu_node: /home/pi/ros2_jazzy/install/tracetools/lib/libtracetools.so
 mcu_node: /home/pi/ros2_jazzy/install/rcl_logging_interface/lib/librcl_logging_interface.so
 mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_c.so
 mcu_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_generator_c.so
+mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_introspection_c.so
+mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_fastrtps_c.so
+mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_introspection_cpp.so
+mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_fastrtps_cpp.so
+mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_cpp.so
+mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_c.so
+mcu_node: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_generator_c.so
 mcu_node: /home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_typesupport_c.so
 mcu_node: /home/pi/ros2_jazzy/install/std_msgs/lib/libstd_msgs__rosidl_generator_c.so
 mcu_node: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_c.so

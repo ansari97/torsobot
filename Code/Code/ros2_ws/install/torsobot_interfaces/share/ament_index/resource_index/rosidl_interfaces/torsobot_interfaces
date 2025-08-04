@@ -2,3 +2,5 @@ msg/TorsobotData.idl
 msg/TorsobotData.msg
 msg/TorsobotState.idl
 msg/TorsobotState.msg
+srv/RequestControlParams.idl
+srv/RequestControlParams.srv

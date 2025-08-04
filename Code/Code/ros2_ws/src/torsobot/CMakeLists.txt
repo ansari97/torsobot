@@ -47,6 +47,11 @@ ament_target_dependencies(mcu_node
 target_include_directories(mcu_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
 target_link_libraries(mcu_node ${GPIODCXX_LIBRARY})
 
+target_include_directories(data_logger_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
 ament_target_dependencies(data_logger_node
   rclcpp
   torsobot_interfaces

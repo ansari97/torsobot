@@ -4,7 +4,13 @@
   "template_dir": "/home/pi/ros2_jazzy/install/rosidl_generator_py/share/rosidl_generator_py/cmake/../resource",
   "idl_tuples": [
     "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotData.idl",
-    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotState.idl"
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotState.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:srv/RequestControlParams.idl"
+  ],
+  "ros_interface_dependencies": [
+    "service_msgs:/home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl",
+    "builtin_interfaces:/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl",
+    "builtin_interfaces:/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl"
   ],
   "target_dependencies": [
     "/home/pi/ros2_jazzy/install/rosidl_generator_py/share/rosidl_generator_py/cmake/../../../lib/rosidl_generator_py/rosidl_generator_py",
@@ -21,6 +27,10 @@
     "/home/pi/ros2_jazzy/install/rosidl_generator_py/share/rosidl_generator_py/cmake/../resource/_srv_pkg_typesupport_entry_point.c.em",
     "/home/pi/ros2_jazzy/install/rosidl_generator_py/share/rosidl_generator_py/cmake/../resource/_srv.py.em",
     "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl",
-    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl"
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/srv/RequestControlParams.idl",
+    "/home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl",
+    "/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl",
+    "/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl"
   ]
 }

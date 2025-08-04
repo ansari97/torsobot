@@ -90,6 +90,10 @@ rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h: /home/pi/ros2_jazzy/
 rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h: /home/pi/ros2_jazzy/install/rosidl_generator_c/share/rosidl_generator_c/resource/srv__type_support.h.em
 rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h: rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl
 rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h: rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl
+rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h: rosidl_adapter/torsobot_interfaces/srv/RequestControlParams.idl
+rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h: /home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl
+rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h: /home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl
+rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h: /home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating C code for ROS interfaces"
 	/usr/bin/python3 /home/pi/ros2_jazzy/install/rosidl_generator_c/share/rosidl_generator_c/cmake/../../../lib/rosidl_generator_c/rosidl_generator_c --generator-arguments-file /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c__arguments.json
 
@@ -114,6 +118,18 @@ rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h: rosi
 rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h
 
+rosidl_generator_c/torsobot_interfaces/srv/request_control_params.h: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/srv/request_control_params.h
+
+rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.h: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.h
+
+rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__struct.h: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__struct.h
+
+rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.h: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.h
+
 rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__description.c: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__description.c
 
@@ -131,6 +147,15 @@ rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__functions.c: r
 
 rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c
+
+rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c
+
+rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c
+
+rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c
 
 CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__description.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/flags.make
 CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__description.c.o: rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__description.c
@@ -216,6 +241,48 @@ CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsob
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c -o CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.s
 
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/flags.make
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o -MF CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o.d -o CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o -c /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c > CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.i
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c -o CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.s
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/flags.make
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o -MF CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o.d -o CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o -c /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c > CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.i
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c -o CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.s
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/flags.make
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o -MF CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o.d -o CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o -c /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c > CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.i
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c -o CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.s
+
 # Object files for target torsobot_interfaces__rosidl_generator_c
 torsobot_interfaces__rosidl_generator_c_OBJECTS = \
 "CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__description.c.o" \
@@ -223,7 +290,10 @@ torsobot_interfaces__rosidl_generator_c_OBJECTS = \
 "CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c.o" \
 "CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__description.c.o" \
 "CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__functions.c.o" \
-"CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o"
+"CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o" \
+"CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o" \
+"CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o" \
+"CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o"
 
 # External object files for target torsobot_interfaces__rosidl_generator_c
 torsobot_interfaces__rosidl_generator_c_EXTERNAL_OBJECTS =
@@ -234,11 +304,16 @@ libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__r
 libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__description.c.o
 libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__functions.c.o
 libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o
+libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c.o
+libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c.o
+libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c.o
 libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/build.make
+libtorsobot_interfaces__rosidl_generator_c.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_generator_c.so
+libtorsobot_interfaces__rosidl_generator_c.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_generator_c.so
 libtorsobot_interfaces__rosidl_generator_c.so: /home/pi/ros2_jazzy/install/rosidl_runtime_c/lib/librosidl_runtime_c.so
 libtorsobot_interfaces__rosidl_generator_c.so: /home/pi/ros2_jazzy/install/rcutils/lib/librcutils.so
 libtorsobot_interfaces__rosidl_generator_c.so: CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C shared library libtorsobot_interfaces__rosidl_generator_c.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking C shared library libtorsobot_interfaces__rosidl_generator_c.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -263,6 +338,13 @@ CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_
 CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h
 CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/msg/torsobot_data.h
 CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/msg/torsobot_state.h
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__description.c
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.c
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.h
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__struct.h
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.c
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.h
+CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend: rosidl_generator_c/torsobot_interfaces/srv/request_control_params.h
 	cd /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/torsobot_interfaces__rosidl_generator_c.dir/depend
 

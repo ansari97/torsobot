@@ -4,7 +4,13 @@
   "template_dir": "/home/pi/ros2_jazzy/install/rosidl_generator_cpp/share/rosidl_generator_cpp/cmake/../resource",
   "idl_tuples": [
     "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotData.idl",
-    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotState.idl"
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotState.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:srv/RequestControlParams.idl"
+  ],
+  "ros_interface_dependencies": [
+    "service_msgs:/home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl",
+    "builtin_interfaces:/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl",
+    "builtin_interfaces:/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl"
   ],
   "target_dependencies": [
     "/home/pi/ros2_jazzy/install/rosidl_generator_cpp/share/rosidl_generator_cpp/cmake/../../../lib/rosidl_generator_cpp/rosidl_generator_cpp",
@@ -27,10 +33,15 @@
     "/home/pi/ros2_jazzy/install/rosidl_generator_cpp/share/rosidl_generator_cpp/cmake/../resource/srv__traits.hpp.em",
     "/home/pi/ros2_jazzy/install/rosidl_generator_cpp/share/rosidl_generator_cpp/cmake/../resource/srv__type_support.hpp.em",
     "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl",
-    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl"
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/srv/RequestControlParams.idl",
+    "/home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl",
+    "/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl",
+    "/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl"
   ],
   "type_description_tuples": [
     "msg/TorsobotData.idl:/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotData.json",
-    "msg/TorsobotState.idl:/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotState.json"
+    "msg/TorsobotState.idl:/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces/msg/TorsobotState.json",
+    "srv/RequestControlParams.idl:/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces/srv/RequestControlParams.json"
   ]
 }

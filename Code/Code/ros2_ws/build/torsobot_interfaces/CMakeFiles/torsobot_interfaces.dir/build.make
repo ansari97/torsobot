@@ -68,6 +68,8 @@ include CMakeFiles/torsobot_interfaces.dir/progress.make
 
 CMakeFiles/torsobot_interfaces: /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotData.msg
 CMakeFiles/torsobot_interfaces: /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/msg/TorsobotState.msg
+CMakeFiles/torsobot_interfaces: /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces/srv/RequestControlParams.srv
+CMakeFiles/torsobot_interfaces: /home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl
 
 torsobot_interfaces: CMakeFiles/torsobot_interfaces
 torsobot_interfaces: CMakeFiles/torsobot_interfaces.dir/build.make

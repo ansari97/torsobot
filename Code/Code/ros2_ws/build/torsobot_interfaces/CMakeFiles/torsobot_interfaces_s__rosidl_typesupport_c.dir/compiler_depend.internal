@@ -273,4 +273,9 @@ CMakeFiles/torsobot_interfaces_s__rosidl_typesupport_c.dir/rosidl_generator_py/t
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__functions.h
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.h
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__struct.h
+ /home/pi/ros2_jazzy/build/service_msgs/rosidl_generator_c/service_msgs/msg/detail/service_event_info__struct.h
+ /home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_c/builtin_interfaces/msg/detail/time__struct.h
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functions.h
 

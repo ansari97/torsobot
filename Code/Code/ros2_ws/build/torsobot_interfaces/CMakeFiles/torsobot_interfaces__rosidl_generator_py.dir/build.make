@@ -97,24 +97,63 @@ CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/tors
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c -o CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c.s
 
+CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/flags.make
+CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o: rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c
+CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o: CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o -MF CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o.d -o CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o -c /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c > CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.i
+
+CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c -o CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.s
+
 # Object files for target torsobot_interfaces__rosidl_generator_py
 torsobot_interfaces__rosidl_generator_py_OBJECTS = \
 "CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data_s.c.o" \
-"CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c.o"
+"CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c.o" \
+"CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o"
 
 # External object files for target torsobot_interfaces__rosidl_generator_py
 torsobot_interfaces__rosidl_generator_py_EXTERNAL_OBJECTS =
 
 libtorsobot_interfaces__rosidl_generator_py.so: CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data_s.c.o
 libtorsobot_interfaces__rosidl_generator_py.so: CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c.o
+libtorsobot_interfaces__rosidl_generator_py.so: CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c.o
 libtorsobot_interfaces__rosidl_generator_py.so: CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/build.make
-libtorsobot_interfaces__rosidl_generator_py.so: /usr/lib/aarch64-linux-gnu/libpython3.11.so
 libtorsobot_interfaces__rosidl_generator_py.so: libtorsobot_interfaces__rosidl_typesupport_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_fastrtps_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_fastrtps_cpp.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_introspection_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_introspection_cpp.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_cpp.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_generator_py.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_typesupport_introspection_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_typesupport_introspection_cpp.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_cpp.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_typesupport_cpp.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_generator_py.so
 libtorsobot_interfaces__rosidl_generator_py.so: libtorsobot_interfaces__rosidl_generator_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_typesupport_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/service_msgs/lib/libservice_msgs__rosidl_generator_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/lib/librosidl_typesupport_fastrtps_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_cpp/lib/librosidl_typesupport_introspection_cpp.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/rosidl_typesupport_introspection_c/lib/librosidl_typesupport_introspection_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_cpp/lib/librosidl_typesupport_fastrtps_cpp.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/fastcdr/lib/libfastcdr.so.2.2.3
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/rmw/lib/librmw.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/rosidl_dynamic_typesupport/lib/librosidl_dynamic_typesupport.so
+libtorsobot_interfaces__rosidl_generator_py.so: /usr/lib/aarch64-linux-gnu/libpython3.11.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_typesupport_c.so
+libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/builtin_interfaces/lib/libbuiltin_interfaces__rosidl_generator_c.so
 libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/rosidl_runtime_c/lib/librosidl_runtime_c.so
 libtorsobot_interfaces__rosidl_generator_py.so: /home/pi/ros2_jazzy/install/rcutils/lib/librcutils.so
 libtorsobot_interfaces__rosidl_generator_py.so: CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C shared library libtorsobot_interfaces__rosidl_generator_py.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C shared library libtorsobot_interfaces__rosidl_generator_py.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

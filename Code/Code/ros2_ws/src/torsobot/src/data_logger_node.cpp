@@ -4,6 +4,11 @@
 #include "torsobot_interfaces/msg/torsobot_data.hpp"
 #include "torsobot_interfaces/msg/torsobot_state.hpp"
 
+#include "torsobot_interfaces/srv/request_control_params.hpp"
+
+// For JSON output
+#include <json.hpp>
+
 // #include <rosbag2_cpp/writer.hpp>
 
 // For CSV output and file system operations
@@ -16,6 +21,8 @@
 #include <functional> // For std::bind and std::placeholders
 #include <filesystem>
 #include <cstdlib> // For getenv
+
+using namespace std::chrono_literals;
 
 // Define the CSV header row based on your message fields
 const std::string CSV_HEADER = "timestamp,IMU_pitch,IMU_pitch_rate,motor_pos,motor_vel,motor_trq,motor_drv_mode";
@@ -39,8 +46,11 @@ public:
 
     // directory name
     std::string directory_name_str = "/home/pi/torsobot/Code/Code/ros2_ws/data_logs";
-    std::string file_name_str = "/torsobot_data_csv_" + timestamp_str + ".csv";
-    std::string full_file_path_str = directory_name_str + "/" + file_name_str;
+    std::string csv_filename_str = "/torsobot_data_csv_" + timestamp_str + ".csv";
+    std::string csv_full_path_str = directory_name_str + "/" + csv_filename_str;
+
+    std::string metadata_filename_str = "/torsobot_data_metadata_" + timestamp_str + ".json";
+    std::string metadata_full_path_str = directory_name_str + "/" + metadata_filename_str;
 
     // check if directory exists
     std::filesystem::path dir_path(directory_name_str);
@@ -69,19 +79,33 @@ public:
     }
 
     // create empty csv file
-    output_file_.open(full_file_path_str);
+    output_file_.open(csv_full_path_str);
 
     // Check if the file was opened successfully
     if (output_file_.is_open())
     {
-      RCLCPP_INFO(this->get_logger(), "Successfully opened data file: '%s'", full_file_path_str.c_str());
+      RCLCPP_INFO(this->get_logger(), "Successfully opened data file: '%s'", csv_full_path_str.c_str());
       // Write the header row
       output_file_ << CSV_HEADER << std::endl;
     }
     else
     {
-      RCLCPP_ERROR(this->get_logger(), "Failed to open data file: '%s'", full_file_path_str.c_str());
+      RCLCPP_ERROR(this->get_logger(), "Failed to open data file: '%s'", csv_full_path_str.c_str());
       return; // Exit constructor if we can't open the file
+    }
+
+    // create empty csv file
+    metadata_file_.open(metadata_full_path_str);
+
+    // Check if the file was opened successfully
+    if (metadata_file_.is_open())
+    {
+      RCLCPP_INFO(this->get_logger(), "Successfully opened metadata file: '%s'", metadata_full_path_str.c_str());
+    }
+    else
+    {
+      RCLCPP_ERROR(this->get_logger(), "Failed to open metadata file: '%s'", metadata_full_path_str.c_str());
+      return;
     }
 
     // Create subscriber
@@ -90,12 +114,49 @@ public:
         10,
         std::bind(&DataLoggerNode::dataCallback, this, std::placeholders::_1));
 
-    RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '%s'", full_file_path_str.c_str());
+    // create client for requesting control parameters
+    service_client_ = this->create_client<torsobot_interfaces::srv::RequestControlParams>("control_params");
+
+    timer_ = this->create_wall_timer(
+        4s, // Wait for 2 seconds
+        std::bind(&DataLoggerNode::requestControlParams, this));
+
+    RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '%s'", csv_full_path_str.c_str());
   }
 
 private:
+  rclcpp::Client<torsobot_interfaces::srv::RequestControlParams>::SharedPtr service_client_;
   rclcpp::Subscription<torsobot_interfaces::msg::TorsobotData>::SharedPtr subscriber_;
+  rclcpp::TimerBase::SharedPtr timer_;
   std::ofstream output_file_;
+  std::ofstream metadata_file_;
+
+  void requestControlParams(void)
+  {
+    // request control params
+    // check if the service server is available
+    if (!service_client_->wait_for_service(1s))
+    {
+      // if (!rclcpp::ok())
+      // {
+      //   RCLCPP_ERROR(this->get_logger(), "Client interrupted while waiting for service. Exiting.");
+      //   return;
+      // }
+      RCLCPP_ERROR(this->get_logger(), "Service not available after waiting...");
+      return;
+    }
+
+    // Create a new request message.
+    // In this case, the request is empty, so we don't need to populate it.
+    auto request = std::make_shared<torsobot_interfaces::srv::RequestControlParams::Request>();
+
+    // Asynchronously send the request and attach a callback to handle the response.
+    // The callback will be executed once the response is received.
+    service_client_->async_send_request(request,
+                                        std::bind(&DataLoggerNode::handleResponse, this, std::placeholders::_1));
+
+    timer_->cancel();
+  }
 
   void dataCallback(const torsobot_interfaces::msg::TorsobotData::SharedPtr msg)
   {
@@ -112,6 +173,34 @@ private:
     else
     {
       RCLCPP_WARN(this->get_logger(), "File is not open, cannot write data.");
+    }
+  }
+
+  // to handle service response
+  void handleResponse(rclcpp::Client<torsobot_interfaces::srv::RequestControlParams>::SharedFuture future)
+  {
+    auto response = future.get();
+    RCLCPP_INFO(this->get_logger(), "desired_torso_pitch: %f", response->desired_torso_pitch);
+    RCLCPP_INFO(this->get_logger(), "mot_max_torque: %f", response->mot_max_torque);
+    RCLCPP_INFO(this->get_logger(), "kp: %f", response->kp);
+    RCLCPP_INFO(this->get_logger(), "ki: %f", response->ki);
+    RCLCPP_INFO(this->get_logger(), "kd: %f", response->kd);
+
+    if (metadata_file_.is_open())
+    {
+      nlohmann::json metadata;
+
+      metadata["desired_torso_pitch"] = response->desired_torso_pitch;
+      metadata["mot_max_torque"] = response->mot_max_torque;
+      metadata["kp"] = response->kp;
+      metadata["ki"] = response->ki;
+      metadata["kd"] = response->kd;
+      metadata_file_ << metadata.dump(4); // dump with indentation of 4 spaces
+      metadata_file_.close();
+    }
+    else
+    {
+      RCLCPP_WARN(this->get_logger(), "File is not open, cannot write metadata.");
     }
   }
 };

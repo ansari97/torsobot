@@ -7,3 +7,5 @@ torsobot_interfaces.egg-info/top_level.txt
 torsobot_interfaces/msg/__init__.py
 torsobot_interfaces/msg/_torsobot_data.py
 torsobot_interfaces/msg/_torsobot_state.py
+torsobot_interfaces/srv/__init__.py
+torsobot_interfaces/srv/_request_control_params.py

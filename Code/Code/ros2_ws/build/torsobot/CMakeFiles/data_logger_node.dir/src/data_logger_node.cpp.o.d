@@ -708,9 +708,27 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: \
  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__builder.hpp \
  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__traits.hpp \
  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp \
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/request_control_params.hpp \
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__struct.hpp \
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__builder.hpp \
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__traits.hpp \
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp \
+ /home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/include/json.hpp \
+ /usr/include/c++/12/forward_list /usr/include/c++/12/bits/forward_list.h \
+ /usr/include/c++/12/bits/forward_list.tcc /usr/include/c++/12/valarray \
+ /usr/include/c++/12/bits/valarray_array.h \
+ /usr/include/c++/12/bits/valarray_array.tcc \
+ /usr/include/c++/12/bits/valarray_before.h \
+ /usr/include/c++/12/bits/slice_array.h \
+ /usr/include/c++/12/bits/valarray_after.h \
+ /usr/include/c++/12/bits/gslice.h \
+ /usr/include/c++/12/bits/gslice_array.h \
+ /usr/include/c++/12/bits/mask_array.h \
+ /usr/include/c++/12/bits/indirect_array.h /usr/include/c++/12/version \
+ /usr/include/c++/12/filesystem /usr/include/c++/12/bits/fs_fwd.h \
+ /usr/include/c++/12/bits/fs_path.h /usr/include/c++/12/bits/fs_dir.h \
+ /usr/include/c++/12/bits/fs_ops.h /usr/include/c++/12/any \
  /usr/include/c++/12/fstream \
  /usr/include/aarch64-linux-gnu/c++/12/bits/basic_file.h \
  /usr/include/aarch64-linux-gnu/c++/12/bits/c++io.h \
- /usr/include/c++/12/bits/fstream.tcc /usr/include/c++/12/filesystem \
- /usr/include/c++/12/bits/fs_fwd.h /usr/include/c++/12/bits/fs_path.h \
- /usr/include/c++/12/bits/fs_dir.h /usr/include/c++/12/bits/fs_ops.h
+ /usr/include/c++/12/bits/fstream.tcc

@@ -1,0 +1,24 @@
+[ 50%] Built target mcu_node
+[ 75%] [32mBuilding CXX object CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o[0m
+[100%] [32m[1mLinking CXX executable data_logger_node[0m
+[100%] Built target data_logger_node
+-- Install configuration: ""
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/mcu_node
+-- Set runtime path of "/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/mcu_node" to ""
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/data_logger_node
+-- Set runtime path of "/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/data_logger_node" to ""
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/package_run_dependencies/torsobot
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/parent_prefix_path/torsobot
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/ament_prefix_path.sh
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/ament_prefix_path.dsv
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/path.sh
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/path.dsv
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.bash
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.sh
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.zsh
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.dsv
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/package.dsv
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/packages/torsobot
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/cmake/torsobotConfig.cmake
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/cmake/torsobotConfig-version.cmake
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/package.xml

@@ -11,6 +11,11 @@ file(REMOVE_RECURSE
   "rosidl_generator_cpp/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp"
   "rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp"
   "rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_state.hpp"
+  "rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__builder.hpp"
+  "rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__struct.hpp"
+  "rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__traits.hpp"
+  "rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp"
+  "rosidl_generator_cpp/torsobot_interfaces/srv/request_control_params.hpp"
 )
 
 # Per-language clean rules from dependency scanning.

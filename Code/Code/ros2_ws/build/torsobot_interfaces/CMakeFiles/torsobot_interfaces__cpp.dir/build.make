@@ -76,6 +76,11 @@ CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/ms
 CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp
 CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__traits.hpp
 CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp
+CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/request_control_params.hpp
+CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__builder.hpp
+CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__struct.hpp
+CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__traits.hpp
+CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp
 CMakeFiles/torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp
 
 rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: /home/pi/ros2_jazzy/install/rosidl_generator_cpp/lib/rosidl_generator_cpp/rosidl_generator_cpp
@@ -99,6 +104,10 @@ rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: /home/pi/ros2_ja
 rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: /home/pi/ros2_jazzy/install/rosidl_generator_cpp/share/rosidl_generator_cpp/resource/srv__type_support.hpp.em
 rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl
 rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl
+rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: rosidl_adapter/torsobot_interfaces/srv/RequestControlParams.idl
+rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: /home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl
+rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: /home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl
+rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp: /home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating C++ code for ROS interfaces"
 	/usr/bin/python3 /home/pi/ros2_jazzy/install/rosidl_generator_cpp/share/rosidl_generator_cpp/cmake/../../../lib/rosidl_generator_cpp/rosidl_generator_cpp --generator-arguments-file /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp__arguments.json
 
@@ -129,6 +138,21 @@ rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__traits.hpp: 
 rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp
 
+rosidl_generator_cpp/torsobot_interfaces/srv/request_control_params.hpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/torsobot_interfaces/srv/request_control_params.hpp
+
+rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__builder.hpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__builder.hpp
+
+rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__struct.hpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__struct.hpp
+
+rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__traits.hpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__traits.hpp
+
+rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp
+
 rosidl_generator_cpp/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_cpp/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp
 
@@ -144,6 +168,11 @@ torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/msg/detail/to
 torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp
 torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_data.hpp
 torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/msg/torsobot_state.hpp
+torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__builder.hpp
+torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__struct.hpp
+torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__traits.hpp
+torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp
+torsobot_interfaces__cpp: rosidl_generator_cpp/torsobot_interfaces/srv/request_control_params.hpp
 torsobot_interfaces__cpp: CMakeFiles/torsobot_interfaces__cpp.dir/build.make
 .PHONY : torsobot_interfaces__cpp
 

@@ -804,4 +804,9 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o
  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__builder.hpp
  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__traits.hpp
  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/request_control_params.hpp
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__struct.hpp
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__builder.hpp
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__traits.hpp
+ /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp
 

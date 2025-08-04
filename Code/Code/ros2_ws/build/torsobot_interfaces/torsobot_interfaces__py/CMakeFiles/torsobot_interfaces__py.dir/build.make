@@ -71,9 +71,12 @@ include /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_i
 /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_c.c
 /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data.py
 /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state.py
+/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/srv/_request_control_params.py
 /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/__init__.py
+/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/srv/__init__.py
 /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data_s.c
 /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c
+/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c
 
 rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: /home/pi/ros2_jazzy/install/rosidl_generator_py/lib/rosidl_generator_py/rosidl_generator_py
 rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: /home/pi/ros2_jazzy/install/rosidl_generator_py/lib/python3.11/site-packages/rosidl_generator_py/__init__.py
@@ -90,6 +93,10 @@ rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesup
 rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: /home/pi/ros2_jazzy/install/rosidl_generator_py/share/rosidl_generator_py/resource/_srv.py.em
 rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl
 rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl
+rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: rosidl_adapter/torsobot_interfaces/srv/RequestControlParams.idl
+rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: /home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl
+rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: /home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl
+rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c: /home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Python code for ROS interfaces"
 	cd /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py && /usr/bin/python3 /home/pi/ros2_jazzy/install/rosidl_generator_py/share/rosidl_generator_py/cmake/../../../lib/rosidl_generator_py/rosidl_generator_py --generator-arguments-file /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_py__arguments.json --typesupport-impls "rosidl_typesupport_introspection_c;rosidl_typesupport_fastrtps_c;rosidl_typesupport_c"
 
@@ -105,14 +112,23 @@ rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data.py: rosidl_generator_
 rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state.py: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state.py
 
+rosidl_generator_py/torsobot_interfaces/srv/_request_control_params.py: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/torsobot_interfaces/srv/_request_control_params.py
+
 rosidl_generator_py/torsobot_interfaces/msg/__init__.py: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/torsobot_interfaces/msg/__init__.py
+
+rosidl_generator_py/torsobot_interfaces/srv/__init__.py: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/torsobot_interfaces/srv/__init__.py
 
 rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data_s.c: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data_s.c
 
 rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c
+
+rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c
 
 torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_c.c
 torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/_torsobot_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c
@@ -122,6 +138,9 @@ torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/_torsobot_d
 torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data_s.c
 torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state.py
 torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/msg/_torsobot_state_s.c
+torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/srv/__init__.py
+torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/srv/_request_control_params.py
+torsobot_interfaces__py: rosidl_generator_py/torsobot_interfaces/srv/_request_control_params_s.c
 torsobot_interfaces__py: /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py
 torsobot_interfaces__py: /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/torsobot_interfaces__py/CMakeFiles/torsobot_interfaces__py.dir/build.make
 .PHONY : torsobot_interfaces__py
