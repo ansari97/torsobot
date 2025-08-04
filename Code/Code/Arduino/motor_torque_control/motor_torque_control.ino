@@ -88,6 +88,11 @@ const uint8_t MOTOR_VEL_CMD = 0x04;            // motor velocity position (not w
 const uint8_t MOTOR_TORQUE_CMD = 0X05;         // motor torque at motor shaft (not wheel)
 const uint8_t MOTOR_DRV_MODE_CMD = 0X06;       // motor driver mode
 
+const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07;  // motor max torque value
+const uint8_t KP_CMD = 0X08;                // Kp value
+const uint8_t KI_CMD = 0X09;                // Ki value
+const uint8_t KD_CMD = 0X0A;                // Kd value
+
 const int data_len = sizeof(float);  // 4 bytes
 char desired_torso_pitch_data[data_len];
 char imu_pitch_data[data_len];
@@ -96,6 +101,11 @@ char mot_pos_data[data_len];
 char mot_vel_data[data_len];
 char mot_torque_data[data_len];
 char drv_mode_data[sizeof(int8_t)];
+
+char mot_max_torque_data[data_len];
+char kp_data[data_len];
+char ki_data[data_len];
+char kd_data[data_len];
 
 // char write_buff[data_len + 10];
 // char write_buff2[data_len + 10];
@@ -112,10 +122,14 @@ float gravity_x = 0;
 float gravity_y = 0;
 float gravity_z = 0;
 
-volatile float desired_torso_pitch = degToRad(10);
+volatile float desired_torso_pitch = 10.0;  // degrees
+// desired_torso_pitch = degToRad(desired_torso_pitch);  // radians
 
-float kp = 0.5;
+float kp = 0.5;  // N.m per rad
+float ki = 0.0;
 float kd = 0.0;
+
+float control_error;
 
 const float max_torque = 1.0;
 
@@ -175,7 +189,7 @@ void setup() {
   digitalWrite(STOP_LED, LOW);
 
   Serial.begin(115200);
-  delay(2000);
+  delay(100);
 
   Serial.println("Starting torsobot ...");
 
@@ -211,7 +225,7 @@ void setup() {
   Serial.println("BNO08x Found!");
 
   bno08x.hardwareReset();
-  delay(1000);
+  delay(100);
   Serial.print("Sensor reset?\t");
   Serial.println(bno08x.wasReset());
 
@@ -238,7 +252,7 @@ void setup() {
   if (errorCode != 0) {
     Serial.print("CAN error 0x");
     Serial.println(errorCode, HEX);
-    delay(1000);
+    delay(100);
     return;
   }
 
@@ -270,8 +284,26 @@ void setup() {
 
   // moteus.SetPositionWaitComplete(position_cmd, 0.02, &position_fmt);
 
-  // desired pitch angle
-  memcpy(desired_torso_pitch_data, &desired_torso_pitch, sizeof((desired_torso_pitch)));
+  // desired pitch angle; written by pi in pico
+  // memcpy(desired_torso_pitch_data, &desired_torso_pitch, sizeof((desired_torso_pitch)));
+
+  // Copy to char buffers
+  memcpy(desired_torso_pitch_data, const_cast<float*>(&desired_torso_pitch), sizeof(desired_torso_pitch));
+  memcpy(mot_max_torque_data, &max_torque, sizeof(max_torque));
+  memcpy(kp_data, &kp, sizeof(kp));
+  memcpy(ki_data, &ki, sizeof(ki));
+  memcpy(kd_data, &kd, sizeof(kd));
+
+  // // Serial.println(kp_data);
+  // for (int i = 0; i < sizeof(float); i++) {
+  //   // Print each byte in hexadecimal format, padding with a leading zero if needed
+  //   if (kp_data[i] < 16) {
+  //     Serial.print("0");
+  //   }
+  //   Serial.print(kp_data[i], HEX);
+  //   Serial.print(" ");
+  // }
+
 
   Serial.println("Waiting for heartbeat from the PI...");
 
@@ -287,7 +319,7 @@ void setup() {
 
   Serial.println("Heartbeat received from PI!");
   Serial.println("Setup complete!");
-  delay(1000);
+  delay(100);
   digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(OK_LED, HIGH);
 }
@@ -380,13 +412,13 @@ void loop() {
   gLoopCount++;
 
   // calculate torque required
-  error = imu_pitch - desired_torso_pitch;
-  ff_torque_calc = -kp * error;
+  control_error = desired_torso_pitch - imu_pitch;  // radians
+  ff_torque_calc = kp * control_error;
   ff_torque = min(abs(max_torque), abs(ff_torque_calc));  // always +ve; second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
 
   // retain sign of ff_torque
   if (ff_torque_calc <= 0) {
-    ff_torque = -ff_torque
+    ff_torque = -ff_torque;
   }
 
   // write to cmd
@@ -466,6 +498,18 @@ void recv(int len) {
 void req() {
   ctr++;
   switch (read_command) {
+    case MOTOR_MAX_TORQUE_CMD:
+      Wire.write(mot_max_torque_data, sizeof(mot_max_torque_data));
+      break;
+    case KP_CMD:
+      Wire.write(kp_data, sizeof(kp_data));
+      break;
+    case KI_CMD:
+      Wire.write(ki_data, sizeof(ki_data));
+      break;
+    case KD_CMD:
+      Wire.write(kd_data, sizeof(kd_data));
+      break;
     case DESIRED_TORSO_PITCH_CMD:
       Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
       break;
