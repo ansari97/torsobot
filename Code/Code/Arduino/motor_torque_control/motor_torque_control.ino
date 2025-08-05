@@ -53,6 +53,8 @@ float degToCycles(float);
 float imuAngleCorrection(float, float, float, float);
 float gravityMagnitude(float, float, float);
 float degToRad(float);
+float radToDeg(float);
+float wrapTo360(float);
 bool checkHeartbeatValidity(void);
 void emergencyStop(void);
 
@@ -92,6 +94,7 @@ const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07;  // motor max torque value
 const uint8_t KP_CMD = 0X08;                // Kp value
 const uint8_t KI_CMD = 0X09;                // Ki value
 const uint8_t KD_CMD = 0X0A;                // Kd value
+const uint8_t MOTOR_CMD_TORQUE_CMD = 0X0B; // commanded motor torque
 
 const int data_len = sizeof(float);  // 4 bytes
 char desired_torso_pitch_data[data_len];
@@ -106,6 +109,7 @@ char mot_max_torque_data[data_len];
 char kp_data[data_len];
 char ki_data[data_len];
 char kd_data[data_len];
+char cmd_torque_data[data_len];
 
 // char write_buff[data_len + 10];
 // char write_buff2[data_len + 10];
@@ -124,7 +128,7 @@ float gravity_z = 0;
 
 // Control parameters
 const float control_freq = 50;               // control torque write freq
-volatile float desired_torso_pitch = 180.0;  // degrees
+volatile float desired_torso_pitch = 185.0;  // degrees
 
 float kp = 0.5;  // N.m per rad
 float ki = 0.0;  // N.m per (rad.s)
@@ -135,7 +139,7 @@ float max_integral = 100;  // rad.s
 
 float control_error, control_error_integral = 0;
 
-const float max_torque = 1.0;
+const float max_torque = 0.5;
 
 float ff_torque, ff_torque_calc;  // torque command to the motor
 
@@ -375,14 +379,14 @@ void loop() {
     // }
 
     // imu_pitch_rate = sensorValue.un.gyroscope.z;
-    Serial.print(imu_pitch, 4);
-    Serial.print(", ");
+    // Serial.print(imu_pitch, 4);
+    // Serial.print(", ");
 
     // imu_pitch = imuAngleCorrection(ypr.pitch);
-    Serial.print(imu_pitch_rate, 4);
-    Serial.print(", ");
+    // Serial.print(imu_pitch_rate, 4);
+    // Serial.print(", ");
 
-    Serial.println(gravity_y, 4);
+    // Serial.println(gravity_y, 4);
 
     memcpy(imu_pitch_data, &imu_pitch, sizeof(float));
     memcpy(imu_pitch_rate_data, &imu_pitch_rate, sizeof(float));
@@ -437,7 +441,7 @@ void loop() {
 
   // **Write to the motor
   // Serial.println(millis());
-  // moteus.SetPosition(position_cmd, &position_fmt);
+  moteus.SetPosition(position_cmd, &position_fmt);
   // Serial.println(millis());
 
   gNextSendMillis += 1000 / control_freq;
@@ -445,10 +449,9 @@ void loop() {
   // **************************************************************
 
   // Get values every 5 loop iters
-  // if (gLoopCount % 5 != 0)
-  // {
-  //   return;
-  // }
+  if (gLoopCount % 5 != 0) {
+    return;
+  }
   // digitalWrite(LED_BUILTIN, HIGH);
 
   // print_moteus(moteus.last_result().values);
@@ -470,6 +473,7 @@ void loop() {
   // Serial.print("\tmot_vel: ");
   // Serial.println(mot_vel);
 
+  memcpy(cmd_torque_data, &ff_torque, sizeof(float));
   memcpy(mot_pos_data, &mot_pos, sizeof(float));
   memcpy(mot_vel_data, &mot_vel, sizeof(float));
   memcpy(mot_torque_data, &mot_torque, sizeof(float));
@@ -549,6 +553,9 @@ void i2cReq() {
     case KD_CMD:
       Wire.write(kd_data, sizeof(kd_data));
       break;
+    case MOTOR_CMD_TORQUE_CMD:
+      Wire.write(cmd_torque_data, sizeof(cmd_torque_data));
+      break;
   }
 }
 
@@ -605,19 +612,37 @@ float radToDeg(float rad) {
   return rad * 180 / PI;
 }
 
+// wrap angle from 0 to 360
+float wrapTo360(float angle) {
+
+  if (angle < 0) { angle += 360; }
+  return angle;
+}
+
 float imuAngleCorrection(float pitch, float gravity_x, float gravity_y, float gravity_z) {
-  pitch = 90 - pitch;
+  pitch = 90 - pitch;  // horizontal is originally zero
 
   // pitch is always positive so no need to take abs
 
+  // Serial.println(gravity_x);
+  // Serial.println(gravity_y);
+  // Serial.println(gravity_z);
+  // Serial.println(gravityMagnitude(gravity_x, gravity_y, gravity_z));
+  // Serial.println(atan2(gravity_y, gravity_x));
+
   // Evaluate angle from gravity vector when close to vertical
-  if (abs(gravity_y) < 1.0)
-    pitch = abs(radToDeg(asin(gravity_y / gravityMagnitude(gravity_x, gravity_y, gravity_z))));
+  // if (abs(gravity_y) < 1.0) {
+  //   pitch = 180 - atan2(gravity_y, gravity_x);
+  //   // Serial.println(pitch);
+  // }
 
   // Change sign of angle based on gravity vector's j component
   if (gravity_y < 0)
-    pitch = -pitch;
+    pitch = -abs(pitch);
 
+  pitch = wrapTo360(pitch);
+
+  Serial.println(pitch);
   return pitch;
 }
 
