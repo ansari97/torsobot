@@ -76,8 +76,8 @@ volatile bool is_heartbeat_valid = false;
 volatile bool is_heartbeat_ctr_valid = false;
 const int HEARTBEAT_FREQ = 1000 / 25;                      // hz; must be same as from pi
 const int HEARTBEAT_TIMEOUT = 10 * 1000 / HEARTBEAT_FREQ;  // miliseconds
-volatile unsigned uint64_t heartbeat_timer = 0;            // = millis();
-unsigned uint32_t millis_since_last_heartbeat = 0;
+volatile uint64_t heartbeat_timer = 0;                     // = millis();
+uint32_t millis_since_last_heartbeat = 0;
 
 // I2C cmd for mcu data
 const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00;  // desired torso_pitch
@@ -123,8 +123,8 @@ float gravity_y = 0;
 float gravity_z = 0;
 
 // Control parameters
-const float control_freq = 50;              // control torque write freq
-volatile float desired_torso_pitch = 10.0;  // degrees
+const float control_freq = 50;               // control torque write freq
+volatile float desired_torso_pitch = 180.0;  // degrees
 
 float kp = 0.5;  // N.m per rad
 float ki = 0.0;  // N.m per (rad.s)
@@ -139,7 +139,7 @@ const float max_torque = 1.0;
 
 float ff_torque, ff_torque_calc;  // torque command to the motor
 
-unsigned uint64_t time_now = 0, time_since_last = 0;
+uint64_t time_now = 0, time_last, time_since_last = 0;
 
 // For the control signals
 static uint32_t gNextSendMillis = 0;
@@ -422,7 +422,7 @@ void loop() {
   // time derivative of control error = -imu_pitch_rate ; because desired_pitch_rate is constant
 
   ff_torque = kp * control_error + ki * control_error_integral + kd * (-imu_pitch_rate);
-  ff_torque = min(max_bound, max(-max_torque, ff_torque));  // second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
+  ff_torque = min(max_torque, max(-max_torque, ff_torque));  // second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
 
   // ff_torque = min(abs(max_torque), abs(ff_torque_calc)); // always +ve; second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
 
@@ -437,7 +437,7 @@ void loop() {
 
   // **Write to the motor
   // Serial.println(millis());
-  moteus.SetPosition(position_cmd, &position_fmt);
+  // moteus.SetPosition(position_cmd, &position_fmt);
   // Serial.println(millis());
 
   gNextSendMillis += 1000 / control_freq;
