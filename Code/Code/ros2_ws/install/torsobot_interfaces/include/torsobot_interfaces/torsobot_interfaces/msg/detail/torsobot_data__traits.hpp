@@ -63,6 +63,13 @@ inline void to_flow_style_yaml(
     out << ", ";
   }
 
+  // member: motor_cmd_torque
+  {
+    out << "motor_cmd_torque: ";
+    rosidl_generator_traits::value_to_yaml(msg.motor_cmd_torque, out);
+    out << ", ";
+  }
+
   // member: motor_drv_mode
   {
     out << "motor_drv_mode: ";
@@ -122,6 +129,16 @@ inline void to_block_style_yaml(
     }
     out << "motor_torque: ";
     rosidl_generator_traits::value_to_yaml(msg.motor_torque, out);
+    out << "\n";
+  }
+
+  // member: motor_cmd_torque
+  {
+    if (indentation > 0) {
+      out << std::string(indentation, ' ');
+    }
+    out << "motor_cmd_torque: ";
+    rosidl_generator_traits::value_to_yaml(msg.motor_cmd_torque, out);
     out << "\n";
   }
 

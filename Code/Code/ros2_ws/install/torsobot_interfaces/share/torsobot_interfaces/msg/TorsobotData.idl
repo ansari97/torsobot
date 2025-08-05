@@ -16,6 +16,8 @@ module torsobot_interfaces {
 
       double motor_torque;
 
+      double motor_cmd_torque;
+
       int8 motor_drv_mode;
     };
   };

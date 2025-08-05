@@ -633,12 +633,12 @@
 			"id" : "torsobot_interfaces__rosidl_typesupport_c::@6890427a1f51a3e7e1df"
 		},
 		{
-			"backtrace" : 73,
-			"id" : "torsobot_interfaces__py::@dec268f2b0cb52a2d500"
-		},
-		{
 			"backtrace" : 10,
 			"id" : "torsobot_interfaces__rosidl_generator_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 73,
+			"id" : "torsobot_interfaces__py::@dec268f2b0cb52a2d500"
 		}
 	],
 	"id" : "torsobot_interfaces__rosidl_generator_py::@6890427a1f51a3e7e1df",

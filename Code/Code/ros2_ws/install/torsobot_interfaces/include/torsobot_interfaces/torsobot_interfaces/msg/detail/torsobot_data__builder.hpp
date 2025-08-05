@@ -40,16 +40,32 @@ private:
   ::torsobot_interfaces::msg::TorsobotData msg_;
 };
 
+class Init_TorsobotData_motor_cmd_torque
+{
+public:
+  explicit Init_TorsobotData_motor_cmd_torque(::torsobot_interfaces::msg::TorsobotData & msg)
+  : msg_(msg)
+  {}
+  Init_TorsobotData_motor_drv_mode motor_cmd_torque(::torsobot_interfaces::msg::TorsobotData::_motor_cmd_torque_type arg)
+  {
+    msg_.motor_cmd_torque = std::move(arg);
+    return Init_TorsobotData_motor_drv_mode(msg_);
+  }
+
+private:
+  ::torsobot_interfaces::msg::TorsobotData msg_;
+};
+
 class Init_TorsobotData_motor_torque
 {
 public:
   explicit Init_TorsobotData_motor_torque(::torsobot_interfaces::msg::TorsobotData & msg)
   : msg_(msg)
   {}
-  Init_TorsobotData_motor_drv_mode motor_torque(::torsobot_interfaces::msg::TorsobotData::_motor_torque_type arg)
+  Init_TorsobotData_motor_cmd_torque motor_torque(::torsobot_interfaces::msg::TorsobotData::_motor_torque_type arg)
   {
     msg_.motor_torque = std::move(arg);
-    return Init_TorsobotData_motor_drv_mode(msg_);
+    return Init_TorsobotData_motor_cmd_torque(msg_);
   }
 
 private:

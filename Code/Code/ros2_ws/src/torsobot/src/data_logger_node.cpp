@@ -25,7 +25,7 @@
 using namespace std::chrono_literals;
 
 // Define the CSV header row based on your message fields
-const std::string CSV_HEADER = "timestamp,IMU_pitch,IMU_pitch_rate,motor_pos,motor_vel,motor_trq,motor_drv_mode";
+const std::string CSV_HEADER = "timestamp,IMU_pitch,IMU_pitch_rate,motor_pos,motor_vel,motor_trq,motor_cmd_trq,motor_drv_mode";
 
 class DataLoggerNode : public rclcpp::Node
 {
@@ -118,7 +118,7 @@ public:
     service_client_ = this->create_client<torsobot_interfaces::srv::RequestControlParams>("control_params");
 
     timer_ = this->create_wall_timer(
-        4s, // Wait for 2 seconds
+        4s, // Wait for 4 seconds
         std::bind(&DataLoggerNode::requestControlParams, this));
 
     RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '%s'", csv_full_path_str.c_str());
@@ -166,7 +166,7 @@ private:
       // Write the timestamp in nanoseconds
       output_file_ << this->now().nanoseconds() << ",";
       // Write the data from the message, separated by commas
-      output_file_ << msg->torso_pitch << "," << msg->torso_pitch_rate << "," << msg->motor_pos << "," << msg->motor_vel << "," << msg->motor_torque << "," << static_cast<int>(msg->motor_drv_mode);
+      output_file_ << msg->torso_pitch << "," << msg->torso_pitch_rate << "," << msg->motor_pos << "," << msg->motor_vel << "," << msg->motor_torque << "," << msg->motor_cmd_torque << "," << static_cast<int>(msg->motor_drv_mode);
       // Add a newline character to finish the row
       output_file_ << "\n";
     }

@@ -27,6 +27,7 @@ typedef struct torsobot_interfaces__msg__TorsobotData
   double motor_pos;
   double motor_vel;
   double motor_torque;
+  double motor_cmd_torque;
   int8_t motor_drv_mode;
 } torsobot_interfaces__msg__TorsobotData;
 

@@ -11,10 +11,10 @@ torsobot_interfaces__msg__TorsobotData__get_type_hash(
 {
   (void)type_support;
   static rosidl_type_hash_t hash = {1, {
-      0x81, 0x67, 0x41, 0xea, 0x2c, 0xca, 0xa9, 0x1a,
-      0xa0, 0xe1, 0x58, 0xda, 0x62, 0x15, 0x36, 0xed,
-      0x06, 0x5e, 0xb0, 0xe5, 0x12, 0x28, 0xfe, 0x3c,
-      0x72, 0xd0, 0x71, 0x4a, 0xfc, 0x1b, 0x85, 0xcb,
+      0xcc, 0x21, 0x1e, 0x99, 0x70, 0xfb, 0x77, 0x04,
+      0x4a, 0x4c, 0xb8, 0x5c, 0x8b, 0x18, 0xb6, 0x62,
+      0xca, 0x0d, 0x7c, 0x91, 0x6f, 0xe9, 0x64, 0x6d,
+      0x6a, 0xde, 0x40, 0x12, 0x03, 0x20, 0x1a, 0x67,
     }};
   return &hash;
 }
@@ -36,6 +36,7 @@ static char torsobot_interfaces__msg__TorsobotData__FIELD_NAME__torso_pitch_rate
 static char torsobot_interfaces__msg__TorsobotData__FIELD_NAME__motor_pos[] = "motor_pos";
 static char torsobot_interfaces__msg__TorsobotData__FIELD_NAME__motor_vel[] = "motor_vel";
 static char torsobot_interfaces__msg__TorsobotData__FIELD_NAME__motor_torque[] = "motor_torque";
+static char torsobot_interfaces__msg__TorsobotData__FIELD_NAME__motor_cmd_torque[] = "motor_cmd_torque";
 static char torsobot_interfaces__msg__TorsobotData__FIELD_NAME__motor_drv_mode[] = "motor_drv_mode";
 
 static rosidl_runtime_c__type_description__Field torsobot_interfaces__msg__TorsobotData__FIELDS[] = {
@@ -90,6 +91,16 @@ static rosidl_runtime_c__type_description__Field torsobot_interfaces__msg__Torso
     {NULL, 0, 0},
   },
   {
+    {torsobot_interfaces__msg__TorsobotData__FIELD_NAME__motor_cmd_torque, 16, 16},
+    {
+      rosidl_runtime_c__type_description__FieldType__FIELD_TYPE_DOUBLE,
+      0,
+      0,
+      {NULL, 0, 0},
+    },
+    {NULL, 0, 0},
+  },
+  {
     {torsobot_interfaces__msg__TorsobotData__FIELD_NAME__motor_drv_mode, 14, 14},
     {
       rosidl_runtime_c__type_description__FieldType__FIELD_TYPE_INT8,
@@ -110,7 +121,7 @@ torsobot_interfaces__msg__TorsobotData__get_type_description(
   static const rosidl_runtime_c__type_description__TypeDescription description = {
     {
       {torsobot_interfaces__msg__TorsobotData__TYPE_NAME, 36, 36},
-      {torsobot_interfaces__msg__TorsobotData__FIELDS, 6, 6},
+      {torsobot_interfaces__msg__TorsobotData__FIELDS, 7, 7},
     },
     {NULL, 0, 0},
   };
@@ -126,6 +137,7 @@ static char toplevel_type_raw_source[] =
   "float64 motor_pos\n"
   "float64 motor_vel\n"
   "float64 motor_torque\n"
+  "float64 motor_cmd_torque\n"
   "int8 motor_drv_mode";
 
 static char msg_encoding[] = "msg";
@@ -140,7 +152,7 @@ torsobot_interfaces__msg__TorsobotData__get_individual_type_description_source(
   static const rosidl_runtime_c__type_description__TypeSource source = {
     {torsobot_interfaces__msg__TorsobotData__TYPE_NAME, 36, 36},
     {msg_encoding, 3, 3},
-    {toplevel_type_raw_source, 121, 121},
+    {toplevel_type_raw_source, 146, 146},
   };
   return &source;
 }

@@ -3,4 +3,5 @@ float64 torso_pitch_rate
 float64 motor_pos
 float64 motor_vel
 float64 motor_torque
+float64 motor_cmd_torque
 int8 motor_drv_mode

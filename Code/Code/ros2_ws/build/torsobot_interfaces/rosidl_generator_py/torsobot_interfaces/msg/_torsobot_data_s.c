@@ -95,6 +95,15 @@ bool torsobot_interfaces__msg__torsobot_data__convert_from_py(PyObject * _pymsg,
     ros_message->motor_torque = PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
+  {  // motor_cmd_torque
+    PyObject * field = PyObject_GetAttrString(_pymsg, "motor_cmd_torque");
+    if (!field) {
+      return false;
+    }
+    assert(PyFloat_Check(field));
+    ros_message->motor_cmd_torque = PyFloat_AS_DOUBLE(field);
+    Py_DECREF(field);
+  }
   {  // motor_drv_mode
     PyObject * field = PyObject_GetAttrString(_pymsg, "motor_drv_mode");
     if (!field) {
@@ -175,6 +184,17 @@ PyObject * torsobot_interfaces__msg__torsobot_data__convert_to_py(void * raw_ros
     field = PyFloat_FromDouble(ros_message->motor_torque);
     {
       int rc = PyObject_SetAttrString(_pymessage, "motor_torque", field);
+      Py_DECREF(field);
+      if (rc) {
+        return NULL;
+      }
+    }
+  }
+  {  // motor_cmd_torque
+    PyObject * field = NULL;
+    field = PyFloat_FromDouble(ros_message->motor_cmd_torque);
+    {
+      int rc = PyObject_SetAttrString(_pymessage, "motor_cmd_torque", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;

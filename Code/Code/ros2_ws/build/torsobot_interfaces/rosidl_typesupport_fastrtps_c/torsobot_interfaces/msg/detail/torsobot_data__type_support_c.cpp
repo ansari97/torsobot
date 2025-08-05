@@ -73,6 +73,11 @@ bool cdr_serialize_torsobot_interfaces__msg__TorsobotData(
     cdr << ros_message->motor_torque;
   }
 
+  // Field name: motor_cmd_torque
+  {
+    cdr << ros_message->motor_cmd_torque;
+  }
+
   // Field name: motor_drv_mode
   {
     cdr << ros_message->motor_drv_mode;
@@ -109,6 +114,11 @@ bool cdr_deserialize_torsobot_interfaces__msg__TorsobotData(
   // Field name: motor_torque
   {
     cdr >> ros_message->motor_torque;
+  }
+
+  // Field name: motor_cmd_torque
+  {
+    cdr >> ros_message->motor_cmd_torque;
   }
 
   // Field name: motor_drv_mode
@@ -165,6 +175,13 @@ size_t get_serialized_size_torsobot_interfaces__msg__TorsobotData(
   // Field name: motor_torque
   {
     size_t item_size = sizeof(ros_message->motor_torque);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Field name: motor_cmd_torque
+  {
+    size_t item_size = sizeof(ros_message->motor_cmd_torque);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -238,6 +255,14 @@ size_t max_serialized_size_torsobot_interfaces__msg__TorsobotData(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
+  // Field name: motor_cmd_torque
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
   // Field name: motor_drv_mode
   {
     size_t array_size = 1;
@@ -289,6 +314,11 @@ bool cdr_serialize_key_torsobot_interfaces__msg__TorsobotData(
   // Field name: motor_torque
   {
     cdr << ros_message->motor_torque;
+  }
+
+  // Field name: motor_cmd_torque
+  {
+    cdr << ros_message->motor_cmd_torque;
   }
 
   // Field name: motor_drv_mode
@@ -345,6 +375,13 @@ size_t get_serialized_size_key_torsobot_interfaces__msg__TorsobotData(
   // Field name: motor_torque
   {
     size_t item_size = sizeof(ros_message->motor_torque);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Field name: motor_cmd_torque
+  {
+    size_t item_size = sizeof(ros_message->motor_cmd_torque);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -409,6 +446,14 @@ size_t max_serialized_size_key_torsobot_interfaces__msg__TorsobotData(
   }
 
   // Field name: motor_torque
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
+  // Field name: motor_cmd_torque
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);

@@ -46,6 +46,7 @@ struct TorsobotData_
       this->motor_pos = 0.0;
       this->motor_vel = 0.0;
       this->motor_torque = 0.0;
+      this->motor_cmd_torque = 0.0;
       this->motor_drv_mode = 0;
     }
   }
@@ -61,6 +62,7 @@ struct TorsobotData_
       this->motor_pos = 0.0;
       this->motor_vel = 0.0;
       this->motor_torque = 0.0;
+      this->motor_cmd_torque = 0.0;
       this->motor_drv_mode = 0;
     }
   }
@@ -81,6 +83,9 @@ struct TorsobotData_
   using _motor_torque_type =
     double;
   _motor_torque_type motor_torque;
+  using _motor_cmd_torque_type =
+    double;
+  _motor_cmd_torque_type motor_cmd_torque;
   using _motor_drv_mode_type =
     int8_t;
   _motor_drv_mode_type motor_drv_mode;
@@ -114,6 +119,12 @@ struct TorsobotData_
     const double & _arg)
   {
     this->motor_torque = _arg;
+    return *this;
+  }
+  Type & set__motor_cmd_torque(
+    const double & _arg)
+  {
+    this->motor_cmd_torque = _arg;
     return *this;
   }
   Type & set__motor_drv_mode(
@@ -178,6 +189,9 @@ struct TorsobotData_
       return false;
     }
     if (this->motor_torque != other.motor_torque) {
+      return false;
+    }
+    if (this->motor_cmd_torque != other.motor_cmd_torque) {
       return false;
     }
     if (this->motor_drv_mode != other.motor_drv_mode) {

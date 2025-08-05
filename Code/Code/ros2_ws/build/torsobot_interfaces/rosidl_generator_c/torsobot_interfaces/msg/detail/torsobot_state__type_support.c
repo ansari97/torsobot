@@ -6,8 +6,8 @@
 
 #include "rosidl_typesupport_interface/macros.h"
 #include "torsobot_interfaces/msg/detail/torsobot_state__functions.h"
-#include "torsobot_interfaces/msg/detail/torsobot_state__struct.h"
 #include "torsobot_interfaces/msg/detail/torsobot_state__type_support.h"
+#include "torsobot_interfaces/msg/detail/torsobot_state__struct.h"
 
 #ifdef __cplusplus
 extern "C"

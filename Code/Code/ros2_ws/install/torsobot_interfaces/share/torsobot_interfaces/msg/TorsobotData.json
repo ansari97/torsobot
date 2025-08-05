@@ -54,6 +54,16 @@
           "default_value": ""
         },
         {
+          "name": "motor_cmd_torque",
+          "type": {
+            "type_id": 11,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        },
+        {
           "name": "motor_drv_mode",
           "type": {
             "type_id": 2,
@@ -70,7 +80,7 @@
   "type_hashes": [
     {
       "type_name": "torsobot_interfaces/msg/TorsobotData",
-      "hash_string": "RIHS01_816741ea2ccaa91aa0e158da621536ed065eb0e51228fe3c72d0714afc1b85cb"
+      "hash_string": "RIHS01_cc211e9970fb77044a4cb85c8b18b662ca0d7c916fe9646d6ade401203201a67"
     }
   ]
 }

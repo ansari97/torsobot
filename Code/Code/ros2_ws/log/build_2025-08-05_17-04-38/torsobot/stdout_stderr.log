@@ -1,0 +1,40 @@
+[ 25%] [32mBuilding CXX object CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o[0m
+In file included from [01m[K/home/pi/ros2_jazzy/build/rclcpp/include/rclcpp/logging.hpp:24[m[K,
+                 from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/copy_all_parameter_values.hpp:27[m[K,
+                 from [01m[K/home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/rclcpp.hpp:171[m[K,
+                 from [01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:14[m[K:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:[m[K In member function ‘[01m[Kvoid MCUNode::i2cDataCallback()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:236:39:[m[K [01;35m[Kwarning: [m[Kformat ‘[01m[K%d[m[K’ expects argument of type ‘[01m[Kint[m[K’, but argument 5 has type ‘[01m[Kdouble[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wformat=-Wformat=]8;;[m[K]
+  236 |       RCLCPP_INFO(this->get_logger(), [01;35m[K"Motor cmd torque: '%d'"[m[K, [32m[Kmot_cmd_torque[m[K);
+      |                                       [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~[m[K  [32m[K~~~~~~~~~~~~~~[m[K
+      |                                                                 [32m[K|[m[K
+      |                                                                 [32m[Kdouble[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:236:60:[m[K [01;36m[Knote: [m[Kformat string is defined here
+  236 |       RCLCPP_INFO(this->get_logger(), "Motor cmd torque: '[01;36m[K%d[m[K'", mot_cmd_torque);
+      |                                                           [01;36m[K~^[m[K
+      |                                                            [01;36m[K|[m[K
+      |                                                            [01;36m[Kint[m[K
+      |                                                           [32m[K%f[m[K
+[ 75%] [32m[1mLinking CXX executable mcu_node[0m
+[100%] [32m[1mLinking CXX executable data_logger_node[0m
+[100%] Built target mcu_node
+[100%] Built target data_logger_node
+-- Install configuration: ""
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/mcu_node
+-- Set runtime path of "/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/mcu_node" to ""
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/data_logger_node
+-- Set runtime path of "/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/lib/torsobot/data_logger_node" to ""
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/package_run_dependencies/torsobot
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/parent_prefix_path/torsobot
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/environment/path.dsv
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.bash
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.sh
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.zsh
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/local_setup.dsv
+-- Installing: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/package.dsv
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/ament_index/resource_index/packages/torsobot
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/cmake/torsobotConfig.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/cmake/torsobotConfig-version.cmake
+-- Up-to-date: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot/share/torsobot/package.xml

@@ -340,13 +340,13 @@
 			{
 				"command" : 11,
 				"file" : 2,
-				"line" : 181,
+				"line" : 216,
 				"parent" : 4
 			},
 			{
 				"command" : 11,
 				"file" : 2,
-				"line" : 216,
+				"line" : 181,
 				"parent" : 4
 			},
 			{
@@ -517,23 +517,23 @@
 	[
 		{
 			"backtrace" : 53,
-			"id" : "torsobot_interfaces__rosidl_typesupport_c::@6890427a1f51a3e7e1df"
+			"id" : "torsobot_interfaces__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df"
 		},
 		{
-			"backtrace" : 53,
-			"id" : "torsobot_interfaces__py::@dec268f2b0cb52a2d500"
+			"backtrace" : 54,
+			"id" : "torsobot_interfaces__rosidl_typesupport_c::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 9,
 			"id" : "torsobot_interfaces__rosidl_generator_c::@6890427a1f51a3e7e1df"
 		},
 		{
-			"backtrace" : 54,
-			"id" : "torsobot_interfaces__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df"
-		},
-		{
 			"backtrace" : 9,
 			"id" : "torsobot_interfaces__rosidl_generator_py::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 54,
+			"id" : "torsobot_interfaces__py::@dec268f2b0cb52a2d500"
 		}
 	],
 	"id" : "torsobot_interfaces_s__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",

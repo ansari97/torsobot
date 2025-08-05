@@ -41,7 +41,7 @@ float mot_vel;
 float mot_torque;
 int8_t mot_drv_mode;
 float desired_torso_pitch;
-float mot_max_torque;
+float mot_max_torque, mot_cmd_torque;
 float kp, ki, kd;
 
 // I2C write cmd for mcu data
@@ -57,6 +57,7 @@ const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07; // motor max torque value
 const uint8_t KP_CMD = 0X08;               // Kp value
 const uint8_t KI_CMD = 0X09;               // Ki value
 const uint8_t KD_CMD = 0X0A;               // Kd value
+const uint8_t MOTOR_CMD_TORQUE_CMD = 0X0B; // commanded motor torque
 
 // Heartbeat variables
 const uint8_t HEARTBEAT_ID = 0xAA;
@@ -109,7 +110,7 @@ public:
     heartbeat_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
-    data_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::dataCallback, this)); // Use std::bind
+    data_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::i2cDataCallback, this)); // Use std::bind
 
     RCLCPP_INFO(this->get_logger(), "Starting node!");
   }
@@ -157,7 +158,7 @@ private:
   }
 
   // timer callback for getting data on i2c
-  void dataCallback(void)
+  void i2cDataCallback(void)
   {
     if (!read_control_params_)
     {
@@ -191,6 +192,7 @@ private:
     int get_sensor_val_motor_vel = getSensorValue(MOTOR_VEL_CMD, &mot_vel);
     int get_sensor_val_motor_torque = getSensorValue(MOTOR_TORQUE_CMD, &mot_torque);
     int get_sensor_val_motor_drv_mode = getSensorValue(MOTOR_DRV_MODE_CMD, &mot_drv_mode);
+    int get_sensor_val_motor_cmd_torque = getSensorValue(MOTOR_CMD_TORQUE_CMD, &mot_cmd_torque);
 
     if (mot_drv_mode == 0)
     {
@@ -199,7 +201,7 @@ private:
     }
 
     // if sensor return values not 0
-    bool sensor_val_okay = get_sensor_val_IMU_pitch || get_sensor_val_IMU_pitch_rate || get_sensor_val_motor_pos || get_sensor_val_motor_vel || get_sensor_val_motor_torque || get_sensor_val_motor_drv_mode;
+    bool sensor_val_okay = get_sensor_val_IMU_pitch || get_sensor_val_IMU_pitch_rate || get_sensor_val_motor_pos || get_sensor_val_motor_vel || get_sensor_val_motor_torque || get_sensor_val_motor_drv_mode || get_sensor_val_motor_cmd_torque;
     sensor_val_okay = !sensor_val_okay; // invert logic
 
     // if sensor_val_okay is 1
@@ -222,6 +224,7 @@ private:
       data_message.motor_vel = mot_vel;
       data_message.motor_torque = mot_torque;
       data_message.motor_drv_mode = mot_drv_mode;
+      data_message.motor_cmd_torque = mot_cmd_torque;
 
       this->data_publisher_->publish(data_message);
 
@@ -230,6 +233,7 @@ private:
       RCLCPP_INFO(this->get_logger(), "Motor position: '%f'", mot_pos);
       RCLCPP_INFO(this->get_logger(), "Motor velocity: '%f'", mot_vel);
       RCLCPP_INFO(this->get_logger(), "Motor torque: '%f'", mot_torque);
+      RCLCPP_INFO(this->get_logger(), "Motor cmd torque: '%f'", mot_cmd_torque);
       RCLCPP_INFO(this->get_logger(), "Motor driver mode: '%d'", mot_drv_mode);
     }
     else
@@ -339,7 +343,7 @@ private:
     mcu_run_line_.set_value(false); // set to low
     usleep(100 * 1000);             // 100 miliseconds
     mcu_run_line_.set_value(true);  // reset state
-    usleep(3 * 1000 * 1000);        // wait for 3 seconds
+    usleep(1 * 1000 * 1000);        // wait for 1 second for arduino loop to start before I2C
   }
 
   void exitNode(void)
