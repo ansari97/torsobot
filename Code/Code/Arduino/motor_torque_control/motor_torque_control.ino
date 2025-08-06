@@ -90,11 +90,14 @@ const uint8_t MOTOR_VEL_CMD = 0x04;            // motor velocity position (not w
 const uint8_t MOTOR_TORQUE_CMD = 0X05;         // motor torque at motor shaft (not wheel)
 const uint8_t MOTOR_DRV_MODE_CMD = 0X06;       // motor driver mode
 
-const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07;  // motor max torque value
-const uint8_t KP_CMD = 0X08;                // Kp value
-const uint8_t KI_CMD = 0X09;                // Ki value
-const uint8_t KD_CMD = 0X0A;                // Kd value
-const uint8_t MOTOR_CMD_TORQUE_CMD = 0X0B;  // commanded motor torque
+const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07;   // motor max torque value
+const uint8_t KP_CMD = 0X08;                 // Kp value
+const uint8_t KI_CMD = 0X09;                 // Ki value
+const uint8_t KD_CMD = 0X0A;                 // Kd value
+const uint8_t CTRL_MAX_INTEGRAL_CMD = 0X0B;  // max integral term
+
+const uint8_t MOTOR_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
+
 
 const int data_len = sizeof(float);  // 4 bytes
 char desired_torso_pitch_data[data_len];
@@ -109,6 +112,8 @@ char mot_max_torque_data[data_len];
 char kp_data[data_len];
 char ki_data[data_len];
 char kd_data[data_len];
+char control_max_integral_data[data_len];
+
 char cmd_torque_data[data_len];
 
 // char write_buff[data_len + 10];
@@ -127,19 +132,23 @@ float gravity_y = 0;
 float gravity_z = 0;
 
 // Control parameters
-const float control_freq = 50;               // control torque write freq
-volatile float desired_torso_pitch = 178.0;  // degrees
+const float control_freq = 50;  // control torque write freq
 
-float kp = 0.5;  // N.m per rad
-float ki = 0.0;  // N.m per (rad.s)
-float kd = 0.0;  // N.m per (rad/s)
+// ------------Received from PI---------------
+volatile float desired_torso_pitch = 180.0;  // default desired torso angle in degrees
+
+volatile float kp = 0.5;  // N.m per rad
+volatile float ki = 0.0;  // N.m per (rad.s)
+volatile float kd = 0.0;  // N.m per (rad/s)
+
+// max motor torque
+volatile float max_torque = 0.5;
 
 // prevents integral windup
-float max_integral = 100;  // rad.s
+volatile float max_integral = 100;  // rad.s
+// -------------------------------------------
 
 float control_error, control_error_integral = 0;
-
-const float max_torque = 0.5;
 
 float ff_torque, ff_torque_calc;  // torque command to the motor
 
@@ -301,10 +310,10 @@ void setup() {
 
   // Copy to char buffers
   memcpy(desired_torso_pitch_data, const_cast<float *>(&desired_torso_pitch), sizeof(desired_torso_pitch));
-  memcpy(mot_max_torque_data, &max_torque, sizeof(max_torque));
-  memcpy(kp_data, &kp, sizeof(kp));
-  memcpy(ki_data, &ki, sizeof(ki));
-  memcpy(kd_data, &kd, sizeof(kd));
+  memcpy(mot_max_torque_data, const_cast<float *>(&max_torque), sizeof(max_torque));
+  memcpy(kp_data, const_cast<float *>(&kp), sizeof(kp));
+  memcpy(ki_data, const_cast<float *>(&ki), sizeof(ki));
+  memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
 
   Serial.println("Waiting for heartbeat from the PI...");
 
@@ -353,6 +362,15 @@ void loop() {
 
     emergencyStop();  // call the stop routine
   }
+
+  Serial.println(desired_torso_pitch);
+  Serial.println(kp);
+  Serial.println(ki);
+  Serial.println(kd);
+  Serial.println(max_torque);
+  Serial.println(max_integral);
+  Serial.println("---");
+
 
   if (bno08x.wasReset()) {
     Serial.print("Sensor was reset during loop!");
@@ -403,6 +421,9 @@ void loop() {
   }
   // // Serial.println();
 
+  // **************************************************************
+  // Controls part
+
   // We intend to send control frames every 1000/control_freq milliseconds; second condition allows imu values to stabilise at program start
   if (control_next_send_millis >= millis() || (millis() - start_time) < wait_time) {
     return;
@@ -413,9 +434,6 @@ void loop() {
     Serial.println("motor driver fault");
     moteus.SetStop();
   }
-
-  // **************************************************************
-  // Controls part
 
   time_last = time_now;  // store value from previous control loop's timer
 
@@ -458,6 +476,10 @@ void loop() {
   control_loop_ctr++;
   // **************************************************************
 
+
+  // **************************************************************
+  // copy data from driver to buffers
+
   // Get values every 5 loop iters
   if (control_loop_ctr % 5 != 0) {
     return;
@@ -489,6 +511,8 @@ void loop() {
   memcpy(mot_torque_data, &mot_torque, sizeof(float));
   memcpy(drv_mode_data, &drv_mode, sizeof(int8_t));
 
+  // **************************************************************
+
   // Delay function messes with the IMU data and causes buffers to overflow(?);
   // bno085 goes into reset state and needs a hardwareReset() call; hardwareReset() doesn't always work
   // delay(5);
@@ -501,11 +525,13 @@ void loop() {
 void i2cRecv(int len) {
   read_command = Wire.read();  // or the ID
 
+  int remaining_bytes = len - 1;
+
   if (static_cast<uint8_t>(read_command) == HEARTBEAT_ID) {
     if (len == 3) {
       heartbeat_rcvd_ID = read_command;
-      heartbeat_ctr = Wire.read();
-      heartbeat_rcvd_checksum = Wire.read();
+      heartbeat_ctr = Wire.read();            // read second bit
+      heartbeat_rcvd_checksum = Wire.read();  // read third bit
       was_heartbeat_rcvd = true;
 
       heartbeat_expected_checksum = heartbeat_ctr ^ heartbeat_rcvd_ID;
@@ -524,6 +550,72 @@ void i2cRecv(int len) {
       }
     }
   }
+  // else if it is the desired torso angle
+  else if (static_cast<uint8_t>(read_command) == DESIRED_TORSO_PITCH_CMD) {
+    if (len == 5) {
+      for (int i = 0; i < remaining_bytes; i++) { desired_torso_pitch_data[i] = Wire.read(); }
+      float temp_val;
+      memcpy(&temp_val, desired_torso_pitch_data, sizeof(float));
+
+      desired_torso_pitch = temp_val;
+    }
+  }
+  // else if it is the kp
+  else if (static_cast<uint8_t>(read_command) == KP_CMD) {
+    if (len == 5) {
+      for (int i = 0; i < remaining_bytes; i++) { kp_data[i] = Wire.read(); }
+      float temp_val;
+      memcpy(&temp_val, kp_data, sizeof(float));
+
+      kp = temp_val;
+    }
+  }
+  // else if it is the ki
+  else if (static_cast<uint8_t>(read_command) == KI_CMD) {
+    if (len == 5) {
+      for (int i = 0; i < remaining_bytes; i++) { ki_data[i] = Wire.read(); }
+      float temp_val;
+      memcpy(&temp_val, ki_data, sizeof(float));
+
+      ki = temp_val;
+    }
+  }
+  // else if it is the kd
+  else if (static_cast<uint8_t>(read_command) == KD_CMD) {
+    if (len == 5) {
+      for (int i = 0; i < remaining_bytes; i++) { kd_data[i] = Wire.read(); }
+      float temp_val;
+      memcpy(&temp_val, kd_data, sizeof(float));
+
+      kd = temp_val;
+    }
+  }
+  // else if it is the motor max torque
+  else if (static_cast<uint8_t>(read_command) == MOTOR_MAX_TORQUE_CMD) {
+    if (len == 5) {
+      for (int i = 0; i < remaining_bytes; i++) { mot_max_torque_data[i] = Wire.read(); }
+      float temp_val;
+      memcpy(&temp_val, mot_max_torque_data, sizeof(float));
+
+      max_torque = temp_val;
+    }
+  }
+  // else if it is the control max integral torque
+  else if (static_cast<uint8_t>(read_command) == CTRL_MAX_INTEGRAL_CMD) {
+    if (len == 5) {
+      for (int i = 0; i < remaining_bytes; i++) { control_max_integral_data[i] = Wire.read(); }
+      float temp_val;
+      memcpy(&temp_val, control_max_integral_data, sizeof(float));
+
+      max_integral = temp_val;
+    }
+  }
+  // ensures that if there are remaining bytes, they are read so that the buffer is emptied
+  else {
+    while (remaining_bytes--) {
+      (void)Wire.read();
+    }
+  }
 }
 
 // Called when the I2C slave is read from
@@ -531,7 +623,8 @@ void i2cReq() {
   i2c_read_ctr++;
   switch (read_command) {
     case DESIRED_TORSO_PITCH_CMD:
-      Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
+      // do nothing; since we're now writing this value to the pico
+      // Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
       break;
     case IMU_PITCH_CMD:
       Wire.write(imu_pitch_data, sizeof(imu_pitch_data));
@@ -555,13 +648,16 @@ void i2cReq() {
       Wire.write(mot_max_torque_data, sizeof(mot_max_torque_data));
       break;
     case KP_CMD:
-      Wire.write(kp_data, sizeof(kp_data));
+      // Wire.write(kp_data, sizeof(kp_data));
       break;
     case KI_CMD:
-      Wire.write(ki_data, sizeof(ki_data));
+      // Wire.write(ki_data, sizeof(ki_data));
       break;
     case KD_CMD:
-      Wire.write(kd_data, sizeof(kd_data));
+      // Wire.write(kd_data, sizeof(kd_data));
+      break;
+    case CTRL_MAX_INTEGRAL_CMD:
+      // Wire.write(kd_data, sizeof(kd_data));
       break;
     case MOTOR_CMD_TORQUE_CMD:
       Wire.write(cmd_torque_data, sizeof(cmd_torque_data));
@@ -652,7 +748,7 @@ float imuAngleCorrection(float pitch, float gravity_x, float gravity_y, float gr
 
   pitch = wrapTo360(pitch);
 
-  Serial.println(pitch);
+  // Serial.println(pitch);
   return pitch;
 }
 
