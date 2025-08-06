@@ -1,0 +1,1059 @@
+[0.254s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'list', '-p', '--base-paths', '/home/pi/torsobot', '--log-base', '/dev/null']
+[0.254s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='list', build_base='build', ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['/home/pi/torsobot', '--log-base', '/dev/null'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], topological_order=False, names_only=False, paths_only=True, topological_graph=False, topological_graph_dot=False, topological_graph_density=False, topological_graph_legend=False, topological_graph_dot_cluster=False, topological_graph_dot_include_skipped=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7fff10236a90>, verb_extension=<colcon_package_information.verb.list.ListVerb object at 0x7fff1022e9d0>, main=<bound method ListVerb.main of <colcon_package_information.verb.list.ListVerb object at 0x7fff1022e9d0>>, mixin_verb=('list',))
+[0.345s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.345s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.345s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.345s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.345s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.345s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/pi/torsobot', '/home/pi/torsobot/--log-base', '/dev/null'
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extensions ['ignore', 'ignore_ament_install']
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extension 'ignore'
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extension 'ignore_ament_install'
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extensions ['colcon_pkg']
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extension 'colcon_pkg'
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extensions ['colcon_meta']
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extension 'colcon_meta'
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extensions ['ros']
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extension 'ros'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extensions ['cmake', 'python']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extension 'cmake'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extension 'python'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extensions ['python_setup_py']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot) by extension 'python_setup_py'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extensions ['ignore', 'ignore_ament_install']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extension 'ignore'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extension 'ignore_ament_install'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extensions ['colcon_pkg']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extension 'colcon_pkg'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extensions ['colcon_meta']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extension 'colcon_meta'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extensions ['ros']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extension 'ros'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extensions ['cmake', 'python']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extension 'cmake'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extension 'python'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extensions ['python_setup_py']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code) by extension 'python_setup_py'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extensions ['ignore', 'ignore_ament_install']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extension 'ignore'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extension 'ignore_ament_install'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extensions ['colcon_pkg']
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extension 'colcon_pkg'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extensions ['colcon_meta']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extension 'colcon_meta'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extensions ['ros']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extension 'ros'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extensions ['cmake', 'python']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extension 'cmake'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extension 'python'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extensions ['python_setup_py']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code) by extension 'python_setup_py'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extensions ['ignore', 'ignore_ament_install']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extension 'ignore'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extension 'ignore_ament_install'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extensions ['colcon_pkg']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extension 'colcon_pkg'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extensions ['colcon_meta']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extension 'colcon_meta'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extensions ['ros']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extension 'ros'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extensions ['cmake', 'python']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extension 'cmake'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extension 'python'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extensions ['python_setup_py']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino) by extension 'python_setup_py'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extensions ['ignore', 'ignore_ament_install']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extension 'ignore'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extension 'ignore_ament_install'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extensions ['colcon_pkg']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extension 'colcon_pkg'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extensions ['colcon_meta']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extension 'colcon_meta'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extensions ['ros']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extension 'ros'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extensions ['cmake', 'python']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extension 'cmake'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extension 'python'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extensions ['python_setup_py']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl) by extension 'python_setup_py'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extensions ['ignore', 'ignore_ament_install']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extension 'ignore'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extension 'ignore_ament_install'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extensions ['colcon_pkg']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extension 'colcon_pkg'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extensions ['colcon_meta']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extension 'colcon_meta'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extensions ['ros']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extension 'ros'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extensions ['cmake', 'python']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extension 'cmake'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extension 'python'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extensions ['python_setup_py']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicControl_mod) by extension 'python_setup_py'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extensions ['ignore', 'ignore_ament_install']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extension 'ignore'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extension 'ignore_ament_install'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extensions ['colcon_pkg']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extension 'colcon_pkg'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extensions ['colcon_meta']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extension 'colcon_meta'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extensions ['ros']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extension 'ros'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extensions ['cmake', 'python']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extension 'cmake'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extension 'python'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extensions ['python_setup_py']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/BasicMotorControl) by extension 'python_setup_py'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extensions ['ignore', 'ignore_ament_install']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extension 'ignore'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extension 'ignore_ament_install'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extensions ['colcon_pkg']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extension 'colcon_pkg'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extensions ['colcon_meta']
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extension 'colcon_meta'
+[0.388s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extensions ['ros']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extension 'ros'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extensions ['cmake', 'python']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extension 'cmake'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extension 'python'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extensions ['python_setup_py']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/Example_01_SPI_RotationVector) by extension 'python_setup_py'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extensions ['ignore', 'ignore_ament_install']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extension 'ignore'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extension 'ignore_ament_install'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extensions ['colcon_pkg']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extension 'colcon_pkg'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extensions ['colcon_meta']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extension 'colcon_meta'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extensions ['ros']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extension 'ros'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extensions ['cmake', 'python']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extension 'cmake'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extension 'python'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extensions ['python_setup_py']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemo) by extension 'python_setup_py'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extensions ['ignore', 'ignore_ament_install']
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extension 'ignore'
+[0.389s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extension 'ignore_ament_install'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extensions ['colcon_pkg']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extension 'colcon_pkg'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extensions ['colcon_meta']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extension 'colcon_meta'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extensions ['ros']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extension 'ros'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extensions ['cmake', 'python']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extension 'cmake'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extension 'python'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extensions ['python_setup_py']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/I2CDemoIMU) by extension 'python_setup_py'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extensions ['ignore', 'ignore_ament_install']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extension 'ignore'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extension 'ignore_ament_install'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extensions ['colcon_pkg']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extension 'colcon_pkg'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extensions ['colcon_meta']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extension 'colcon_meta'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extensions ['ros']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extension 'ros'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extensions ['cmake', 'python']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extension 'cmake'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extension 'python'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extensions ['python_setup_py']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo) by extension 'python_setup_py'
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extensions ['ignore', 'ignore_ament_install']
+[0.390s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extension 'ignore'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extension 'ignore_ament_install'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extensions ['colcon_pkg']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extension 'colcon_pkg'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extensions ['colcon_meta']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extension 'colcon_meta'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extensions ['ros']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extension 'ros'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extensions ['cmake', 'python']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extension 'cmake'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extension 'python'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extensions ['python_setup_py']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo1) by extension 'python_setup_py'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extensions ['ignore', 'ignore_ament_install']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extension 'ignore'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extension 'ignore_ament_install'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extensions ['colcon_pkg']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extension 'colcon_pkg'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extensions ['colcon_meta']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extension 'colcon_meta'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extensions ['ros']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extension 'ros'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extensions ['cmake', 'python']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extension 'cmake'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extension 'python'
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extensions ['python_setup_py']
+[0.391s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo2) by extension 'python_setup_py'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extensions ['ignore', 'ignore_ament_install']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extension 'ignore'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extension 'ignore_ament_install'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extensions ['colcon_pkg']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extension 'colcon_pkg'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extensions ['colcon_meta']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extension 'colcon_meta'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extensions ['ros']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extension 'ros'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extensions ['cmake', 'python']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extension 'cmake'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extension 'python'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extensions ['python_setup_py']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPIDemo3) by extension 'python_setup_py'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extensions ['ignore', 'ignore_ament_install']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extension 'ignore'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extension 'ignore_ament_install'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extensions ['colcon_pkg']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extension 'colcon_pkg'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extensions ['colcon_meta']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extension 'colcon_meta'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extensions ['ros']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extension 'ros'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extensions ['cmake', 'python']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extension 'cmake'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extension 'python'
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extensions ['python_setup_py']
+[0.392s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/SPItoMyself) by extension 'python_setup_py'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extensions ['ignore', 'ignore_ament_install']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extension 'ignore'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extension 'ignore_ament_install'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extensions ['colcon_pkg']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extension 'colcon_pkg'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extensions ['colcon_meta']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extension 'colcon_meta'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extensions ['ros']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extension 'ros'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extensions ['cmake', 'python']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extension 'cmake'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extension 'python'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extensions ['python_setup_py']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/WaitComplete) by extension 'python_setup_py'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extensions ['ignore', 'ignore_ament_install']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extension 'ignore'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extension 'ignore_ament_install'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extensions ['colcon_pkg']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extension 'colcon_pkg'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extensions ['colcon_meta']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extension 'colcon_meta'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extensions ['ros']
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extension 'ros'
+[0.393s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extensions ['cmake', 'python']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extension 'cmake'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extension 'python'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extensions ['python_setup_py']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test) by extension 'python_setup_py'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extensions ['ignore', 'ignore_ament_install']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extension 'ignore'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extension 'ignore_ament_install'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extensions ['colcon_pkg']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extension 'colcon_pkg'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extensions ['colcon_meta']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extension 'colcon_meta'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extensions ['ros']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extension 'ros'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extensions ['cmake', 'python']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extension 'cmake'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extension 'python'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extensions ['python_setup_py']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_IMU_test_1) by extension 'python_setup_py'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extensions ['ignore', 'ignore_ament_install']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extension 'ignore'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extension 'ignore_ament_install'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extensions ['colcon_pkg']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extension 'colcon_pkg'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extensions ['colcon_meta']
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extension 'colcon_meta'
+[0.394s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extensions ['ros']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extension 'ros'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extensions ['cmake', 'python']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extension 'cmake'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extension 'python'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extensions ['python_setup_py']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_driver_IMU) by extension 'python_setup_py'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extensions ['ignore', 'ignore_ament_install']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extension 'ignore'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extension 'ignore_ament_install'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extensions ['colcon_pkg']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extension 'colcon_pkg'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extensions ['colcon_meta']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extension 'colcon_meta'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extensions ['ros']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extension 'ros'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extensions ['cmake', 'python']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extension 'cmake'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extension 'python'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extensions ['python_setup_py']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_test) by extension 'python_setup_py'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extensions ['ignore', 'ignore_ament_install']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extension 'ignore'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extension 'ignore_ament_install'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extensions ['colcon_pkg']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extension 'colcon_pkg'
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extensions ['colcon_meta']
+[0.395s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extension 'colcon_meta'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extensions ['ros']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extension 'ros'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extensions ['cmake', 'python']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extension 'cmake'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extension 'python'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extensions ['python_setup_py']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/motor_torque_control) by extension 'python_setup_py'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extensions ['ignore', 'ignore_ament_install']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extension 'ignore'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extension 'ignore_ament_install'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extensions ['colcon_pkg']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extension 'colcon_pkg'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extensions ['colcon_meta']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extension 'colcon_meta'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extensions ['ros']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extension 'ros'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extensions ['cmake', 'python']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extension 'cmake'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extension 'python'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extensions ['python_setup_py']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll) by extension 'python_setup_py'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extensions ['ignore', 'ignore_ament_install']
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extension 'ignore'
+[0.396s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extension 'ignore_ament_install'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extensions ['colcon_pkg']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extension 'colcon_pkg'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extensions ['colcon_meta']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extension 'colcon_meta'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extensions ['ros']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extension 'ros'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extensions ['cmake', 'python']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extension 'cmake'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extension 'python'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extensions ['python_setup_py']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Arduino/quaternion_yaw_pitch_roll_I2C) by extension 'python_setup_py'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extensions ['ignore', 'ignore_ament_install']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extension 'ignore'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extension 'ignore_ament_install'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extensions ['colcon_pkg']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extension 'colcon_pkg'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extensions ['colcon_meta']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extension 'colcon_meta'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extensions ['ros']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extension 'ros'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extensions ['cmake', 'python']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extension 'cmake'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extension 'python'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extensions ['python_setup_py']
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico) by extension 'python_setup_py'
+[0.397s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extensions ['ignore', 'ignore_ament_install']
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extension 'ignore'
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extension 'ignore_ament_install'
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extensions ['colcon_pkg']
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extension 'colcon_pkg'
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extensions ['colcon_meta']
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extension 'colcon_meta'
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extensions ['ros']
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extension 'ros'
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extensions ['cmake', 'python']
+[0.398s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extension 'cmake'
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/IMU_BNO085) by extension 'python'
+[0.401s] DEBUG:colcon.colcon_core.package_identification:Package '/home/pi/torsobot/Code/Code/Pico/IMU_BNO085' with type 'cmake' and name 'IMU_BNO085'
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extensions ['ignore', 'ignore_ament_install']
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extension 'ignore'
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extension 'ignore_ament_install'
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extensions ['colcon_pkg']
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extension 'colcon_pkg'
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extensions ['colcon_meta']
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extension 'colcon_meta'
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extensions ['ros']
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extension 'ros'
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extensions ['cmake', 'python']
+[0.401s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extension 'cmake'
+[0.402s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/SPI_demo) by extension 'python'
+[0.403s] DEBUG:colcon.colcon_core.package_identification:Package '/home/pi/torsobot/Code/Code/Pico/SPI_demo' with type 'cmake' and name 'SPI_demo'
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extensions ['ignore', 'ignore_ament_install']
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extension 'ignore'
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extension 'ignore_ament_install'
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extensions ['colcon_pkg']
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extension 'colcon_pkg'
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extensions ['colcon_meta']
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extension 'colcon_meta'
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extensions ['ros']
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extension 'ros'
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extensions ['cmake', 'python']
+[0.403s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extension 'cmake'
+[0.404s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/blink) by extension 'python'
+[0.404s] DEBUG:colcon.colcon_core.package_identification:Package '/home/pi/torsobot/Code/Code/Pico/blink' with type 'cmake' and name 'blink'
+[0.404s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extensions ['ignore', 'ignore_ament_install']
+[0.404s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extension 'ignore'
+[0.404s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extension 'ignore_ament_install'
+[0.405s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extensions ['colcon_pkg']
+[0.405s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extension 'colcon_pkg'
+[0.405s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extensions ['colcon_meta']
+[0.405s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extension 'colcon_meta'
+[0.405s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extensions ['ros']
+[0.405s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extension 'ros'
+[0.405s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extensions ['cmake', 'python']
+[0.405s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extension 'cmake'
+[0.406s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/Pico/hello_world) by extension 'python'
+[0.406s] DEBUG:colcon.colcon_core.package_identification:Package '/home/pi/torsobot/Code/Code/Pico/hello_world' with type 'cmake' and name 'hello_world'
+[0.406s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extensions ['ignore', 'ignore_ament_install']
+[0.406s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extension 'ignore'
+[0.406s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extension 'ignore_ament_install'
+[0.406s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extensions ['colcon_pkg']
+[0.406s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extension 'colcon_pkg'
+[0.406s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extensions ['colcon_meta']
+[0.406s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extension 'colcon_meta'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extensions ['ros']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extension 'ros'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extensions ['cmake', 'python']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extension 'cmake'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extension 'python'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extensions ['python_setup_py']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/raspberry_pi) by extension 'python_setup_py'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extensions ['ignore', 'ignore_ament_install']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extension 'ignore'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extension 'ignore_ament_install'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extensions ['colcon_pkg']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extension 'colcon_pkg'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extensions ['colcon_meta']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extension 'colcon_meta'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extensions ['ros']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extension 'ros'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extensions ['cmake', 'python']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extension 'cmake'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extension 'python'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extensions ['python_setup_py']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws) by extension 'python_setup_py'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/build) by extensions ['ignore', 'ignore_ament_install']
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/build) by extension 'ignore'
+[0.407s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/build) ignored
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extensions ['ignore', 'ignore_ament_install']
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extension 'ignore'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extension 'ignore_ament_install'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extensions ['colcon_pkg']
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extension 'colcon_pkg'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extensions ['colcon_meta']
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extension 'colcon_meta'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extensions ['ros']
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extension 'ros'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extensions ['cmake', 'python']
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extension 'cmake'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extension 'python'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extensions ['python_setup_py']
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/data_logs) by extension 'python_setup_py'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/install) by extensions ['ignore', 'ignore_ament_install']
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/install) by extension 'ignore'
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/install) ignored
+[0.408s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/log) by extensions ['ignore', 'ignore_ament_install']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/log) by extension 'ignore'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/log) ignored
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extensions ['ignore', 'ignore_ament_install']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extension 'ignore'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extension 'ignore_ament_install'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extensions ['colcon_pkg']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extension 'colcon_pkg'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extensions ['colcon_meta']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extension 'colcon_meta'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extensions ['ros']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extension 'ros'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extensions ['cmake', 'python']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extension 'cmake'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extension 'python'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extensions ['python_setup_py']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src) by extension 'python_setup_py'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extensions ['ignore', 'ignore_ament_install']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extension 'ignore'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extension 'ignore_ament_install'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extensions ['colcon_pkg']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extension 'colcon_pkg'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extensions ['colcon_meta']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extension 'colcon_meta'
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extensions ['ros']
+[0.409s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot) by extension 'ros'
+[0.415s] DEBUG:colcon.colcon_core.package_identification:Package '/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot' with type 'ros.ament_cmake' and name 'torsobot'
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extension 'ignore'
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extension 'ignore_ament_install'
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extensions ['colcon_pkg']
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extension 'colcon_pkg'
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extensions ['colcon_meta']
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extension 'colcon_meta'
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extensions ['ros']
+[0.415s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces) by extension 'ros'
+[0.416s] DEBUG:colcon.colcon_core.package_identification:Package '/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot_interfaces' with type 'ros.ament_cmake' and name 'torsobot_interfaces'
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extensions ['ignore', 'ignore_ament_install']
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extension 'ignore'
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extension 'ignore_ament_install'
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extensions ['colcon_pkg']
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extension 'colcon_pkg'
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extensions ['colcon_meta']
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extension 'colcon_meta'
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extensions ['ros']
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extension 'ros'
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extensions ['cmake', 'python']
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extension 'cmake'
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extension 'python'
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extensions ['python_setup_py']
+[0.416s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials) by extension 'python_setup_py'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extensions ['ignore', 'ignore_ament_install']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extension 'ignore'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extension 'ignore_ament_install'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extensions ['colcon_pkg']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extension 'colcon_pkg'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extensions ['colcon_meta']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extension 'colcon_meta'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extensions ['ros']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extension 'ros'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extensions ['cmake', 'python']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extension 'cmake'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extension 'python'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extensions ['python_setup_py']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/binary_operations) by extension 'python_setup_py'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extensions ['ignore', 'ignore_ament_install']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extension 'ignore'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extension 'ignore_ament_install'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extensions ['colcon_pkg']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extension 'colcon_pkg'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extensions ['colcon_meta']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extension 'colcon_meta'
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extensions ['ros']
+[0.417s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extension 'ros'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extensions ['cmake', 'python']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extension 'cmake'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extension 'python'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extensions ['python_setup_py']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Code/tutorials/pointers) by extension 'python_setup_py'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extensions ['ignore', 'ignore_ament_install']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extension 'ignore'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extension 'ignore_ament_install'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extensions ['colcon_pkg']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extension 'colcon_pkg'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extensions ['colcon_meta']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extension 'colcon_meta'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extensions ['ros']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extension 'ros'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extensions ['cmake', 'python']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extension 'cmake'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extension 'python'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extensions ['python_setup_py']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling) by extension 'python_setup_py'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extensions ['ignore', 'ignore_ament_install']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extension 'ignore'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extension 'ignore_ament_install'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extensions ['colcon_pkg']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extension 'colcon_pkg'
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extensions ['colcon_meta']
+[0.418s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extension 'colcon_meta'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extensions ['ros']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extension 'ros'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extensions ['cmake', 'python']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extension 'cmake'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extension 'python'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extensions ['python_setup_py']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/2DRimlessWheel) by extension 'python_setup_py'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extensions ['ignore', 'ignore_ament_install']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extension 'ignore'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extension 'ignore_ament_install'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extensions ['colcon_pkg']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extension 'colcon_pkg'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extensions ['colcon_meta']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extension 'colcon_meta'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extensions ['ros']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extension 'ros'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extensions ['cmake', 'python']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extension 'cmake'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extension 'python'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extensions ['python_setup_py']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/WheeledPendulum) by extension 'python_setup_py'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extensions ['ignore', 'ignore_ament_install']
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extension 'ignore'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extension 'ignore_ament_install'
+[0.419s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extensions ['colcon_pkg']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extension 'colcon_pkg'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extensions ['colcon_meta']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extension 'colcon_meta'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extensions ['ros']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extension 'ros'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extensions ['cmake', 'python']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extension 'cmake'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extension 'python'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extensions ['python_setup_py']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Code/Modelling/torsobot) by extension 'python_setup_py'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extensions ['ignore', 'ignore_ament_install']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extension 'ignore'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extension 'ignore_ament_install'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extensions ['colcon_pkg']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extension 'colcon_pkg'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extensions ['colcon_meta']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extension 'colcon_meta'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extensions ['ros']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extension 'ros'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extensions ['cmake', 'python']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extension 'cmake'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extension 'python'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extensions ['python_setup_py']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design) by extension 'python_setup_py'
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extensions ['ignore', 'ignore_ament_install']
+[0.420s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extension 'ignore'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extension 'ignore_ament_install'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extensions ['colcon_pkg']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extension 'colcon_pkg'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extensions ['colcon_meta']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extension 'colcon_meta'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extensions ['ros']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extension 'ros'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extensions ['cmake', 'python']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extension 'cmake'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extension 'python'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extensions ['python_setup_py']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot) by extension 'python_setup_py'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extensions ['ignore', 'ignore_ament_install']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extension 'ignore'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extension 'ignore_ament_install'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extensions ['colcon_pkg']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extension 'colcon_pkg'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extensions ['colcon_meta']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extension 'colcon_meta'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extensions ['ros']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extension 'ros'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extensions ['cmake', 'python']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extension 'cmake'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extension 'python'
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extensions ['python_setup_py']
+[0.421s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD) by extension 'python_setup_py'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extensions ['ignore', 'ignore_ament_install']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extension 'ignore'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extension 'ignore_ament_install'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extensions ['colcon_pkg']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extension 'colcon_pkg'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extensions ['colcon_meta']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extension 'colcon_meta'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extensions ['ros']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extension 'ros'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extensions ['cmake', 'python']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extension 'cmake'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extension 'python'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extensions ['python_setup_py']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/BOM) by extension 'python_setup_py'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extensions ['ignore', 'ignore_ament_install']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extension 'ignore'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extension 'ignore_ament_install'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extensions ['colcon_pkg']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extension 'colcon_pkg'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extensions ['colcon_meta']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extension 'colcon_meta'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extensions ['ros']
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extension 'ros'
+[0.422s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extensions ['cmake', 'python']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extension 'cmake'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extension 'python'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extensions ['python_setup_py']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Belt Tensioner) by extension 'python_setup_py'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extensions ['ignore', 'ignore_ament_install']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extension 'ignore'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extension 'ignore_ament_install'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extensions ['colcon_pkg']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extension 'colcon_pkg'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extensions ['colcon_meta']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extension 'colcon_meta'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extensions ['ros']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extension 'ros'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extensions ['cmake', 'python']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extension 'cmake'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extension 'python'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extensions ['python_setup_py']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS) by extension 'python_setup_py'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extensions ['ignore', 'ignore_ament_install']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extension 'ignore'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extension 'ignore_ament_install'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extensions ['colcon_pkg']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extension 'colcon_pkg'
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extensions ['colcon_meta']
+[0.423s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extension 'colcon_meta'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extensions ['ros']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extension 'ros'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extensions ['cmake', 'python']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extension 'cmake'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extension 'python'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extensions ['python_setup_py']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/COTS/Belt Pulleys) by extension 'python_setup_py'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extensions ['ignore', 'ignore_ament_install']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extension 'ignore'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extension 'ignore_ament_install'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extensions ['colcon_pkg']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extension 'colcon_pkg'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extensions ['colcon_meta']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extension 'colcon_meta'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extensions ['ros']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extension 'ros'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extensions ['cmake', 'python']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extension 'cmake'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extension 'python'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extensions ['python_setup_py']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics) by extension 'python_setup_py'
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extensions ['ignore', 'ignore_ament_install']
+[0.424s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extension 'ignore'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extension 'ignore_ament_install'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extensions ['colcon_pkg']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extension 'colcon_pkg'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extensions ['colcon_meta']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extension 'colcon_meta'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extensions ['ros']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extension 'ros'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extensions ['cmake', 'python']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extension 'cmake'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extension 'python'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extensions ['python_setup_py']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/160407034-7-1889262) by extension 'python_setup_py'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extensions ['ignore', 'ignore_ament_install']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extension 'ignore'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extension 'ignore_ament_install'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extensions ['colcon_pkg']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extension 'colcon_pkg'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extensions ['colcon_meta']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extension 'colcon_meta'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extensions ['ros']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extension 'ros'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extensions ['cmake', 'python']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extension 'cmake'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extension 'python'
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extensions ['python_setup_py']
+[0.425s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click) by extension 'python_setup_py'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extensions ['ignore', 'ignore_ament_install']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extension 'ignore'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extension 'ignore_ament_install'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extensions ['colcon_pkg']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extension 'colcon_pkg'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extensions ['colcon_meta']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extension 'colcon_meta'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extensions ['ros']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extension 'ros'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extensions ['cmake', 'python']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extension 'cmake'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extension 'python'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extensions ['python_setup_py']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/MCP2517FD_Click/CAD) by extension 'python_setup_py'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extensions ['ignore', 'ignore_ament_install']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extension 'ignore'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extension 'ignore_ament_install'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extensions ['colcon_pkg']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extension 'colcon_pkg'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extensions ['colcon_meta']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extension 'colcon_meta'
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extensions ['ros']
+[0.426s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extension 'ros'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extensions ['cmake', 'python']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extension 'cmake'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extension 'python'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extensions ['python_setup_py']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708) by extension 'python_setup_py'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extensions ['ignore', 'ignore_ament_install']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extension 'ignore'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extension 'ignore_ament_install'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extensions ['colcon_pkg']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extension 'colcon_pkg'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extensions ['colcon_meta']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extension 'colcon_meta'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extensions ['ros']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extension 'ros'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extensions ['cmake', 'python']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extension 'cmake'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extension 'python'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extensions ['python_setup_py']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Electronics/Pico-2-step-20240708/__MACOSX) by extension 'python_setup_py'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extensions ['ignore', 'ignore_ament_install']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extension 'ignore'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extension 'ignore_ament_install'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extensions ['colcon_pkg']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extension 'colcon_pkg'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extensions ['colcon_meta']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extension 'colcon_meta'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extensions ['ros']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extension 'ros'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extensions ['cmake', 'python']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extension 'cmake'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extension 'python'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extensions ['python_setup_py']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files) by extension 'python_setup_py'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extensions ['ignore', 'ignore_ament_install']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extension 'ignore'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extension 'ignore_ament_install'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extensions ['colcon_pkg']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extension 'colcon_pkg'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extensions ['colcon_meta']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extension 'colcon_meta'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extensions ['ros']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extension 'ros'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extensions ['cmake', 'python']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extension 'cmake'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extension 'python'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extensions ['python_setup_py']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP) by extension 'python_setup_py'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extensions ['ignore', 'ignore_ament_install']
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extension 'ignore'
+[0.428s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extension 'ignore_ament_install'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extensions ['colcon_pkg']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extension 'colcon_pkg'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extensions ['colcon_meta']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extension 'colcon_meta'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extensions ['ros']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extension 'ros'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extensions ['cmake', 'python']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extension 'cmake'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extension 'python'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extensions ['python_setup_py']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/ABS) by extension 'python_setup_py'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extensions ['ignore', 'ignore_ament_install']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extension 'ignore'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extension 'ignore_ament_install'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extensions ['colcon_pkg']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extension 'colcon_pkg'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extensions ['colcon_meta']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extension 'colcon_meta'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extensions ['ros']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extension 'ros'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extensions ['cmake', 'python']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extension 'cmake'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extension 'python'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extensions ['python_setup_py']
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/3DP/SLA) by extension 'python_setup_py'
+[0.429s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extensions ['ignore', 'ignore_ament_install']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extension 'ignore'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extension 'ignore_ament_install'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extensions ['colcon_pkg']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extension 'colcon_pkg'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extensions ['colcon_meta']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extension 'colcon_meta'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extensions ['ros']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extension 'ros'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extensions ['cmake', 'python']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extension 'cmake'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extension 'python'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extensions ['python_setup_py']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Manufacturing Files/Laser) by extension 'python_setup_py'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extensions ['ignore', 'ignore_ament_install']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extension 'ignore'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extension 'ignore_ament_install'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extensions ['colcon_pkg']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extension 'colcon_pkg'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extensions ['colcon_meta']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extension 'colcon_meta'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extensions ['ros']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extension 'ros'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extensions ['cmake', 'python']
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extension 'cmake'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extension 'python'
+[0.430s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extensions ['python_setup_py']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor) by extension 'python_setup_py'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extensions ['ignore', 'ignore_ament_install']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extension 'ignore'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extension 'ignore_ament_install'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extensions ['colcon_pkg']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extension 'colcon_pkg'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extensions ['colcon_meta']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extension 'colcon_meta'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extensions ['ros']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extension 'ros'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extensions ['cmake', 'python']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extension 'cmake'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extension 'python'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extensions ['python_setup_py']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/Motor Calibration Rig) by extension 'python_setup_py'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extensions ['ignore', 'ignore_ament_install']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extension 'ignore'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extension 'ignore_ament_install'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extensions ['colcon_pkg']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extension 'colcon_pkg'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extensions ['colcon_meta']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extension 'colcon_meta'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extensions ['ros']
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extension 'ros'
+[0.431s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extensions ['cmake', 'python']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extension 'cmake'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extension 'python'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extensions ['python_setup_py']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital) by extension 'python_setup_py'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extensions ['ignore', 'ignore_ament_install']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extension 'ignore'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extension 'ignore_ament_install'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extensions ['colcon_pkg']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extension 'colcon_pkg'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extensions ['colcon_meta']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extension 'colcon_meta'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extensions ['ros']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extension 'ros'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extensions ['cmake', 'python']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extension 'cmake'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extension 'python'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extensions ['python_setup_py']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/CAD/uw-logo-vertical-color-web-digital/__MACOSX) by extension 'python_setup_py'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extensions ['ignore', 'ignore_ament_install']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extension 'ignore'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extension 'ignore_ament_install'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extensions ['colcon_pkg']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extension 'colcon_pkg'
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extensions ['colcon_meta']
+[0.432s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extension 'colcon_meta'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extensions ['ros']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extension 'ros'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extensions ['cmake', 'python']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extension 'cmake'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extension 'python'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extensions ['python_setup_py']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes) by extension 'python_setup_py'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extensions ['ignore', 'ignore_ament_install']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extension 'ignore'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extension 'ignore_ament_install'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extensions ['colcon_pkg']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extension 'colcon_pkg'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extensions ['colcon_meta']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extension 'colcon_meta'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extensions ['ros']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extension 'ros'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extensions ['cmake', 'python']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extension 'cmake'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extension 'python'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extensions ['python_setup_py']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/Calculations and Notes/Datasheets) by extension 'python_setup_py'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extensions ['ignore', 'ignore_ament_install']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extension 'ignore'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extension 'ignore_ament_install'
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extensions ['colcon_pkg']
+[0.433s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extension 'colcon_pkg'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extensions ['colcon_meta']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extension 'colcon_meta'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extensions ['ros']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extension 'ros'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extensions ['cmake', 'python']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extension 'cmake'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extension 'python'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extensions ['python_setup_py']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD) by extension 'python_setup_py'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extensions ['ignore', 'ignore_ament_install']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extension 'ignore'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extension 'ignore_ament_install'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extensions ['colcon_pkg']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extension 'colcon_pkg'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extensions ['colcon_meta']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extension 'colcon_meta'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extensions ['ros']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extension 'ros'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extensions ['cmake', 'python']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extension 'cmake'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extension 'python'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extensions ['python_setup_py']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot) by extension 'python_setup_py'
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extensions ['ignore', 'ignore_ament_install']
+[0.434s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extension 'ignore'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extension 'ignore_ament_install'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extensions ['colcon_pkg']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extension 'colcon_pkg'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extensions ['colcon_meta']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extension 'colcon_meta'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extensions ['ros']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extension 'ros'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extensions ['cmake', 'python']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extension 'cmake'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extension 'python'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extensions ['python_setup_py']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Design/Torsobot/ECAD/torsobot/torsobot-backups) by extension 'python_setup_py'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extensions ['ignore', 'ignore_ament_install']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extension 'ignore'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extension 'ignore_ament_install'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extensions ['colcon_pkg']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extension 'colcon_pkg'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extensions ['colcon_meta']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extension 'colcon_meta'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extensions ['ros']
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extension 'ros'
+[0.435s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extensions ['cmake', 'python']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extension 'cmake'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extension 'python'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extensions ['python_setup_py']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old) by extension 'python_setup_py'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extensions ['ignore', 'ignore_ament_install']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extension 'ignore'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extension 'ignore_ament_install'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extensions ['colcon_pkg']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extension 'colcon_pkg'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extensions ['colcon_meta']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extension 'colcon_meta'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extensions ['ros']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extension 'ros'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extensions ['cmake', 'python']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extension 'cmake'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extension 'python'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extensions ['python_setup_py']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenQDD-V1) by extension 'python_setup_py'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extensions ['ignore', 'ignore_ament_install']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extension 'ignore'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extension 'ignore_ament_install'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extensions ['colcon_pkg']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extension 'colcon_pkg'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extensions ['colcon_meta']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extension 'colcon_meta'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extensions ['ros']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extension 'ros'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extensions ['cmake', 'python']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extension 'cmake'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extension 'python'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extensions ['python_setup_py']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/OpenSourceLeg) by extension 'python_setup_py'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extensions ['ignore', 'ignore_ament_install']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extension 'ignore'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extension 'ignore_ament_install'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extensions ['colcon_pkg']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extension 'colcon_pkg'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extensions ['colcon_meta']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extension 'colcon_meta'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extensions ['ros']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extension 'ros'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extensions ['cmake', 'python']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extension 'cmake'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extension 'python'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extensions ['python_setup_py']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/RoadRunner2) by extension 'python_setup_py'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extensions ['ignore', 'ignore_ament_install']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extension 'ignore'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extension 'ignore_ament_install'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extensions ['colcon_pkg']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extension 'colcon_pkg'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extensions ['colcon_meta']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extension 'colcon_meta'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extensions ['ros']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extension 'ros'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extensions ['cmake', 'python']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extension 'cmake'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extension 'python'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extensions ['python_setup_py']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW) by extension 'python_setup_py'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extensions ['ignore', 'ignore_ament_install']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extension 'ignore'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extension 'ignore_ament_install'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extensions ['colcon_pkg']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extension 'colcon_pkg'
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extensions ['colcon_meta']
+[0.438s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extension 'colcon_meta'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extensions ['ros']
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extension 'ros'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extensions ['cmake', 'python']
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extension 'cmake'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extension 'python'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extensions ['python_setup_py']
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Old/TorsoBot_SW/Other parts) by extension 'python_setup_py'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extensions ['ignore', 'ignore_ament_install']
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extension 'ignore'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extension 'ignore_ament_install'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extensions ['colcon_pkg']
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extension 'colcon_pkg'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extensions ['colcon_meta']
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extension 'colcon_meta'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extensions ['ros']
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extension 'ros'
+[0.439s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extensions ['cmake', 'python']
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extension 'cmake'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extension 'python'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extensions ['python_setup_py']
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/Ordering) by extension 'python_setup_py'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/log) by extensions ['ignore', 'ignore_ament_install']
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/log) by extension 'ignore'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(/home/pi/torsobot/log) ignored
+[0.440s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
