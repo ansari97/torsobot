@@ -1,0 +1,17 @@
+[ 25%] [32mBuilding CXX object CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o[0m
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:[m[K In member function ‘[01m[Kvoid MCUNode::i2cDataCallback()[m[K’:
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:249:80:[m[K [01;31m[Kerror: [m[Kinvalid conversion from ‘[01m[Kvolatile float*[m[K’ to ‘[01m[Kfloat*[m[K’ [[01;31m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-fpermissive-fpermissive]8;;[m[K]
+  249 |     int get_sensor_val_motor_cmd_torque = getSensorValue(MOTOR_CMD_TORQUE_CMD, [01;31m[K&mot_cmd_torque[m[K);
+      |                                                                                [01;31m[K^~~~~~~~~~~~~~~[m[K
+      |                                                                                [01;31m[K|[m[K
+      |                                                                                [01;31m[Kvolatile float*[m[K
+[01m[K/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/src/mcu_node.cpp:300:42:[m[K [01;36m[Knote: [m[K  initializing argument 2 of ‘[01m[Kint MCUNode::getSensorValue(uint8_t, float*)[m[K’
+  300 |   int getSensorValue(uint8_t cmd, [01;36m[Kfloat *sensor_val_addr[m[K)
+      |                                   [01;36m[K~~~~~~~^~~~~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/mcu_node.dir/build.make:76: CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/mcu_node.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[ 75%] [32m[1mLinking CXX executable data_logger_node[0m
+[ 75%] Built target data_logger_node
+gmake: *** [Makefile:146: all] Error 2

@@ -27,6 +27,11 @@ using namespace std::chrono_literals;
 // Define the CSV header row based on your message fields
 const std::string CSV_HEADER = "timestamp,IMU_pitch,IMU_pitch_rate,motor_pos,motor_vel,motor_trq,motor_cmd_trq,motor_drv_mode";
 
+// parameters
+volatile float desired_torso_pitch;
+volatile float mot_max_torque, control_max_integral;
+volatile float kp, ki, kd;
+
 class DataLoggerNode : public rclcpp::Node
 {
 public:
@@ -115,11 +120,47 @@ public:
         std::bind(&DataLoggerNode::dataCallback, this, std::placeholders::_1));
 
     // create client for requesting control parameters
-    service_client_ = this->create_client<torsobot_interfaces::srv::RequestControlParams>("control_params");
+    // does nothing
+    // service_client_ = this->create_client<torsobot_interfaces::srv::RequestControlParams>("control_params");
 
-    timer_ = this->create_wall_timer(
-        4s, // Wait for 4 seconds
-        std::bind(&DataLoggerNode::requestControlParams, this));
+    // timer_ = this->create_wall_timer(
+    //     4s, // Wait for 4 seconds
+    //     std::bind(&DataLoggerNode::requestControlParams, this));
+
+    // Create ROS2 parameters
+    this->declare_parameter("desired_torso_pitch", 180.0); // default value of 180
+    this->declare_parameter("kp", 0.0);                    // default value of 0
+    this->declare_parameter("ki", 0.0);                    // default value of 0
+    this->declare_parameter("kd", 0.0);                    // default value of 0
+    this->declare_parameter("motor_max_torque", 0.0);      // default value of 0
+    this->declare_parameter("control_max_integral", 0.0);  // default value of 0
+
+    // get ROS2 parameters fromthe param file (listed in launch file)
+    this->get_parameter("desired_torso_pitch", desired_torso_pitch);
+    this->get_parameter("kp", kp);
+    this->get_parameter("ki", ki);
+    this->get_parameter("kd", kd);
+    this->get_parameter("motor_max_torque", mot_max_torque);
+    this->get_parameter("control_max_integral", control_max_integral);
+
+    // Write values to run specific json file
+    if (metadata_file_.is_open())
+    {
+      nlohmann::json metadata;
+
+      metadata["desired_torso_pitch"] = desired_torso_pitch;
+      metadata["mot_max_torque"] = mot_max_torque;
+      metadata["control_max_integral"] = control_max_integral;
+      metadata["kp"] = kp;
+      metadata["ki"] = ki;
+      metadata["kd"] = kd;
+      metadata_file_ << metadata.dump(4); // dump with indentation of 4 spaces
+      metadata_file_.close();
+    }
+    else
+    {
+      RCLCPP_WARN(this->get_logger(), "File is not open, cannot write metadata.");
+    }
 
     RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '%s'", csv_full_path_str.c_str());
   }
@@ -127,36 +168,37 @@ public:
 private:
   rclcpp::Client<torsobot_interfaces::srv::RequestControlParams>::SharedPtr service_client_;
   rclcpp::Subscription<torsobot_interfaces::msg::TorsobotData>::SharedPtr subscriber_;
-  rclcpp::TimerBase::SharedPtr timer_;
+  // rclcpp::TimerBase::SharedPtr timer_;
   std::ofstream output_file_;
   std::ofstream metadata_file_;
 
-  void requestControlParams(void)
-  {
-    // request control params
-    // check if the service server is available
-    if (!service_client_->wait_for_service(1s))
-    {
-      // if (!rclcpp::ok())
-      // {
-      //   RCLCPP_ERROR(this->get_logger(), "Client interrupted while waiting for service. Exiting.");
-      //   return;
-      // }
-      RCLCPP_ERROR(this->get_logger(), "Service not available after waiting...");
-      return;
-    }
+  // for requesting control parameter data from the mcu_node service server; does nothing now
+  // void requestControlParams(void)
+  // {
+  //   // request control params
+  //   // check if the service server is available
+  //   if (!service_client_->wait_for_service(1s))
+  //   {
+  //     // if (!rclcpp::ok())
+  //     // {
+  //     //   RCLCPP_ERROR(this->get_logger(), "Client interrupted while waiting for service. Exiting.");
+  //     //   return;
+  //     // }
+  //     RCLCPP_ERROR(this->get_logger(), "Service not available after waiting...");
+  //     return;
+  //   }
 
-    // Create a new request message.
-    // In this case, the request is empty, so we don't need to populate it.
-    auto request = std::make_shared<torsobot_interfaces::srv::RequestControlParams::Request>();
+  //   // Create a new request message.
+  //   // In this case, the request is empty, so we don't need to populate it.
+  //   auto request = std::make_shared<torsobot_interfaces::srv::RequestControlParams::Request>();
 
-    // Asynchronously send the request and attach a callback to handle the response.
-    // The callback will be executed once the response is received.
-    service_client_->async_send_request(request,
-                                        std::bind(&DataLoggerNode::handleResponse, this, std::placeholders::_1));
+  //   // Asynchronously send the request and attach a callback to handle the response.
+  //   // The callback will be executed once the response is received.
+  //   service_client_->async_send_request(request,
+  //                                       std::bind(&DataLoggerNode::handleResponse, this, std::placeholders::_1));
 
-    timer_->cancel();
-  }
+  //   timer_->cancel();
+  // }
 
   void dataCallback(const torsobot_interfaces::msg::TorsobotData::SharedPtr msg)
   {
@@ -176,33 +218,33 @@ private:
     }
   }
 
-  // to handle service response
-  void handleResponse(rclcpp::Client<torsobot_interfaces::srv::RequestControlParams>::SharedFuture future)
-  {
-    auto response = future.get();
-    RCLCPP_INFO(this->get_logger(), "desired_torso_pitch: %f", response->desired_torso_pitch);
-    RCLCPP_INFO(this->get_logger(), "mot_max_torque: %f", response->mot_max_torque);
-    RCLCPP_INFO(this->get_logger(), "kp: %f", response->kp);
-    RCLCPP_INFO(this->get_logger(), "ki: %f", response->ki);
-    RCLCPP_INFO(this->get_logger(), "kd: %f", response->kd);
+  // // to handle service response; does nothing now
+  // void handleResponse(rclcpp::Client<torsobot_interfaces::srv::RequestControlParams>::SharedFuture future)
+  // {
+  //   auto response = future.get();
+  //   RCLCPP_INFO(this->get_logger(), "desired_torso_pitch: %f", response->desired_torso_pitch);
+  //   RCLCPP_INFO(this->get_logger(), "mot_max_torque: %f", response->mot_max_torque);
+  //   RCLCPP_INFO(this->get_logger(), "kp: %f", response->kp);
+  //   RCLCPP_INFO(this->get_logger(), "ki: %f", response->ki);
+  //   RCLCPP_INFO(this->get_logger(), "kd: %f", response->kd);
 
-    if (metadata_file_.is_open())
-    {
-      nlohmann::json metadata;
+  //   if (metadata_file_.is_open())
+  //   {
+  //     nlohmann::json metadata;
 
-      metadata["desired_torso_pitch"] = response->desired_torso_pitch;
-      metadata["mot_max_torque"] = response->mot_max_torque;
-      metadata["kp"] = response->kp;
-      metadata["ki"] = response->ki;
-      metadata["kd"] = response->kd;
-      metadata_file_ << metadata.dump(4); // dump with indentation of 4 spaces
-      metadata_file_.close();
-    }
-    else
-    {
-      RCLCPP_WARN(this->get_logger(), "File is not open, cannot write metadata.");
-    }
-  }
+  //     metadata["desired_torso_pitch"] = response->desired_torso_pitch;
+  //     metadata["mot_max_torque"] = response->mot_max_torque;
+  //     metadata["kp"] = response->kp;
+  //     metadata["ki"] = response->ki;
+  //     metadata["kd"] = response->kd;
+  //     metadata_file_ << metadata.dump(4); // dump with indentation of 4 spaces
+  //     metadata_file_.close();
+  //   }
+  //   else
+  //   {
+  //     RCLCPP_WARN(this->get_logger(), "File is not open, cannot write metadata.");
+  //   }
+  // }
 };
 
 int main(int argc, char *argv[])

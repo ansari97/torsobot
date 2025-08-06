@@ -1,0 +1,8 @@
+{
+    "control_max_integral": 75.0,
+    "desired_torso_pitch": 181.0,
+    "kd": 0.30000001192092896,
+    "ki": 0.20000000298023224,
+    "kp": 0.5,
+    "mot_max_torque": 0.5
+}
