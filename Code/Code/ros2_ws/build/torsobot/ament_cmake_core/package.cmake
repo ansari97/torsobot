@@ -5,7 +5,7 @@ set(torsobot_BUILD_DEPENDS "rclcpp" "std_msgs" "torsobot_interfaces" "libgpio-de
 set(torsobot_BUILDTOOL_DEPENDS "ament_cmake")
 set(torsobot_BUILD_EXPORT_DEPENDS "rclcpp" "std_msgs" "torsobot_interfaces" "libgpio-dev" "rosbag2_cpp" "rosbag2_storage" "rosbag2_transport")
 set(torsobot_BUILDTOOL_EXPORT_DEPENDS )
-set(torsobot_EXEC_DEPENDS "rclcpp" "std_msgs" "torsobot_interfaces" "libgpio-dev" "rosbag2_cpp" "rosbag2_storage" "rosbag2_transport")
+set(torsobot_EXEC_DEPENDS "ros2launch" "rclcpp" "std_msgs" "torsobot_interfaces" "libgpio-dev" "rosbag2_cpp" "rosbag2_storage" "rosbag2_transport")
 set(torsobot_TEST_DEPENDS "ament_lint_auto" "ament_lint_common")
 set(torsobot_GROUP_DEPENDS )
 set(torsobot_MEMBER_OF_GROUPS )

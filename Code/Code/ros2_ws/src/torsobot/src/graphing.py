@@ -39,7 +39,7 @@ with open(json_file_path, 'r') as json_file:
 desired_torso_pitch = rad2deg(desired_torso_pitch)
 
 # plot text
-plot_text = "kp: " + str(kp) + "\nki: " + str(ki) + "\nkd: " + \
+plot_text = "kp: " + str(kp) + ", ki: " + str(ki) + ", kd: " + \
     str(kd) + "\nmax_motor_torque: " + str(mot_max_torque)
 
 # read csv
@@ -60,7 +60,8 @@ desired_torso_pitch = np.ones(len(time_value)) * \
 time_value = time_value/(10**6)  # ns to ms
 imu_pitch_data = rad2deg(imu_pitch_data)
 
-fig, axs = plt.subplots(2, 1, figsize=(10, 8))
+fig, axs = plt.subplots(2, 1, figsize=(12, 8))
+fig.suptitle(file_date + "---" + file_time)
 
 axs[0].plot(time_value, imu_pitch_data, label="imu_pitch")
 axs[0].plot(time_value, desired_torso_pitch, label="desired pitch")
@@ -71,16 +72,19 @@ axs[0].plot(time_value, desired_torso_pitch, label="desired pitch")
 axs[0].minorticks_on()
 axs[0].grid(which="both")
 
-axs[0].set_xlabel("time (ms)")
 axs[0].set_ylabel("IMU pitch (deg)")
 axs[0].set_ylim([-10, 380])
 axs[0].set_xlim(xmin=0)
 axs[0].legend()
-axs[0].set_title(file_date + "---" + file_time)
-axs[0].text(2800, 110, plot_text, ha='right',
-            bbox=dict(facecolor='yellow', alpha=0.75))
+axs[0].set_title(plot_text)
+# axs[0].text(2800, 110, plot_text, ha='right',
+#             bbox=dict(facecolor='yellow', alpha=0.75))
 
 axs[1].plot(time_value, motor_torque, label="motor_torque")
+axs[1].minorticks_on()
+axs[1].grid(which="both")
+axs[1].set_xlabel("time (ms)")
+axs[1].set_ylabel("torque (N.m)")
 
 plt.show()
 plt.savefig(save_file_path)

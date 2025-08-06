@@ -68,6 +68,15 @@ install(TARGETS
   data_logger_node
   DESTINATION lib/${PROJECT_NAME})
 
+  # Find all launch files in the launch directory
+file(GLOB LAUNCH_FILES launch/*.py)
+
+# Install the launch files
+install(
+  DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
