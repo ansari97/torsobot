@@ -94,7 +94,7 @@ const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07;  // motor max torque value
 const uint8_t KP_CMD = 0X08;                // Kp value
 const uint8_t KI_CMD = 0X09;                // Ki value
 const uint8_t KD_CMD = 0X0A;                // Kd value
-const uint8_t MOTOR_CMD_TORQUE_CMD = 0X0B; // commanded motor torque
+const uint8_t MOTOR_CMD_TORQUE_CMD = 0X0B;  // commanded motor torque
 
 const int data_len = sizeof(float);  // 4 bytes
 char desired_torso_pitch_data[data_len];
@@ -128,7 +128,7 @@ float gravity_z = 0;
 
 // Control parameters
 const float control_freq = 50;               // control torque write freq
-volatile float desired_torso_pitch = 185.0;  // degrees
+volatile float desired_torso_pitch = 178.0;  // degrees
 
 float kp = 0.5;  // N.m per rad
 float ki = 0.0;  // N.m per (rad.s)
@@ -146,8 +146,11 @@ float ff_torque, ff_torque_calc;  // torque command to the motor
 uint64_t time_now = 0, time_last, time_since_last = 0;
 
 // For the control signals
-static uint32_t gNextSendMillis = 0;
-uint16_t gLoopCount = 0;
+static uint32_t control_next_send_millis = 1000 / control_freq;  // initialized so that first control signal is NOT sent in the first loop iter
+uint16_t control_loop_ctr = 0;
+
+uint64_t start_time = 0, wait_time = 2 * 1000;  //milliseconds
+uint64_t loop_count = 0;
 
 // IMU struct for euler angles
 euler_t ypr;
@@ -328,6 +331,13 @@ void setup() {
 ///////////////////////////////////////////////////////////////////
 void loop() {
 
+  // checks then increments
+  if (loop_count++ == 0) {
+    start_time = millis();  // stores start time of the loop function
+    Serial.print("loop start time:  ");
+    Serial.println(start_time);
+  }
+
   // is_heartbeat_valid = checkHeartbeatValidity();
   millis_since_last_heartbeat = millis() - heartbeat_timer;  // heartbeat_timer is updated by the i2cRecv function if heartbeat is valid
 
@@ -393,8 +403,8 @@ void loop() {
   }
   // // Serial.println();
 
-  // We intend to send control frames every 1000/control_freq milliseconds
-  if (gNextSendMillis >= millis()) {
+  // We intend to send control frames every 1000/control_freq milliseconds; second condition allows imu values to stabilise at program start
+  if (control_next_send_millis >= millis() || (millis() - start_time) < wait_time) {
     return;
   }
 
@@ -409,8 +419,8 @@ void loop() {
 
   time_last = time_now;  // store value from previous control loop's timer
 
-  // If gLoopCount is 0 (first loop)
-  if (!gLoopCount) { time_last = millis(); }
+  // If control_loop_ctr is 0 (first loop)
+  if (!control_loop_ctr) { time_last = millis(); }
 
   time_now = millis();  // get current time
   time_since_last = time_now - time_last;
@@ -444,12 +454,12 @@ void loop() {
   moteus.SetPosition(position_cmd, &position_fmt);
   // Serial.println(millis());
 
-  gNextSendMillis += 1000 / control_freq;
-  gLoopCount++;
+  control_next_send_millis += 1000 / control_freq;
+  control_loop_ctr++;
   // **************************************************************
 
   // Get values every 5 loop iters
-  if (gLoopCount % 5 != 0) {
+  if (control_loop_ctr % 5 != 0) {
     return;
   }
   // digitalWrite(LED_BUILTIN, HIGH);
