@@ -61,10 +61,15 @@ plot_text = "desired_torso_pitch:" + str(desired_torso_pitch) + "\nkp: " + str(k
 # read csv
 df = pd.read_csv(csv_file_path)
 
-# get data
+# get data from the csv
 time_value = df["timestamp"]
 imu_pitch_data = df["IMU_pitch"]
 motor_torque = df["motor_trq"]
+motor_cmd_torque = df["motor_cmd_trq"]
+
+# for the plotting
+max_trq_lim = 1.1 * max(max(motor_torque), max(motor_cmd_torque))
+min_trq_lim = 1.1 * min(min(motor_torque), min(motor_cmd_torque))
 
 zero_time = time_value[0]
 time_value = time_value - zero_time
@@ -101,11 +106,14 @@ axs[0].set_title(plot_text, fontsize=10)
 
 # Subplot 2
 axs[1].plot(time_value, motor_torque, label="motor_torque")
+axs[1].plot(time_value, motor_cmd_torque,
+            color="red", label="motor_cmd_torque")
 axs[1].minorticks_on()
 axs[1].grid(which="both")
 axs[1].set_xlabel("time (ms)")
 axs[1].set_ylabel("torque (N.m)")
-axs[1].set_ylim([-mot_max_torque, mot_max_torque])
+axs[1].set_ylim([min_trq_lim, max_trq_lim])
+axs[1].legend()
 
 plt.show()
 plt.savefig(save_file_path, dpi=300)
