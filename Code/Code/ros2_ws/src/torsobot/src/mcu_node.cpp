@@ -106,8 +106,8 @@ public:
 
     RCLCPP_INFO(this->get_logger(), "Desired torso pitch is %f: ", desired_torso_pitch);
     RCLCPP_INFO(this->get_logger(), "kp %f: ", kp);
-    RCLCPP_INFO(this->get_logger(), "ki %f: ", kp);
-    RCLCPP_INFO(this->get_logger(), "kd %f: ", kp);
+    RCLCPP_INFO(this->get_logger(), "ki %f: ", ki);
+    RCLCPP_INFO(this->get_logger(), "kd %f: ", kd);
     RCLCPP_INFO(this->get_logger(), "motor_max_torque %f: ", mot_max_torque);
     RCLCPP_INFO(this->get_logger(), "control_max_integral %f: ", control_max_integral);
 

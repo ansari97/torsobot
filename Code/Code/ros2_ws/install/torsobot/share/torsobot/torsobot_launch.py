@@ -6,7 +6,7 @@ from ament_index_python.packages import get_package_share_directory, get_package
 # Find the YAML file of parameters
 params_file_name = 'params.yaml'
 params_file = os.path.join(
-    '/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/config/',
+    '/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/config',
     params_file_name
 )
 

@@ -19,8 +19,8 @@
 #include <iomanip>    // For std::put_time
 #include <sstream>    // For std::stringstream
 #include <functional> // For std::bind and std::placeholders
-#include <filesystem>
-#include <cstdlib> // For getenv
+#include <filesystem> // for copying YAML files
+#include <cstdlib>    // For getenv
 
 using namespace std::chrono_literals;
 
@@ -54,8 +54,10 @@ public:
     std::string csv_filename_str = "/torsobot_data_csv_" + timestamp_str + ".csv";
     std::string csv_full_path_str = directory_name_str + "/" + csv_filename_str;
 
-    std::string metadata_filename_str = "/torsobot_data_metadata_" + timestamp_str + ".json";
+    std::string metadata_filename_str = "/torsobot_data_metadata_" + timestamp_str + ".yaml";
     std::string metadata_full_path_str = directory_name_str + "/" + metadata_filename_str;
+
+    std::string param_source_file = "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/config/params.yaml";
 
     // check if directory exists
     std::filesystem::path dir_path(directory_name_str);
@@ -99,19 +101,31 @@ public:
       return; // Exit constructor if we can't open the file
     }
 
-    // create empty csv file
-    metadata_file_.open(metadata_full_path_str);
+    // copy metdata file
 
-    // Check if the file was opened successfully
-    if (metadata_file_.is_open())
+    try
     {
-      RCLCPP_INFO(this->get_logger(), "Successfully opened metadata file: '%s'", metadata_full_path_str.c_str());
+      std::filesystem::copy(param_source_file, metadata_full_path_str, std::filesystem::copy_options::overwrite_existing);
+      RCLCPP_INFO(this->get_logger(), "Parameter file copied successfully from %s to %s", param_source_file.c_str(), metadata_full_path_str.c_str());
     }
-    else
+    catch (const std::filesystem::filesystem_error &e)
     {
-      RCLCPP_ERROR(this->get_logger(), "Failed to open metadata file: '%s'", metadata_full_path_str.c_str());
-      return;
+      RCLCPP_ERROR(this->get_logger(), "Parameter file copy from %s to %s failed!", param_source_file.c_str(), metadata_full_path_str.c_str());
     }
+
+    // // create empty csv file
+    // metadata_file_.open(metadata_full_path_str);
+
+    // // Check if the file was opened successfully
+    // if (metadata_file_.is_open())
+    // {
+    //   RCLCPP_INFO(this->get_logger(), "Successfully opened metadata file: '%s'", metadata_full_path_str.c_str());
+    // }
+    // else
+    // {
+    //   RCLCPP_ERROR(this->get_logger(), "Failed to open metadata file: '%s'", metadata_full_path_str.c_str());
+    //   return;
+    // }
 
     // Create subscriber
     subscriber_ = this->create_subscription<torsobot_interfaces::msg::TorsobotData>(
@@ -127,40 +141,40 @@ public:
     //     4s, // Wait for 4 seconds
     //     std::bind(&DataLoggerNode::requestControlParams, this));
 
-    // Create ROS2 parameters
-    this->declare_parameter("desired_torso_pitch", 180.0); // default value of 180
-    this->declare_parameter("kp", 0.0);                    // default value of 0
-    this->declare_parameter("ki", 0.0);                    // default value of 0
-    this->declare_parameter("kd", 0.0);                    // default value of 0
-    this->declare_parameter("motor_max_torque", 0.0);      // default value of 0
-    this->declare_parameter("control_max_integral", 0.0);  // default value of 0
+    // // Create ROS2 parameters
+    // this->declare_parameter("desired_torso_pitch", 180.0); // default value of 180
+    // this->declare_parameter("kp", 0.0);                    // default value of 0
+    // this->declare_parameter("ki", 0.0);                    // default value of 0
+    // this->declare_parameter("kd", 0.0);                    // default value of 0
+    // this->declare_parameter("motor_max_torque", 0.0);      // default value of 0
+    // this->declare_parameter("control_max_integral", 0.0);  // default value of 0
 
-    // get ROS2 parameters fromthe param file (listed in launch file)
-    this->get_parameter("desired_torso_pitch", desired_torso_pitch);
-    this->get_parameter("kp", kp);
-    this->get_parameter("ki", ki);
-    this->get_parameter("kd", kd);
-    this->get_parameter("motor_max_torque", mot_max_torque);
-    this->get_parameter("control_max_integral", control_max_integral);
+    // // get ROS2 parameters fromthe param file (listed in launch file)
+    // this->get_parameter("desired_torso_pitch", desired_torso_pitch);
+    // this->get_parameter("kp", kp);
+    // this->get_parameter("ki", ki);
+    // this->get_parameter("kd", kd);
+    // this->get_parameter("motor_max_torque", mot_max_torque);
+    // this->get_parameter("control_max_integral", control_max_integral);
 
-    // Write values to run specific json file
-    if (metadata_file_.is_open())
-    {
-      nlohmann::json metadata;
+    // // Write values to run specific json file
+    // if (metadata_file_.is_open())
+    // {
+    //   nlohmann::json metadata;
 
-      metadata["desired_torso_pitch"] = desired_torso_pitch;
-      metadata["mot_max_torque"] = mot_max_torque;
-      metadata["control_max_integral"] = control_max_integral;
-      metadata["kp"] = kp;
-      metadata["ki"] = ki;
-      metadata["kd"] = kd;
-      metadata_file_ << metadata.dump(4); // dump with indentation of 4 spaces
-      metadata_file_.close();
-    }
-    else
-    {
-      RCLCPP_WARN(this->get_logger(), "File is not open, cannot write metadata.");
-    }
+    //   metadata["desired_torso_pitch"] = desired_torso_pitch;
+    //   metadata["mot_max_torque"] = mot_max_torque;
+    //   metadata["control_max_integral"] = control_max_integral;
+    //   metadata["kp"] = kp;
+    //   metadata["ki"] = ki;
+    //   metadata["kd"] = kd;
+    //   metadata_file_ << metadata.dump(4); // dump with indentation of 4 spaces
+    //   metadata_file_.close();
+    // }
+    // else
+    // {
+    //   RCLCPP_WARN(this->get_logger(), "File is not open, cannot write metadata.");
+    // }
 
     RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '%s'", csv_full_path_str.c_str());
   }
@@ -170,7 +184,7 @@ private:
   rclcpp::Subscription<torsobot_interfaces::msg::TorsobotData>::SharedPtr subscriber_;
   // rclcpp::TimerBase::SharedPtr timer_;
   std::ofstream output_file_;
-  std::ofstream metadata_file_;
+  // std::ofstream metadata_file_;
 
   // for requesting control parameter data from the mcu_node service server; does nothing now
   // void requestControlParams(void)
