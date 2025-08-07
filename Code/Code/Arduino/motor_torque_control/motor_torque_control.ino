@@ -303,7 +303,7 @@ void setup() {
   position_cmd.velocity = 0.0f;  // Not required as resolution is set to ignore
   position_cmd.kp_scale = 0.0f;
   position_cmd.kd_scale = 0.0f;
-  position_cmd.maximum_torque = max_torque;
+  // position_cmd.maximum_torque = max_torque; // moved to the loop since this value cannot be updated over I2C
 
   // angle changed to radians
   desired_torso_pitch = degToRad(desired_torso_pitch);  // radians
@@ -465,6 +465,7 @@ void loop() {
   // }
 
   // write to cmd
+  position_cmd.maximum_torque = max_torque;
   position_cmd.feedforward_torque = ff_torque;
 
   // **Write to the motor
