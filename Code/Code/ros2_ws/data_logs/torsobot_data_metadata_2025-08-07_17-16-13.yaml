@@ -6,4 +6,4 @@
     ki: 0.05
     kd: 0.05
     motor_max_torque: 0.7
-    control_max_integral: 4.0
+    control_max_integral: 3.8

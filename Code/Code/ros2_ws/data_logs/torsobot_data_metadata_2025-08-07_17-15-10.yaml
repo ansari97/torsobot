@@ -3,7 +3,7 @@
   # all parameters must be floats
     desired_torso_pitch: 290.0
     kp: 0.34
-    ki: 0.05
+    ki: 0.07
     kd: 0.05
     motor_max_torque: 0.7
-    control_max_integral: 4.0
+    control_max_integral: 3.7

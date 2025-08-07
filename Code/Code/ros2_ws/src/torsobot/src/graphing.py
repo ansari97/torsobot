@@ -34,7 +34,7 @@ yaml_file_path = dir_path + "/" + yaml_file_name
 
 # for saving the figure as png
 save_file_name = csv_file_name.split(".")[0] + ".png"
-save_file_path = dir_path + "/" + save_file_name
+save_file_path = dir_path + "/graphs/" + save_file_name
 
 # read yaml
 with open(yaml_file_path, 'r') as yaml_file:
