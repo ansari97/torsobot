@@ -58,14 +58,14 @@ bool cdr_serialize_torsobot_interfaces__msg__TorsobotState(
     cdr << ros_message->torso_pitch_rate;
   }
 
-  // Field name: motor_pos
+  // Field name: wheel_pos
   {
-    cdr << ros_message->motor_pos;
+    cdr << ros_message->wheel_pos;
   }
 
-  // Field name: motor_vel
+  // Field name: wheel_vel
   {
-    cdr << ros_message->motor_vel;
+    cdr << ros_message->wheel_vel;
   }
 
   return true;
@@ -86,14 +86,14 @@ bool cdr_deserialize_torsobot_interfaces__msg__TorsobotState(
     cdr >> ros_message->torso_pitch_rate;
   }
 
-  // Field name: motor_pos
+  // Field name: wheel_pos
   {
-    cdr >> ros_message->motor_pos;
+    cdr >> ros_message->wheel_pos;
   }
 
-  // Field name: motor_vel
+  // Field name: wheel_vel
   {
-    cdr >> ros_message->motor_vel;
+    cdr >> ros_message->wheel_vel;
   }
 
   return true;
@@ -128,16 +128,16 @@ size_t get_serialized_size_torsobot_interfaces__msg__TorsobotState(
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
-  // Field name: motor_pos
+  // Field name: wheel_pos
   {
-    size_t item_size = sizeof(ros_message->motor_pos);
+    size_t item_size = sizeof(ros_message->wheel_pos);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
-  // Field name: motor_vel
+  // Field name: wheel_vel
   {
-    size_t item_size = sizeof(ros_message->motor_vel);
+    size_t item_size = sizeof(ros_message->wheel_vel);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -180,7 +180,7 @@ size_t max_serialized_size_torsobot_interfaces__msg__TorsobotState(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Field name: motor_pos
+  // Field name: wheel_pos
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);
@@ -188,7 +188,7 @@ size_t max_serialized_size_torsobot_interfaces__msg__TorsobotState(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Field name: motor_vel
+  // Field name: wheel_vel
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);
@@ -205,7 +205,7 @@ size_t max_serialized_size_torsobot_interfaces__msg__TorsobotState(
     using DataType = torsobot_interfaces__msg__TorsobotState;
     is_plain =
       (
-      offsetof(DataType, motor_vel) +
+      offsetof(DataType, wheel_vel) +
       last_member_size
       ) == ret_val;
   }
@@ -227,14 +227,14 @@ bool cdr_serialize_key_torsobot_interfaces__msg__TorsobotState(
     cdr << ros_message->torso_pitch_rate;
   }
 
-  // Field name: motor_pos
+  // Field name: wheel_pos
   {
-    cdr << ros_message->motor_pos;
+    cdr << ros_message->wheel_pos;
   }
 
-  // Field name: motor_vel
+  // Field name: wheel_vel
   {
-    cdr << ros_message->motor_vel;
+    cdr << ros_message->wheel_vel;
   }
 
   return true;
@@ -269,16 +269,16 @@ size_t get_serialized_size_key_torsobot_interfaces__msg__TorsobotState(
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
-  // Field name: motor_pos
+  // Field name: wheel_pos
   {
-    size_t item_size = sizeof(ros_message->motor_pos);
+    size_t item_size = sizeof(ros_message->wheel_pos);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
-  // Field name: motor_vel
+  // Field name: wheel_vel
   {
-    size_t item_size = sizeof(ros_message->motor_vel);
+    size_t item_size = sizeof(ros_message->wheel_vel);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -319,7 +319,7 @@ size_t max_serialized_size_key_torsobot_interfaces__msg__TorsobotState(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Field name: motor_pos
+  // Field name: wheel_pos
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);
@@ -327,7 +327,7 @@ size_t max_serialized_size_key_torsobot_interfaces__msg__TorsobotState(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Field name: motor_vel
+  // Field name: wheel_vel
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);
@@ -343,7 +343,7 @@ size_t max_serialized_size_key_torsobot_interfaces__msg__TorsobotState(
     using DataType = torsobot_interfaces__msg__TorsobotState;
     is_plain =
       (
-      offsetof(DataType, motor_vel) +
+      offsetof(DataType, wheel_vel) +
       last_member_size
       ) == ret_val;
   }

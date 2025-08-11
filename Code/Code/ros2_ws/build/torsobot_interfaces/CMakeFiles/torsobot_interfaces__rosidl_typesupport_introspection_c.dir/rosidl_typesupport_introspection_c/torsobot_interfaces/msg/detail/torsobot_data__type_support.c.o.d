@@ -81,4 +81,9 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_ty
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/action_type_support_struct.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/service_type_support_struct.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
- /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/torsobot_state.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__functions.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_introspection_c.h

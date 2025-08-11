@@ -24,15 +24,15 @@ namespace msg
 namespace builder
 {
 
-class Init_TorsobotState_motor_vel
+class Init_TorsobotState_wheel_vel
 {
 public:
-  explicit Init_TorsobotState_motor_vel(::torsobot_interfaces::msg::TorsobotState & msg)
+  explicit Init_TorsobotState_wheel_vel(::torsobot_interfaces::msg::TorsobotState & msg)
   : msg_(msg)
   {}
-  ::torsobot_interfaces::msg::TorsobotState motor_vel(::torsobot_interfaces::msg::TorsobotState::_motor_vel_type arg)
+  ::torsobot_interfaces::msg::TorsobotState wheel_vel(::torsobot_interfaces::msg::TorsobotState::_wheel_vel_type arg)
   {
-    msg_.motor_vel = std::move(arg);
+    msg_.wheel_vel = std::move(arg);
     return std::move(msg_);
   }
 
@@ -40,16 +40,16 @@ private:
   ::torsobot_interfaces::msg::TorsobotState msg_;
 };
 
-class Init_TorsobotState_motor_pos
+class Init_TorsobotState_wheel_pos
 {
 public:
-  explicit Init_TorsobotState_motor_pos(::torsobot_interfaces::msg::TorsobotState & msg)
+  explicit Init_TorsobotState_wheel_pos(::torsobot_interfaces::msg::TorsobotState & msg)
   : msg_(msg)
   {}
-  Init_TorsobotState_motor_vel motor_pos(::torsobot_interfaces::msg::TorsobotState::_motor_pos_type arg)
+  Init_TorsobotState_wheel_vel wheel_pos(::torsobot_interfaces::msg::TorsobotState::_wheel_pos_type arg)
   {
-    msg_.motor_pos = std::move(arg);
-    return Init_TorsobotState_motor_vel(msg_);
+    msg_.wheel_pos = std::move(arg);
+    return Init_TorsobotState_wheel_vel(msg_);
   }
 
 private:
@@ -62,10 +62,10 @@ public:
   explicit Init_TorsobotState_torso_pitch_rate(::torsobot_interfaces::msg::TorsobotState & msg)
   : msg_(msg)
   {}
-  Init_TorsobotState_motor_pos torso_pitch_rate(::torsobot_interfaces::msg::TorsobotState::_torso_pitch_rate_type arg)
+  Init_TorsobotState_wheel_pos torso_pitch_rate(::torsobot_interfaces::msg::TorsobotState::_torso_pitch_rate_type arg)
   {
     msg_.torso_pitch_rate = std::move(arg);
-    return Init_TorsobotState_motor_pos(msg_);
+    return Init_TorsobotState_wheel_pos(msg_);
   }
 
 private:

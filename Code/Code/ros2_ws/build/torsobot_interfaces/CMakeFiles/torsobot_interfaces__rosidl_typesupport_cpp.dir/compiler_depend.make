@@ -94,6 +94,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cp
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/service_type_support_struct.h \
   rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
   rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_data__struct.hpp \
   /usr/include/c++/12/algorithm \
   /usr/include/c++/12/bits/stl_algobase.h \
@@ -225,6 +226,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cp
   /usr/include/c++/12/bits/stl_relops.h \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_cpp/include/rosidl_runtime_cpp/message_initialization.hpp \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/message_initialization.h \
+  rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp \
   /home/pi/ros2_jazzy/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include/rosidl_typesupport_cpp/identifier.hpp \
   /home/pi/ros2_jazzy/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include/rosidl_typesupport_cpp/visibility_control.h \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_cpp/include/rosidl_typesupport_cpp/message_type_support.hpp \
@@ -853,6 +855,10 @@ rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp:
 
 /usr/include/c++/12/memory:
 
+/usr/include/time.h:
+
+/usr/include/c++/12/bits/range_access.h:
+
 rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h:
 
 /home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/visibility_control_macros.h:
@@ -1131,9 +1137,9 @@ rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_contro
 
 /usr/include/c++/12/bits/exception_defines.h:
 
-rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h:
-
 /usr/include/c++/12/pstl/pstl_config.h:
+
+rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h:
 
 /usr/include/c++/12/ext/numeric_traits.h:
 
@@ -1188,7 +1194,3 @@ rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h:
 /usr/include/c++/12/bits/uniform_int_dist.h:
 
 /usr/include/c++/12/array:
-
-/usr/include/time.h:
-
-/usr/include/c++/12/bits/range_access.h:

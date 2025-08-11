@@ -17,6 +17,10 @@
 #include "torsobot_interfaces/msg/detail/torsobot_data__struct.hpp"
 #include "rosidl_runtime_cpp/traits.hpp"
 
+// Include directives for member types
+// Member 'torsobot_state'
+#include "torsobot_interfaces/msg/detail/torsobot_state__traits.hpp"
+
 namespace torsobot_interfaces
 {
 
@@ -28,52 +32,31 @@ inline void to_flow_style_yaml(
   std::ostream & out)
 {
   out << "{";
-  // member: torso_pitch
+  // member: torsobot_state
   {
-    out << "torso_pitch: ";
-    rosidl_generator_traits::value_to_yaml(msg.torso_pitch, out);
+    out << "torsobot_state: ";
+    to_flow_style_yaml(msg.torsobot_state, out);
     out << ", ";
   }
 
-  // member: torso_pitch_rate
+  // member: wheel_torque
   {
-    out << "torso_pitch_rate: ";
-    rosidl_generator_traits::value_to_yaml(msg.torso_pitch_rate, out);
+    out << "wheel_torque: ";
+    rosidl_generator_traits::value_to_yaml(msg.wheel_torque, out);
     out << ", ";
   }
 
-  // member: motor_pos
+  // member: wheel_cmd_torque
   {
-    out << "motor_pos: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_pos, out);
+    out << "wheel_cmd_torque: ";
+    rosidl_generator_traits::value_to_yaml(msg.wheel_cmd_torque, out);
     out << ", ";
   }
 
-  // member: motor_vel
+  // member: mot_drv_mode
   {
-    out << "motor_vel: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_vel, out);
-    out << ", ";
-  }
-
-  // member: motor_torque
-  {
-    out << "motor_torque: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_torque, out);
-    out << ", ";
-  }
-
-  // member: motor_cmd_torque
-  {
-    out << "motor_cmd_torque: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_cmd_torque, out);
-    out << ", ";
-  }
-
-  // member: motor_drv_mode
-  {
-    out << "motor_drv_mode: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_drv_mode, out);
+    out << "mot_drv_mode: ";
+    rosidl_generator_traits::value_to_yaml(msg.mot_drv_mode, out);
   }
   out << "}";
 }  // NOLINT(readability/fn_size)
@@ -82,73 +65,42 @@ inline void to_block_style_yaml(
   const TorsobotData & msg,
   std::ostream & out, size_t indentation = 0)
 {
-  // member: torso_pitch
+  // member: torsobot_state
   {
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "torso_pitch: ";
-    rosidl_generator_traits::value_to_yaml(msg.torso_pitch, out);
+    out << "torsobot_state:\n";
+    to_block_style_yaml(msg.torsobot_state, out, indentation + 2);
+  }
+
+  // member: wheel_torque
+  {
+    if (indentation > 0) {
+      out << std::string(indentation, ' ');
+    }
+    out << "wheel_torque: ";
+    rosidl_generator_traits::value_to_yaml(msg.wheel_torque, out);
     out << "\n";
   }
 
-  // member: torso_pitch_rate
+  // member: wheel_cmd_torque
   {
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "torso_pitch_rate: ";
-    rosidl_generator_traits::value_to_yaml(msg.torso_pitch_rate, out);
+    out << "wheel_cmd_torque: ";
+    rosidl_generator_traits::value_to_yaml(msg.wheel_cmd_torque, out);
     out << "\n";
   }
 
-  // member: motor_pos
+  // member: mot_drv_mode
   {
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "motor_pos: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_pos, out);
-    out << "\n";
-  }
-
-  // member: motor_vel
-  {
-    if (indentation > 0) {
-      out << std::string(indentation, ' ');
-    }
-    out << "motor_vel: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_vel, out);
-    out << "\n";
-  }
-
-  // member: motor_torque
-  {
-    if (indentation > 0) {
-      out << std::string(indentation, ' ');
-    }
-    out << "motor_torque: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_torque, out);
-    out << "\n";
-  }
-
-  // member: motor_cmd_torque
-  {
-    if (indentation > 0) {
-      out << std::string(indentation, ' ');
-    }
-    out << "motor_cmd_torque: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_cmd_torque, out);
-    out << "\n";
-  }
-
-  // member: motor_drv_mode
-  {
-    if (indentation > 0) {
-      out << std::string(indentation, ' ');
-    }
-    out << "motor_drv_mode: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_drv_mode, out);
+    out << "mot_drv_mode: ";
+    rosidl_generator_traits::value_to_yaml(msg.mot_drv_mode, out);
     out << "\n";
   }
 }  // NOLINT(readability/fn_size)
@@ -199,11 +151,11 @@ inline const char * name<torsobot_interfaces::msg::TorsobotData>()
 
 template<>
 struct has_fixed_size<torsobot_interfaces::msg::TorsobotData>
-  : std::integral_constant<bool, true> {};
+  : std::integral_constant<bool, has_fixed_size<torsobot_interfaces::msg::TorsobotState>::value> {};
 
 template<>
 struct has_bounded_size<torsobot_interfaces::msg::TorsobotData>
-  : std::integral_constant<bool, true> {};
+  : std::integral_constant<bool, has_bounded_size<torsobot_interfaces::msg::TorsobotState>::value> {};
 
 template<>
 struct is_message<torsobot_interfaces::msg::TorsobotData>

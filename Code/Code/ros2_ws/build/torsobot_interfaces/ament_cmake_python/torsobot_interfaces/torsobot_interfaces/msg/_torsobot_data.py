@@ -51,6 +51,10 @@ class Metaclass_TorsobotData(type):
             cls._TYPE_SUPPORT = module.type_support_msg__msg__torsobot_data
             cls._DESTROY_ROS_MESSAGE = module.destroy_ros_message_msg__msg__torsobot_data
 
+            from torsobot_interfaces.msg import TorsobotState
+            if TorsobotState.__class__._TYPE_SUPPORT is None:
+                TorsobotState.__class__.__import_type_support__()
+
     @classmethod
     def __prepare__(cls, name, bases, **kwargs):
         # list constant names here so that they appear in the help text of
@@ -64,33 +68,24 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
     """Message class 'TorsobotData'."""
 
     __slots__ = [
-        '_torso_pitch',
-        '_torso_pitch_rate',
-        '_motor_pos',
-        '_motor_vel',
-        '_motor_torque',
-        '_motor_cmd_torque',
-        '_motor_drv_mode',
+        '_torsobot_state',
+        '_wheel_torque',
+        '_wheel_cmd_torque',
+        '_mot_drv_mode',
         '_check_fields',
     ]
 
     _fields_and_field_types = {
-        'torso_pitch': 'double',
-        'torso_pitch_rate': 'double',
-        'motor_pos': 'double',
-        'motor_vel': 'double',
-        'motor_torque': 'double',
-        'motor_cmd_torque': 'double',
-        'motor_drv_mode': 'int8',
+        'torsobot_state': 'torsobot_interfaces/TorsobotState',
+        'wheel_torque': 'double',
+        'wheel_cmd_torque': 'double',
+        'mot_drv_mode': 'int8',
     }
 
     # This attribute is used to store an rosidl_parser.definition variable
     # related to the data type of each of the components the message.
     SLOT_TYPES = (
-        rosidl_parser.definition.BasicType('double'),  # noqa: E501
-        rosidl_parser.definition.BasicType('double'),  # noqa: E501
-        rosidl_parser.definition.BasicType('double'),  # noqa: E501
-        rosidl_parser.definition.BasicType('double'),  # noqa: E501
+        rosidl_parser.definition.NamespacedType(['torsobot_interfaces', 'msg'], 'TorsobotState'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('int8'),  # noqa: E501
@@ -105,13 +100,11 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
             assert all('_' + key in self.__slots__ for key in kwargs.keys()), \
                 'Invalid arguments passed to constructor: %s' % \
                 ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
-        self.torso_pitch = kwargs.get('torso_pitch', float())
-        self.torso_pitch_rate = kwargs.get('torso_pitch_rate', float())
-        self.motor_pos = kwargs.get('motor_pos', float())
-        self.motor_vel = kwargs.get('motor_vel', float())
-        self.motor_torque = kwargs.get('motor_torque', float())
-        self.motor_cmd_torque = kwargs.get('motor_cmd_torque', float())
-        self.motor_drv_mode = kwargs.get('motor_drv_mode', int())
+        from torsobot_interfaces.msg import TorsobotState
+        self.torsobot_state = kwargs.get('torsobot_state', TorsobotState())
+        self.wheel_torque = kwargs.get('wheel_torque', float())
+        self.wheel_cmd_torque = kwargs.get('wheel_cmd_torque', float())
+        self.mot_drv_mode = kwargs.get('mot_drv_mode', int())
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -143,19 +136,13 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if self.torso_pitch != other.torso_pitch:
+        if self.torsobot_state != other.torsobot_state:
             return False
-        if self.torso_pitch_rate != other.torso_pitch_rate:
+        if self.wheel_torque != other.wheel_torque:
             return False
-        if self.motor_pos != other.motor_pos:
+        if self.wheel_cmd_torque != other.wheel_cmd_torque:
             return False
-        if self.motor_vel != other.motor_vel:
-            return False
-        if self.motor_torque != other.motor_torque:
-            return False
-        if self.motor_cmd_torque != other.motor_cmd_torque:
-            return False
-        if self.motor_drv_mode != other.motor_drv_mode:
+        if self.mot_drv_mode != other.mot_drv_mode:
             return False
         return True
 
@@ -165,106 +152,60 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         return copy(cls._fields_and_field_types)
 
     @builtins.property
-    def torso_pitch(self):
-        """Message field 'torso_pitch'."""
-        return self._torso_pitch
+    def torsobot_state(self):
+        """Message field 'torsobot_state'."""
+        return self._torsobot_state
 
-    @torso_pitch.setter
-    def torso_pitch(self, value):
+    @torsobot_state.setter
+    def torsobot_state(self, value):
+        if self._check_fields:
+            from torsobot_interfaces.msg import TorsobotState
+            assert \
+                isinstance(value, TorsobotState), \
+                "The 'torsobot_state' field must be a sub message of type 'TorsobotState'"
+        self._torsobot_state = value
+
+    @builtins.property
+    def wheel_torque(self):
+        """Message field 'wheel_torque'."""
+        return self._wheel_torque
+
+    @wheel_torque.setter
+    def wheel_torque(self, value):
         if self._check_fields:
             assert \
                 isinstance(value, float), \
-                "The 'torso_pitch' field must be of type 'float'"
+                "The 'wheel_torque' field must be of type 'float'"
             assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'torso_pitch' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._torso_pitch = value
+                "The 'wheel_torque' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
+        self._wheel_torque = value
 
     @builtins.property
-    def torso_pitch_rate(self):
-        """Message field 'torso_pitch_rate'."""
-        return self._torso_pitch_rate
+    def wheel_cmd_torque(self):
+        """Message field 'wheel_cmd_torque'."""
+        return self._wheel_cmd_torque
 
-    @torso_pitch_rate.setter
-    def torso_pitch_rate(self, value):
+    @wheel_cmd_torque.setter
+    def wheel_cmd_torque(self, value):
         if self._check_fields:
             assert \
                 isinstance(value, float), \
-                "The 'torso_pitch_rate' field must be of type 'float'"
+                "The 'wheel_cmd_torque' field must be of type 'float'"
             assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'torso_pitch_rate' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._torso_pitch_rate = value
+                "The 'wheel_cmd_torque' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
+        self._wheel_cmd_torque = value
 
     @builtins.property
-    def motor_pos(self):
-        """Message field 'motor_pos'."""
-        return self._motor_pos
+    def mot_drv_mode(self):
+        """Message field 'mot_drv_mode'."""
+        return self._mot_drv_mode
 
-    @motor_pos.setter
-    def motor_pos(self, value):
-        if self._check_fields:
-            assert \
-                isinstance(value, float), \
-                "The 'motor_pos' field must be of type 'float'"
-            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'motor_pos' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._motor_pos = value
-
-    @builtins.property
-    def motor_vel(self):
-        """Message field 'motor_vel'."""
-        return self._motor_vel
-
-    @motor_vel.setter
-    def motor_vel(self, value):
-        if self._check_fields:
-            assert \
-                isinstance(value, float), \
-                "The 'motor_vel' field must be of type 'float'"
-            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'motor_vel' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._motor_vel = value
-
-    @builtins.property
-    def motor_torque(self):
-        """Message field 'motor_torque'."""
-        return self._motor_torque
-
-    @motor_torque.setter
-    def motor_torque(self, value):
-        if self._check_fields:
-            assert \
-                isinstance(value, float), \
-                "The 'motor_torque' field must be of type 'float'"
-            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'motor_torque' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._motor_torque = value
-
-    @builtins.property
-    def motor_cmd_torque(self):
-        """Message field 'motor_cmd_torque'."""
-        return self._motor_cmd_torque
-
-    @motor_cmd_torque.setter
-    def motor_cmd_torque(self, value):
-        if self._check_fields:
-            assert \
-                isinstance(value, float), \
-                "The 'motor_cmd_torque' field must be of type 'float'"
-            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'motor_cmd_torque' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._motor_cmd_torque = value
-
-    @builtins.property
-    def motor_drv_mode(self):
-        """Message field 'motor_drv_mode'."""
-        return self._motor_drv_mode
-
-    @motor_drv_mode.setter
-    def motor_drv_mode(self, value):
+    @mot_drv_mode.setter
+    def mot_drv_mode(self, value):
         if self._check_fields:
             assert \
                 isinstance(value, int), \
-                "The 'motor_drv_mode' field must be of type 'int'"
+                "The 'mot_drv_mode' field must be of type 'int'"
             assert value >= -128 and value < 128, \
-                "The 'motor_drv_mode' field must be an integer in [-128, 127]"
-        self._motor_drv_mode = value
+                "The 'mot_drv_mode' field must be an integer in [-128, 127]"
+        self._mot_drv_mode = value

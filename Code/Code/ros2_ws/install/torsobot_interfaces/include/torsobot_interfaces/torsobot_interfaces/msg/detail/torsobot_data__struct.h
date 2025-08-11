@@ -19,16 +19,17 @@ extern "C"
 
 // Constants defined in the message
 
+// Include directives for member types
+// Member 'torsobot_state'
+#include "torsobot_interfaces/msg/detail/torsobot_state__struct.h"
+
 /// Struct defined in msg/TorsobotData in the package torsobot_interfaces.
 typedef struct torsobot_interfaces__msg__TorsobotData
 {
-  double torso_pitch;
-  double torso_pitch_rate;
-  double motor_pos;
-  double motor_vel;
-  double motor_torque;
-  double motor_cmd_torque;
-  int8_t motor_drv_mode;
+  torsobot_interfaces__msg__TorsobotState torsobot_state;
+  double wheel_torque;
+  double wheel_cmd_torque;
+  int8_t mot_drv_mode;
 } torsobot_interfaces__msg__TorsobotData;
 
 // Struct for a sequence of torsobot_interfaces__msg__TorsobotData.

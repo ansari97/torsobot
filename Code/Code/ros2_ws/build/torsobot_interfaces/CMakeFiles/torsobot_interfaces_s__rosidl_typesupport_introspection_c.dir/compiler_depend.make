@@ -268,9 +268,9 @@ CMakeFiles/torsobot_interfaces_s__rosidl_typesupport_introspection_c.dir/rosidl_
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.h \
   rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h \
-  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__functions.h \
   rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__type_support.h \
   rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__struct.h \

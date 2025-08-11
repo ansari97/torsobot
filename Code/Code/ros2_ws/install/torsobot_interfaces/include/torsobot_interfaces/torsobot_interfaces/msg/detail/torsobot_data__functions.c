@@ -11,19 +11,24 @@
 #include "rcutils/allocator.h"
 
 
+// Include directives for member types
+// Member `torsobot_state`
+#include "torsobot_interfaces/msg/detail/torsobot_state__functions.h"
+
 bool
 torsobot_interfaces__msg__TorsobotData__init(torsobot_interfaces__msg__TorsobotData * msg)
 {
   if (!msg) {
     return false;
   }
-  // torso_pitch
-  // torso_pitch_rate
-  // motor_pos
-  // motor_vel
-  // motor_torque
-  // motor_cmd_torque
-  // motor_drv_mode
+  // torsobot_state
+  if (!torsobot_interfaces__msg__TorsobotState__init(&msg->torsobot_state)) {
+    torsobot_interfaces__msg__TorsobotData__fini(msg);
+    return false;
+  }
+  // wheel_torque
+  // wheel_cmd_torque
+  // mot_drv_mode
   return true;
 }
 
@@ -33,13 +38,11 @@ torsobot_interfaces__msg__TorsobotData__fini(torsobot_interfaces__msg__TorsobotD
   if (!msg) {
     return;
   }
-  // torso_pitch
-  // torso_pitch_rate
-  // motor_pos
-  // motor_vel
-  // motor_torque
-  // motor_cmd_torque
-  // motor_drv_mode
+  // torsobot_state
+  torsobot_interfaces__msg__TorsobotState__fini(&msg->torsobot_state);
+  // wheel_torque
+  // wheel_cmd_torque
+  // mot_drv_mode
 }
 
 bool
@@ -48,32 +51,22 @@ torsobot_interfaces__msg__TorsobotData__are_equal(const torsobot_interfaces__msg
   if (!lhs || !rhs) {
     return false;
   }
-  // torso_pitch
-  if (lhs->torso_pitch != rhs->torso_pitch) {
+  // torsobot_state
+  if (!torsobot_interfaces__msg__TorsobotState__are_equal(
+      &(lhs->torsobot_state), &(rhs->torsobot_state)))
+  {
     return false;
   }
-  // torso_pitch_rate
-  if (lhs->torso_pitch_rate != rhs->torso_pitch_rate) {
+  // wheel_torque
+  if (lhs->wheel_torque != rhs->wheel_torque) {
     return false;
   }
-  // motor_pos
-  if (lhs->motor_pos != rhs->motor_pos) {
+  // wheel_cmd_torque
+  if (lhs->wheel_cmd_torque != rhs->wheel_cmd_torque) {
     return false;
   }
-  // motor_vel
-  if (lhs->motor_vel != rhs->motor_vel) {
-    return false;
-  }
-  // motor_torque
-  if (lhs->motor_torque != rhs->motor_torque) {
-    return false;
-  }
-  // motor_cmd_torque
-  if (lhs->motor_cmd_torque != rhs->motor_cmd_torque) {
-    return false;
-  }
-  // motor_drv_mode
-  if (lhs->motor_drv_mode != rhs->motor_drv_mode) {
+  // mot_drv_mode
+  if (lhs->mot_drv_mode != rhs->mot_drv_mode) {
     return false;
   }
   return true;
@@ -87,20 +80,18 @@ torsobot_interfaces__msg__TorsobotData__copy(
   if (!input || !output) {
     return false;
   }
-  // torso_pitch
-  output->torso_pitch = input->torso_pitch;
-  // torso_pitch_rate
-  output->torso_pitch_rate = input->torso_pitch_rate;
-  // motor_pos
-  output->motor_pos = input->motor_pos;
-  // motor_vel
-  output->motor_vel = input->motor_vel;
-  // motor_torque
-  output->motor_torque = input->motor_torque;
-  // motor_cmd_torque
-  output->motor_cmd_torque = input->motor_cmd_torque;
-  // motor_drv_mode
-  output->motor_drv_mode = input->motor_drv_mode;
+  // torsobot_state
+  if (!torsobot_interfaces__msg__TorsobotState__copy(
+      &(input->torsobot_state), &(output->torsobot_state)))
+  {
+    return false;
+  }
+  // wheel_torque
+  output->wheel_torque = input->wheel_torque;
+  // wheel_cmd_torque
+  output->wheel_cmd_torque = input->wheel_cmd_torque;
+  // mot_drv_mode
+  output->mot_drv_mode = input->mot_drv_mode;
   return true;
 }
 

@@ -52,6 +52,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/to
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/visibility_control.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_typesupport_interface/include/rosidl_typesupport_interface/macros.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h \

@@ -84,6 +84,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cp
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/service_type_support_struct.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_data__struct.hpp \
  /usr/include/c++/12/algorithm /usr/include/c++/12/bits/stl_algobase.h \
  /usr/include/c++/12/bits/functexcept.h \
@@ -185,6 +186,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cp
  /usr/include/c++/12/bits/stl_relops.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_cpp/include/rosidl_runtime_cpp/message_initialization.hpp \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/message_initialization.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp \
  /home/pi/ros2_jazzy/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include/rosidl_typesupport_cpp/identifier.hpp \
  /home/pi/ros2_jazzy/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include/rosidl_typesupport_cpp/visibility_control.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_cpp/include/rosidl_typesupport_cpp/message_type_support.hpp \

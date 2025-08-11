@@ -11,10 +11,10 @@ torsobot_interfaces__msg__TorsobotState__get_type_hash(
 {
   (void)type_support;
   static rosidl_type_hash_t hash = {1, {
-      0x37, 0x34, 0x64, 0xf7, 0x3b, 0x3e, 0xe5, 0xea,
-      0x00, 0x73, 0x97, 0xfa, 0x97, 0x1f, 0xd1, 0x4e,
-      0xd5, 0xd9, 0x15, 0x06, 0x35, 0xa5, 0xb8, 0x5f,
-      0x03, 0xa9, 0x66, 0x1e, 0x47, 0xee, 0x7c, 0xb7,
+      0x55, 0x30, 0xd0, 0x84, 0x7b, 0xfe, 0xfa, 0xaf,
+      0xea, 0x2c, 0x1d, 0x16, 0x23, 0x58, 0x64, 0x07,
+      0xfa, 0xb7, 0xa4, 0x7d, 0x0c, 0x98, 0x64, 0xee,
+      0x03, 0x87, 0xa0, 0x80, 0x36, 0x0d, 0x0d, 0xae,
     }};
   return &hash;
 }
@@ -33,8 +33,8 @@ static char torsobot_interfaces__msg__TorsobotState__TYPE_NAME[] = "torsobot_int
 // Define type names, field names, and default values
 static char torsobot_interfaces__msg__TorsobotState__FIELD_NAME__torso_pitch[] = "torso_pitch";
 static char torsobot_interfaces__msg__TorsobotState__FIELD_NAME__torso_pitch_rate[] = "torso_pitch_rate";
-static char torsobot_interfaces__msg__TorsobotState__FIELD_NAME__motor_pos[] = "motor_pos";
-static char torsobot_interfaces__msg__TorsobotState__FIELD_NAME__motor_vel[] = "motor_vel";
+static char torsobot_interfaces__msg__TorsobotState__FIELD_NAME__wheel_pos[] = "wheel_pos";
+static char torsobot_interfaces__msg__TorsobotState__FIELD_NAME__wheel_vel[] = "wheel_vel";
 
 static rosidl_runtime_c__type_description__Field torsobot_interfaces__msg__TorsobotState__FIELDS[] = {
   {
@@ -58,7 +58,7 @@ static rosidl_runtime_c__type_description__Field torsobot_interfaces__msg__Torso
     {NULL, 0, 0},
   },
   {
-    {torsobot_interfaces__msg__TorsobotState__FIELD_NAME__motor_pos, 9, 9},
+    {torsobot_interfaces__msg__TorsobotState__FIELD_NAME__wheel_pos, 9, 9},
     {
       rosidl_runtime_c__type_description__FieldType__FIELD_TYPE_DOUBLE,
       0,
@@ -68,7 +68,7 @@ static rosidl_runtime_c__type_description__Field torsobot_interfaces__msg__Torso
     {NULL, 0, 0},
   },
   {
-    {torsobot_interfaces__msg__TorsobotState__FIELD_NAME__motor_vel, 9, 9},
+    {torsobot_interfaces__msg__TorsobotState__FIELD_NAME__wheel_vel, 9, 9},
     {
       rosidl_runtime_c__type_description__FieldType__FIELD_TYPE_DOUBLE,
       0,
@@ -101,8 +101,8 @@ torsobot_interfaces__msg__TorsobotState__get_type_description(
 static char toplevel_type_raw_source[] =
   "float64 torso_pitch\n"
   "float64 torso_pitch_rate\n"
-  "float64 motor_pos\n"
-  "float64 motor_vel";
+  "float64 wheel_pos\n"
+  "float64 wheel_vel";
 
 static char msg_encoding[] = "msg";
 

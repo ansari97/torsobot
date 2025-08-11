@@ -12,15 +12,15 @@
 #include <gpiod.hpp> //for GPIO control
 
 #include "rclcpp/rclcpp.hpp"
-#include "torsobot_interfaces/msg/torsobot_data.hpp"
-#include "torsobot_interfaces/msg/torsobot_state.hpp"
+#include "torsobot_interfaces/msg/torsobot_data.hpp"  //data from the torsobot including state variables
+#include "torsobot_interfaces/msg/torsobot_state.hpp" // torsobor state variables only
 
-#include "torsobot_interfaces/srv/request_control_params.hpp"
+// #include "torsobot_interfaces/srv/request_control_params.hpp" // service for requesting control parameters; not used
 
 using namespace std::chrono_literals;
 
 // Configuration for the GPIO pin
-const std::string GPIO_CHIP_NAME = "gpiochip0"; // Verify with 'ls /dev/gpiochip*' on your Pi5
+const std::string GPIO_CHIP_NAME = "gpiochip0"; // Verify with 'ls /dev/gpiochip*' on Pi5
 const unsigned int RPI_GPIO_FOR_PICO_RUN = 14;  // GPIO14
 
 // pico slave address
@@ -32,37 +32,33 @@ const int I2C_BUS = 1;
 int i2c_handle;
 
 // Buffers to read data and store vals; only for 4 byte floats
-const int data_len = sizeof(float);
-char read_buff[data_len];
-float IMU_pitch;
-float IMU_pitch_rate;
-float mot_pos;
-float mot_vel;
-float mot_torque;
+const int float_len = sizeof(float);
+char read_buff[float_len];
+float torso_pitch, torso_pitch_rate;
+float wheel_pos, wheel_vel, wheel_torque;
+float wheel_cmd_torque;
 int8_t mot_drv_mode;
 
 volatile float desired_torso_pitch;
-volatile float mot_max_torque, control_max_integral;
+volatile float wheel_max_torque, mot_max_torque, control_max_integral;
 volatile float kp, ki, kd;
-
-float mot_cmd_torque;
 
 // I2C write cmd for mcu data
 const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00; // desired torso_pitch
-const uint8_t IMU_PITCH_CMD = 0x01;           // torso_pitch
-const uint8_t IMU_PITCH_RATE_CMD = 0x02;      // torso_pitch_rate
-const uint8_t MOTOR_POS_CMD = 0x03;           // motor rotor position (not wheel)
-const uint8_t MOTOR_VEL_CMD = 0x04;           // motor velocity position (not wheel)
-const uint8_t MOTOR_TORQUE_CMD = 0X05;        // motor torque at motor shaft (not wheel)
+const uint8_t TORSO_PITCH_CMD = 0x01;         // torso_pitch
+const uint8_t TORSO_PITCH_RATE_CMD = 0x02;    // torso_pitch_rate
+const uint8_t WHEEL_POS_CMD = 0x03;           // motor rotor position (not wheel)
+const uint8_t WHEEL_VEL_CMD = 0x04;           // motor velocity position (not wheel)
+const uint8_t WHEEL_TORQUE_CMD = 0X05;        // motor torque at motor shaft (not wheel)
 const uint8_t MOTOR_DRV_MODE_CMD = 0X06;      // motor driver mode
 
-const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07;  // motor max torque value
+const uint8_t WHEEL_MAX_TORQUE_CMD = 0X07;  // motor max torque value
 const uint8_t KP_CMD = 0X08;                // Kp value
 const uint8_t KI_CMD = 0X09;                // Ki value
 const uint8_t KD_CMD = 0X0A;                // Kd value
 const uint8_t CTRL_MAX_INTEGRAL_CMD = 0X0B; // max integral term
 
-const uint8_t MOTOR_CMD_TORQUE_CMD = 0X0C; // commanded motor torque
+const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C; // commanded motor torque
 
 // Heartbeat variables
 const uint8_t HEARTBEAT_ID = 0xAA;
@@ -86,29 +82,29 @@ public:
     data_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotData>("torsobot_data", 10);
 
     // Create service server for one-time values
-    control_params_server_ = this->create_service<torsobot_interfaces::srv::RequestControlParams>("control_params", std::bind(&MCUNode::handleServiceRequest, this, std::placeholders::_1, std::placeholders::_2));
+    // control_params_server_ = this->create_service<torsobot_interfaces::srv::RequestControlParams>("control_params", std::bind(&MCUNode::handleServiceRequest, this, std::placeholders::_1, std::placeholders::_2));
 
     // Create ROS2 parameters
     this->declare_parameter("desired_torso_pitch", 180.0); // default value of 180
     this->declare_parameter("kp", 0.0);                    // default value of 0
     this->declare_parameter("ki", 0.0);                    // default value of 0
     this->declare_parameter("kd", 0.0);                    // default value of 0
-    this->declare_parameter("motor_max_torque", 0.0);      // default value of 0
+    this->declare_parameter("wheel_max_torque", 0.0);      // default value of 0
     this->declare_parameter("control_max_integral", 0.0);  // default value of 0
 
-    // get ROS2 parameters fromthe param file (listed in launch file)
+    // get ROS2 parameters from the param file (listed in launch file) and assign to these variables
     this->get_parameter("desired_torso_pitch", desired_torso_pitch);
     this->get_parameter("kp", kp);
     this->get_parameter("ki", ki);
     this->get_parameter("kd", kd);
-    this->get_parameter("motor_max_torque", mot_max_torque);
+    this->get_parameter("wheel_max_torque", wheel_max_torque);
     this->get_parameter("control_max_integral", control_max_integral);
 
     RCLCPP_INFO(this->get_logger(), "Desired torso pitch is %f: ", desired_torso_pitch);
     RCLCPP_INFO(this->get_logger(), "kp %f: ", kp);
     RCLCPP_INFO(this->get_logger(), "ki %f: ", ki);
     RCLCPP_INFO(this->get_logger(), "kd %f: ", kd);
-    RCLCPP_INFO(this->get_logger(), "motor_max_torque %f: ", mot_max_torque);
+    RCLCPP_INFO(this->get_logger(), "wheel_max_torque %f: ", wheel_max_torque);
     RCLCPP_INFO(this->get_logger(), "control_max_integral %f: ", control_max_integral);
 
     char filename[20];
@@ -139,7 +135,7 @@ public:
     sendDataToMCU(KP_CMD, &kp);
     sendDataToMCU(KI_CMD, &ki);
     sendDataToMCU(KD_CMD, &kd);
-    sendDataToMCU(MOTOR_MAX_TORQUE_CMD, &mot_max_torque);
+    sendDataToMCU(WHEEL_MAX_TORQUE_CMD, &wheel_max_torque);
     sendDataToMCU(CTRL_MAX_INTEGRAL_CMD, &control_max_integral);
 
     // heartbeat timer for 10ms (100Hz)
@@ -156,43 +152,25 @@ private:
   rclcpp::TimerBase::SharedPtr data_timer_;
   rclcpp::Publisher<torsobot_interfaces::msg::TorsobotState>::SharedPtr state_publisher_;
   rclcpp::Publisher<torsobot_interfaces::msg::TorsobotData>::SharedPtr data_publisher_;
-  rclcpp::Service<torsobot_interfaces::srv::RequestControlParams>::SharedPtr control_params_server_;
+  // rclcpp::Service<torsobot_interfaces::srv::RequestControlParams>::SharedPtr control_params_server_;
 
   bool read_control_params_ = false;
 
   gpiod::chip chip_;
   gpiod::line mcu_run_line_;
 
-  // int heartbeat_check;
-
-  // timer callback for sending heartbeat on I2C
-  // void heartbeatCallback(void)
-  // {
-  //   // Read / request sensor data from pico
-  //   heartbeat_check = sendHeartbeat();
-  //   if (heartbeat_check == 0)
-  //   {
-  //     // Do nothing
-  //   }
-  //   else
-  //   {
-  //     RCLCPP_ERROR(this->get_logger(), "Error sending heartbeat!");
-  //     exitNode();
-  //   }
-  // };
-
   // Service callback for the control parameters
-  void handleServiceRequest(
-      const std::shared_ptr<torsobot_interfaces::srv::RequestControlParams::Request> request,
-      std::shared_ptr<torsobot_interfaces::srv::RequestControlParams::Response> response)
-  {
-    (void)request; // Suppress unused parameter warning
-    response->desired_torso_pitch = desired_torso_pitch;
-    response->mot_max_torque = mot_max_torque;
-    response->kp = kp;
-    response->ki = ki;
-    response->kd = kd;
-  }
+  // void handleServiceRequest(
+  //     const std::shared_ptr<torsobot_interfaces::srv::RequestControlParams::Request> request,
+  //     std::shared_ptr<torsobot_interfaces::srv::RequestControlParams::Response> response)
+  // {
+  //   (void)request; // Suppress unused parameter warning
+  //   response->desired_torso_pitch = desired_torso_pitch;
+  //   response->mot_max_torque = mot_max_torque;
+  //   response->kp = kp;
+  //   response->ki = ki;
+  //   response->kd = kd;
+  // }
 
   // send desired values to the pico
   void sendDataToMCU(uint8_t cmd, volatile float *sensor_val_addr)
@@ -204,52 +182,17 @@ private:
     (void)write(i2c_handle, &data_write_buff, sizeof(data_write_buff));
   }
 
-  //   // send desired torso pitch to the pico
-  // void sendDesiredPitch(void)
-  // {
-  //   char data_write_buff[sizeof(_Float32) + 1]; // 4 bytes for the data and 1 for the cmd
-  //   data_write_buff[0] = DESIRED_TORSO_PITCH_CMD;
-  //   memcpy(&data_write_buff[1], const_cast<float *>(&desired_torso_pitch), sizeof(_Float32));
-
-  //   (void)write(i2c_handle, &data_write_buff, sizeof(data_write_buff));
-  // }
-
   // timer callback for getting data on i2c
   void i2cDataCallback(void)
   {
-    // if (!read_control_params_)
-    // {
-    //   // request one-time data from the pico
-    //   // desired imu_angle
-    //   // (void)getSensorValue(DESIRED_TORSO_PITCH_CMD, &desired_torso_pitch);
-
-    //   // max_torque value
-    //   (void)getSensorValue(MOTOR_MAX_TORQUE_CMD, &mot_max_torque);
-
-    //   // PID control gain values
-    //   (void)getSensorValue(KP_CMD, &kp);
-    //   (void)getSensorValue(KI_CMD, &ki);
-    //   (void)getSensorValue(KD_CMD, &kd);
-
-    //   // RCLCPP_INFO(this->get_logger(), "desired_torso_pitch: %f", desired_torso_pitch);
-    //   RCLCPP_INFO(this->get_logger(), "motor_max_torque: %f", mot_max_torque);
-    //   RCLCPP_INFO(this->get_logger(), "kp: %f, ki: %f, kd: %f", kp, ki, kd);
-
-    //   // if all three values are zero, then values weren't received properly
-    //   if (kp || ki || kd)
-    //   {
-    //     read_control_params_ = true;
-    //   }
-    // }
-
     // Read / request sensor data from pico
-    int get_sensor_val_IMU_pitch = getSensorValue(IMU_PITCH_CMD, &IMU_pitch);
-    int get_sensor_val_IMU_pitch_rate = getSensorValue(IMU_PITCH_RATE_CMD, &IMU_pitch_rate);
-    int get_sensor_val_motor_pos = getSensorValue(MOTOR_POS_CMD, &mot_pos);
-    int get_sensor_val_motor_vel = getSensorValue(MOTOR_VEL_CMD, &mot_vel);
-    int get_sensor_val_motor_torque = getSensorValue(MOTOR_TORQUE_CMD, &mot_torque);
+    int get_sensor_val_IMU_pitch = getSensorValue(TORSO_PITCH_CMD, &torso_pitch);
+    int get_sensor_val_IMU_pitch_rate = getSensorValue(TORSO_PITCH_RATE_CMD, &torso_pitch_rate);
+    int get_sensor_val_motor_pos = getSensorValue(WHEEL_POS_CMD, &wheel_pos);
+    int get_sensor_val_motor_vel = getSensorValue(WHEEL_VEL_CMD, &wheel_vel);
+    int get_sensor_val_motor_torque = getSensorValue(WHEEL_TORQUE_CMD, &wheel_torque);
     int get_sensor_val_motor_drv_mode = getSensorValue(MOTOR_DRV_MODE_CMD, &mot_drv_mode);
-    int get_sensor_val_motor_cmd_torque = getSensorValue(MOTOR_CMD_TORQUE_CMD, &mot_cmd_torque);
+    int get_sensor_val_motor_cmd_torque = getSensorValue(WHEEL_CMD_TORQUE_CMD, &wheel_cmd_torque);
 
     if (mot_drv_mode == 0)
     {
@@ -265,32 +208,33 @@ private:
     if (sensor_val_okay)
     {
       auto state_message = torsobot_interfaces::msg::TorsobotState();
-      state_message.torso_pitch = IMU_pitch;
-      state_message.torso_pitch_rate = IMU_pitch_rate;
-      state_message.motor_pos = mot_pos;
-      state_message.motor_vel = mot_vel;
-      // state_message.motor_torque = mot_torque;
+      state_message.torso_pitch = torso_pitch;
+      state_message.torso_pitch_rate = torso_pitch_rate;
+      state_message.wheel_pos = wheel_pos;
+      state_message.wheel_vel = wheel_vel;
+      // state_message.motor_torque = wheel_torque;
       // state_message.motor_drv_mode = mot_drv_mode;
 
       this->state_publisher_->publish(state_message);
 
       auto data_message = torsobot_interfaces::msg::TorsobotData();
-      data_message.torso_pitch = IMU_pitch;
-      data_message.torso_pitch_rate = IMU_pitch_rate;
-      data_message.motor_pos = mot_pos;
-      data_message.motor_vel = mot_vel;
-      data_message.motor_torque = mot_torque;
-      data_message.motor_drv_mode = mot_drv_mode;
-      data_message.motor_cmd_torque = mot_cmd_torque;
+      data_message.torsobot_state = state_message;
+      // data_message.torsobot_state.torso_pitch = torso_pitch;
+      // data_message.torsobot_state.torso_pitch_rate = torso_pitch_rate;
+      // data_message.torsobot_state.wheel_pos = wheel_pos;
+      // data_message.torsobot_state.wheel_vel = wheel_vel;
+      data_message.wheel_torque = wheel_torque;
+      data_message.mot_drv_mode = mot_drv_mode;
+      data_message.wheel_cmd_torque = wheel_cmd_torque;
 
       this->data_publisher_->publish(data_message);
 
-      RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", IMU_pitch);
-      RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", IMU_pitch_rate);
-      RCLCPP_INFO(this->get_logger(), "Motor position: '%f'", mot_pos);
-      RCLCPP_INFO(this->get_logger(), "Motor velocity: '%f'", mot_vel);
-      RCLCPP_INFO(this->get_logger(), "Motor torque: '%f'", mot_torque);
-      RCLCPP_INFO(this->get_logger(), "Motor cmd torque: '%f'", mot_cmd_torque);
+      RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", torso_pitch);
+      RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", torso_pitch_rate);
+      RCLCPP_INFO(this->get_logger(), "Wheel position: '%f'", wheel_pos);
+      RCLCPP_INFO(this->get_logger(), "Wheel velocity: '%f'", wheel_vel);
+      RCLCPP_INFO(this->get_logger(), "Wheel torque: '%f'", wheel_torque);
+      RCLCPP_INFO(this->get_logger(), "Wheel cmd torque: '%f'", wheel_cmd_torque);
       RCLCPP_INFO(this->get_logger(), "Motor driver mode: '%d'", mot_drv_mode);
     }
     else
@@ -303,7 +247,7 @@ private:
   int getSensorValue(uint8_t cmd, float *sensor_val_addr)
   {
     // Clear the read buffer
-    memset(read_buff, 0, data_len);
+    memset(read_buff, 0, float_len);
 
     // Write command to slave
     if (write(i2c_handle, &cmd, sizeof(cmd)) != sizeof(cmd))
@@ -313,7 +257,7 @@ private:
     }
 
     // Request sensor data from slave
-    if (read(i2c_handle, read_buff, data_len) != data_len)
+    if (read(i2c_handle, read_buff, float_len) != float_len)
     {
       RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed for %d! %s (%d)", cmd, strerror(errno), errno);
       return -2; // Indicate error
@@ -321,10 +265,10 @@ private:
     else
     {
       float temp_sensor_val; // temporary variable to check for nan
-      memcpy(&temp_sensor_val, read_buff, data_len);
+      memcpy(&temp_sensor_val, read_buff, float_len);
       if (!std::isnan(temp_sensor_val)) // if okay
       {
-        memcpy(sensor_val_addr, read_buff, data_len);
+        memcpy(sensor_val_addr, read_buff, float_len);
       }
       else
       {
@@ -339,7 +283,7 @@ private:
   int getSensorValue(uint8_t cmd, int8_t *sensor_val_addr_int)
   {
     // Clear the read buffer
-    memset(read_buff, 0, data_len);
+    memset(read_buff, 0, float_len);
 
     // Write command to slave
     if (write(i2c_handle, &cmd, sizeof(cmd)) != sizeof(cmd))
@@ -349,7 +293,7 @@ private:
     }
 
     // Request sensor data from slave
-    if (read(i2c_handle, read_buff, data_len) != data_len)
+    if (read(i2c_handle, read_buff, float_len) != float_len)
     {
       RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed for %d! %s (%d)", cmd, strerror(errno), errno);
       return -2; // Indicate error

@@ -12,6 +12,12 @@
 #include "torsobot_interfaces/msg/detail/torsobot_data__struct.h"
 
 
+// Include directives for member types
+// Member `torsobot_state`
+#include "torsobot_interfaces/msg/torsobot_state.h"
+// Member `torsobot_state`
+#include "torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_introspection_c.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -31,17 +37,17 @@ void torsobot_interfaces__msg__TorsobotData__rosidl_typesupport_introspection_c_
   torsobot_interfaces__msg__TorsobotData__fini(message_memory);
 }
 
-static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__msg__TorsobotData__rosidl_typesupport_introspection_c__TorsobotData_message_member_array[7] = {
+static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__msg__TorsobotData__rosidl_typesupport_introspection_c__TorsobotData_message_member_array[4] = {
   {
-    "torso_pitch",  // name
-    rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
+    "torsobot_state",  // name
+    rosidl_typesupport_introspection_c__ROS_TYPE_MESSAGE,  // type
     0,  // upper bound of string
-    NULL,  // members of sub message
+    NULL,  // members of sub message (initialized later)
     false,  // is key
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(torsobot_interfaces__msg__TorsobotData, torso_pitch),  // bytes offset in struct
+    offsetof(torsobot_interfaces__msg__TorsobotData, torsobot_state),  // bytes offset in struct
     NULL,  // default value
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
@@ -51,7 +57,7 @@ static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__ms
     NULL  // resize(index) function pointer
   },
   {
-    "torso_pitch_rate",  // name
+    "wheel_torque",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
     0,  // upper bound of string
     NULL,  // members of sub message
@@ -59,7 +65,7 @@ static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__ms
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(torsobot_interfaces__msg__TorsobotData, torso_pitch_rate),  // bytes offset in struct
+    offsetof(torsobot_interfaces__msg__TorsobotData, wheel_torque),  // bytes offset in struct
     NULL,  // default value
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
@@ -69,7 +75,7 @@ static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__ms
     NULL  // resize(index) function pointer
   },
   {
-    "motor_pos",  // name
+    "wheel_cmd_torque",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
     0,  // upper bound of string
     NULL,  // members of sub message
@@ -77,7 +83,7 @@ static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__ms
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(torsobot_interfaces__msg__TorsobotData, motor_pos),  // bytes offset in struct
+    offsetof(torsobot_interfaces__msg__TorsobotData, wheel_cmd_torque),  // bytes offset in struct
     NULL,  // default value
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
@@ -87,61 +93,7 @@ static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__ms
     NULL  // resize(index) function pointer
   },
   {
-    "motor_vel",  // name
-    rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
-    0,  // upper bound of string
-    NULL,  // members of sub message
-    false,  // is key
-    false,  // is array
-    0,  // array size
-    false,  // is upper bound
-    offsetof(torsobot_interfaces__msg__TorsobotData, motor_vel),  // bytes offset in struct
-    NULL,  // default value
-    NULL,  // size() function pointer
-    NULL,  // get_const(index) function pointer
-    NULL,  // get(index) function pointer
-    NULL,  // fetch(index, &value) function pointer
-    NULL,  // assign(index, value) function pointer
-    NULL  // resize(index) function pointer
-  },
-  {
-    "motor_torque",  // name
-    rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
-    0,  // upper bound of string
-    NULL,  // members of sub message
-    false,  // is key
-    false,  // is array
-    0,  // array size
-    false,  // is upper bound
-    offsetof(torsobot_interfaces__msg__TorsobotData, motor_torque),  // bytes offset in struct
-    NULL,  // default value
-    NULL,  // size() function pointer
-    NULL,  // get_const(index) function pointer
-    NULL,  // get(index) function pointer
-    NULL,  // fetch(index, &value) function pointer
-    NULL,  // assign(index, value) function pointer
-    NULL  // resize(index) function pointer
-  },
-  {
-    "motor_cmd_torque",  // name
-    rosidl_typesupport_introspection_c__ROS_TYPE_DOUBLE,  // type
-    0,  // upper bound of string
-    NULL,  // members of sub message
-    false,  // is key
-    false,  // is array
-    0,  // array size
-    false,  // is upper bound
-    offsetof(torsobot_interfaces__msg__TorsobotData, motor_cmd_torque),  // bytes offset in struct
-    NULL,  // default value
-    NULL,  // size() function pointer
-    NULL,  // get_const(index) function pointer
-    NULL,  // get(index) function pointer
-    NULL,  // fetch(index, &value) function pointer
-    NULL,  // assign(index, value) function pointer
-    NULL  // resize(index) function pointer
-  },
-  {
-    "motor_drv_mode",  // name
+    "mot_drv_mode",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_INT8,  // type
     0,  // upper bound of string
     NULL,  // members of sub message
@@ -149,7 +101,7 @@ static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__ms
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(torsobot_interfaces__msg__TorsobotData, motor_drv_mode),  // bytes offset in struct
+    offsetof(torsobot_interfaces__msg__TorsobotData, mot_drv_mode),  // bytes offset in struct
     NULL,  // default value
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
@@ -163,7 +115,7 @@ static rosidl_typesupport_introspection_c__MessageMember torsobot_interfaces__ms
 static const rosidl_typesupport_introspection_c__MessageMembers torsobot_interfaces__msg__TorsobotData__rosidl_typesupport_introspection_c__TorsobotData_message_members = {
   "torsobot_interfaces__msg",  // message namespace
   "TorsobotData",  // message name
-  7,  // number of fields
+  4,  // number of fields
   sizeof(torsobot_interfaces__msg__TorsobotData),
   false,  // has_any_key_member_
   torsobot_interfaces__msg__TorsobotData__rosidl_typesupport_introspection_c__TorsobotData_message_member_array,  // message members
@@ -185,6 +137,8 @@ static rosidl_message_type_support_t torsobot_interfaces__msg__TorsobotData__ros
 ROSIDL_TYPESUPPORT_INTROSPECTION_C_EXPORT_torsobot_interfaces
 const rosidl_message_type_support_t *
 ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, torsobot_interfaces, msg, TorsobotData)() {
+  torsobot_interfaces__msg__TorsobotData__rosidl_typesupport_introspection_c__TorsobotData_message_member_array[0].members_ =
+    ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, torsobot_interfaces, msg, TorsobotState)();
   if (!torsobot_interfaces__msg__TorsobotData__rosidl_typesupport_introspection_c__TorsobotData_message_type_support_handle.typesupport_identifier) {
     torsobot_interfaces__msg__TorsobotData__rosidl_typesupport_introspection_c__TorsobotData_message_type_support_handle.typesupport_identifier =
       rosidl_typesupport_introspection_c__identifier;

@@ -76,7 +76,7 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TorsobotState
     nullptr  // resize(index) function pointer
   },
   {
-    "motor_pos",  // name
+    "wheel_pos",  // name
     ::rosidl_typesupport_introspection_cpp::ROS_TYPE_DOUBLE,  // type
     0,  // upper bound of string
     nullptr,  // members of sub message
@@ -84,7 +84,7 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TorsobotState
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(torsobot_interfaces::msg::TorsobotState, motor_pos),  // bytes offset in struct
+    offsetof(torsobot_interfaces::msg::TorsobotState, wheel_pos),  // bytes offset in struct
     nullptr,  // default value
     nullptr,  // size() function pointer
     nullptr,  // get_const(index) function pointer
@@ -94,7 +94,7 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TorsobotState
     nullptr  // resize(index) function pointer
   },
   {
-    "motor_vel",  // name
+    "wheel_vel",  // name
     ::rosidl_typesupport_introspection_cpp::ROS_TYPE_DOUBLE,  // type
     0,  // upper bound of string
     nullptr,  // members of sub message
@@ -102,7 +102,7 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TorsobotState
     false,  // is array
     0,  // array size
     false,  // is upper bound
-    offsetof(torsobot_interfaces::msg::TorsobotState, motor_vel),  // bytes offset in struct
+    offsetof(torsobot_interfaces::msg::TorsobotState, wheel_vel),  // bytes offset in struct
     nullptr,  // default value
     nullptr,  // size() function pointer
     nullptr,  // get_const(index) function pointer

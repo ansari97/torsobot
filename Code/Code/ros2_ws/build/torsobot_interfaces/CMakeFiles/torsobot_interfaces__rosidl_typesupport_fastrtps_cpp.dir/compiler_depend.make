@@ -221,6 +221,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_types
   /usr/include/c++/12/bits/stl_relops.h \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_cpp/include/rosidl_runtime_cpp/message_initialization.hpp \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/message_initialization.h \
+  rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp \
   /home/pi/ros2_jazzy/install/fastcdr/include/fastcdr/Cdr.h \
   /usr/include/c++/12/bitset \
   /usr/include/c++/12/cassert \
@@ -267,6 +268,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_types
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/service_type_support_struct.h \
   rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
   /usr/include/c++/12/limits \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_cpp/include/rosidl_typesupport_cpp/message_type_support.hpp \
   /home/pi/ros2_jazzy/src/ros2/rosidl_typesupport_fastrtps/rosidl_typesupport_fastrtps_cpp/include/rosidl_typesupport_fastrtps_cpp/identifier.hpp \
@@ -969,6 +971,8 @@ rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h:
 
 rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h:
 
+/usr/include/malloc.h:
+
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/serialized_message.h:
 
 /usr/include/c++/12/bits/range_access.h:
@@ -1390,8 +1394,6 @@ rosidl_generator_cpp/torsobot_interfaces/msg/detail/torsobot_data__struct.hpp:
 /usr/include/c++/12/bits/atomic_lockfree_defines.h:
 
 /usr/include/c++/12/bits/char_traits.h:
-
-/usr/include/malloc.h:
 
 /usr/include/c++/12/cstdint:
 

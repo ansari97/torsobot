@@ -257,6 +257,7 @@ CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/tors
   /usr/lib/python3/dist-packages/numpy/core/include/numpy/__multiarray_api.h \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/visibility_control.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/action_type_support_struct.h \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/message_type_support_struct.h \
@@ -873,6 +874,8 @@ rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_contro
 
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/message_type_support_struct.h:
 
+rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h:
+
 /usr/include/linux/posix_types.h:
 
 /usr/include/linux/stat.h:
@@ -918,10 +921,6 @@ rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_contro
 /usr/include/python3.11/cpython/import.h:
 
 /usr/include/aarch64-linux-gnu/bits/timex.h:
-
-rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h:
-
-/usr/include/python3.11/genericaliasobject.h:
 
 /usr/include/python3.11/cpython/pyerrors.h:
 
@@ -1146,6 +1145,10 @@ rosidl_generator_py/torsobot_interfaces/msg/_torsobot_data_s.c:
 /usr/include/python3.11/cpython/funcobject.h:
 
 /usr/include/math.h:
+
+/usr/include/python3.11/genericaliasobject.h:
+
+rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/clockid_t.h:
 
@@ -1408,5 +1411,3 @@ rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h:
 /usr/include/python3.11/rangeobject.h:
 
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/visibility_control.h:
-
-rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h:

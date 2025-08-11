@@ -42,17 +42,17 @@ inline void to_flow_style_yaml(
     out << ", ";
   }
 
-  // member: motor_pos
+  // member: wheel_pos
   {
-    out << "motor_pos: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_pos, out);
+    out << "wheel_pos: ";
+    rosidl_generator_traits::value_to_yaml(msg.wheel_pos, out);
     out << ", ";
   }
 
-  // member: motor_vel
+  // member: wheel_vel
   {
-    out << "motor_vel: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_vel, out);
+    out << "wheel_vel: ";
+    rosidl_generator_traits::value_to_yaml(msg.wheel_vel, out);
   }
   out << "}";
 }  // NOLINT(readability/fn_size)
@@ -81,23 +81,23 @@ inline void to_block_style_yaml(
     out << "\n";
   }
 
-  // member: motor_pos
+  // member: wheel_pos
   {
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "motor_pos: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_pos, out);
+    out << "wheel_pos: ";
+    rosidl_generator_traits::value_to_yaml(msg.wheel_pos, out);
     out << "\n";
   }
 
-  // member: motor_vel
+  // member: wheel_vel
   {
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "motor_vel: ";
-    rosidl_generator_traits::value_to_yaml(msg.motor_vel, out);
+    out << "wheel_vel: ";
+    rosidl_generator_traits::value_to_yaml(msg.wheel_vel, out);
     out << "\n";
   }
 }  // NOLINT(readability/fn_size)

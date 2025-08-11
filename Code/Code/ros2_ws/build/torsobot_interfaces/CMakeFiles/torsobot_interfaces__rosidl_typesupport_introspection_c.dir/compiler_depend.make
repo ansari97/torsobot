@@ -89,7 +89,12 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_ty
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/action_type_support_struct.h \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/service_type_support_struct.h \
   rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
-  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
+  rosidl_generator_c/torsobot_interfaces/msg/torsobot_state.h \
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__functions.h \
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h \
+  rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__rosidl_typesupport_introspection_c.h
 
 CMakeFiles/torsobot_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c.o: rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.c \
   /usr/include/stdc-predef.h \
@@ -303,6 +308,8 @@ rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__functi
 
 rosidl_typesupport_introspection_c/torsobot_interfaces/srv/detail/request_control_params__rosidl_typesupport_introspection_c.h:
 
+rosidl_generator_c/torsobot_interfaces/msg/torsobot_state.h:
+
 rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h:
 
 rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h:
@@ -368,6 +375,8 @@ rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_state
 /usr/include/aarch64-linux-gnu/sys/select.h:
 
 rosidl_typesupport_introspection_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.c:
+
+rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h:
 
 /usr/include/aarch64-linux-gnu/bits/uintn-identity.h:
 

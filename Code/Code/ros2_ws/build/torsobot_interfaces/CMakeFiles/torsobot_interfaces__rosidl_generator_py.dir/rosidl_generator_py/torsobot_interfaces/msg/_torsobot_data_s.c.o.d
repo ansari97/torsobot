@@ -218,6 +218,7 @@ CMakeFiles/torsobot_interfaces__rosidl_generator_py.dir/rosidl_generator_py/tors
  /usr/lib/python3/dist-packages/numpy/core/include/numpy/__multiarray_api.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/visibility_control.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/action_type_support_struct.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/message_type_support_struct.h \

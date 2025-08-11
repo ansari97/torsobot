@@ -50,6 +50,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesup
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_typesupport_interface/include/rosidl_typesupport_interface/macros.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_fastrtps_c/torsobot_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h \
  /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
  /home/pi/ros2_jazzy/install/fastcdr/include/fastcdr/Cdr.h \
  /usr/include/c++/12/array /usr/include/c++/12/compare \
  /usr/include/c++/12/initializer_list \
@@ -225,4 +226,5 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesup
  /usr/include/c++/12/stdlib.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/action_type_support_struct.h \
  /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/service_type_support_struct.h \
- /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
+ /home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__functions.h

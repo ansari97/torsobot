@@ -66,16 +66,16 @@ class TorsobotState(metaclass=Metaclass_TorsobotState):
     __slots__ = [
         '_torso_pitch',
         '_torso_pitch_rate',
-        '_motor_pos',
-        '_motor_vel',
+        '_wheel_pos',
+        '_wheel_vel',
         '_check_fields',
     ]
 
     _fields_and_field_types = {
         'torso_pitch': 'double',
         'torso_pitch_rate': 'double',
-        'motor_pos': 'double',
-        'motor_vel': 'double',
+        'wheel_pos': 'double',
+        'wheel_vel': 'double',
     }
 
     # This attribute is used to store an rosidl_parser.definition variable
@@ -98,8 +98,8 @@ class TorsobotState(metaclass=Metaclass_TorsobotState):
                 ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
         self.torso_pitch = kwargs.get('torso_pitch', float())
         self.torso_pitch_rate = kwargs.get('torso_pitch_rate', float())
-        self.motor_pos = kwargs.get('motor_pos', float())
-        self.motor_vel = kwargs.get('motor_vel', float())
+        self.wheel_pos = kwargs.get('wheel_pos', float())
+        self.wheel_vel = kwargs.get('wheel_vel', float())
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -135,9 +135,9 @@ class TorsobotState(metaclass=Metaclass_TorsobotState):
             return False
         if self.torso_pitch_rate != other.torso_pitch_rate:
             return False
-        if self.motor_pos != other.motor_pos:
+        if self.wheel_pos != other.wheel_pos:
             return False
-        if self.motor_vel != other.motor_vel:
+        if self.wheel_vel != other.wheel_vel:
             return False
         return True
 
@@ -177,31 +177,31 @@ class TorsobotState(metaclass=Metaclass_TorsobotState):
         self._torso_pitch_rate = value
 
     @builtins.property
-    def motor_pos(self):
-        """Message field 'motor_pos'."""
-        return self._motor_pos
+    def wheel_pos(self):
+        """Message field 'wheel_pos'."""
+        return self._wheel_pos
 
-    @motor_pos.setter
-    def motor_pos(self, value):
+    @wheel_pos.setter
+    def wheel_pos(self, value):
         if self._check_fields:
             assert \
                 isinstance(value, float), \
-                "The 'motor_pos' field must be of type 'float'"
+                "The 'wheel_pos' field must be of type 'float'"
             assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'motor_pos' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._motor_pos = value
+                "The 'wheel_pos' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
+        self._wheel_pos = value
 
     @builtins.property
-    def motor_vel(self):
-        """Message field 'motor_vel'."""
-        return self._motor_vel
+    def wheel_vel(self):
+        """Message field 'wheel_vel'."""
+        return self._wheel_vel
 
-    @motor_vel.setter
-    def motor_vel(self, value):
+    @wheel_vel.setter
+    def wheel_vel(self, value):
         if self._check_fields:
             assert \
                 isinstance(value, float), \
-                "The 'motor_vel' field must be of type 'float'"
+                "The 'wheel_vel' field must be of type 'float'"
             assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
-                "The 'motor_vel' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
-        self._motor_vel = value
+                "The 'wheel_vel' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
+        self._wheel_vel = value

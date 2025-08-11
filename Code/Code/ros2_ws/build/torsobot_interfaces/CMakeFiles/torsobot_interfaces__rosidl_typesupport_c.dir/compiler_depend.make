@@ -58,6 +58,7 @@ CMakeFiles/torsobot_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/to
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/visibility_control.h \
   /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_typesupport_interface/include/rosidl_typesupport_interface/macros.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h \
+  rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__type_support.h \
   rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h \
   rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h \
@@ -320,8 +321,6 @@ rosidl_generator_c/torsobot_interfaces/srv/detail/request_control_params__struct
 
 rosidl_typesupport_c/torsobot_interfaces/srv/request_control_params__type_support.cpp:
 
-rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h:
-
 rosidl_typesupport_c/torsobot_interfaces/msg/torsobot_state__type_support.cpp:
 
 /home/pi/ros2_jazzy/build/builtin_interfaces/rosidl_generator_c/builtin_interfaces/msg/detail/time__functions.h:
@@ -381,6 +380,8 @@ rosidl_typesupport_c/torsobot_interfaces/msg/torsobot_state__type_support.cpp:
 /usr/include/c++/12/stdlib.h:
 
 rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__functions.h:
+
+rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h:
 
 /usr/include/aarch64-linux-gnu/bits/time64.h:
 
@@ -500,8 +501,6 @@ rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__type_support.h
 
 /usr/include/stdio.h:
 
-rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_control.h:
-
 /usr/include/aarch64-linux-gnu/bits/types/__fpos64_t.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/struct_FILE.h:
@@ -529,6 +528,8 @@ rosidl_generator_c/torsobot_interfaces/msg/rosidl_generator_c__visibility_contro
 /usr/include/stdint.h:
 
 rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_data__struct.h:
+
+rosidl_generator_c/torsobot_interfaces/msg/detail/torsobot_state__struct.h:
 
 /home/pi/ros2_jazzy/src/ros2/rosidl_typesupport/rosidl_typesupport_c/include/rosidl_typesupport_c/service_type_support_dispatch.h:
 

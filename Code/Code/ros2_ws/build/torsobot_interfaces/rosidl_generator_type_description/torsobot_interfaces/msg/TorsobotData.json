@@ -4,7 +4,17 @@
       "type_name": "torsobot_interfaces/msg/TorsobotData",
       "fields": [
         {
-          "name": "torso_pitch",
+          "name": "torsobot_state",
+          "type": {
+            "type_id": 1,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": "torsobot_interfaces/msg/TorsobotState"
+          },
+          "default_value": ""
+        },
+        {
+          "name": "wheel_torque",
           "type": {
             "type_id": 11,
             "capacity": 0,
@@ -14,7 +24,7 @@
           "default_value": ""
         },
         {
-          "name": "torso_pitch_rate",
+          "name": "wheel_cmd_torque",
           "type": {
             "type_id": 11,
             "capacity": 0,
@@ -24,47 +34,7 @@
           "default_value": ""
         },
         {
-          "name": "motor_pos",
-          "type": {
-            "type_id": 11,
-            "capacity": 0,
-            "string_capacity": 0,
-            "nested_type_name": ""
-          },
-          "default_value": ""
-        },
-        {
-          "name": "motor_vel",
-          "type": {
-            "type_id": 11,
-            "capacity": 0,
-            "string_capacity": 0,
-            "nested_type_name": ""
-          },
-          "default_value": ""
-        },
-        {
-          "name": "motor_torque",
-          "type": {
-            "type_id": 11,
-            "capacity": 0,
-            "string_capacity": 0,
-            "nested_type_name": ""
-          },
-          "default_value": ""
-        },
-        {
-          "name": "motor_cmd_torque",
-          "type": {
-            "type_id": 11,
-            "capacity": 0,
-            "string_capacity": 0,
-            "nested_type_name": ""
-          },
-          "default_value": ""
-        },
-        {
-          "name": "motor_drv_mode",
+          "name": "mot_drv_mode",
           "type": {
             "type_id": 2,
             "capacity": 0,
@@ -75,12 +45,62 @@
         }
       ]
     },
-    "referenced_type_descriptions": []
+    "referenced_type_descriptions": [
+      {
+        "type_name": "torsobot_interfaces/msg/TorsobotState",
+        "fields": [
+          {
+            "name": "torso_pitch",
+            "type": {
+              "type_id": 11,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "torso_pitch_rate",
+            "type": {
+              "type_id": 11,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "wheel_pos",
+            "type": {
+              "type_id": 11,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "wheel_vel",
+            "type": {
+              "type_id": 11,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          }
+        ]
+      }
+    ]
   },
   "type_hashes": [
     {
       "type_name": "torsobot_interfaces/msg/TorsobotData",
-      "hash_string": "RIHS01_cc211e9970fb77044a4cb85c8b18b662ca0d7c916fe9646d6ade401203201a67"
+      "hash_string": "RIHS01_3ac42f7e101167d48d50a0d82f08660b16f7597ed368eb4e5f013ce11bca55cf"
+    },
+    {
+      "type_name": "torsobot_interfaces/msg/TorsobotState",
+      "hash_string": "RIHS01_5530d0847bfefaafea2c1d1623586407fab7a47d0c9864ee0387a080360d0dae"
     }
   ]
 }

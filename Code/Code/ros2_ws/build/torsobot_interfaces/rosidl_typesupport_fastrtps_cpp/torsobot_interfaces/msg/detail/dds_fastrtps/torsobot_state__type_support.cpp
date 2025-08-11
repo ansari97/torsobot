@@ -42,11 +42,11 @@ cdr_serialize(
   // Member: torso_pitch_rate
   cdr << ros_message.torso_pitch_rate;
 
-  // Member: motor_pos
-  cdr << ros_message.motor_pos;
+  // Member: wheel_pos
+  cdr << ros_message.wheel_pos;
 
-  // Member: motor_vel
-  cdr << ros_message.motor_vel;
+  // Member: wheel_vel
+  cdr << ros_message.wheel_vel;
 
   return true;
 }
@@ -63,11 +63,11 @@ cdr_deserialize(
   // Member: torso_pitch_rate
   cdr >> ros_message.torso_pitch_rate;
 
-  // Member: motor_pos
-  cdr >> ros_message.motor_pos;
+  // Member: wheel_pos
+  cdr >> ros_message.wheel_pos;
 
-  // Member: motor_vel
-  cdr >> ros_message.motor_vel;
+  // Member: wheel_vel
+  cdr >> ros_message.wheel_vel;
 
   return true;
 }
@@ -100,16 +100,16 @@ get_serialized_size(
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
-  // Member: motor_pos
+  // Member: wheel_pos
   {
-    size_t item_size = sizeof(ros_message.motor_pos);
+    size_t item_size = sizeof(ros_message.wheel_pos);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
-  // Member: motor_vel
+  // Member: wheel_vel
   {
-    size_t item_size = sizeof(ros_message.motor_vel);
+    size_t item_size = sizeof(ros_message.wheel_vel);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -151,14 +151,14 @@ max_serialized_size_TorsobotState(
     current_alignment += array_size * sizeof(uint64_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
-  // Member: motor_pos
+  // Member: wheel_pos
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);
     current_alignment += array_size * sizeof(uint64_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
-  // Member: motor_vel
+  // Member: wheel_vel
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);
@@ -174,7 +174,7 @@ max_serialized_size_TorsobotState(
     using DataType = torsobot_interfaces::msg::TorsobotState;
     is_plain =
       (
-      offsetof(DataType, motor_vel) +
+      offsetof(DataType, wheel_vel) +
       last_member_size
       ) == ret_val;
   }
@@ -194,11 +194,11 @@ cdr_serialize_key(
   // Member: torso_pitch_rate
   cdr << ros_message.torso_pitch_rate;
 
-  // Member: motor_pos
-  cdr << ros_message.motor_pos;
+  // Member: wheel_pos
+  cdr << ros_message.wheel_pos;
 
-  // Member: motor_vel
-  cdr << ros_message.motor_vel;
+  // Member: wheel_vel
+  cdr << ros_message.wheel_vel;
 
   return true;
 }
@@ -230,16 +230,16 @@ get_serialized_size_key(
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
-  // Member: motor_pos
+  // Member: wheel_pos
   {
-    size_t item_size = sizeof(ros_message.motor_pos);
+    size_t item_size = sizeof(ros_message.wheel_pos);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
-  // Member: motor_vel
+  // Member: wheel_vel
   {
-    size_t item_size = sizeof(ros_message.motor_vel);
+    size_t item_size = sizeof(ros_message.wheel_vel);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -282,7 +282,7 @@ max_serialized_size_key_TorsobotState(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Member: motor_pos
+  // Member: wheel_pos
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);
@@ -290,7 +290,7 @@ max_serialized_size_key_TorsobotState(
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
-  // Member: motor_vel
+  // Member: wheel_vel
   {
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint64_t);
@@ -306,7 +306,7 @@ max_serialized_size_key_TorsobotState(
     using DataType = torsobot_interfaces::msg::TorsobotState;
     is_plain =
       (
-      offsetof(DataType, motor_vel) +
+      offsetof(DataType, wheel_vel) +
       last_member_size
       ) == ret_val;
   }

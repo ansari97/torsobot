@@ -10,9 +10,9 @@ module torsobot_interfaces {
 
       double torso_pitch_rate;
 
-      double motor_pos;
+      double wheel_pos;
 
-      double motor_vel;
+      double wheel_vel;
     };
   };
 };

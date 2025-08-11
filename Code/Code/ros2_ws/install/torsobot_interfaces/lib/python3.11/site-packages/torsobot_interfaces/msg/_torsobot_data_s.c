@@ -16,6 +16,8 @@
 #include "torsobot_interfaces/msg/detail/torsobot_data__struct.h"
 #include "torsobot_interfaces/msg/detail/torsobot_data__functions.h"
 
+bool torsobot_interfaces__msg__torsobot_state__convert_from_py(PyObject * _pymsg, void * _ros_message);
+PyObject * torsobot_interfaces__msg__torsobot_state__convert_to_py(void * raw_ros_message);
 
 ROSIDL_GENERATOR_C_EXPORT
 bool torsobot_interfaces__msg__torsobot_data__convert_from_py(PyObject * _pymsg, void * _ros_message)
@@ -50,67 +52,42 @@ bool torsobot_interfaces__msg__torsobot_data__convert_from_py(PyObject * _pymsg,
     assert(strncmp("torsobot_interfaces.msg._torsobot_data.TorsobotData", full_classname_dest, 51) == 0);
   }
   torsobot_interfaces__msg__TorsobotData * ros_message = _ros_message;
-  {  // torso_pitch
-    PyObject * field = PyObject_GetAttrString(_pymsg, "torso_pitch");
+  {  // torsobot_state
+    PyObject * field = PyObject_GetAttrString(_pymsg, "torsobot_state");
+    if (!field) {
+      return false;
+    }
+    if (!torsobot_interfaces__msg__torsobot_state__convert_from_py(field, &ros_message->torsobot_state)) {
+      Py_DECREF(field);
+      return false;
+    }
+    Py_DECREF(field);
+  }
+  {  // wheel_torque
+    PyObject * field = PyObject_GetAttrString(_pymsg, "wheel_torque");
     if (!field) {
       return false;
     }
     assert(PyFloat_Check(field));
-    ros_message->torso_pitch = PyFloat_AS_DOUBLE(field);
+    ros_message->wheel_torque = PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
-  {  // torso_pitch_rate
-    PyObject * field = PyObject_GetAttrString(_pymsg, "torso_pitch_rate");
+  {  // wheel_cmd_torque
+    PyObject * field = PyObject_GetAttrString(_pymsg, "wheel_cmd_torque");
     if (!field) {
       return false;
     }
     assert(PyFloat_Check(field));
-    ros_message->torso_pitch_rate = PyFloat_AS_DOUBLE(field);
+    ros_message->wheel_cmd_torque = PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
-  {  // motor_pos
-    PyObject * field = PyObject_GetAttrString(_pymsg, "motor_pos");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->motor_pos = PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // motor_vel
-    PyObject * field = PyObject_GetAttrString(_pymsg, "motor_vel");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->motor_vel = PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // motor_torque
-    PyObject * field = PyObject_GetAttrString(_pymsg, "motor_torque");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->motor_torque = PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // motor_cmd_torque
-    PyObject * field = PyObject_GetAttrString(_pymsg, "motor_cmd_torque");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->motor_cmd_torque = PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // motor_drv_mode
-    PyObject * field = PyObject_GetAttrString(_pymsg, "motor_drv_mode");
+  {  // mot_drv_mode
+    PyObject * field = PyObject_GetAttrString(_pymsg, "mot_drv_mode");
     if (!field) {
       return false;
     }
     assert(PyLong_Check(field));
-    ros_message->motor_drv_mode = (int8_t)PyLong_AsLong(field);
+    ros_message->mot_drv_mode = (int8_t)PyLong_AsLong(field);
     Py_DECREF(field);
   }
 
@@ -135,77 +112,47 @@ PyObject * torsobot_interfaces__msg__torsobot_data__convert_to_py(void * raw_ros
     }
   }
   torsobot_interfaces__msg__TorsobotData * ros_message = (torsobot_interfaces__msg__TorsobotData *)raw_ros_message;
-  {  // torso_pitch
+  {  // torsobot_state
     PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->torso_pitch);
+    field = torsobot_interfaces__msg__torsobot_state__convert_to_py(&ros_message->torsobot_state);
+    if (!field) {
+      return NULL;
+    }
     {
-      int rc = PyObject_SetAttrString(_pymessage, "torso_pitch", field);
+      int rc = PyObject_SetAttrString(_pymessage, "torsobot_state", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;
       }
     }
   }
-  {  // torso_pitch_rate
+  {  // wheel_torque
     PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->torso_pitch_rate);
+    field = PyFloat_FromDouble(ros_message->wheel_torque);
     {
-      int rc = PyObject_SetAttrString(_pymessage, "torso_pitch_rate", field);
+      int rc = PyObject_SetAttrString(_pymessage, "wheel_torque", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;
       }
     }
   }
-  {  // motor_pos
+  {  // wheel_cmd_torque
     PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->motor_pos);
+    field = PyFloat_FromDouble(ros_message->wheel_cmd_torque);
     {
-      int rc = PyObject_SetAttrString(_pymessage, "motor_pos", field);
+      int rc = PyObject_SetAttrString(_pymessage, "wheel_cmd_torque", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;
       }
     }
   }
-  {  // motor_vel
+  {  // mot_drv_mode
     PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->motor_vel);
+    field = PyLong_FromLong(ros_message->mot_drv_mode);
     {
-      int rc = PyObject_SetAttrString(_pymessage, "motor_vel", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // motor_torque
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->motor_torque);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "motor_torque", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // motor_cmd_torque
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->motor_cmd_torque);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "motor_cmd_torque", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // motor_drv_mode
-    PyObject * field = NULL;
-    field = PyLong_FromLong(ros_message->motor_drv_mode);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "motor_drv_mode", field);
+      int rc = PyObject_SetAttrString(_pymessage, "mot_drv_mode", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;

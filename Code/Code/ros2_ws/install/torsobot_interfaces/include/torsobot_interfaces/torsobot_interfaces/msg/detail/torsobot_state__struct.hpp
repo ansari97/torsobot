@@ -43,8 +43,8 @@ struct TorsobotState_
     {
       this->torso_pitch = 0.0;
       this->torso_pitch_rate = 0.0;
-      this->motor_pos = 0.0;
-      this->motor_vel = 0.0;
+      this->wheel_pos = 0.0;
+      this->wheel_vel = 0.0;
     }
   }
 
@@ -56,8 +56,8 @@ struct TorsobotState_
     {
       this->torso_pitch = 0.0;
       this->torso_pitch_rate = 0.0;
-      this->motor_pos = 0.0;
-      this->motor_vel = 0.0;
+      this->wheel_pos = 0.0;
+      this->wheel_vel = 0.0;
     }
   }
 
@@ -68,12 +68,12 @@ struct TorsobotState_
   using _torso_pitch_rate_type =
     double;
   _torso_pitch_rate_type torso_pitch_rate;
-  using _motor_pos_type =
+  using _wheel_pos_type =
     double;
-  _motor_pos_type motor_pos;
-  using _motor_vel_type =
+  _wheel_pos_type wheel_pos;
+  using _wheel_vel_type =
     double;
-  _motor_vel_type motor_vel;
+  _wheel_vel_type wheel_vel;
 
   // setters for named parameter idiom
   Type & set__torso_pitch(
@@ -88,16 +88,16 @@ struct TorsobotState_
     this->torso_pitch_rate = _arg;
     return *this;
   }
-  Type & set__motor_pos(
+  Type & set__wheel_pos(
     const double & _arg)
   {
-    this->motor_pos = _arg;
+    this->wheel_pos = _arg;
     return *this;
   }
-  Type & set__motor_vel(
+  Type & set__wheel_vel(
     const double & _arg)
   {
-    this->motor_vel = _arg;
+    this->wheel_vel = _arg;
     return *this;
   }
 
@@ -149,10 +149,10 @@ struct TorsobotState_
     if (this->torso_pitch_rate != other.torso_pitch_rate) {
       return false;
     }
-    if (this->motor_pos != other.motor_pos) {
+    if (this->wheel_pos != other.wheel_pos) {
       return false;
     }
-    if (this->motor_vel != other.motor_vel) {
+    if (this->wheel_vel != other.wheel_vel) {
       return false;
     }
     return true;

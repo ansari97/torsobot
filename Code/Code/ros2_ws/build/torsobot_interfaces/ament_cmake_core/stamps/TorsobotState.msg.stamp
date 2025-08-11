@@ -1,4 +1,4 @@
 float64 torso_pitch
 float64 torso_pitch_rate
-float64 motor_pos
-float64 motor_vel
+float64 wheel_pos
+float64 wheel_vel

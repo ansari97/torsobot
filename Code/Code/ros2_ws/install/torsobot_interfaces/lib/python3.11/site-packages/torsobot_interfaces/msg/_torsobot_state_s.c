@@ -68,22 +68,22 @@ bool torsobot_interfaces__msg__torsobot_state__convert_from_py(PyObject * _pymsg
     ros_message->torso_pitch_rate = PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
-  {  // motor_pos
-    PyObject * field = PyObject_GetAttrString(_pymsg, "motor_pos");
+  {  // wheel_pos
+    PyObject * field = PyObject_GetAttrString(_pymsg, "wheel_pos");
     if (!field) {
       return false;
     }
     assert(PyFloat_Check(field));
-    ros_message->motor_pos = PyFloat_AS_DOUBLE(field);
+    ros_message->wheel_pos = PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
-  {  // motor_vel
-    PyObject * field = PyObject_GetAttrString(_pymsg, "motor_vel");
+  {  // wheel_vel
+    PyObject * field = PyObject_GetAttrString(_pymsg, "wheel_vel");
     if (!field) {
       return false;
     }
     assert(PyFloat_Check(field));
-    ros_message->motor_vel = PyFloat_AS_DOUBLE(field);
+    ros_message->wheel_vel = PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
 
@@ -130,22 +130,22 @@ PyObject * torsobot_interfaces__msg__torsobot_state__convert_to_py(void * raw_ro
       }
     }
   }
-  {  // motor_pos
+  {  // wheel_pos
     PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->motor_pos);
+    field = PyFloat_FromDouble(ros_message->wheel_pos);
     {
-      int rc = PyObject_SetAttrString(_pymessage, "motor_pos", field);
+      int rc = PyObject_SetAttrString(_pymessage, "wheel_pos", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;
       }
     }
   }
-  {  // motor_vel
+  {  // wheel_vel
     PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->motor_vel);
+    field = PyFloat_FromDouble(ros_message->wheel_vel);
     {
-      int rc = PyObject_SetAttrString(_pymessage, "motor_vel", field);
+      int rc = PyObject_SetAttrString(_pymessage, "wheel_vel", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;

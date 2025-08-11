@@ -24,7 +24,7 @@
           "default_value": ""
         },
         {
-          "name": "motor_pos",
+          "name": "wheel_pos",
           "type": {
             "type_id": 11,
             "capacity": 0,
@@ -34,7 +34,7 @@
           "default_value": ""
         },
         {
-          "name": "motor_vel",
+          "name": "wheel_vel",
           "type": {
             "type_id": 11,
             "capacity": 0,
@@ -50,7 +50,7 @@
   "type_hashes": [
     {
       "type_name": "torsobot_interfaces/msg/TorsobotState",
-      "hash_string": "RIHS01_373464f73b3ee5ea007397fa971fd14ed5d9150635a5b85f03a9661e47ee7cb7"
+      "hash_string": "RIHS01_5530d0847bfefaafea2c1d1623586407fab7a47d0c9864ee0387a080360d0dae"
     }
   ]
 }

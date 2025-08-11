@@ -24,15 +24,15 @@ namespace msg
 namespace builder
 {
 
-class Init_TorsobotData_motor_drv_mode
+class Init_TorsobotData_mot_drv_mode
 {
 public:
-  explicit Init_TorsobotData_motor_drv_mode(::torsobot_interfaces::msg::TorsobotData & msg)
+  explicit Init_TorsobotData_mot_drv_mode(::torsobot_interfaces::msg::TorsobotData & msg)
   : msg_(msg)
   {}
-  ::torsobot_interfaces::msg::TorsobotData motor_drv_mode(::torsobot_interfaces::msg::TorsobotData::_motor_drv_mode_type arg)
+  ::torsobot_interfaces::msg::TorsobotData mot_drv_mode(::torsobot_interfaces::msg::TorsobotData::_mot_drv_mode_type arg)
   {
-    msg_.motor_drv_mode = std::move(arg);
+    msg_.mot_drv_mode = std::move(arg);
     return std::move(msg_);
   }
 
@@ -40,96 +40,48 @@ private:
   ::torsobot_interfaces::msg::TorsobotData msg_;
 };
 
-class Init_TorsobotData_motor_cmd_torque
+class Init_TorsobotData_wheel_cmd_torque
 {
 public:
-  explicit Init_TorsobotData_motor_cmd_torque(::torsobot_interfaces::msg::TorsobotData & msg)
+  explicit Init_TorsobotData_wheel_cmd_torque(::torsobot_interfaces::msg::TorsobotData & msg)
   : msg_(msg)
   {}
-  Init_TorsobotData_motor_drv_mode motor_cmd_torque(::torsobot_interfaces::msg::TorsobotData::_motor_cmd_torque_type arg)
+  Init_TorsobotData_mot_drv_mode wheel_cmd_torque(::torsobot_interfaces::msg::TorsobotData::_wheel_cmd_torque_type arg)
   {
-    msg_.motor_cmd_torque = std::move(arg);
-    return Init_TorsobotData_motor_drv_mode(msg_);
+    msg_.wheel_cmd_torque = std::move(arg);
+    return Init_TorsobotData_mot_drv_mode(msg_);
   }
 
 private:
   ::torsobot_interfaces::msg::TorsobotData msg_;
 };
 
-class Init_TorsobotData_motor_torque
+class Init_TorsobotData_wheel_torque
 {
 public:
-  explicit Init_TorsobotData_motor_torque(::torsobot_interfaces::msg::TorsobotData & msg)
+  explicit Init_TorsobotData_wheel_torque(::torsobot_interfaces::msg::TorsobotData & msg)
   : msg_(msg)
   {}
-  Init_TorsobotData_motor_cmd_torque motor_torque(::torsobot_interfaces::msg::TorsobotData::_motor_torque_type arg)
+  Init_TorsobotData_wheel_cmd_torque wheel_torque(::torsobot_interfaces::msg::TorsobotData::_wheel_torque_type arg)
   {
-    msg_.motor_torque = std::move(arg);
-    return Init_TorsobotData_motor_cmd_torque(msg_);
+    msg_.wheel_torque = std::move(arg);
+    return Init_TorsobotData_wheel_cmd_torque(msg_);
   }
 
 private:
   ::torsobot_interfaces::msg::TorsobotData msg_;
 };
 
-class Init_TorsobotData_motor_vel
+class Init_TorsobotData_torsobot_state
 {
 public:
-  explicit Init_TorsobotData_motor_vel(::torsobot_interfaces::msg::TorsobotData & msg)
-  : msg_(msg)
-  {}
-  Init_TorsobotData_motor_torque motor_vel(::torsobot_interfaces::msg::TorsobotData::_motor_vel_type arg)
-  {
-    msg_.motor_vel = std::move(arg);
-    return Init_TorsobotData_motor_torque(msg_);
-  }
-
-private:
-  ::torsobot_interfaces::msg::TorsobotData msg_;
-};
-
-class Init_TorsobotData_motor_pos
-{
-public:
-  explicit Init_TorsobotData_motor_pos(::torsobot_interfaces::msg::TorsobotData & msg)
-  : msg_(msg)
-  {}
-  Init_TorsobotData_motor_vel motor_pos(::torsobot_interfaces::msg::TorsobotData::_motor_pos_type arg)
-  {
-    msg_.motor_pos = std::move(arg);
-    return Init_TorsobotData_motor_vel(msg_);
-  }
-
-private:
-  ::torsobot_interfaces::msg::TorsobotData msg_;
-};
-
-class Init_TorsobotData_torso_pitch_rate
-{
-public:
-  explicit Init_TorsobotData_torso_pitch_rate(::torsobot_interfaces::msg::TorsobotData & msg)
-  : msg_(msg)
-  {}
-  Init_TorsobotData_motor_pos torso_pitch_rate(::torsobot_interfaces::msg::TorsobotData::_torso_pitch_rate_type arg)
-  {
-    msg_.torso_pitch_rate = std::move(arg);
-    return Init_TorsobotData_motor_pos(msg_);
-  }
-
-private:
-  ::torsobot_interfaces::msg::TorsobotData msg_;
-};
-
-class Init_TorsobotData_torso_pitch
-{
-public:
-  Init_TorsobotData_torso_pitch()
+  Init_TorsobotData_torsobot_state()
   : msg_(::rosidl_runtime_cpp::MessageInitialization::SKIP)
   {}
-  Init_TorsobotData_torso_pitch_rate torso_pitch(::torsobot_interfaces::msg::TorsobotData::_torso_pitch_type arg)
+  Init_TorsobotData_wheel_torque torsobot_state(::torsobot_interfaces::msg::TorsobotData::_torsobot_state_type arg)
   {
-    msg_.torso_pitch = std::move(arg);
-    return Init_TorsobotData_torso_pitch_rate(msg_);
+    msg_.torsobot_state = std::move(arg);
+    return Init_TorsobotData_wheel_torque(msg_);
   }
 
 private:
@@ -147,7 +99,7 @@ template<>
 inline
 auto build<::torsobot_interfaces::msg::TorsobotData>()
 {
-  return torsobot_interfaces::msg::builder::Init_TorsobotData_torso_pitch();
+  return torsobot_interfaces::msg::builder::Init_TorsobotData_torsobot_state();
 }
 
 }  // namespace torsobot_interfaces

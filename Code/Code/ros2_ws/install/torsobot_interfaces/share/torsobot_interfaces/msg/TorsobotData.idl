@@ -2,23 +2,18 @@
 // with input from torsobot_interfaces/msg/TorsobotData.msg
 // generated code does not contain a copyright notice
 
+#include "torsobot_interfaces/msg/TorsobotState.idl"
 
 module torsobot_interfaces {
   module msg {
     struct TorsobotData {
-      double torso_pitch;
+      torsobot_interfaces::msg::TorsobotState torsobot_state;
 
-      double torso_pitch_rate;
+      double wheel_torque;
 
-      double motor_pos;
+      double wheel_cmd_torque;
 
-      double motor_vel;
-
-      double motor_torque;
-
-      double motor_cmd_torque;
-
-      int8 motor_drv_mode;
+      int8 mot_drv_mode;
     };
   };
 };

@@ -24,8 +24,8 @@ typedef struct torsobot_interfaces__msg__TorsobotState
 {
   double torso_pitch;
   double torso_pitch_rate;
-  double motor_pos;
-  double motor_vel;
+  double wheel_pos;
+  double wheel_vel;
 } torsobot_interfaces__msg__TorsobotState;
 
 // Struct for a sequence of torsobot_interfaces__msg__TorsobotState.

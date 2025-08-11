@@ -19,8 +19,8 @@ torsobot_interfaces__msg__TorsobotState__init(torsobot_interfaces__msg__Torsobot
   }
   // torso_pitch
   // torso_pitch_rate
-  // motor_pos
-  // motor_vel
+  // wheel_pos
+  // wheel_vel
   return true;
 }
 
@@ -32,8 +32,8 @@ torsobot_interfaces__msg__TorsobotState__fini(torsobot_interfaces__msg__Torsobot
   }
   // torso_pitch
   // torso_pitch_rate
-  // motor_pos
-  // motor_vel
+  // wheel_pos
+  // wheel_vel
 }
 
 bool
@@ -50,12 +50,12 @@ torsobot_interfaces__msg__TorsobotState__are_equal(const torsobot_interfaces__ms
   if (lhs->torso_pitch_rate != rhs->torso_pitch_rate) {
     return false;
   }
-  // motor_pos
-  if (lhs->motor_pos != rhs->motor_pos) {
+  // wheel_pos
+  if (lhs->wheel_pos != rhs->wheel_pos) {
     return false;
   }
-  // motor_vel
-  if (lhs->motor_vel != rhs->motor_vel) {
+  // wheel_vel
+  if (lhs->wheel_vel != rhs->wheel_vel) {
     return false;
   }
   return true;
@@ -73,10 +73,10 @@ torsobot_interfaces__msg__TorsobotState__copy(
   output->torso_pitch = input->torso_pitch;
   // torso_pitch_rate
   output->torso_pitch_rate = input->torso_pitch_rate;
-  // motor_pos
-  output->motor_pos = input->motor_pos;
-  // motor_vel
-  output->motor_vel = input->motor_vel;
+  // wheel_pos
+  output->wheel_pos = input->wheel_pos;
+  // wheel_vel
+  output->wheel_vel = input->wheel_vel;
   return true;
 }
 
