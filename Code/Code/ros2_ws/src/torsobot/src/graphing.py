@@ -13,6 +13,10 @@ def rad2deg(rad_value):
     return rad_value * 180/math.pi
 
 
+def cycles2rad(cycles):
+    return cycles*2*np.pi
+
+
 dir_path = "/home/pi/torsobot/Code/Code/ros2_ws/data_logs"
 
 # Get user input for filename
@@ -66,23 +70,39 @@ time_value = df["timestamp"]
 imu_pitch_data = df["IMU_pitch"]
 motor_torque = df["motor_trq"]
 motor_cmd_torque = df["motor_cmd_trq"]
+motor_pos = df["motor_pos"]
+motor_vel = df["motor_vel"]
+
 
 # for the plotting
 max_trq_lim = 1.1 * max(max(motor_torque), max(motor_cmd_torque))
 min_trq_lim = 1.1 * min(min(motor_torque), min(motor_cmd_torque))
 
+
+# change data
+time_value = time_value/(10**6)  # ns to ms
+
 zero_time = time_value[0]
 time_value = time_value - zero_time
+
+start_time = time_value > 50000
+start_idx = df[start_time].index[0]
+
+# print(time_value)
+print(start_idx)
+time_value = time_value[start_idx:-1]
+imu_pitch_data = rad2deg(imu_pitch_data[start_idx:-1])
+motor_pos = cycles2rad(motor_pos[start_idx:-1])
+motor_vel = cycles2rad(motor_vel[start_idx:-1])
+motor_cmd_torque = motor_cmd_torque[start_idx:-1]
+motor_torque = motor_torque[start_idx:-1]
+
 
 desired_torso_pitch = np.ones(len(time_value)) * \
     desired_torso_pitch  # df["desired_pitch_data"]
 # print(desired_torso_pitch)
 
-# change data
-time_value = time_value/(10**6)  # ns to ms
-imu_pitch_data = rad2deg(imu_pitch_data)
-
-fig, axs = plt.subplots(2, 1, figsize=(15, 8))
+fig, axs = plt.subplots(4, 1, figsize=(15, 8))
 fig.suptitle(file_date + "---" + file_time)
 
 # Subplot 1
@@ -98,7 +118,7 @@ axs[0].grid(which="both")
 
 axs[0].set_ylabel("IMU pitch (deg)")
 axs[0].set_ylim([-10, 380])
-axs[0].set_xlim(xmin=0)
+# axs[0].set_xlim(xmin=0)
 axs[0].legend()
 axs[0].set_title(plot_text, fontsize=10)
 # axs[0].text(2800, 110, plot_text, ha='right',
@@ -114,6 +134,24 @@ axs[1].set_xlabel("time (ms)")
 axs[1].set_ylabel("torque (N.m)")
 axs[1].set_ylim([min_trq_lim, max_trq_lim])
 axs[1].legend()
+
+# Subplot 3
+axs[2].plot(time_value, motor_pos, label="motor_pos")
+axs[2].minorticks_on()
+axs[2].grid(which="both")
+axs[2].set_xlabel("time (ms)")
+axs[2].set_ylabel("motor pos (cycles)")
+# axs[2].set_ylim([min_trq_lim, max_trq_lim])
+axs[2].legend()
+
+# Subplot 4
+axs[3].plot(time_value, motor_vel, label="motor_vel")
+axs[3].minorticks_on()
+axs[3].grid(which="both")
+axs[3].set_xlabel("time (ms)")
+axs[3].set_ylabel("motor velocity (cycles/s)")
+# axs[3].set_ylim([min_trq_lim, max_trq_lim])
+axs[3].legend()
 
 plt.show()
 plt.savefig(save_file_path, dpi=300)
