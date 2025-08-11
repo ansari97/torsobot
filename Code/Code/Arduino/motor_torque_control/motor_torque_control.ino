@@ -31,12 +31,16 @@
 #define MCP2517_CS 13  // CS input of MCP2517
 #define MCP2517_INT 9  // INT output of MCP2517
 
-// Defining fast drv_mode runs the IMU at a higher frequency but causes values to drift
+// Defining fast mot_drv_mode runs the IMU at a higher frequency but causes values to drift
 // #define BNO08X_FAST_MODE
 
 // State LED
 #define STOP_LED 19
 #define OK_LED 18
+
+// ——————————————————————————————————————————————————————————————————————————————
+//  Variables definition
+// ——————————————————————————————————————————————————————————————————————————————
 
 // Euler angles for the IMU
 struct euler_t {
@@ -45,19 +49,25 @@ struct euler_t {
   float roll;
 };
 
+// function prototypes
 void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t *ypr, bool degrees);
 void quaternionToEulerRV(sh2_RotationVectorWAcc_t *rotational_vector, euler_t *ypr, bool deegrees);
 void quaternionToEulerGI(sh2_GyroIntegratedRV_t *rotational_vector, euler_t *ypr, bool degrees);
 void setReports(long report_interval);
+void i2cReq(void);
+void i2cRecv(void);
+void emergencyStop(void);
+
+int signof(float);
+
 float degToCycles(float);
 float imuAngleCorrection(float, float, float, float);
 float gravityMagnitude(float, float, float);
 float degToRad(float);
 float radToDeg(float);
 float wrapTo360(float);
-bool checkHeartbeatValidity(void);
-void emergencyStop(void);
 
+bool checkHeartbeatValidity(void);
 // ——————————————————————————————————————————————————————————————————————————————
 //   Variable declarations
 // ——————————————————————————————————————————————————————————————————————————————
@@ -83,74 +93,80 @@ uint32_t millis_since_last_heartbeat = 0;
 
 // I2C cmd for mcu data
 const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00;  // desired torso_pitch
-const uint8_t IMU_PITCH_CMD = 0x01;            // torso_pitch
-const uint8_t IMU_PITCH_RATE_CMD = 0x02;       // torso_pitch_rate
-const uint8_t MOTOR_POS_CMD = 0x03;            // motor rotor position (not wheel)
-const uint8_t MOTOR_VEL_CMD = 0x04;            // motor velocity position (not wheel)
-const uint8_t MOTOR_TORQUE_CMD = 0X05;         // motor torque at motor shaft (not wheel)
+const uint8_t TORSO_PITCH_CMD = 0x01;          // torso_pitch
+const uint8_t TORSO_PITCH_RATE_CMD = 0x02;     // torso_pitch_rate
+const uint8_t WHEEL_POS_CMD = 0x03;            // motor rotor position (at wheel)
+const uint8_t WHEEL_VEL_CMD = 0x04;            // motor velocity position (at wheel)
+const uint8_t WHEEL_TORQUE_CMD = 0X05;         // motor torque (at wheel)
 const uint8_t MOTOR_DRV_MODE_CMD = 0X06;       // motor driver mode
 
-const uint8_t MOTOR_MAX_TORQUE_CMD = 0X07;   // motor max torque value
+const uint8_t WHEEL_MAX_TORQUE_CMD = 0X07;   // motor max torque value
 const uint8_t KP_CMD = 0X08;                 // Kp value
 const uint8_t KI_CMD = 0X09;                 // Ki value
 const uint8_t KD_CMD = 0X0A;                 // Kd value
 const uint8_t CTRL_MAX_INTEGRAL_CMD = 0X0B;  // max integral term
 
-const uint8_t MOTOR_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
+const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
 
+// hardware parameters
+const float gear_ratio = (38 / 16) * (48 / 16);
 
-const int data_len = sizeof(float);  // 4 bytes
-char desired_torso_pitch_data[data_len];
-char imu_pitch_data[data_len];
-char imu_pitch_rate_data[data_len];
-char mot_pos_data[data_len];
-char mot_vel_data[data_len];
-char mot_torque_data[data_len];
-char drv_mode_data[sizeof(int8_t)];
+// robot data variables
+int8_t mot_drv_mode;
+float torso_pitch, torso_pitch_rate;
+float mot_vel, mot_pos, mot_torque;        // at the motor
+float wheel_pos, wheel_vel, wheel_torque;  // at the wheel
 
-char mot_max_torque_data[data_len];
-char kp_data[data_len];
-char ki_data[data_len];
-char kd_data[data_len];
-char control_max_integral_data[data_len];
-
-char cmd_torque_data[data_len];
-
-// char write_buff[data_len + 10];
-// char write_buff2[data_len + 10];
-
-volatile char read_command;
-
-int8_t drv_mode;
-float imu_pitch;
-float imu_pitch_rate;
-float mot_vel;
-float mot_pos;
-float mot_torque;
+// for imu correction
 float gravity_x = 0;
 float gravity_y = 0;
 float gravity_z = 0;
+
+// data buuffers
+const int float_len = sizeof(float);  // 4 bytes
+char desired_torso_pitch_data[float_len];
+char torso_pitch_data[float_len];
+char torso_pitch_rate_data[float_len];
+char wheel_pos_data[float_len];
+char wheel_vel_data[float_len];
+char wheel_torque_data[float_len];
+char mot_drv_mode_data[sizeof(int8_t)];
+
+char mot_max_torque_data[float_len];
+char kp_data[float_len];
+char ki_data[float_len];
+char kd_data[float_len];
+char control_max_integral_data[float_len];
+
+char wheel_cmd_torque_data[float_len];
+
+// char write_buff[float_len + 10];
+// char write_buff2[float_len + 10];
+
+volatile char read_command;
+
+float imu_angle_adjustment = PI - 3.043268;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch
 
 // Control parameters
 const float control_freq = 50;  // control torque write freq
 
 // ------------Received from PI---------------
-volatile float desired_torso_pitch = 180.0;  // default desired torso angle in degrees
+volatile float desired_torso_pitch = PI;  // default desired torso angle in radians
 
 volatile float kp = 0.5;  // N.m per rad
 volatile float ki = 0.0;  // N.m per (rad.s)
 volatile float kd = 0.0;  // N.m per (rad/s)
 
 // max motor torque
-volatile float max_torque = 0.5;
+volatile float mot_max_torque = 0.5, wheel_max_torque;
 
 // prevents integral windup
 volatile float max_integral = 100;  // rad.s
 // -------------------------------------------
 
-float control_error, control_error_integral = 0;
+float control_error = 0, control_error_integral = 0;
 
-float ff_torque, ff_torque_calc;  // torque command to the motor
+float mot_cmd_torque, wheel_cmd_torque;  // torque command to the motor
 
 uint64_t time_now = 0, time_last, time_since_last = 0;
 
@@ -303,14 +319,12 @@ void setup() {
   position_cmd.velocity = 0.0f;  // Not required as resolution is set to ignore
   position_cmd.kp_scale = 0.0f;
   position_cmd.kd_scale = 0.0f;
-  // position_cmd.maximum_torque = max_torque; // moved to the loop since this value cannot be updated over I2C
+  // position_cmd.maximum_torque = mot_max_torque; // moved to the loop since this value cannot be updated over I2C
 
-  // angle changed to radians
-  desired_torso_pitch = degToRad(desired_torso_pitch);  // radians
 
   // Copy to char buffers
   memcpy(desired_torso_pitch_data, const_cast<float *>(&desired_torso_pitch), sizeof(desired_torso_pitch));
-  memcpy(mot_max_torque_data, const_cast<float *>(&max_torque), sizeof(max_torque));
+  memcpy(mot_max_torque_data, const_cast<float *>(&mot_max_torque), sizeof(mot_max_torque));
   memcpy(kp_data, const_cast<float *>(&kp), sizeof(kp));
   memcpy(ki_data, const_cast<float *>(&ki), sizeof(ki));
   memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
@@ -367,8 +381,9 @@ void loop() {
   Serial.println(kp);
   Serial.println(ki);
   Serial.println(kd);
-  Serial.println(max_torque);
+  Serial.println(mot_max_torque);
   Serial.println(max_integral);
+  Serial.println(control_error);
   Serial.println("---");
 
 
@@ -387,11 +402,11 @@ void loop() {
     switch (sensorValue.sensorId) {
       case SH2_ARVR_STABILIZED_RV:
         quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
-        imu_pitch = degToRad(imuAngleCorrection(ypr.pitch, gravity_x, gravity_y, gravity_z));
+        torso_pitch = degToRad(imuAngleCorrection(ypr.pitch, gravity_x, gravity_y, gravity_z)) + imu_angle_adjustment;  // adjusts sign and adds the angle between the imu axes and the COM
         break;
 
       case SH2_GYROSCOPE_CALIBRATED:
-        imu_pitch_rate = sensorValue.un.gyroscope.z;
+        torso_pitch_rate = sensorValue.un.gyroscope.z;
         break;
 
       case SH2_GRAVITY:
@@ -406,18 +421,18 @@ void loop() {
     //     break;
     // }
 
-    // imu_pitch_rate = sensorValue.un.gyroscope.z;
-    // Serial.print(imu_pitch, 4);
+    // torso_pitch_rate = sensorValue.un.gyroscope.z;
+    // Serial.print(torso_pitch, 4);
     // Serial.print(", ");
 
-    // imu_pitch = imuAngleCorrection(ypr.pitch);
-    // Serial.print(imu_pitch_rate, 4);
+    // torso_pitch = imuAngleCorrection(ypr.pitch);
+    // Serial.print(torso_pitch_rate, 4);
     // Serial.print(", ");
 
     // Serial.println(gravity_y, 4);
 
-    memcpy(imu_pitch_data, &imu_pitch, sizeof(float));
-    memcpy(imu_pitch_rate_data, &imu_pitch_rate, sizeof(float));
+    memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
+    memcpy(torso_pitch_rate_data, &torso_pitch_rate, sizeof(float));
   }
   // // Serial.println();
 
@@ -429,7 +444,7 @@ void loop() {
     return;
   }
 
-  // Fault drv_mode
+  // Fault mot_drv_mode
   if (static_cast<int>(moteus.last_result().values.mode) == 11) {
     Serial.println("motor driver fault");
     moteus.SetStop();
@@ -444,29 +459,28 @@ void loop() {
   time_since_last = time_now - time_last;
 
   // Calculate torque required
-  control_error = desired_torso_pitch - imu_pitch;  // radians
+  control_error = desired_torso_pitch - torso_pitch;  // radians
+
+  // wrap error so that it is always between -PI to PI radians
+  if (control_error > PI) {
+    control_error -= 2 * PI;
+  } else if (control_error < -PI) {
+    control_error += 2 * PI;
+  }
 
   // Integral term
   control_error_integral += control_error * time_since_last;
   // clamp the integral to prevent integral windup
   control_error_integral = min(max_integral, max(-max_integral, control_error_integral));
 
-  // time derivative of control error = -imu_pitch_rate ; because desired_pitch_rate is constant
+  // time derivative of control error = -torso_pitch_rate ; because desired_pitch_rate is constant
 
-  ff_torque = kp * control_error + ki * control_error_integral + kd * (-imu_pitch_rate);
-  ff_torque = min(max_torque, max(-max_torque, ff_torque));  // second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
-
-  // ff_torque = min(abs(max_torque), abs(ff_torque_calc)); // always +ve; second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
-
-  // // retain sign of ff_torque
-  // if (ff_torque_calc <= 0)
-  // {
-  //   ff_torque = -ff_torque;
-  // }
+  mot_cmd_torque = kp * control_error + ki * control_error_integral + kd * (-torso_pitch_rate);
+  mot_cmd_torque = min(mot_max_torque, max(-mot_max_torque, mot_cmd_torque));  // second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
 
   // write to cmd
-  position_cmd.maximum_torque = max_torque;
-  position_cmd.feedforward_torque = ff_torque;
+  position_cmd.maximum_torque = mot_max_torque;
+  position_cmd.feedforward_torque = mot_cmd_torque;
 
   // **Write to the motor
   // Serial.println(millis());
@@ -488,17 +502,22 @@ void loop() {
   // digitalWrite(LED_BUILTIN, HIGH);
 
   // print_moteus(moteus.last_result().values);
-  drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
+  mot_drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
   mot_vel = moteus.last_result().values.velocity;
   mot_pos = moteus.last_result().values.position;
   mot_torque = moteus.last_result().values.torque;
 
+  wheel_pos = mot_pos / gear_ratio;
+  wheel_vel = mot_pos / gear_ratio;
+  wheel_torque = mot_torque * gear_ratio;
+  wheel_cmd_torque = mot_cmd_torque * gear_ratio;
+
   // Serial.print("millis_since_last_heartbeat: ");
   // Serial.println(millis_since_last_heartbeat);
-  // Serial.print("drv_mode: ");
-  // Serial.print(drv_mode);
+  // Serial.print("mot_drv_mode: ");
+  // Serial.print(mot_drv_mode);
   // Serial.print("\tcommand_torque: ");
-  // Serial.print(ff_torque);
+  // Serial.print(mot_cmd_torque);
   // Serial.print("\tmot_torque: ");
   // Serial.print(mot_torque);
   // Serial.print("\tmot_pos: ");
@@ -506,11 +525,11 @@ void loop() {
   // Serial.print("\tmot_vel: ");
   // Serial.println(mot_vel);
 
-  memcpy(cmd_torque_data, &ff_torque, sizeof(float));
-  memcpy(mot_pos_data, &mot_pos, sizeof(float));
-  memcpy(mot_vel_data, &mot_vel, sizeof(float));
-  memcpy(mot_torque_data, &mot_torque, sizeof(float));
-  memcpy(drv_mode_data, &drv_mode, sizeof(int8_t));
+  memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
+  memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
+  memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
+  memcpy(wheel_torque_data, &wheel_torque, sizeof(float));
+  memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
 
   // **************************************************************
 
@@ -559,6 +578,7 @@ void i2cRecv(int len) {
       memcpy(&temp_val, desired_torso_pitch_data, sizeof(float));
 
       desired_torso_pitch = temp_val;
+      desired_torso_pitch = degToRad(desired_torso_pitch);
     }
   }
   // else if it is the kp
@@ -592,13 +612,14 @@ void i2cRecv(int len) {
     }
   }
   // else if it is the motor max torque
-  else if (static_cast<uint8_t>(read_command) == MOTOR_MAX_TORQUE_CMD) {
+  else if (static_cast<uint8_t>(read_command) == WHEEL_MAX_TORQUE_CMD) {
     if (len == 5) {
       for (int i = 0; i < remaining_bytes; i++) { mot_max_torque_data[i] = Wire.read(); }
       float temp_val;
       memcpy(&temp_val, mot_max_torque_data, sizeof(float));
 
-      max_torque = temp_val;
+      wheel_max_torque = temp_val;
+      mot_max_torque = wheel_max_torque / gear_ratio;
     }
   }
   // else if it is the control max integral torque
@@ -627,25 +648,25 @@ void i2cReq() {
       // do nothing; since we're now writing this value to the pico
       // Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
       break;
-    case IMU_PITCH_CMD:
-      Wire.write(imu_pitch_data, sizeof(imu_pitch_data));
+    case TORSO_PITCH_CMD:
+      Wire.write(torso_pitch_data, sizeof(torso_pitch_data));
       break;
-    case IMU_PITCH_RATE_CMD:
-      Wire.write(imu_pitch_rate_data, sizeof(imu_pitch_rate_data));
+    case TORSO_PITCH_RATE_CMD:
+      Wire.write(torso_pitch_rate_data, sizeof(torso_pitch_rate_data));
       break;
-    case MOTOR_POS_CMD:
-      Wire.write(mot_pos_data, sizeof(mot_pos_data));
+    case WHEEL_POS_CMD:
+      Wire.write(wheel_pos_data, sizeof(wheel_pos_data));
       break;
-    case MOTOR_VEL_CMD:
-      Wire.write(mot_vel_data, sizeof(mot_vel_data));
+    case WHEEL_VEL_CMD:
+      Wire.write(wheel_vel_data, sizeof(wheel_vel_data));
       break;
-    case MOTOR_TORQUE_CMD:
-      Wire.write(mot_torque_data, sizeof(mot_torque_data));
+    case WHEEL_TORQUE_CMD:
+      Wire.write(wheel_torque_data, sizeof(wheel_torque_data));
       break;
     case MOTOR_DRV_MODE_CMD:
-      Wire.write(drv_mode_data, sizeof(drv_mode_data));
+      Wire.write(mot_drv_mode_data, sizeof(mot_drv_mode_data));
       break;
-    case MOTOR_MAX_TORQUE_CMD:
+    case WHEEL_MAX_TORQUE_CMD:
       Wire.write(mot_max_torque_data, sizeof(mot_max_torque_data));
       break;
     case KP_CMD:
@@ -660,8 +681,8 @@ void i2cReq() {
     case CTRL_MAX_INTEGRAL_CMD:
       // Wire.write(kd_data, sizeof(kd_data));
       break;
-    case MOTOR_CMD_TORQUE_CMD:
-      Wire.write(cmd_torque_data, sizeof(cmd_torque_data));
+    case WHEEL_CMD_TORQUE_CMD:
+      Wire.write(wheel_cmd_torque_data, sizeof(wheel_cmd_torque_data));
       break;
   }
 }
@@ -681,6 +702,7 @@ void setReports(long report_interval) {
 }
 
 // user-defined functions
+// quaternions to Euler
 void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t *ypr, bool degrees = false) {
 
   float sqr = sq(qr);
@@ -699,22 +721,27 @@ void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t *ypr, boo
   }
 }
 
+// quaternions to Euler Rotation Vector
 void quaternionToEulerRV(sh2_RotationVectorWAcc_t *rotational_vector, euler_t *ypr, bool degrees = false) {
   quaternionToEuler(rotational_vector->real, rotational_vector->i, rotational_vector->j, rotational_vector->k, ypr, degrees);
 }
 
+// quaternions to Euler Gyro Integrated
 void quaternionToEulerGI(sh2_GyroIntegratedRV_t *rotational_vector, euler_t *ypr, bool degrees = false) {
   quaternionToEuler(rotational_vector->real, rotational_vector->i, rotational_vector->j, rotational_vector->k, ypr, degrees);
 }
 
+// change from degrees to cycles/full rotations
 float degToCycles(float deg) {
   return deg / 360;
 }
 
+// change value from degrees to radians
 float degToRad(float deg) {
   return deg / 180 * PI;
 }
 
+// change value from radians to degrees
 float radToDeg(float rad) {
   return rad * 180 / PI;
 }
@@ -726,6 +753,7 @@ float wrapTo360(float angle) {
   return angle;
 }
 
+// manipulates the IMU values
 float imuAngleCorrection(float pitch, float gravity_x, float gravity_y, float gravity_z) {
   pitch = 90 - pitch;  // horizontal is originally zero
 
@@ -784,6 +812,11 @@ bool checkHeartbeatValidity(void) {
   }
 
   return false;
+}
+
+// sign function
+int signof(float num) {
+  return (num > 0) - (num < 0);
 }
 
 // called when program has to stop
