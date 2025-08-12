@@ -508,7 +508,7 @@ void loop() {
   mot_torque = moteus.last_result().values.torque;
 
   wheel_pos = mot_pos / gear_ratio;
-  wheel_vel = mot_pos / gear_ratio;
+  wheel_vel = mot_vel / gear_ratio;
   wheel_torque = mot_torque * gear_ratio;
   wheel_cmd_torque = mot_cmd_torque * gear_ratio;
 
