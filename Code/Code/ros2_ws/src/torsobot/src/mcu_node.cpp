@@ -179,7 +179,15 @@ private:
     data_write_buff[0] = cmd;
     memcpy(&data_write_buff[1], const_cast<float *>(sensor_val_addr), sizeof(_Float32));
 
-    (void)write(i2c_handle, &data_write_buff, sizeof(data_write_buff));
+    int write_result = write(i2c_handle, &data_write_buff, sizeof(data_write_buff));
+
+    if (write_result != sizeof(data_write_buff))
+    {
+      RCLCPP_ERROR(this->get_logger(), "Error sending data to MCU for %d", cmd);
+      RCLCPP_FATAL(this->get_logger(), "Exiting node!");
+      rclcpp::shutdown();
+      exit(EXIT_FAILURE); // Terminate the program
+    }
   }
 
   // timer callback for getting data on i2c
