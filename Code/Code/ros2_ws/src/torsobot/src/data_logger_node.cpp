@@ -21,7 +21,7 @@
 using namespace std::chrono_literals;
 
 // Define the CSV header row based on your message fields
-const std::string CSV_HEADER = "timestamp,torso_pitch,torso_pitch_rate,wheel_pos,wheel_vel,wheel_torque,wheel_cmd_torque,motor_drv_mode";
+const std::string CSV_HEADER = "timestamp,torso_pitch,torso_pitch_rate,wheel_pos,wheel_vel,wheel_torque,wheel_cmd_torque,mot_drv_mode";
 
 // parameters
 volatile float desired_torso_pitch;
