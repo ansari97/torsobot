@@ -34,9 +34,12 @@
 // Defining fast mot_drv_mode runs the IMU at a higher frequency but causes values to drift
 // #define BNO08X_FAST_MODE
 
+// Reed switch
+#define REED_SWITCH 20
+
 // State LED
-#define STOP_LED 19
 #define OK_LED 18
+#define STOP_LED 19
 
 // ——————————————————————————————————————————————————————————————————————————————
 //  Variables definition
@@ -152,8 +155,8 @@ volatile char read_command;
 float imu_angle_adjustment = PI - 3.043268;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch
 
 // Control parameters
-const float control_freq = 500;  // control torque write freq
-const int SENSORS_UPDATE_PERIOD_LOOPS = 2; // get motor values every x loop
+const float control_freq = 500;             // control torque write freq
+const int SENSORS_UPDATE_PERIOD_LOOPS = 2;  // get motor values every x loop
 
 // ------------Received from PI---------------
 volatile float desired_torso_pitch = PI;  // default desired torso angle in radians; changed from PI
@@ -226,6 +229,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(OK_LED, OUTPUT);
   pinMode(STOP_LED, OUTPUT);
+  pinMode(REED_SWITCH, INPUT);
 
   digitalWrite(LED_BUILTIN, LOW);
   digitalWrite(OK_LED, LOW);
@@ -334,6 +338,11 @@ void setup() {
   memcpy(ki_data, const_cast<float *>(&ki), sizeof(ki));
   memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
 
+  while (!digitalRead(REED_SWITCH)) {
+    digitalWrite(STOP_LED, HIGH);
+  }
+  Serial.println("Reed switch okay");
+
   Serial.println("Waiting for heartbeat from the PI...");
 
   // waits for heatrbeat
@@ -364,6 +373,11 @@ void loop() {
     start_time = millis();  // stores start time of the loop function
     Serial.print("loop start time:  ");
     Serial.println(start_time);
+  }
+
+  if (!digitalRead(REED_SWITCH)) {
+    Serial.println("Reed switch not detected!");
+    emergencyStop();
   }
 
   // is_heartbeat_valid = checkHeartbeatValidity();
