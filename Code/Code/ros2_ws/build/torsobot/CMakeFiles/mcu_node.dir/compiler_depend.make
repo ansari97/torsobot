@@ -794,31 +794,22 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
   /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/parameter_service.hpp \
   /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/torsobot_data.hpp \
   /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__struct.hpp \
+  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp \
   /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__builder.hpp \
   /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__traits.hpp \
+  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__traits.hpp \
   /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__type_support.hpp \
   /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp \
   /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/torsobot_state.hpp \
-  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp \
   /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__builder.hpp \
-  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__traits.hpp \
-  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp \
-  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/request_control_params.hpp \
-  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__struct.hpp \
-  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__builder.hpp \
-  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__traits.hpp \
-  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp
+  /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__type_support.hpp
 
-
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__type_support.hpp:
-
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__traits.hpp:
-
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp:
 
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp:
 
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__builder.hpp:
+
+/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_state__struct.hpp:
 
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/msg/detail/torsobot_data__struct.hpp:
 
@@ -1253,8 +1244,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /home/pi/ros2_jazzy/install/rcl/include/rcl/rcl/arguments.h:
 
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/type_hash.h:
-
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__struct.hpp:
 
 /usr/include/c++/12/bits/stringfwd.h:
 
@@ -1992,8 +1981,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 
 /usr/include/aarch64-linux-gnu/bits/ss_flags.h:
 
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/detail/request_control_params__builder.hpp:
-
 /usr/include/aarch64-linux-gnu/bits/types/struct_sigstack.h:
 
 /usr/include/c++/12/bits/locale_facets_nonio.tcc:
@@ -2229,8 +2216,6 @@ CMakeFiles/mcu_node.dir/src/mcu_node.cpp.o: /home/pi/torsobot/Code/Code/ros2_ws/
 /usr/include/aarch64-linux-gnu/bits/libc-header-start.h:
 
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/security_options.h:
-
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/include/torsobot_interfaces/torsobot_interfaces/srv/request_control_params.hpp:
 
 /home/pi/ros2_jazzy/install/rmw/include/rmw/rmw/time.h:
 
