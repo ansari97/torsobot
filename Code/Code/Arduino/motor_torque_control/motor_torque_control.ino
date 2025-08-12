@@ -152,7 +152,7 @@ volatile char read_command;
 float imu_angle_adjustment = PI - 3.043268;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch
 
 // Control parameters
-const float control_freq = 50;  // control torque write freq
+const float control_freq = 200;  // control torque write freq
 
 // ------------Received from PI---------------
 volatile float desired_torso_pitch = PI;  // default desired torso angle in radians; changed from PI
@@ -477,7 +477,7 @@ void loop() {
   // Serial.println(millis());
 
   control_next_send_millis += 1000 / control_freq;
-  control_loop_ctr++;
+  // control_loop_ctr++;
   // **************************************************************
 
 
@@ -485,7 +485,7 @@ void loop() {
   // copy data from driver to buffers
 
   // Get values every 5 loop iters
-  if (control_loop_ctr % 5 != 0) {
+  if (control_loop_ctr++ % 5 != 0) {
     return;
   }
   // digitalWrite(LED_BUILTIN, HIGH);
@@ -496,8 +496,8 @@ void loop() {
   mot_vel = revsToRad(moteus.last_result().values.velocity);  // radians/s
   mot_torque = moteus.last_result().values.torque;
 
-  // get init values only in the 1st loop (cannot loop ctr == 0 since ctr has been incremented to 1)
-  if (control_loop_ctr == 1) {
+  // get init values only in the 0th loop
+  if (control_loop_ctr == 0) {
     torso_pitch_init = torso_pitch;
     mot_pos_init = mot_pos;
   }
