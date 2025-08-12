@@ -60,7 +60,8 @@ void emergencyStop(void);
 
 int signof(float);
 
-float degToCycles(float);
+float degToRevs(float);
+float revsToRad(float);
 float imuAngleCorrection(float, float, float, float);
 float gravityMagnitude(float, float, float);
 float degToRad(float);
@@ -110,12 +111,15 @@ const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
 
 // hardware parameters
 const float gear_ratio = (38 / 16) * (48 / 16);
+const int num_spokes = 10;
 
 // robot data variables
 int8_t mot_drv_mode;
 float torso_pitch, torso_pitch_rate;
 float mot_vel, mot_pos, mot_torque;        // at the motor
 float wheel_pos, wheel_vel, wheel_torque;  // at the wheel
+float mot_pos_init, torso_pitch_init;
+float wheel_pos_init = -PI / num_spokes;  //assuming wheel going in positive direction
 
 // for imu correction
 float gravity_x = 0;
@@ -151,7 +155,7 @@ float imu_angle_adjustment = PI - 3.043268;  // imu angle adjustment relative to
 const float control_freq = 50;  // control torque write freq
 
 // ------------Received from PI---------------
-volatile float desired_torso_pitch = PI;  // default desired torso angle in radians
+volatile float desired_torso_pitch = PI;  // default desired torso angle in radians; changed from PI
 
 volatile float kp = 0.5;  // N.m per rad
 volatile float ki = 0.0;  // N.m per (rad.s)
@@ -415,21 +419,6 @@ void loop() {
         gravity_z = sensorValue.un.gravity.z;
         break;
     }
-    //   case SH2_GYRO_INTEGRATED_RV:
-    //     // faster (more noise?)
-    //     quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
-    //     break;
-    // }
-
-    // torso_pitch_rate = sensorValue.un.gyroscope.z;
-    // Serial.print(torso_pitch, 4);
-    // Serial.print(", ");
-
-    // torso_pitch = imuAngleCorrection(ypr.pitch);
-    // Serial.print(torso_pitch_rate, 4);
-    // Serial.print(", ");
-
-    // Serial.println(gravity_y, 4);
 
     memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
     memcpy(torso_pitch_rate_data, &torso_pitch_rate, sizeof(float));
@@ -503,12 +492,33 @@ void loop() {
 
   // print_moteus(moteus.last_result().values);
   mot_drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
-  mot_vel = moteus.last_result().values.velocity;
-  mot_pos = moteus.last_result().values.position;
+  mot_pos = revsToRad(moteus.last_result().values.position);  //radians
+  mot_vel = revsToRad(moteus.last_result().values.velocity);  // radians/s
   mot_torque = moteus.last_result().values.torque;
 
-  wheel_pos = mot_pos / gear_ratio;
-  wheel_vel = mot_vel / gear_ratio;
+  // get init values only in the 1st loop (cannot loop ctr == 0 since ctr has been incremented to 1)
+  if (control_loop_ctr == 1) {
+    torso_pitch_init = torso_pitch;
+    mot_pos_init = mot_pos;
+  }
+
+  // calculate wheel position from motor and torso angles
+  wheel_pos = (mot_pos - mot_pos_init) / gear_ratio - (torso_pitch - torso_pitch_init) + wheel_pos_init;
+
+  // wrap around [0, 2*PI)
+  wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
+
+  // wrap around (-PI/n, PI/n]
+  wheel_pos = fmod(wheel_pos, 2 * PI / num_spokes);
+
+  if (wheel_pos <= -PI / num_spokes) {
+    wheel_pos += 2 * PI / num_spokes;
+  } else if (wheel_pos > PI / num_spokes) {
+    wheel_pos -= 2 * PI / num_spokes;
+  }
+
+  // get other wheel values
+  wheel_vel = mot_vel / gear_ratio - torso_pitch_rate;  // does not require init values for the mot or the torso
   wheel_torque = mot_torque * gear_ratio;
   wheel_cmd_torque = mot_cmd_torque * gear_ratio;
 
@@ -732,8 +742,13 @@ void quaternionToEulerGI(sh2_GyroIntegratedRV_t *rotational_vector, euler_t *ypr
 }
 
 // change from degrees to cycles/full rotations
-float degToCycles(float deg) {
+float degToRevs(float deg) {
   return deg / 360;
+}
+
+// change from revolutions to radians
+float revsToRad(float revs) {
+  return revs * 2 * PI;
 }
 
 // change value from degrees to radians
