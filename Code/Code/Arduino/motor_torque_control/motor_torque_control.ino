@@ -152,7 +152,8 @@ volatile char read_command;
 float imu_angle_adjustment = PI - 3.043268;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch
 
 // Control parameters
-const float control_freq = 200;  // control torque write freq
+const float control_freq = 500;  // control torque write freq
+const int SENSORS_UPDATE_PERIOD_LOOPS = 2; // get motor values every x loop
 
 // ------------Received from PI---------------
 volatile float desired_torso_pitch = PI;  // default desired torso angle in radians; changed from PI
@@ -484,8 +485,8 @@ void loop() {
   // **************************************************************
   // copy data from driver to buffers
 
-  // Get values every 5 loop iters
-  if (control_loop_ctr++ % 5 != 0) {
+  // Get values every SENSORS_UPDATE_PERIOD_LOOPS iters
+  if (control_loop_ctr++ % SENSORS_UPDATE_PERIOD_LOOPS != 0) {
     return;
   }
   // digitalWrite(LED_BUILTIN, HIGH);
