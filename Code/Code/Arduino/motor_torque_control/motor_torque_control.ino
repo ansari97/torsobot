@@ -77,7 +77,7 @@ bool checkHeartbeatValidity(void);
 // ——————————————————————————————————————————————————————————————————————————————
 
 // I2C speed; try changing it to 50kHz
-const int I2C_BAUDRATE = 25 * 1000;  // I2C speed in Hz
+const int I2C_BAUDRATE = 50 * 1000;  // I2C speed in Hz
 int i2c_read_ctr = 0;                // reads the number of times mcu is read from
 
 // heartbeat variables
@@ -338,10 +338,10 @@ void setup() {
   memcpy(ki_data, const_cast<float *>(&ki), sizeof(ki));
   memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
 
-  while (!digitalRead(REED_SWITCH)) {
-    digitalWrite(STOP_LED, HIGH);
-  }
-  Serial.println("Reed switch okay");
+  // while (!digitalRead(REED_SWITCH)) {
+  //   digitalWrite(STOP_LED, HIGH);
+  // }
+  // Serial.println("Reed switch okay");
 
   Serial.println("Waiting for heartbeat from the PI...");
 
@@ -375,10 +375,10 @@ void loop() {
     Serial.println(start_time);
   }
 
-  if (!digitalRead(REED_SWITCH)) {
-    Serial.println("Reed switch not detected!");
-    emergencyStop();
-  }
+  // if (!digitalRead(REED_SWITCH)) {
+  //   Serial.println("Reed switch not detected!");
+  //   emergencyStop();
+  // }
 
   // is_heartbeat_valid = checkHeartbeatValidity();
   millis_since_last_heartbeat = millis() - heartbeat_timer;  // heartbeat_timer is updated by the i2cRecv function if heartbeat is valid
