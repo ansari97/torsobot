@@ -182,6 +182,7 @@ void loop() {
     Serial.print(ypr.pitch);
     Serial.print("\t");
     Serial.print(ypr.roll);
+    sensorValue.s
     // Serial.print("\t");
     // Serial.println(sensorValue.un.tiltDetector.tilt);
     Serial.println();
