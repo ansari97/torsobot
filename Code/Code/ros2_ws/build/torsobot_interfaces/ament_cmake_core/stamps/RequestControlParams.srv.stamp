@@ -1,6 +1,0 @@
----
-float64 desired_torso_pitch
-float64 mot_max_torque
-float64 kp
-float64 ki
-float64 kd
