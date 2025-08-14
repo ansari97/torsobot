@@ -1,6 +1,6 @@
 browse.vc.db
 browse.vc.db-shm
 browse.vc.db-wal
-Code/Code/ros2_ws/build/
-Code/Code/ros2_ws/install/
-Code/Code/ros2_ws/log/
+**/build/
+**/install/
+**/log/
