@@ -21,7 +21,7 @@
 using namespace std::chrono_literals;
 
 // Define the CSV header row based on your message fields
-const std::string CSV_HEADER = "timestamp,torso_pitch,torso_pitch_rate,wheel_pos,wheel_vel,wheel_torque,wheel_cmd_torque,mot_drv_mode";
+const std::string CSV_HEADER = "timestamp,torso_pitch,torso_pitch_rate,wheel_pos,wheel_vel,wheel_torque,wheel_cmd_torque,mot_drv_mode,mot_pos,mot_vel";
 
 // parameters
 volatile float desired_torso_pitch;
@@ -131,7 +131,7 @@ private:
       // Write the timestamp in nanoseconds
       output_file_ << this->now().nanoseconds() << ",";
       // Write the data from the message, separated by commas
-      output_file_ << msg->torsobot_state.torso_pitch << "," << msg->torsobot_state.torso_pitch_rate << "," << msg->torsobot_state.wheel_pos << "," << msg->torsobot_state.wheel_vel << "," << msg->wheel_torque << "," << msg->wheel_cmd_torque << "," << static_cast<int>(msg->mot_drv_mode);
+      output_file_ << msg->torsobot_state.torso_pitch << "," << msg->torsobot_state.torso_pitch_rate << "," << msg->torsobot_state.wheel_pos << "," << msg->torsobot_state.wheel_vel << "," << msg->wheel_torque << "," << msg->wheel_cmd_torque << "," << static_cast<int>(msg->mot_drv_mode) << "," << msg->mot_pos << "," << msg->mot_vel;
       // Add a newline character to finish the row
       output_file_ << "\n";
     }

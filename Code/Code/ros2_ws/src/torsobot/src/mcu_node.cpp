@@ -36,6 +36,7 @@ const int float_len = sizeof(float);
 char read_buff[float_len];
 float torso_pitch, torso_pitch_rate;
 float wheel_pos, wheel_vel, wheel_torque;
+float mot_pos, mot_vel;
 float wheel_cmd_torque;
 int8_t mot_drv_mode;
 
@@ -57,6 +58,9 @@ const uint8_t KP_CMD = 0X08;                // Kp value
 const uint8_t KI_CMD = 0X09;                // Ki value
 const uint8_t KD_CMD = 0X0A;                // Kd value
 const uint8_t CTRL_MAX_INTEGRAL_CMD = 0X0B; // max integral term
+
+const uint8_t MOT_POS_CMD = 0X0D; // mot_pos
+const uint8_t MOT_VEL_CMD = 0X0E; // mot_vel
 
 const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C; // commanded motor torque
 
@@ -194,13 +198,16 @@ private:
   void i2cDataCallback(void)
   {
     // Read / request sensor data from pico
-    int get_sensor_val_IMU_pitch = getSensorValue(TORSO_PITCH_CMD, &torso_pitch);
-    int get_sensor_val_IMU_pitch_rate = getSensorValue(TORSO_PITCH_RATE_CMD, &torso_pitch_rate);
-    int get_sensor_val_motor_pos = getSensorValue(WHEEL_POS_CMD, &wheel_pos);
-    int get_sensor_val_motor_vel = getSensorValue(WHEEL_VEL_CMD, &wheel_vel);
-    int get_sensor_val_motor_torque = getSensorValue(WHEEL_TORQUE_CMD, &wheel_torque);
+    int get_sensor_val_torso_pitch = getSensorValue(TORSO_PITCH_CMD, &torso_pitch);
+    int get_sensor_val_torso_pitch_rate = getSensorValue(TORSO_PITCH_RATE_CMD, &torso_pitch_rate);
+    int get_sensor_val_wheel_pos = getSensorValue(WHEEL_POS_CMD, &wheel_pos);
+    int get_sensor_val_wheel_vel = getSensorValue(WHEEL_VEL_CMD, &wheel_vel);
+    int get_sensor_val_wheel_torque = getSensorValue(WHEEL_TORQUE_CMD, &wheel_torque);
     int get_sensor_val_motor_drv_mode = getSensorValue(MOTOR_DRV_MODE_CMD, &mot_drv_mode);
-    int get_sensor_val_motor_cmd_torque = getSensorValue(WHEEL_CMD_TORQUE_CMD, &wheel_cmd_torque);
+    int get_sensor_val_wheel_cmd_torque = getSensorValue(WHEEL_CMD_TORQUE_CMD, &wheel_cmd_torque);
+
+    (void)getSensorValue(MOT_POS_CMD, &mot_pos);
+    (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
 
     if (mot_drv_mode == 0)
     {
@@ -209,7 +216,7 @@ private:
     }
 
     // if sensor return values not 0
-    bool sensor_val_okay = get_sensor_val_IMU_pitch || get_sensor_val_IMU_pitch_rate || get_sensor_val_motor_pos || get_sensor_val_motor_vel || get_sensor_val_motor_torque || get_sensor_val_motor_drv_mode || get_sensor_val_motor_cmd_torque;
+    bool sensor_val_okay = get_sensor_val_torso_pitch || get_sensor_val_torso_pitch_rate || get_sensor_val_wheel_pos || get_sensor_val_wheel_vel || get_sensor_val_wheel_torque || get_sensor_val_motor_drv_mode || get_sensor_val_wheel_cmd_torque;
     sensor_val_okay = !sensor_val_okay; // invert logic
 
     // if sensor_val_okay is 1
@@ -220,7 +227,7 @@ private:
       state_message.torso_pitch_rate = torso_pitch_rate;
       state_message.wheel_pos = wheel_pos;
       state_message.wheel_vel = wheel_vel;
-      // state_message.motor_torque = wheel_torque;
+      // state_message.wheel_torque = wheel_torque;
       // state_message.motor_drv_mode = mot_drv_mode;
 
       this->state_publisher_->publish(state_message);
@@ -234,6 +241,8 @@ private:
       data_message.wheel_torque = wheel_torque;
       data_message.mot_drv_mode = mot_drv_mode;
       data_message.wheel_cmd_torque = wheel_cmd_torque;
+      data_message.mot_pos = mot_pos;
+      data_message.mot_vel = mot_vel;
 
       this->data_publisher_->publish(data_message);
 
