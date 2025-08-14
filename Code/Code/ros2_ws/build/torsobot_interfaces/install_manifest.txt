@@ -103,9 +103,7 @@
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/srv/RequestControlParams.srv
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/ament_index/resource_index/package_run_dependencies/torsobot_interfaces
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/ament_index/resource_index/parent_prefix_path/torsobot_interfaces
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/ament_prefix_path.sh
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/ament_prefix_path.dsv
-/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/path.sh
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/environment/path.dsv
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/local_setup.bash
 /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/share/torsobot_interfaces/local_setup.sh
