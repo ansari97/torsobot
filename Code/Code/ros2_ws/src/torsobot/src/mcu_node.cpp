@@ -71,6 +71,8 @@ uint8_t heartbeat_checksum = 0;
 
 int bytes_written;
 
+uint64_t nan_ctr = 0;
+
 class MCUNode : public rclcpp::Node
 {
 public:
@@ -197,6 +199,14 @@ private:
   // timer callback for getting data on i2c
   void i2cDataCallback(void)
   {
+
+    if (nan_ctr >= 100)
+    {
+      RCLCPP_FATAL(this->get_logger(), "100 nan values found. Exiting node!");
+      rclcpp::shutdown();
+      exit(EXIT_FAILURE); // Terminate the program
+    }
+
     // Read / request sensor data from pico
     int get_sensor_val_torso_pitch = getSensorValue(TORSO_PITCH_CMD, &torso_pitch);
     int get_sensor_val_torso_pitch_rate = getSensorValue(TORSO_PITCH_RATE_CMD, &torso_pitch_rate);
@@ -281,15 +291,14 @@ private:
     }
     else
     {
-      float temp_sensor_val; // temporary variable to check for nan
-      memcpy(&temp_sensor_val, read_buff, float_len);
-      if (!std::isnan(temp_sensor_val)) // if okay
+      // float temp_sensor_val; // temporary variable to check for nan
+      // memcpy(&temp_sensor_val, read_buff, float_len);
+      memcpy(sensor_val_addr, read_buff, float_len);
+      if (std::isnan(*sensor_val_addr)) // if okay
       {
-        memcpy(sensor_val_addr, read_buff, float_len);
-      }
-      else
-      {
+
         RCLCPP_ERROR(this->get_logger(), "nan value received for %d!", cmd);
+        nan_ctr++;
       }
     }
 
