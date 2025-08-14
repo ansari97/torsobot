@@ -1,0 +1,3 @@
+/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotData.idl
+/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotState.idl
+/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:srv/RequestControlParams.idl

@@ -1,0 +1,23 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from torsobot_interfaces/msg/TorsobotData.msg
+// generated code does not contain a copyright notice
+
+#include "torsobot_interfaces/msg/TorsobotState.idl"
+
+module torsobot_interfaces {
+  module msg {
+    struct TorsobotData {
+      torsobot_interfaces::msg::TorsobotState torsobot_state;
+
+      double wheel_torque;
+
+      double wheel_cmd_torque;
+
+      int8 mot_drv_mode;
+
+      double mot_pos;
+
+      double mot_vel;
+    };
+  };
+};

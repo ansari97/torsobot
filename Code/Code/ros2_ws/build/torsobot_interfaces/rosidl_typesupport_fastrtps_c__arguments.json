@@ -1,0 +1,31 @@
+{
+  "package_name": "torsobot_interfaces",
+  "output_dir": "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_typesupport_fastrtps_c/torsobot_interfaces",
+  "template_dir": "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/share/rosidl_typesupport_fastrtps_c/resource",
+  "idl_tuples": [
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotData.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotState.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:srv/RequestControlParams.idl"
+  ],
+  "ros_interface_dependencies": [
+    "service_msgs:/home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl",
+    "builtin_interfaces:/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl",
+    "builtin_interfaces:/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl"
+  ],
+  "target_dependencies": [
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/lib/rosidl_typesupport_fastrtps_c/rosidl_typesupport_fastrtps_c",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/lib/python3.11/site-packages/rosidl_typesupport_fastrtps_c/__init__.py",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/share/rosidl_typesupport_fastrtps_c/resource/idl__rosidl_typesupport_fastrtps_c.h.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/share/rosidl_typesupport_fastrtps_c/resource/idl__type_support_c.cpp.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/share/rosidl_typesupport_fastrtps_c/resource/msg__rosidl_typesupport_fastrtps_c.h.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/share/rosidl_typesupport_fastrtps_c/resource/msg__type_support_c.cpp.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/share/rosidl_typesupport_fastrtps_c/resource/srv__rosidl_typesupport_fastrtps_c.h.em",
+    "/home/pi/ros2_jazzy/install/rosidl_typesupport_fastrtps_c/share/rosidl_typesupport_fastrtps_c/resource/srv__type_support_c.cpp.em",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotData.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/msg/TorsobotState.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces/srv/RequestControlParams.idl",
+    "/home/pi/ros2_jazzy/install/service_msgs/share/service_msgs/msg/ServiceEventInfo.idl",
+    "/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Duration.idl",
+    "/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces/msg/Time.idl"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "package_name": "torsobot_interfaces",
+  "output_dir": "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_generator_type_description/torsobot_interfaces",
+  "idl_tuples": [
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotData.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:msg/TorsobotState.idl",
+    "/home/pi/torsobot/Code/Code/ros2_ws/build/torsobot_interfaces/rosidl_adapter/torsobot_interfaces:srv/RequestControlParams.idl"
+  ],
+  "include_paths": [
+    "service_msgs:/home/pi/ros2_jazzy/install/service_msgs/share/service_msgs",
+    "builtin_interfaces:/home/pi/ros2_jazzy/install/builtin_interfaces/share/builtin_interfaces"
+  ]
+}

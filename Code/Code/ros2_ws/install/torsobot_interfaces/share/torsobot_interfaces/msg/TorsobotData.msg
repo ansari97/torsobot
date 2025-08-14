@@ -1,0 +1,6 @@
+TorsobotState torsobot_state
+float64 wheel_torque
+float64 wheel_cmd_torque
+int8 mot_drv_mode
+float64 mot_pos
+float64 mot_vel
