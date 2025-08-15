@@ -91,10 +91,10 @@ volatile uint8_t heartbeat_last_ctr;
 volatile bool was_heartbeat_rcvd = false;
 volatile bool is_heartbeat_valid = false;
 volatile bool is_heartbeat_ctr_valid = false;
-const int HEARTBEAT_PERIOD = 50;                           // milliseconds
-const int HEARTBEAT_FREQ = 1000 / HEARTBEAT_PERIOD;        // hz; must be same as from pi
+const int HEARTBEAT_PERIOD = 50;                     // milliseconds
+const int HEARTBEAT_FREQ = 1000 / HEARTBEAT_PERIOD;  // hz; must be same as from pi
 const int HEARTBEAT_TIMEOUT = 5 * HEARTBEAT_PERIOD;  // miliseconds
-volatile uint64_t heartbeat_timer = 0;                     // = millis();
+volatile uint64_t heartbeat_timer = 0;               // = millis();
 uint32_t millis_since_last_heartbeat = 0;
 
 // I2C cmd for mcu data
@@ -153,6 +153,9 @@ char kd_data[float_len];
 char control_max_integral_data[float_len];
 
 char wheel_cmd_torque_data[float_len];
+
+// char torso_pos_init_data[float_len];
+// char wheel_cmd_torque_data[float_len];
 
 // char write_buff[float_len + 10];
 // char write_buff2[float_len + 10];
@@ -345,6 +348,17 @@ void setup() {
   memcpy(ki_data, const_cast<float *>(&ki), sizeof(ki));
   memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
 
+  // set nan values to all sensor buffers
+  float nan_float = NaN;
+  memcpy(torso_pitch_data, &nan_float, sizeof(float));
+  memcpy(torso_pitch_rate_data, &nan_float, sizeof(float));
+  memcpy(wheel_pos_data, &nan_float, sizeof(float));
+  memcpy(wheel_vel_data, &nan_float, sizeof(float));
+  memcpy(wheel_torque_data, &nan_float, sizeof(float));
+  memcpy(wheel_cmd_torque_data, &nan_float, sizeof(float));
+  memcpy(mot_pos_data, &nan_float, sizeof(float));
+  memcpy(mot_vel_data, &nan_float, sizeof(float));
+
   // while (!digitalRead(REED_SWITCH)) {
   //   digitalWrite(STOP_LED, HIGH);
   // }
@@ -366,7 +380,7 @@ void setup() {
 
   Serial.println("Heartbeat received from PI!");
   Serial.println("Setup complete!");
-  delay(100);
+  // delay(100);
   digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(OK_LED, HIGH);
 }
@@ -458,6 +472,35 @@ void loop() {
   // **************************************************************
   // Controls part
 
+  // get these values until wait time is over
+  if (control_loop_ctr == 0) {
+    // write to cmd
+    position_cmd.maximum_torque = mot_max_torque;
+    position_cmd.feedforward_torque = 0;
+
+    // **Write to the motor
+    moteus.SetPosition(position_cmd, &position_fmt);
+
+    // get values
+    mot_drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
+    mot_pos = revsToRad(moteus.last_result().values.position);  //radians
+    mot_vel = revsToRad(moteus.last_result().values.velocity);  // radians/s
+
+    torso_pitch_init = torso_pitch;
+    mot_pos_init = mot_pos;
+    Serial.print("mot_pos_init");
+    Serial.print(mot_pos_init);
+    Serial.print("\t");
+    Serial.println(torso_pitch_init);
+
+    // copy to byuffer to be sent to
+    memcpy(mot_pos_data, &mot_pos, sizeof(float));
+    memcpy(mot_vel_data, &mot_vel, sizeof(float));  //
+    memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
+    // memcpy(torso_pitch_init_data, &torso_pitch_init, sizeof(float));
+    // memcpy(mot_pos_init_data, &mot_drv_momot_pos_initde, sizeof(float));
+  }
+
   // We intend to send control frames every 1000/control_freq milliseconds; second condition allows imu values to stabilise at program start
   if (control_next_send_millis >= millis() || (millis() - start_time) < wait_time) {
     return;
@@ -528,14 +571,14 @@ void loop() {
   mot_torque = moteus.last_result().values.torque;
 
   // get init values only in the 0th loop
-  if (control_loop_ctr == 1) {
-    torso_pitch_init = torso_pitch;
-    mot_pos_init = mot_pos;
-    Serial.print("mot_pos_init");
-    Serial.print(mot_pos_init);
-    Serial.print("\t");
-    Serial.println(torso_pitch_init);
-  }
+  // if (control_loop_ctr == 1) {
+  //   torso_pitch_init = torso_pitch;
+  //   mot_pos_init = mot_pos;
+  //   Serial.print("mot_pos_init");
+  //   Serial.print(mot_pos_init);
+  //   Serial.print("\t");
+  //   Serial.println(torso_pitch_init);
+  // }
 
   // calculate wheel position from motor and torso angles
   // mot pos is relative to the torso
@@ -546,7 +589,7 @@ void loop() {
   wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
 
   wheel_pos -= (torso_pitch - torso_pitch_init);
-  // wheel_pos += 2 * wheel_pos_init;
+  wheel_pos += wheel_pos_init;
 
   // wrap around (-PI/n, PI/n]
   wheel_pos = fmod(wheel_pos, 2 * PI / num_spokes);
@@ -577,7 +620,6 @@ void loop() {
 
   memcpy(mot_pos_data, &mot_pos, sizeof(float));
   memcpy(mot_vel_data, &mot_vel, sizeof(float));                    //
-  memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
   memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
   memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
   memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
