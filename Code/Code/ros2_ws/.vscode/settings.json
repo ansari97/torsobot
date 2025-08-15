@@ -517,5 +517,8 @@
         "/home/pi/ros2_jazzy/install/ament_clang_tidy/lib/python3.11/site-packages",
         "/home/pi/ros2_jazzy/build/ament_clang_format",
         "/home/pi/ros2_jazzy/install/ament_clang_format/lib/python3.11/site-packages"
-    ]
+    ],
+    "files.associations": {
+        "chrono": "cpp"
+    }
 }
