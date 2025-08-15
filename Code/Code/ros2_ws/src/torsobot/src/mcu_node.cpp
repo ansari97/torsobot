@@ -120,7 +120,6 @@ public:
     if ((i2c_handle = open(filename, O_RDWR)) < 0)
     {
       RCLCPP_ERROR(this->get_logger(), "Error opening i2c, error: %d", i2c_handle);
-
       exitNode();
     }
     RCLCPP_INFO(this->get_logger(), "Opened i2c");
@@ -145,10 +144,10 @@ public:
     sendDataToMCU(CTRL_MAX_INTEGRAL_CMD, &control_max_integral);
 
     // heartbeat timer for 10ms (100Hz)
-    heartbeat_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
+    heartbeat_timer_ = this->create_wall_timer(50ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
-    data_timer_ = this->create_wall_timer(25ms, std::bind(&MCUNode::i2cDataCallback, this)); // Use std::bind
+    data_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::i2cDataCallback, this)); // Use std::bind
 
     RCLCPP_INFO(this->get_logger(), "Starting node!");
   }
@@ -190,9 +189,7 @@ private:
     if (write_result != sizeof(data_write_buff))
     {
       RCLCPP_ERROR(this->get_logger(), "Error sending data to MCU for %d", cmd);
-      RCLCPP_FATAL(this->get_logger(), "Exiting node!");
-      rclcpp::shutdown();
-      exit(EXIT_FAILURE); // Terminate the program
+      exitNode();
     }
   }
 
@@ -202,9 +199,8 @@ private:
 
     if (nan_ctr >= 100)
     {
-      RCLCPP_FATAL(this->get_logger(), "100 nan values found. Exiting node!");
-      rclcpp::shutdown();
-      exit(EXIT_FAILURE); // Terminate the program
+      RCLCPP_ERROR(this->get_logger(), "100 nan values found!");
+      exitNode();
     }
 
     // Read / request sensor data from pico
