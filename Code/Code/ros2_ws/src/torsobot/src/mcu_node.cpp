@@ -164,19 +164,6 @@ private:
   gpiod::chip chip_;
   gpiod::line mcu_run_line_;
 
-  // Service callback for the control parameters
-  // void handleServiceRequest(
-  //     const std::shared_ptr<torsobot_interfaces::srv::RequestControlParams::Request> request,
-  //     std::shared_ptr<torsobot_interfaces::srv::RequestControlParams::Response> response)
-  // {
-  //   (void)request; // Suppress unused parameter warning
-  //   response->desired_torso_pitch = desired_torso_pitch;
-  //   response->mot_max_torque = mot_max_torque;
-  //   response->kp = kp;
-  //   response->ki = ki;
-  //   response->kd = kd;
-  // }
-
   // send desired values to the pico
   void sendDataToMCU(uint8_t cmd, volatile float *sensor_val_addr)
   {
@@ -199,8 +186,8 @@ private:
 
     if (nan_ctr >= 100)
     {
-      RCLCPP_ERROR(this->get_logger(), "100 nan values found!");
-      exitNode();
+      RCLCPP_WARN(this->get_logger(), "100 nan values found!");
+      // exitNode();
     }
 
     // Read / request sensor data from pico
