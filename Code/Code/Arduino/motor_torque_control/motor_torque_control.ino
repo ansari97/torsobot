@@ -5,6 +5,7 @@
 #include <Adafruit_BNO08x.h>
 #include <ACAN2517FD.h>
 #include <Moteus.h>
+#include <cmath>
 
 // ——————————————————————————————————————————————————————————————————————————————
 //  Pin definition
@@ -90,8 +91,9 @@ volatile uint8_t heartbeat_last_ctr;
 volatile bool was_heartbeat_rcvd = false;
 volatile bool is_heartbeat_valid = false;
 volatile bool is_heartbeat_ctr_valid = false;
-const int HEARTBEAT_FREQ = 1000 / 25;                      // hz; must be same as from pi
-const int HEARTBEAT_TIMEOUT = 10 * 1000 / HEARTBEAT_FREQ;  // miliseconds
+const int HEARTBEAT_PERIOD = 50;                           // milliseconds
+const int HEARTBEAT_FREQ = 1000 / HEARTBEAT_PERIOD;        // hz; must be same as from pi
+const int HEARTBEAT_TIMEOUT = 5 * HEARTBEAT_PERIOD;  // miliseconds
 volatile uint64_t heartbeat_timer = 0;                     // = millis();
 uint32_t millis_since_last_heartbeat = 0;
 
@@ -111,6 +113,9 @@ const uint8_t KD_CMD = 0X0A;                 // Kd value
 const uint8_t CTRL_MAX_INTEGRAL_CMD = 0X0B;  // max integral term
 
 const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
+
+const uint8_t MOT_POS_CMD = 0X0D;  // mot_pos
+const uint8_t MOT_VEL_CMD = 0X0E;  // mot_vel
 
 // hardware parameters
 const float gear_ratio = (38 / 16) * (48 / 16);
@@ -138,6 +143,8 @@ char wheel_pos_data[float_len];
 char wheel_vel_data[float_len];
 char wheel_torque_data[float_len];
 char mot_drv_mode_data[sizeof(int8_t)];
+char mot_vel_data[float_len];
+char mot_pos_data[float_len];
 
 char mot_max_torque_data[float_len];
 char kp_data[float_len];
@@ -155,7 +162,7 @@ volatile char read_command;
 float imu_angle_adjustment = PI - 3.043268;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch
 
 // Control parameters
-const float control_freq = 500;             // control torque write freq
+const float control_freq = 250;             // control torque write freq
 const int SENSORS_UPDATE_PERIOD_LOOPS = 2;  // get motor values every x loop
 
 // ------------Received from PI---------------
@@ -397,19 +404,27 @@ void loop() {
   }
 
   Serial.println(desired_torso_pitch);
-  Serial.println(kp);
-  Serial.println(ki);
-  Serial.println(kd);
-  Serial.println(mot_max_torque);
-  Serial.println(max_integral);
-  Serial.println(control_error);
-  Serial.println("---");
+  Serial.println(torso_pitch);
+  Serial.println(isnan(torso_pitch));
+  Serial.println(mot_pos);
+  Serial.println(mot_vel);
+
+  // Serial.println(kp);
+  // Serial.println(ki);
+  // Serial.println(kd);
+  // Serial.println(mot_max_torque);
+  // Serial.println(max_integral);
+  // Serial.println(control_error);
+  // Serial.println("---");
 
 
   if (bno08x.wasReset()) {
     Serial.print("Sensor was reset during loop!");
+    torso_pitch = NaN;
+    torso_pitch_rate = NaN;
     setReports(reportIntervalUs);
     // resetOccurred = true;
+    memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
   }
 
   if (bno08x.getSensorEvent(&sensorValue)) {
@@ -434,10 +449,10 @@ void loop() {
         gravity_z = sensorValue.un.gravity.z;
         break;
     }
-
-    memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
-    memcpy(torso_pitch_rate_data, &torso_pitch_rate, sizeof(float));
   }
+
+  memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
+  memcpy(torso_pitch_rate_data, &torso_pitch_rate, sizeof(float));
   // // Serial.println();
 
   // **************************************************************
@@ -506,22 +521,32 @@ void loop() {
   // digitalWrite(LED_BUILTIN, HIGH);
 
   // print_moteus(moteus.last_result().values);
+  // last result only returns values if something is written to the board
   mot_drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
   mot_pos = revsToRad(moteus.last_result().values.position);  //radians
   mot_vel = revsToRad(moteus.last_result().values.velocity);  // radians/s
   mot_torque = moteus.last_result().values.torque;
 
   // get init values only in the 0th loop
-  if (control_loop_ctr == 0) {
+  if (control_loop_ctr == 1) {
     torso_pitch_init = torso_pitch;
     mot_pos_init = mot_pos;
+    Serial.print("mot_pos_init");
+    Serial.print(mot_pos_init);
+    Serial.print("\t");
+    Serial.println(torso_pitch_init);
   }
 
   // calculate wheel position from motor and torso angles
-  wheel_pos = (mot_pos - mot_pos_init) / gear_ratio - (torso_pitch - torso_pitch_init) + wheel_pos_init;
+  // mot pos is relative to the torso
+  // this line gives wheel_pos relative to the torso
+  wheel_pos = (mot_pos - mot_pos_init) / gear_ratio;
 
   // wrap around [0, 2*PI)
   wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
+
+  wheel_pos -= (torso_pitch - torso_pitch_init);
+  // wheel_pos += 2 * wheel_pos_init;
 
   // wrap around (-PI/n, PI/n]
   wheel_pos = fmod(wheel_pos, 2 * PI / num_spokes);
@@ -550,6 +575,9 @@ void loop() {
   // Serial.print("\tmot_vel: ");
   // Serial.println(mot_vel);
 
+  memcpy(mot_pos_data, &mot_pos, sizeof(float));
+  memcpy(mot_vel_data, &mot_vel, sizeof(float));                    //
+  memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
   memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
   memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
   memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
@@ -708,6 +736,12 @@ void i2cReq() {
       break;
     case WHEEL_CMD_TORQUE_CMD:
       Wire.write(wheel_cmd_torque_data, sizeof(wheel_cmd_torque_data));
+      break;
+    case MOT_POS_CMD:
+      Wire.write(mot_pos_data, sizeof(mot_pos_data));
+      break;
+    case MOT_VEL_CMD:
+      Wire.write(mot_vel_data, sizeof(mot_vel_data));
       break;
   }
 }
