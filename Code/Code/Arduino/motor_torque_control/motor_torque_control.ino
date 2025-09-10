@@ -54,6 +54,7 @@ struct euler_t {
 };
 
 // function prototypes
+void quaternionToPitch(sh2_RotationVectorWAcc_t *, float *, bool degrees = false);
 void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t *ypr, bool degrees);
 void quaternionToEulerRV(sh2_RotationVectorWAcc_t *rotational_vector, euler_t *ypr, bool deegrees);
 void quaternionToEulerGI(sh2_GyroIntegratedRV_t *rotational_vector, euler_t *ypr, bool degrees);
@@ -212,8 +213,11 @@ bool resetOccurred = false;
 // long reportIntervalUs = 2000;
 // #else
 // Top frequency is about 250Hz but this report is more accurate
-sh2_SensorId_t reportType = SH2_ARVR_STABILIZED_RV;
-long reportIntervalUs = 5000;
+// sh2_SensorId_t reportType = SH2_ARVR_STABILIZED_RV;
+// need to change in the setReports() function
+sh2_SensorId_t reportType = SH2_ROTATION_VECTOR;
+// long IMU_report_freq = 200;    //Hz
+long reportIntervalUs = 5000;  //1 / IMU_report_freq * 1000 * 1000;  //usec
 // #endif
 
 // ——————————————————————————————————————————————————————————————————————————————
@@ -416,7 +420,7 @@ void loop() {
 
     emergencyStop();  // call the stop routine
   }
-
+  Serial.println("<<<---<<<");
   Serial.println(desired_torso_pitch);
   Serial.println(torso_pitch);
   Serial.println(isnan(torso_pitch));
@@ -438,7 +442,7 @@ void loop() {
     torso_pitch_rate = NaN;
     setReports(reportIntervalUs);
     // resetOccurred = true;
-    memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
+    // memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
   }
 
   if (bno08x.getSensorEvent(&sensorValue)) {
@@ -448,9 +452,17 @@ void loop() {
     // Serial.println(sensorValue.sensorId);
 
     switch (sensorValue.sensorId) {
-      case SH2_ARVR_STABILIZED_RV:
-        quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
-        torso_pitch = degToRad(imuAngleCorrection(ypr.pitch, gravity_x, gravity_y, gravity_z)) + imu_angle_adjustment;  // adjusts sign and adds the angle between the imu axes and the COM
+        // case SH2_ARVR_STABILIZED_RV:
+        //   // quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
+        //   // torso_pitch = degToRad(imuAngleCorrection(ypr.pitch, gravity_x, gravity_y, gravity_z)) + imu_angle_adjustment;  // adjusts sign and adds the angle between the imu axes and the COM
+        //   // break;
+
+      case SH2_ROTATION_VECTOR:
+        // torso_pitch is updated by reference
+        // &sensorValue.un.rotationVector uses the magnetomoeter and causes x/y values to jump due to yaw corrections
+        // arvrstabilizedrv does not use magnetometer
+        quaternionToPitch(&sensorValue.un.arvrStabilizedRV, &torso_pitch);
+        torso_pitch -= imu_angle_adjustment;
         break;
 
       case SH2_GYROSCOPE_CALIBRATED:
@@ -488,10 +500,10 @@ void loop() {
 
     torso_pitch_init = torso_pitch;
     mot_pos_init = mot_pos;
-    Serial.print("mot_pos_init");
-    Serial.print(mot_pos_init);
-    Serial.print("\t");
-    Serial.println(torso_pitch_init);
+    // Serial.print("mot_pos_init:\t");
+    // Serial.print(mot_pos_init);
+    // Serial.print("\t");
+    // Serial.println(torso_pitch_init);
 
     // copy to byuffer to be sent to
     memcpy(mot_pos_data, &mot_pos, sizeof(float));
@@ -542,7 +554,7 @@ void loop() {
 
   // write to cmd
   position_cmd.maximum_torque = mot_max_torque;
-  position_cmd.feedforward_torque = mot_cmd_torque;
+  position_cmd.feedforward_torque = -mot_cmd_torque;  //- sign corrects for siogn difference between +torque on torso vs +torso rotation
 
   // **Write to the motor
   // Serial.println(millis());
@@ -673,6 +685,7 @@ void i2cRecv(int len) {
       memcpy(&temp_val, desired_torso_pitch_data, sizeof(float));
 
       desired_torso_pitch = temp_val;
+      // received in degrees, then converted to radians
       desired_torso_pitch = degToRad(desired_torso_pitch);
     }
   }
@@ -790,8 +803,8 @@ void i2cReq() {
 
 void setReports(long report_interval) {
   Serial.println("Setting desired reports");
-  if (!bno08x.enableReport(SH2_ARVR_STABILIZED_RV, report_interval)) {
-    Serial.println("Could not enable stabilized remote vector");
+  if (!bno08x.enableReport(SH2_ROTATION_VECTOR, report_interval)) {
+    Serial.println("Could not enable rotation vector");
   }
   if (!bno08x.enableReport(SH2_GYROSCOPE_CALIBRATED, report_interval)) {
     Serial.println("Could not enable gyroscope");
@@ -819,6 +832,37 @@ void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t *ypr, boo
     ypr->yaw *= RAD_TO_DEG;
     ypr->pitch *= RAD_TO_DEG;
     ypr->roll *= RAD_TO_DEG;
+  }
+}
+
+// quaternion to pitch angle using rotation matrices to bypass euler pitch singularity
+// gets the angle between imu's x-axis and the global horizontal plane; same as euler pitch
+void quaternionToPitch(sh2_RotationVectorWAcc_t *rotational_vector, float *pitch, bool degrees) {
+  float qw = rotational_vector->real;
+  float qx = rotational_vector->i;
+  float qy = rotational_vector->j;
+  float qz = rotational_vector->k;
+
+  float sqx = sq(qx);
+  float sqy = sq(qy);
+  float sqz = sq(qz);
+
+  float xy = qx * qy;
+  float xz = qx * qz;
+  float zw = qz * qw;
+  float yw = qy * qw;
+
+  // Rotation matrix terms
+  float R11 = 1 - 2 * sqy - 2 * sqz;
+  float R21 = 2 * (xy + zw);
+  float R31 = 2 * (xz - yw);
+  float R33 = 1 - 2 * sqx - 2 * sqy;
+
+  // apparently the IMU treats global Z as up
+  *pitch = atan2(-R31, signof(R33) * sqrt(sq(R11) + sq(R21)));
+
+  if (degrees) {
+    *pitch *= RAD_TO_DEG;
   }
 }
 
@@ -922,6 +966,7 @@ bool checkHeartbeatValidity(void) {
 
 // sign function
 int signof(float num) {
+  // returns +1 for pos, -1 for neg, and 0 for 0
   return (num > 0) - (num < 0);
 }
 
