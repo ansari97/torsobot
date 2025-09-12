@@ -1,4 +1,5 @@
 // writes data to a txt file
+// copies parameters file
 
 #include "rclcpp/rclcpp.hpp"
 #include "torsobot_interfaces/msg/torsobot_data.hpp"
@@ -17,6 +18,9 @@
 #include <filesystem> // for copying YAML files
 #include <cstdlib>    // For getenv
 // #include <rosbag2_cpp/writer.hpp>
+
+// for parsing metadata yaml file
+#include "yaml-cpp/yaml.h"
 
 using namespace std::chrono_literals;
 
@@ -47,74 +51,88 @@ public:
 
     // directory name
     std::string directory_name_str = "/home/pi/torsobot/Code/Code/ros2_ws/data_logs";
-    std::string csv_filename_str = "/torsobot_data_csv_" + timestamp_str + ".csv";
+    std::string csv_filename_str = "csv_" + timestamp_str + ".csv";
     std::string csv_full_path_str = directory_name_str + "/" + csv_filename_str;
 
-    std::string metadata_filename_str = "/torsobot_data_metadata_" + timestamp_str + ".yaml";
+    std::string metadata_filename_str = "metadata_" + timestamp_str + ".yaml";
     std::string metadata_full_path_str = directory_name_str + "/" + metadata_filename_str;
 
     std::string param_source_file = "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/config/params.yaml";
 
-    // check if directory exists
-    std::filesystem::path dir_path(directory_name_str);
+    // read metadata yaml file
+    YAML::Node param_yaml_file = YAML::LoadFile(param_source_file);
+    bool log_data = (param_yaml_file["/**"]["ros__parameters"]["log_data"].as<bool>());
+    // if datalogging is not required, do not copy metadata file and do not make a csv and subscriber
 
-    if (!std::filesystem::is_directory(dir_path))
+    if (log_data)
     {
-      // create directory
-      RCLCPP_INFO(this->get_logger(), "Directory does not exist. Creating directory...");
+      // check if directory exists
+      std::filesystem::path dir_path(directory_name_str);
+      if (!std::filesystem::is_directory(dir_path))
+      {
+        // create directory
+        RCLCPP_INFO(this->get_logger(), "Directory does not exist. Creating directory...");
 
+        // create directory
+        try
+        {
+          std::filesystem::create_directories(dir_path);
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+          RCLCPP_ERROR(this->get_logger(), "Failed to create directory. Error: %s", e.what());
+          // std::cerr << e.what() << '\n';
+        }
+
+        RCLCPP_INFO(this->get_logger(), "Directory created!");
+      }
+      else
+      {
+        RCLCPP_INFO(this->get_logger(), "Directory already exists!");
+      }
+
+      // copy metdata file
       try
       {
-        std::filesystem::create_directories(dir_path);
+        std::filesystem::copy(param_source_file, metadata_full_path_str, std::filesystem::copy_options::overwrite_existing);
+        RCLCPP_INFO(this->get_logger(), "Parameter file copied successfully from %s to %s", param_source_file.c_str(), metadata_full_path_str.c_str());
+
+        // read the log_data parameter from the xml file
       }
       catch (const std::filesystem::filesystem_error &e)
       {
-
-        RCLCPP_ERROR(this->get_logger(), "Failed to create directory. Error: %s", e.what());
-        // std::cerr << e.what() << '\n';
+        RCLCPP_ERROR(this->get_logger(), "Parameter file copy from %s to %s failed!", param_source_file.c_str(), metadata_full_path_str.c_str());
       }
 
-      RCLCPP_INFO(this->get_logger(), "Directory created!");
+      // create empty csv file
+      output_file_.open(csv_full_path_str);
+
+      // Check if the file was opened successfully
+      if (output_file_.is_open())
+      {
+        RCLCPP_INFO(this->get_logger(), "Successfully opened data file: '%s'", csv_full_path_str.c_str());
+        // Write the header row
+        output_file_ << CSV_HEADER << std::endl;
+      }
+      else
+      {
+        RCLCPP_ERROR(this->get_logger(), "Failed to open data file: '%s'", csv_full_path_str.c_str());
+        return; // Exit constructor if we can't open the file
+      }
+
+      // Create subscriber
+      subscriber_ = this->create_subscription<torsobot_interfaces::msg::TorsobotData>(
+          "torsobot_data",
+          10,
+          std::bind(&DataLoggerNode::dataCallback, this, std::placeholders::_1));
+
+      RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '%s'", csv_full_path_str.c_str());
     }
+
     else
     {
-      RCLCPP_INFO(this->get_logger(), "Directory already exists!");
+      RCLCPP_INFO(this->get_logger(), "Not logging data...");
     }
-
-    // create empty csv file
-    output_file_.open(csv_full_path_str);
-
-    // Check if the file was opened successfully
-    if (output_file_.is_open())
-    {
-      RCLCPP_INFO(this->get_logger(), "Successfully opened data file: '%s'", csv_full_path_str.c_str());
-      // Write the header row
-      output_file_ << CSV_HEADER << std::endl;
-    }
-    else
-    {
-      RCLCPP_ERROR(this->get_logger(), "Failed to open data file: '%s'", csv_full_path_str.c_str());
-      return; // Exit constructor if we can't open the file
-    }
-
-    // copy metdata file
-    try
-    {
-      std::filesystem::copy(param_source_file, metadata_full_path_str, std::filesystem::copy_options::overwrite_existing);
-      RCLCPP_INFO(this->get_logger(), "Parameter file copied successfully from %s to %s", param_source_file.c_str(), metadata_full_path_str.c_str());
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
-      RCLCPP_ERROR(this->get_logger(), "Parameter file copy from %s to %s failed!", param_source_file.c_str(), metadata_full_path_str.c_str());
-    }
-
-    // Create subscriber
-    subscriber_ = this->create_subscription<torsobot_interfaces::msg::TorsobotData>(
-        "torsobot_data",
-        10,
-        std::bind(&DataLoggerNode::dataCallback, this, std::placeholders::_1));
-
-    RCLCPP_INFO(this->get_logger(), "Data Logger Node started, recording to '%s'", csv_full_path_str.c_str());
   }
 
 private:
