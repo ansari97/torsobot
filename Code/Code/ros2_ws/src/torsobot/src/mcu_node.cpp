@@ -91,7 +91,7 @@ public:
     // control_params_server_ = this->create_service<torsobot_interfaces::srv::RequestControlParams>("control_params", std::bind(&MCUNode::handleServiceRequest, this, std::placeholders::_1, std::placeholders::_2));
 
     // Create ROS2 parameters
-    this->declare_parameter("desired_torso_pitch", 180.0); // default value of 180
+    this->declare_parameter("desired_torso_pitch", 180.0); // default value of 180 in degrees
     this->declare_parameter("kp", 0.0);                    // default value of 0
     this->declare_parameter("ki", 0.0);                    // default value of 0
     this->declare_parameter("kd", 0.0);                    // default value of 0
