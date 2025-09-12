@@ -12,6 +12,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(yaml-cpp REQUIRED)
 # find_package(rosbag2_cpp REQUIRED)
 # find_package(rosbag2_storage REQUIRED)
 # find_package(rosbag2_transport REQUIRED)
@@ -46,11 +47,16 @@ ament_target_dependencies(mcu_node
 
 target_include_directories(mcu_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
 target_link_libraries(mcu_node ${GPIODCXX_LIBRARY})
+# target_link_libraries(mcu_node PRIVATE yaml-cpp::yaml-cpp)
+
+target_link_libraries(data_logger_node yaml-cpp::yaml-cpp)
 
 target_include_directories(data_logger_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
+
+
 
 ament_target_dependencies(data_logger_node
   rclcpp

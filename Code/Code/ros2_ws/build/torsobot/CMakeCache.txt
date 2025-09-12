@@ -514,6 +514,9 @@ type_description_interfaces_DIR:PATH=/home/pi/ros2_jazzy/install/type_descriptio
 //Path to a program.
 xmllint_BIN:FILEPATH=/usr/bin/xmllint
 
+//The directory containing a CMake configuration file for yaml-cpp.
+yaml-cpp_DIR:PATH=/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/lib/cmake/yaml-cpp
+
 
 ########################
 # INTERNAL cache entries
@@ -724,6 +727,8 @@ _Python3_EXECUTABLE:INTERNAL=/usr/bin/python3
 //Python3 Properties
 _Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;11;2;64;;cpython-311-aarch64-linux-gnu;/usr/lib/python3.11;/usr/lib/python3.11;/usr/lib/python3/dist-packages;/usr/lib/python3/dist-packages
 _Python3_INTERPRETER_SIGNATURE:INTERNAL=4c8bfa8951e99fa32e4000a94f8c04a2
+//Interpreter reason failure
+_Python3_Interpreter_REASON_FAILURE:INTERNAL=
 //NumPy reason failure
 _Python3_NumPy_REASON_FAILURE:INTERNAL=
 __pkg_config_arguments__OPENSSL:INTERNAL=QUIET;openssl

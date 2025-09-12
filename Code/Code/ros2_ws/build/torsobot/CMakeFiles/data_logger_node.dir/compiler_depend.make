@@ -812,8 +812,87 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: /home/pi/torsobot/Co
   /usr/include/c++/12/fstream \
   /usr/include/aarch64-linux-gnu/c++/12/bits/basic_file.h \
   /usr/include/aarch64-linux-gnu/c++/12/bits/c++io.h \
-  /usr/include/c++/12/bits/fstream.tcc
+  /usr/include/c++/12/bits/fstream.tcc \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/yaml.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/parser.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/dll.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/emitter.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/binary.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/emitterdef.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/emittermanip.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/null.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/ostream_wrapper.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/emitterstyle.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/stlemitter.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/exceptions.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/mark.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/noexcept.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/traits.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/node.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/iterator_fwd.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/ptr.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/type.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/impl.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/memory.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/node.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/node_ref.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/node_data.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/node_iterator.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/iterator.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/iterator.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/convert.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/impl.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/parse.h \
+  /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/emit.h
 
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/emit.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/impl.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/convert.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/iterator.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/node.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/memory.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/ptr.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/iterator_fwd.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/node.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/traits.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/impl.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/noexcept.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/mark.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/exceptions.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/stlemitter.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/emitterstyle.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/ostream_wrapper.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/null.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/emittermanip.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/emitterdef.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/emitter.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/dll.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/parser.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/yaml.h:
 
 /usr/include/aarch64-linux-gnu/c++/12/bits/basic_file.h:
 
@@ -1083,6 +1162,8 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: /home/pi/torsobot/Co
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/experimental/intra_process_manager.hpp:
 
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/node_data.h:
+
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/dynamic_typesupport/dynamic_serialization_support.hpp:
 
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/dynamic_typesupport/dynamic_message.hpp:
@@ -1274,6 +1355,8 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: /home/pi/torsobot/Co
 /usr/include/c++/12/bits/range_access.h:
 
 /usr/include/time.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/type.h:
 
 /usr/include/aarch64-linux-gnu/bits/wctype-wchar.h:
 
@@ -1487,6 +1570,8 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: /home/pi/torsobot/Co
 
 /usr/include/aarch64-linux-gnu/bits/types/siginfo_t.h:
 
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/parse.h:
+
 /home/pi/ros2_jazzy/install/rclcpp/include/rclcpp/rclcpp/future_return_code.hpp:
 
 /usr/include/aarch64-linux-gnu/bits/long-double.h:
@@ -1626,6 +1711,8 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: /home/pi/torsobot/Co
 /usr/include/aarch64-linux-gnu/bits/thread-shared-types.h:
 
 /usr/include/aarch64-linux-gnu/bits/endianness.h:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/node_ref.h:
 
 /home/pi/ros2_jazzy/src/ros-tooling/libstatistics_collector/include/libstatistics_collector/moving_average_statistics/moving_average.hpp:
 
@@ -1817,6 +1904,8 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: /home/pi/torsobot/Co
 
 /usr/include/c++/12/bits/uses_allocator.h:
 
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/node_iterator.h:
+
 /usr/include/aarch64-linux-gnu/bits/siginfo-arch.h:
 
 /home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/types/string_array.h:
@@ -2001,6 +2090,8 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: /home/pi/torsobot/Co
 
 /home/pi/ros2_jazzy/src/ros2/rcutils/include/rcutils/types/rcutils_ret.h:
 
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/binary.h:
+
 /home/pi/ros2_jazzy/src/ros2/rosidl/rosidl_runtime_c/include/rosidl_runtime_c/message_type_support_struct.h:
 
 /usr/include/c++/12/bits/stl_numeric.h:
@@ -2046,6 +2137,8 @@ CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o: /home/pi/torsobot/Co
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/msg/detail/integer_range__traits.hpp:
 
 /usr/include/c++/12/bits/list.tcc:
+
+/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/include/yaml-cpp/node/detail/iterator.h:
 
 /home/pi/ros2_jazzy/build/rcl_interfaces/rosidl_generator_cpp/rcl_interfaces/msg/detail/set_parameters_result__builder.hpp:
 

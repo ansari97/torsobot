@@ -92,6 +92,7 @@ data_logger_node_EXTERNAL_OBJECTS =
 
 data_logger_node: CMakeFiles/data_logger_node.dir/src/data_logger_node.cpp.o
 data_logger_node: CMakeFiles/data_logger_node.dir/build.make
+data_logger_node: /home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/lib/libyaml-cpp.so.0.8.0
 data_logger_node: /home/pi/ros2_jazzy/install/rclcpp/lib/librclcpp.so
 data_logger_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_introspection_c.so
 data_logger_node: /home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/libtorsobot_interfaces__rosidl_typesupport_fastrtps_c.so
