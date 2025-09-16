@@ -79,6 +79,13 @@ void setup(void) {
   delay(100);
 }
 
+// wrap angle from 0 to 360
+float wrapTo360(float angle) {
+
+  if (angle < 0) { angle += 360; }
+  return angle;
+}
+
 void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false) {
 
   float sqr = sq(qr);
@@ -106,7 +113,7 @@ void quaternionToEulerGI(sh2_GyroIntegratedRV_t* rotational_vector, euler_t* ypr
 }
 
 float imu_pitch;
-float imu_pitch_calibration_constant = 0;
+float imu_pitch_calibration_constant;  // = (-176.57 + 180);  // degrees
 
 // gets the angle between imu's x-axis and the global horizontal plane
 void quaternionToPitch(sh2_RotationVectorWAcc_t* rotational_vector, float* pitch, bool degrees = false) {
@@ -156,6 +163,11 @@ void loop() {
         // quaternionToPitch(&sensorValue.un.rotationVector, &imu_pitch, true);
         // rotation vector uses the magnetomoeter and causes x/y values to jump due to corrections - arvrstabilizedrv does not use magnetometer
         quaternionToPitch(&sensorValue.un.arvrStabilizedRV, &imu_pitch, true);
+        // imu_pitch -= imu_pitch_calibration_constant;
+        imu_pitch = wrapTo360(imu_pitch);
+
+        // to get the correction constant, allow torso to dnagle at the lower vertical and let the readings stabilize
+        imu_pitch_calibration_constant = imu_pitch - 180;
         // quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
       case SH2_GYRO_INTEGRATED_RV:
         // faster (more noise?)
@@ -163,7 +175,7 @@ void loop() {
         break;
     }
 
-    imu_pitch -= imu_pitch_calibration_constant;
+
     static long last = 0;
     long now = micros();
 
@@ -179,8 +191,11 @@ void loop() {
     // Serial.print("\t");
     // Serial.print(ypr.pitch);
     // Serial.print("\t");
-    Serial.print(imu_pitch);
-    // Serial.print("\t");
+    Serial.print(imu_pitch, 4);
+    Serial.print("\t");
+    Serial.println(imu_pitch_calibration_constant, 4);
+    Serial.print("\t");
+    Serial.println(imu_pitch_calibration_constant / RAD_TO_DEG, 4);
     // Serial.print(ypr.roll);
     // Serial.print("\t");
     // Serial.println(sensorValue.un.tiltDetector.tilt);
