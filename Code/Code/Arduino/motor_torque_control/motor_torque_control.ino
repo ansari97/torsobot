@@ -71,7 +71,7 @@ float imuAngleCorrection(float, float, float, float);
 float gravityMagnitude(float, float, float);
 float degToRad(float);
 float radToDeg(float);
-float wrapTo360(float);
+float wrapTo2PI(float);
 
 bool checkHeartbeatValidity(void);
 // ——————————————————————————————————————————————————————————————————————————————
@@ -163,7 +163,7 @@ char wheel_cmd_torque_data[float_len];
 
 volatile char read_command;
 
-float imu_angle_adjustment = PI - 3.043268;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch
+float imu_angle_adjustment = 0.0477;  // // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
 
 // Control parameters
 const float control_freq = 250;             // control torque write freq
@@ -420,12 +420,16 @@ void loop() {
 
     emergencyStop();  // call the stop routine
   }
+
   Serial.println("<<<---<<<");
   Serial.println(desired_torso_pitch);
   Serial.println(torso_pitch);
-  Serial.println(isnan(torso_pitch));
+  Serial.println(torso_pitch_rate);
+  // Serial.println(isnan(torso_pitch));
   Serial.println(mot_pos);
   Serial.println(mot_vel);
+
+  Serial.println(mot_cmd_torque);
 
   // Serial.println(kp);
   // Serial.println(ki);
@@ -434,7 +438,6 @@ void loop() {
   // Serial.println(max_integral);
   // Serial.println(control_error);
   // Serial.println("---");
-
 
   if (bno08x.wasReset()) {
     Serial.print("Sensor was reset during loop!");
@@ -463,10 +466,11 @@ void loop() {
         // arvrstabilizedrv does not use magnetometer
         quaternionToPitch(&sensorValue.un.arvrStabilizedRV, &torso_pitch);
         torso_pitch -= imu_angle_adjustment;
+        torso_pitch = wrapTo2PI(torso_pitch);  // we need angles in the [0, 2*PI) range
         break;
 
       case SH2_GYROSCOPE_CALIBRATED:
-        torso_pitch_rate = sensorValue.un.gyroscope.z;
+        torso_pitch_rate = sensorValue.un.gyroscope.y;
         break;
 
       case SH2_GRAVITY:
@@ -477,6 +481,7 @@ void loop() {
     }
   }
 
+  // copy to buffers to send to pi
   memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
   memcpy(torso_pitch_rate_data, &torso_pitch_rate, sizeof(float));
   // // Serial.println();
@@ -485,8 +490,9 @@ void loop() {
   // Controls part
 
   // get these values until wait time is over
+  // if we do not write to the controller, the motor sensor values don't update
   if (control_loop_ctr == 0) {
-    // write to cmd
+    // compute ff torque command to the motor; 0 = do nothing
     position_cmd.maximum_torque = mot_max_torque;
     position_cmd.feedforward_torque = 0;
 
@@ -498,6 +504,7 @@ void loop() {
     mot_pos = revsToRad(moteus.last_result().values.position);  //radians
     mot_vel = revsToRad(moteus.last_result().values.velocity);  // radians/s
 
+    // keep reading these values; the last value stored when ctr gets updated is the one that we want
     torso_pitch_init = torso_pitch;
     mot_pos_init = mot_pos;
     // Serial.print("mot_pos_init:\t");
@@ -505,7 +512,7 @@ void loop() {
     // Serial.print("\t");
     // Serial.println(torso_pitch_init);
 
-    // copy to byuffer to be sent to
+    // copy to buffer to be sent to pi
     memcpy(mot_pos_data, &mot_pos, sizeof(float));
     memcpy(mot_vel_data, &mot_vel, sizeof(float));  //
     memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
@@ -515,10 +522,11 @@ void loop() {
 
   // We intend to send control frames every 1000/control_freq milliseconds; second condition allows imu values to stabilise at program start
   if (control_next_send_millis >= millis() || (millis() - start_time) < wait_time) {
-    return;
+    return;  //early return >> next loop
   }
 
   // Fault mot_drv_mode
+  // 10 is the position mode
   if (static_cast<int>(moteus.last_result().values.mode) == 11) {
     Serial.println("motor driver fault");
     moteus.SetStop();
@@ -526,11 +534,12 @@ void loop() {
 
   time_last = time_now;  // store value from previous control loop's timer
 
-  // If control_loop_ctr is 0 (first loop)
-  if (!control_loop_ctr) { time_last = millis(); }
+  // If control_loop_ctr is 0 (first loop), update the time_last value, since we don't want the error to begin accumulating from the start of the program (only at the start of the control loop)
+  if (!control_loop_ctr)
+    time_last = millis();
 
-  time_now = millis();  // get current time
-  time_since_last = time_now - time_last;
+  time_now = millis();                     // get current time
+  time_since_last = time_now - time_last;  //time since last loop
 
   // Calculate torque required
   control_error = desired_torso_pitch - torso_pitch;  // radians
@@ -550,11 +559,13 @@ void loop() {
   // time derivative of control error = -torso_pitch_rate ; because desired_pitch_rate is constant
 
   mot_cmd_torque = kp * control_error + ki * control_error_integral + kd * (-torso_pitch_rate);
+  mot_cmd_torque = -mot_cmd_torque;  //- sign corrects for siogn difference between +torque on torso vs +torso rotation
+
   mot_cmd_torque = min(mot_max_torque, max(-mot_max_torque, mot_cmd_torque));  // second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
 
   // write to cmd
   position_cmd.maximum_torque = mot_max_torque;
-  position_cmd.feedforward_torque = -mot_cmd_torque;  //- sign corrects for siogn difference between +torque on torso vs +torso rotation
+  position_cmd.feedforward_torque = mot_cmd_torque;
 
   // **Write to the motor
   // Serial.println(millis());
@@ -597,10 +608,13 @@ void loop() {
   // this line gives wheel_pos relative to the torso
   wheel_pos = (mot_pos - mot_pos_init) / gear_ratio;
 
-  // wrap around [0, 2*PI)
+  // wrap around [0, 2*PI) because mot_pos output is continuous
   wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
 
-  wheel_pos -= (torso_pitch - torso_pitch_init);
+  // when looked from the driver's side, motor aclc is positive, torso acls is positive
+  wheel_pos += (torso_pitch - torso_pitch_init);
+
+  // When the robot starts, it's wheel angle is -collision angle
   wheel_pos += wheel_pos_init;
 
   // wrap around (-PI/n, PI/n]
@@ -613,7 +627,7 @@ void loop() {
   }
 
   // get other wheel values
-  wheel_vel = mot_vel / gear_ratio - torso_pitch_rate;  // does not require init values for the mot or the torso
+  wheel_vel = torso_pitch_rate + mot_vel / gear_ratio;  // does not require init values for the mot or the torso
   wheel_torque = mot_torque * gear_ratio;
   wheel_cmd_torque = mot_cmd_torque * gear_ratio;
 
@@ -630,6 +644,7 @@ void loop() {
   // Serial.print("\tmot_vel: ");
   // Serial.println(mot_vel);
 
+  // copy to buffer to send to pi
   memcpy(mot_pos_data, &mot_pos, sizeof(float));
   memcpy(mot_vel_data, &mot_vel, sizeof(float));                    //
   memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
@@ -897,9 +912,9 @@ float radToDeg(float rad) {
 }
 
 // wrap angle from 0 to 360
-float wrapTo360(float angle) {
+float wrapTo2PI(float angle) {
 
-  if (angle < 0) { angle += 360; }
+  if (angle < 0) { angle += 2 * PI; }
   return angle;
 }
 
@@ -925,7 +940,7 @@ float imuAngleCorrection(float pitch, float gravity_x, float gravity_y, float gr
   if (gravity_y < 0)
     pitch = -abs(pitch);
 
-  pitch = wrapTo360(pitch);
+  pitch = wrapTo2PI(pitch);
 
   // Serial.println(pitch);
   return pitch;
