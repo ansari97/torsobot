@@ -24,7 +24,7 @@ dir_path = "/home/pi/torsobot/Code/Code/ros2_ws/data_logs"
 file_date = input("Enter date:  ")
 file_time = input("Enter time:  ")
 
-csv_file_name = "torsobot_data_csv_" + \
+csv_file_name = "csv_" + \
     file_date + "_" + file_time + ".csv"
 csv_file_path = dir_path + "/" + csv_file_name
 
@@ -33,7 +33,7 @@ csv_file_path = dir_path + "/" + csv_file_name
 # json_file_path = dir_path + "/" + json_file_name
 
 # yaml path file
-yaml_file_name = "torsobot_data_metadata_" + \
+yaml_file_name = "metadata_" + \
     file_date + "_" + file_time + ".yaml"
 yaml_file_path = dir_path + "/" + yaml_file_name
 
