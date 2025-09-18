@@ -21,7 +21,7 @@ function [sol, event_sol, frame]= robotSimulation(slope_angle, robot_param, solv
 %   frame contains the animation frames
 
 %% Define slope
-%  Slope, received as argument to the function
+%  Slope, received as argument in degrees to the function
 slope_angle = deg2rad(slope_angle);  % angle in radians
 
 %% Define intermediate variables
@@ -57,7 +57,7 @@ state = y_sol.Solution;
 
 % Wrap angles from -pi to pi
 state(1, :) = wrapToPi(state(1,:));
-state(2, :) = wrapToPi(state(2,:));
+state(2, :) = wrapTo2Pi(state(2,:));
 
 % matrix of solution values 
 % time as row 1, theta as 2, phi as 3, theta_dot as 4, phi_dot as 5
