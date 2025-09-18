@@ -3,7 +3,7 @@ function event = collisionEvent(t,y,p)
 % y = [theta, phi, theta_dot, phi_dot]
 % p is the vector of parameters received as argument to the ODE function
 
-collision_angle = p{3}; % value is positive
+collision_angle = p.collision_angle; % value is positive
 
 % if velocity is +ve, return event when y(1) equals the collision angle
 if y(3)>=0

@@ -15,7 +15,7 @@ clear; % clear the workspace
 clc; % clear command window
 
 %% Change these variables
-slope_angle = 1; % slope angle in degrees, positive slope is downwards
+slope_angle = 1; % slope angle in degrees, positive slope is downwards from left to right
 
 % wheel
 L = 412.5e-3;   % spoke length in m
@@ -24,6 +24,7 @@ Iw = 136917590e-9;  % moment of inertia about com/center of the wheel in kgm^2
 n = 10; % number of spokes
 
 % torso
+l_t = 253.18e-3; % total length of torso from axis of revolution to top
 l = sqrt(83.6^2+6.12^2)/1000; % distance of torso coM to wheel center
 m = 1577.83e-3; % torso mass in kg
 It = 9324204e-9;%m*l^2; % torso moment of inertia about the y axis coincident with the coM of the torso 
@@ -31,16 +32,25 @@ It = 9324204e-9;%m*l^2; % torso moment of inertia about the y axis coincident wi
 %% Initial conditions
 init_theta = 0; % initial theta (wheel angle)
 init_phi = deg2rad(180-slope_angle); % initial phi (torso angle from the reference axis)
-init_theta_dot = -1; % initial theta rate
+init_theta_dot = 0.5; % initial theta rate
 init_phi_dot = 0; % initial phi rate
 
 %% Plotting options
 phase_plot = true;
-fig_plot = true; % for visualizing the robot motion
+fig_plot = false; % for visualizing the robot motion
 make_movie = false;
 
 %% Do not change
-robot_param = {L, M, Iw, n, l, m, It};
+% robot_param = {L, M, Iw, n, l, m, It};
+robot_param.L = L;
+robot_param.M = M;
+robot_param.Iw = Iw;
+robot_param.n = n;
+robot_param.l_t = l_t;
+robot_param.l = l;
+robot_param.m = m;
+robot_param.It = It;
+
 collision_angle = pi/n;
 
 g = 9.81;   % gravitational acceleration in m/s^2
@@ -82,7 +92,12 @@ frame_skip = 10; % number of frames to skip for animation;
 % skipping too many frames creates a seemingly disconneted animation
 
 %% Do not change
-solver_param = {init_con, stop_vel, time_interval, solver_type, solver_max_step};
+% solver_param = {init_con, stop_vel, time_interval, solver_type, solver_max_step};
+solver_param.init_con = init_con;
+solver_param.stop_vel = stop_vel;
+solver_param.time_interval = time_interval;
+solver_param.solver_type = solver_type;
+solver_param.solver_max_step = solver_max_step;
 
 if ~fig_plot && make_movie
     make_movie = false;

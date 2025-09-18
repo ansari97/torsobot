@@ -4,8 +4,15 @@ function frame = wheelTrajPlot(slope_ang, robot_param, sol, frame_skip)
 %   frame = wheelTrajPlot(slope_x_length, slope_ang, L, n, sol, event_sol)
 %%%
 
-% Wheel parameters
-[L, M, Iw, n, l, m, It] = robot_param{:};
+% robot parameters
+L = robot_param.L;
+M = robot_param.M;
+Iw = robot_param.Iw;
+n = robot_param.n;
+l_t = robot_param.l_t;
+l = robot_param.l;
+m = robot_param.m;
+It = robot_param.It;
 
 % Slope parameters for plotting
 slope_length = 20 * L; % slope length is 10 times the body length
@@ -80,9 +87,9 @@ for i = 1:length(theta)
 
     if ~mod(i, frame_skip)
         if change_ang
-            wheelPlot(slope_ang, L, n, l, t(i), -theta(i), phi(i), p_contact, plot_lim_to_send_cell);
+            wheelPlot(slope_ang, L, n, l, l_t,  t(i), -theta(i), phi(i), p_contact, plot_lim_to_send_cell);
         else
-            wheelPlot(slope_ang, L, n, l, t(i), theta(i), phi(i), p_contact, plot_lim_to_send_cell);
+            wheelPlot(slope_ang, L, n, l, l_t, t(i), theta(i), phi(i), p_contact, plot_lim_to_send_cell);
         end
 
         pause(0.05);

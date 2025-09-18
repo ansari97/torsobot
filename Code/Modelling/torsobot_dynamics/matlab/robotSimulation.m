@@ -25,10 +25,22 @@ function [sol, event_sol, frame]= robotSimulation(slope_angle, robot_param, solv
 slope_angle = deg2rad(slope_angle);  % angle in radians
 
 %% Define intermediate variables
-[L, M, Iw, n, l, m, It] = robot_param{:};
+L = robot_param.L;
+M = robot_param.M;
+Iw = robot_param.Iw;
+n = robot_param.n;
+l_t = robot_param.l_t;
+l = robot_param.l;
+m = robot_param.m;
+It = robot_param.It;
+
 spoke_angle = 2*pi/n; % angle between two spokes
 
-[init_con, stop_vel, time_interval, solver_type, solver_max_step] = solver_param{:};
+init_con = solver_param.init_con;
+stop_vel = solver_param.stop_vel;
+time_interval = solver_param.time_interval;
+solver_type = solver_param.solver_type;
+solver_max_step = solver_param.solver_max_step;
 
 %% Collision event
 % general case
@@ -45,7 +57,12 @@ E = odeEvent(EventFcn=@collisionEvent, ...
     CallbackFcn=@collisionResponse);
 
 % create ode object
-F = ode(ODEFcn = @continuousDynamics, InitialValue = init_con, EventDefinition = E, Solver= solver_type, Parameters={slope_angle, robot_param, collision_angle, stop_vel});
+ode_param.slope_angle = slope_angle;
+ode_param.robot_param = robot_param;
+ode_param.collision_angle = collision_angle;
+ode_param.stop_vel = stop_vel;
+
+F = ode(ODEFcn = @continuousDynamics, InitialValue = init_con, EventDefinition = E, Solver= solver_type, Parameters=ode_param);
 % set solver options
 F.SolverOptions.MaxStep = solver_max_step;
 

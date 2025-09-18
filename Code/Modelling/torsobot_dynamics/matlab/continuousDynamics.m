@@ -7,12 +7,19 @@ function dydt = continuousDynamics(t,y,p)
 % See Maple files for details
 
 % unpack variables
-wheel_param = p{2};
-[L, M, Iw, n, l, m, It] = wheel_param{:};
+robot_param = p.robot_param;
+L = robot_param.L;
+M = robot_param.M;
+Iw = robot_param.Iw;
+n = robot_param.n;
+l_t = robot_param.l_t;
+l = robot_param.l;
+m = robot_param.m;
+It = robot_param.It;
 
 g = 9.81; % acceleration due to gravity
 
-slope_angle = p{1}; % slope angle
+slope_angle = p.slope_angle; % slope angle
 
 % Dynamics
 R = m*l*L*cos(y(1) - y(2));
@@ -33,7 +40,7 @@ H = [0, 0, -1, 1]';
 
 %% Torque function
 % y(6) = t; % get time from previous step and use it to calculate error_sum
-phi_desired = deg2rad(90);
+phi_desired = deg2rad(30);
 phi = wrapTo2Pi(y(2)) % changed from wrap to pi
 phi_dot = y(4);
 % y(2);

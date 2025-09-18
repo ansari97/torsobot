@@ -9,10 +9,17 @@ function [stop,  y, p] = collisionResponse(t, y, i, p)
 % See Maple files for details
 
 % unpack variables
-stop_vel = p{4};
+stop_vel = p.stop_vel;
 
-wheel_param = p{2};
-[L, M, Iw, n, l, m, It] = wheel_param{:};
+robot_param = p.robot_param;
+L = robot_param.L;
+M = robot_param.M;
+Iw = robot_param.Iw;
+n = robot_param.n;
+l_t = robot_param.l_t;
+l = robot_param.l;
+m = robot_param.m;
+It = robot_param.It;
 
 % R(q)*q = s(q)
 % left q or 'q+' is the state right after the collision
