@@ -32,15 +32,15 @@ f = [y(3), y(4), f1, f2]';
 H = [0, 0, -1, 1]';
 
 %% Torque function
-t;
-phi_desired = deg2rad(310);
+% y(6) = t; % get time from previous step and use it to calculate error_sum
+phi_desired = deg2rad(90);
 phi = wrapTo2Pi(y(2)) % changed from wrap to pi
 phi_dot = y(4);
 % y(2);
 e = phi_desired - phi
 dedt = -phi_dot;
-% e_sum = y(5)
-e_sum = 0;
+e_sum = y(5) + e;
+% e_sum = 0;
 
 % manipulate e
 if e > pi
@@ -58,7 +58,10 @@ control_max_integral= 4.0;
 
 
 T = k_p*e + k_i*e_sum + k_d*dedt;
-T = -T % for positive e, we need a negative torque; the +torque on torso acts in clcwise direction
+T = -T; % for positive e, we need a negative torque; the +torque on torso acts in clcwise direction
+
+gear_ratio = 48/16*36/16;
+T = T*gear_ratio
 
 % clamp the torque
 T = min(max_torque, max(T, -max_torque));
@@ -73,5 +76,5 @@ T = min(max_torque, max(T, -max_torque));
 
 %% Derivative
 dydt = N\(H*T + f);
-% dydt(5) = e;
+dydt(5) = 0;
 end

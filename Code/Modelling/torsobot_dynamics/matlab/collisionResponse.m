@@ -39,7 +39,7 @@ R = [1, 0, 0, 0;
 
 s = [-y(1), y(2), s1, s2]';
 
-y = [R\s];% y(5)];
+y = [R\s; y(5)];
 
 % if theta velocity is less than a threshold value, stop solving
 stop = false;

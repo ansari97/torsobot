@@ -70,7 +70,7 @@ end
 
 error_sum = 0; % for PID controller
 
-init_con = [init_theta, init_phi, init_theta_dot, init_phi_dot];%, error_sum];
+init_con = [init_theta, init_phi, init_theta_dot, init_phi_dot, error_sum];
 
 stop_vel = 0.02; % stop simulation if wheel angular velocity is less than this value
 
