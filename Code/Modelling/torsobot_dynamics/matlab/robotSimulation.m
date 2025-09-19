@@ -1,4 +1,4 @@
-function [sol, event_sol, frame]= robotSimulation(slope_angle, robot_param, solver_param, phase_plot, fig_plot, frame_skip)
+function [sol, event_sol, frame]= robotSimulation(slope_angle, robot_param, solver_param, controller_param, phase_plot, fig_plot, frame_skip)
 %%% robotSimulation   Main function for simulating the torsobot
 %   [sol, event_sol, frame] = robotSimulation(slope_angle, L, M, Iw, n, init_con, stop_vel, time_interval, solver, solver_max_step, phase_plot, fig_plot)
 %   
@@ -59,6 +59,7 @@ E = odeEvent(EventFcn=@collisionEvent, ...
 % create ode object
 ode_param.slope_angle = slope_angle;
 ode_param.robot_param = robot_param;
+ode_param.controller_param = controller_param;
 ode_param.collision_angle = collision_angle;
 ode_param.stop_vel = stop_vel;
 

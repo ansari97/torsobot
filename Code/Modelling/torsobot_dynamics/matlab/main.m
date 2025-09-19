@@ -15,8 +15,46 @@ clear; % clear the workspace
 clc; % clear command window
 
 %% Change these variables
-slope_angle = 1; % slope angle in degrees, positive slope is downwards from left to right
+slope_angle = 10; % slope angle in degrees, positive slope is downwards from left to right
 
+%% Initial conditions
+theta_init = 0; % initial theta (wheel angle)
+phi_init = deg2rad(180-slope_angle); % initial phi (torso angle from the reference axis)
+theta_dot_init = -1; % initial theta rate
+phi_dot_init = 0; % initial phi rate
+
+%% Controller parameters
+% for PID controller
+PID_controller.kp = 0.65;
+PID_controller.ki = 0.05;
+PID_controller.kd = 0.08;
+PID_controller.control_max_integral = 4.0; % for the error sum (error integral term)
+
+% make generic controller
+controller_param = PID_controller;
+
+controller_param.max_torque = 5.0; % at the wheel
+controller_param.phi_desired = deg2rad(270);
+controller_param.gear_ratio = 48/16*36/16;
+
+%% Plotting options
+phase_plot = true;
+fig_plot = true; % for visualizing the robot motion
+make_movie = false;
+save_movie = true;
+frames_per_sec = 10;
+
+%% Solver setup
+time_interval = [0 10]; % time interval for the ODE solution
+solver_type = 'ode45';
+solver_max_step = 0.05; % max time step; 0.02 is reasonable
+frame_skip = 10; % number of frames to skip for animation;
+% skipping too many frames creates a seemingly disconneted animation
+
+%% Do not change
+% robot_param = {L, M, Iw, n, l, m, It};
+
+% All in SI units, m, kg, s
 % wheel
 L = 412.5e-3;   % spoke length in m
 M = 2*1.3;  % mass in kg
@@ -29,19 +67,7 @@ l = sqrt(83.6^2+6.12^2)/1000; % distance of torso coM to wheel center
 m = 1577.83e-3; % torso mass in kg
 It = 9324204e-9;%m*l^2; % torso moment of inertia about the y axis coincident with the coM of the torso 
 
-%% Initial conditions
-init_theta = 0; % initial theta (wheel angle)
-init_phi = deg2rad(180-slope_angle); % initial phi (torso angle from the reference axis)
-init_theta_dot = 0.5; % initial theta rate
-init_phi_dot = 0; % initial phi rate
-
-%% Plotting options
-phase_plot = true;
-fig_plot = false; % for visualizing the robot motion
-make_movie = false;
-
-%% Do not change
-% robot_param = {L, M, Iw, n, l, m, It};
+% struct of robot parameters
 robot_param.L = L;
 robot_param.M = M;
 robot_param.Iw = Iw;
@@ -51,6 +77,7 @@ robot_param.l = l;
 robot_param.m = m;
 robot_param.It = It;
 
+% collision angle
 collision_angle = pi/n;
 
 g = 9.81;   % gravitational acceleration in m/s^2
@@ -58,41 +85,35 @@ g = 9.81;   % gravitational acceleration in m/s^2
 % This block corrects the initial conditions
 % going up and collision angle incorrectly set to just before colliding
 % up
-if init_theta_dot < 0 && init_theta == -collision_angle
-    init_theta = collision_angle;
+if theta_dot_init < 0 && theta_init == -collision_angle
+    theta_init = collision_angle;
 
 % going down and collision angle incorrectly set to just before colliding
 % down
-elseif init_theta_dot > 0 && init_theta == collision_angle
-    init_theta = -collision_angle;
+elseif theta_dot_init > 0 && theta_init == collision_angle
+    theta_init = -collision_angle;
 end
 
 % resetting angle value to be within range
-if abs(init_theta) > collision_angle
+if abs(theta_init) > collision_angle
     % if going up
-    if init_theta_dot < 0
-        init_theta = collision_angle;
+    if theta_dot_init < 0
+        theta_init = collision_angle;
     % if going down 
     else
-        init_theta = -collision_angle;
+        theta_init = -collision_angle;
     end
 end
 
-error_sum = 0; % for PID controller
+e_sum = 0; % for PID controller
 
-init_con = [init_theta, init_phi, init_theta_dot, init_phi_dot, error_sum];
+init_con = [theta_init, phi_init, theta_dot_init, phi_dot_init, e_sum];
 
 stop_vel = 0.02; % stop simulation if wheel angular velocity is less than this value
 
-%% Solver setup
-time_interval = [0 10]; % time interval for the ODE solution
-solver_type = 'ode45';
-solver_max_step = 0.05; % max time step
-frame_skip = 10; % number of frames to skip for animation;
-% skipping too many frames creates a seemingly disconneted animation
-
 %% Do not change
 % solver_param = {init_con, stop_vel, time_interval, solver_type, solver_max_step};
+% struct for solver_param
 solver_param.init_con = init_con;
 solver_param.stop_vel = stop_vel;
 solver_param.time_interval = time_interval;
@@ -104,7 +125,7 @@ if ~fig_plot && make_movie
 end
 
 % Run solver and plot
-[sol, event_sol, frame] = robotSimulation(slope_angle, robot_param, solver_param, phase_plot, fig_plot, frame_skip);
+[sol, event_sol, frame] = robotSimulation(slope_angle, robot_param, solver_param, controller_param, phase_plot, fig_plot, frame_skip);
 
 %% Energy graphs
 theta = sol(2, :);
@@ -141,6 +162,7 @@ xlabel("time(s)");
 ylabel("Total Energy");
 hold off;
 
+%% video code
 % make a video
 if fig_plot && make_movie
     t = sol(1,:);
@@ -165,5 +187,15 @@ if fig_plot && make_movie
 
 
     frame = frame(t_ind);
-    movie(frame, 1, 10);
+
+    % play once
+    movie(frame, 1, frames_per_sec);
+
+    if save_movie
+        filename = ".\" + string(datetime("today", Format="uuuu-MM-dd")) + "_" + string(datetime("now", Format = "HH:mm:ss")) + ".mp4";
+        v = VideoWriter(filename);
+        
+        writeVideo(v, frame)
+        disp("Saving video file to" + filename);
+    end
 end

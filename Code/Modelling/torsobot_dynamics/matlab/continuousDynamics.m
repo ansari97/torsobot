@@ -19,7 +19,7 @@ It = robot_param.It;
 
 g = 9.81; % acceleration due to gravity
 
-slope_angle = p.slope_angle; % slope angle
+slope_angle = p.slope_angle; % slope angle in radians
 
 % Dynamics
 R = m*l*L*cos(y(1) - y(2));
@@ -38,50 +38,11 @@ f = [y(3), y(4), f1, f2]';
 
 H = [0, 0, -1, 1]';
 
-%% Torque function
-% y(6) = t; % get time from previous step and use it to calculate error_sum
-phi_desired = deg2rad(30);
-phi = wrapTo2Pi(y(2)) % changed from wrap to pi
-phi_dot = y(4);
-% y(2);
-e = phi_desired - phi
-dedt = -phi_dot;
-e_sum = y(5) + e;
-% e_sum = 0;
-
-% manipulate e
-if e > pi
-    e = e - 2*pi;
-elseif e < -pi
-    e = e + 2*pi;
-end
-
-k_p = 1.0;
-k_i = 0.05;
-k_d = 0.08;
-
-max_torque = 5.0;
-control_max_integral= 4.0;
-
-
-T = k_p*e + k_i*e_sum + k_d*dedt;
-T = -T; % for positive e, we need a negative torque; the +torque on torso acts in clcwise direction
-
-gear_ratio = 48/16*36/16;
-T = T*gear_ratio
-
-% clamp the torque
-T = min(max_torque, max(T, -max_torque));
-
-% if T>=0
-%     T = min(T, 2);
-% else
-%     T = max(T, -2);
-% end
-
-% T = 0;
+%% Torque controller
+controller_param = p.controller_param;
+[T, e] = torqueController(t, y, controller_param);
 
 %% Derivative
 dydt = N\(H*T + f);
-dydt(5) = 0;
+dydt(5) = e;
 end

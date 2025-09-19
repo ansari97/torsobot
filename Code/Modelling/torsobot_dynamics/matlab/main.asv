@@ -15,30 +15,61 @@ clear; % clear the workspace
 clc; % clear command window
 
 %% Change these variables
-slope_angle = 0; % slope angle in degrees, positive slope is downwards
+slope_angle = 1; % slope angle in degrees, positive slope is downwards from left to right
 
-L = 450e-3;   % spoke length in m
+% All in SI units, m, kg, s
+% wheel
+L = 412.5e-3;   % spoke length in m
 M = 2*1.3;  % mass in kg
-Iw = 0.3;  % moment of inertia about com/center of the wheel in kgm^2
+Iw = 136917590e-9;  % moment of inertia about com/center of the wheel in kgm^2
 n = 10; % number of spokes
 
-l = 200e-3; % distance of torso coM to wheel center
-m = 2; % torso mass in kg
-It = m*l^2; % torso moment of inertia about the y axis coincident with the coM of the torso 
+% torso
+l_t = 253.18e-3; % total length of torso from axis of revolution to top
+l = sqrt(83.6^2+6.12^2)/1000; % distance of torso coM to wheel center
+m = 1577.83e-3; % torso mass in kg
+It = 9324204e-9;%m*l^2; % torso moment of inertia about the y axis coincident with the coM of the torso 
 
 %% Initial conditions
 init_theta = 0; % initial theta (wheel angle)
-init_phi = deg2rad(180-0.01); % initial phi (torso angle from the reference axis)
-init_theta_dot = 1; % initial theta rate
+init_phi = deg2rad(180-slope_angle); % initial phi (torso angle from the reference axis)
+init_theta_dot = 0; % initial theta rate
 init_phi_dot = 0; % initial phi rate
+
+%% Controller parameters
+PID_controller.kp = 0.65;
+PID_controller.ki = 0.05;
+PID_controller.kd = 0.08;
+PID_controller.max_torque = 4.0; % at the wheel
+PID_controller.control_max_integral = 4.0; % at the wheel
 
 %% Plotting options
 phase_plot = true;
-fig_plot = false; 
-make_movie = false;
+fig_plot = true; % for visualizing the robot motion
+make_movie = true;
+save_movie = true;
+frames_per_sec = 10;
+
+%% Solver setup
+time_interval = [0 10]; % time interval for the ODE solution
+solver_type = 'ode45';
+solver_max_step = 0.05; % max time step; 0.02 is reasonable
+frame_skip = 10; % number of frames to skip for animation;
+% skipping too many frames creates a seemingly disconneted animation
 
 %% Do not change
-robot_param = {L, M, Iw, n, l, m, It};
+% robot_param = {L, M, Iw, n, l, m, It};
+% struct of robot parameters
+robot_param.L = L;
+robot_param.M = M;
+robot_param.Iw = Iw;
+robot_param.n = n;
+robot_param.l_t = l_t;
+robot_param.l = l;
+robot_param.m = m;
+robot_param.It = It;
+
+% collision angle
 collision_angle = pi/n;
 
 g = 9.81;   % gravitational acceleration in m/s^2
@@ -66,21 +97,20 @@ if abs(init_theta) > collision_angle
     end
 end
 
-error_sum = 0; % for PID controller
+e_sum = 0; % for PID controller
 
-init_con = [init_theta, init_phi, init_theta_dot, init_phi_dot];%, error_sum];
+init_con = [init_theta, init_phi, init_theta_dot, init_phi_dot, e_sum];
 
 stop_vel = 0.02; % stop simulation if wheel angular velocity is less than this value
 
-%% Solver setup
-time_interval = [0 10]; % time interval for the ODE solution
-solver_type = 'ode45';
-solver_max_step = 0.05; % max time step
-frame_skip = 10; % number of frames to skip for animation;
-% skipping too many frames creates a seemingly disconneted animation
-
 %% Do not change
-solver_param = {init_con, stop_vel, time_interval, solver_type, solver_max_step};
+% solver_param = {init_con, stop_vel, time_interval, solver_type, solver_max_step};
+% struct for solver_param
+solver_param.init_con = init_con;
+solver_param.stop_vel = stop_vel;
+solver_param.time_interval = time_interval;
+solver_param.solver_type = solver_type;
+solver_param.solver_max_step = solver_max_step;
 
 if ~fig_plot && make_movie
     make_movie = false;
@@ -124,6 +154,7 @@ xlabel("time(s)");
 ylabel("Total Energy");
 hold off;
 
+%% video code
 % make a video
 if fig_plot && make_movie
     t = sol(1,:);
@@ -148,5 +179,15 @@ if fig_plot && make_movie
 
 
     frame = frame(t_ind);
-    movie(frame, 1, 10);
+
+    % play once
+    movie(frame, 1, frames_per_sec);
+
+    if save_movie
+        filename = ".\" + string(datetime("today", Format="uuuu-MM-dd")) + "_" + string(datetime("now", Format = "HH:mm:ss")) + ".mp4";
+        v = VideoWriter(filename);
+        
+        writeVideo(v, frame)
+        disp("Saving video file to" + filename);
+    end
 end

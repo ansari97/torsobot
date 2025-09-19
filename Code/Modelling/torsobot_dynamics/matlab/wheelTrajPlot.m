@@ -1,4 +1,4 @@
-function frame = wheelTrajPlot(slope_ang, robot_param, sol, frame_skip)
+function frame = wheelTrajPlot(slope_angle, robot_param, sol, frame_skip)
 % wheelTrajPlot function for plotting the wheel given the slope and wheel parameters, and the wheel state
 %
 %   frame = wheelTrajPlot(slope_x_length, slope_ang, L, n, sol, event_sol)
@@ -41,7 +41,7 @@ epsilon = 1e-10;
 figure;
 
 % set plotting limits
-plot_lim = slope2cart(0.5*slope_length, slope_ang);
+plot_lim = slope2cart(0.5*slope_length, slope_angle);
 
 % initialize varibales
 frame_ind = 1;
@@ -54,12 +54,12 @@ for i = 1:length(theta)
 
     % going down when making contact
     if theta_dot(i)>0 && abs(theta(i) - collision_ang) < epsilon
-        p_contact = p_contact - slope2cart(slope_dist, slope_ang);
+        p_contact = p_contact - slope2cart(slope_dist, slope_angle);
         change_ang = true;
 
     % going up when making contact
     elseif theta_dot(i)<0 && abs(theta(i) - collision_ang) < epsilon
-        p_contact = p_contact + slope2cart(slope_dist, slope_ang);
+        p_contact = p_contact + slope2cart(slope_dist, slope_angle);
     end
 
     % set xlimits for the plot
@@ -87,9 +87,9 @@ for i = 1:length(theta)
 
     if ~mod(i, frame_skip)
         if change_ang
-            wheelPlot(slope_ang, L, n, l, l_t,  t(i), -theta(i), phi(i), p_contact, plot_lim_to_send_cell);
+            wheelPlot(slope_angle, L, n, l, l_t,  t(i), -theta(i), phi(i), p_contact, plot_lim_to_send_cell);
         else
-            wheelPlot(slope_ang, L, n, l, l_t, t(i), theta(i), phi(i), p_contact, plot_lim_to_send_cell);
+            wheelPlot(slope_angle, L, n, l, l_t, t(i), theta(i), phi(i), p_contact, plot_lim_to_send_cell);
         end
 
         pause(0.05);
