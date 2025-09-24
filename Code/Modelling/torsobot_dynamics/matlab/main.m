@@ -1,27 +1,33 @@
 %%% main.m
-% This file contains the main code for defining the dynamics of the 
+% This file contains the main code for defining the dynamics of the
 % torsobot moving on a slope
 % The normal vector to the slope defines the reference axis
 % positive angles are defined anticlockwise from the slope normal
 %
-% Created by:
 % Ahmed Alam Ansari
-% 
+%
 % Updated:
-% 9-18-2025
+% 9-22-2025
 
 close all; % close all open figures
 clear; % clear the workspace
 clc; % clear command window
 
 %% Change these variables
-slope_angle = 10; % slope angle in degrees, positive slope is downwards from left to right
+slope_angle = 0; % slope angle in degrees, positive slope is downwards from left to right
 
 %% Initial conditions
 theta_init = 0; % initial theta (wheel angle)
-phi_init = deg2rad(180-slope_angle); % initial phi (torso angle from the reference axis)
-theta_dot_init = -1; % initial theta rate
+phi_init = deg2rad(180 - slope_angle); % initial phi (torso angle from the reference axis)
+theta_dot_init = 0; % initial theta rate
 phi_dot_init = 0; % initial phi rate
+
+%% Plotting options
+phase_plot = true;
+motion_plot = true; % for visualizing the robot motion
+% make_movie = true;
+save_movie = false;
+frames_per_sec = 5;
 
 %% Controller parameters
 % for PID controller
@@ -33,19 +39,12 @@ PID_controller.control_max_integral = 4.0; % for the error sum (error integral t
 % make generic controller
 controller_param = PID_controller;
 
+controller_param.phi_desired = deg2rad(100);
 controller_param.max_torque = 5.0; % at the wheel
-controller_param.phi_desired = deg2rad(270);
-controller_param.gear_ratio = 48/16*36/16;
-
-%% Plotting options
-phase_plot = true;
-fig_plot = true; % for visualizing the robot motion
-make_movie = false;
-save_movie = true;
-frames_per_sec = 10;
+controller_param.gear_ratio = 48/16*38/16;
 
 %% Solver setup
-time_interval = [0 10]; % time interval for the ODE solution
+time_interval = [0 5]; % time interval for the ODE solution
 solver_type = 'ode45';
 solver_max_step = 0.05; % max time step; 0.02 is reasonable
 frame_skip = 10; % number of frames to skip for animation;
@@ -65,7 +64,7 @@ n = 10; % number of spokes
 l_t = 253.18e-3; % total length of torso from axis of revolution to top
 l = sqrt(83.6^2+6.12^2)/1000; % distance of torso coM to wheel center
 m = 1577.83e-3; % torso mass in kg
-It = 9324204e-9;%m*l^2; % torso moment of inertia about the y axis coincident with the coM of the torso 
+It = 9324204e-9;%m*l^2; % torso moment of inertia about the y axis coincident with the coM of the torso
 
 % struct of robot parameters
 robot_param.L = L;
@@ -88,8 +87,8 @@ g = 9.81;   % gravitational acceleration in m/s^2
 if theta_dot_init < 0 && theta_init == -collision_angle
     theta_init = collision_angle;
 
-% going down and collision angle incorrectly set to just before colliding
-% down
+    % going down and collision angle incorrectly set to just before colliding
+    % down
 elseif theta_dot_init > 0 && theta_init == collision_angle
     theta_init = -collision_angle;
 end
@@ -99,7 +98,7 @@ if abs(theta_init) > collision_angle
     % if going up
     if theta_dot_init < 0
         theta_init = collision_angle;
-    % if going down 
+        % if going down
     else
         theta_init = -collision_angle;
     end
@@ -120,26 +119,27 @@ solver_param.time_interval = time_interval;
 solver_param.solver_type = solver_type;
 solver_param.solver_max_step = solver_max_step;
 
-if ~fig_plot && make_movie
-    make_movie = false;
+if ~motion_plot
+    % make_movie = false;
+    save_movie = false;
 end
 
 % Run solver and plot
-[sol, event_sol, frame] = robotSimulation(slope_angle, robot_param, solver_param, controller_param, phase_plot, fig_plot, frame_skip);
+[sol, event_sol, frames] = robotSimulation(slope_angle, robot_param, solver_param, controller_param, phase_plot, motion_plot, frame_skip);
 
 %% Energy graphs
 theta = sol(2, :);
 phi = sol(3, :);
 theta_dot = sol(4, :);
 phi_dot = sol(5, :);
-T = 1/2*(M*L^2 + Iw + m*L^2)*theta_dot.^2 + 1/2*(m*l^2 + It)*phi_dot.^2 + m*l*L*theta_dot.*phi_dot.*cos((theta - phi));
-V = g*(m+M)*L*cos(theta + deg2rad(slope_angle)) + m*g*l*cos(phi + deg2rad(slope_angle));
+KE = 1/2*(M*L^2 + Iw + m*L^2)*theta_dot.^2 + 1/2*(m*l^2 + It)*phi_dot.^2 + m*l*L*theta_dot.*phi_dot.*cos((theta - phi));
+PE = g*(m+M)*L*cos(theta + deg2rad(slope_angle)) + m*g*l*cos(phi + deg2rad(slope_angle));
 
-E = T + V;
+E = KE + PE;
 
 figure;
 subplot(3,1,1);
-plot(sol(1, :), T);
+plot(sol(1, :), KE);
 hold on;
 title("Kinetic Energy vs time");
 xlabel("time(s)");
@@ -147,7 +147,7 @@ ylabel("Kinetic Energy");
 hold off;
 
 subplot(3,1,2);
-plot(sol(1, :), V);
+plot(sol(1, :), PE);
 hold on;
 title("Potential Energy vs time");
 xlabel("time(s)");
@@ -162,40 +162,49 @@ xlabel("time(s)");
 ylabel("Total Energy");
 hold off;
 
+%% save variables into a .mat file for later use
+datetime_filename = string(datetime("today", Format="uuuu-MM-dd")) + "_" + string(datetime("now", Format = "HH-mm-ss")) + ".mp4";
+
+save("./mat_files/var_" + datetime_filename + ".mat", 'sol', 'frames');
+
 %% video code
 % make a video
-if fig_plot && make_movie
-    t = sol(1,:);
-    len = length(t);
-    time_max = max(t); % end time for the solution
-    time_min = min(t); % start time of the solution (should be 0)
+if save_movie
+    % t = sol(1,:);
+    % len = length(t);
+    % time_max = max(t); % end time for the solution; might be different from
+    % % required simulation time if simulation ends prematurely
+    % time_min = min(t); % start time of the solution (should be 0)
+    %
+    % t_movie = time_min:solver_max_step*10:time_max; % time for the movie frame
+    % % t_ind = zeros(length(t_movie))
+    % for i = 1:length(t_movie)
+    %     ind = find(abs(t - t_movie(i)) < solver_max_step/10);
+    %
+    %     if ~isempty(ind) > 0
+    %         if length(ind)>1
+    %             ind = round(mean(ind));
+    %         end
+    %         t_ind(i) = ind;
+    %     elseif isempty(ind)
+    %         % do nothing
+    %     end
+    % end
 
-    t_movie = time_min:solver_max_step*10:time_max; % time for the movie frame
-    % t_ind = zeros(length(t_movie))
-    for i = 1:length(t_movie)
-        ind = find(abs(t - t_movie(i)) < solver_max_step/10);
 
-        if ~isempty(ind) > 0
-            if length(ind)>1
-                ind = round(mean(ind));
-            end
-            t_ind(i) = ind;
-        elseif isempty(ind)
-            % do nothing
-        end
-    end
-
-
-    frame = frame(t_ind);
+    % frame = frame(t_ind);
 
     % play once
-    movie(frame, 1, frames_per_sec);
+    % f = figure;
+    % movie(f, frames, 1, frames_per_sec);
+    % close(f);
+    % drawnow;
 
-    if save_movie
-        filename = ".\" + string(datetime("today", Format="uuuu-MM-dd")) + "_" + string(datetime("now", Format = "HH:mm:ss")) + ".mp4";
-        v = VideoWriter(filename);
-        
-        writeVideo(v, frame)
-        disp("Saving video file to" + filename);
-    end
+    filename = ".\videos\" + datetime_filename;
+    v = VideoWriter(filename, "MPEG-4");
+    open(v);
+    writeVideo(v, frames);
+    close(v);
+    disp("Saving video file to" + filename);
+
 end

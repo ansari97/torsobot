@@ -1,4 +1,4 @@
-function frame = wheelTrajPlot(slope_angle, robot_param, sol, frame_skip)
+function frames = wheelTrajPlot(slope_angle, robot_param, sol, frame_skip)
 % wheelTrajPlot function for plotting the wheel given the slope and wheel parameters, and the wheel state
 %
 %   frame = wheelTrajPlot(slope_x_length, slope_ang, L, n, sol, event_sol)
@@ -38,7 +38,7 @@ init_p_contact = [0, 0];
 epsilon = 1e-10;
 
 % create a separate figure
-figure;
+f = figure('Position', [100, 100, 1280, 720]);
 
 % set plotting limits
 plot_lim = slope2cart(0.5*slope_length, slope_angle);
@@ -93,10 +93,13 @@ for i = 1:length(theta)
         end
 
         pause(0.05);
-        frame(frame_ind) = getframe; %get frame
+        frames(frame_ind) = getframe(f); %get frame
         frame_ind = frame_ind + 1;
     end
 end
+
+pause(0.5);
+close(f);
 end
 
 %% helper functions

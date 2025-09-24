@@ -13,28 +13,31 @@ control_max_integral = controller_param.control_max_integral;
 gear_ratio = controller_param.gear_ratio;
 
 % get variables from state and calculate error
-phi = wrapTo2Pi(y(2)); % changed from wrap to pi
+phi = wrapTo2Pi(y(2)); % changed from wrapToPi to wrapto2Pi
 
+% compute error, rate of change of error and error buildup
 e = phi_desired - phi;
 dedt = -y(4);
 e_sum = y(5);
 
-% manipulate e
+% wrap e around (-pi, pi]
 if e > pi
     e = e - 2*pi;
 elseif e < -pi
     e = e + 2*pi;
 end
 
-% clamp e_sum
+% clamp e_sum between -control_max_integral and control_max_integral
 e_sum = min(control_max_integral, max(e_sum, -control_max_integral));
 
+% compute torque
 T = kp*e + ki*e_sum + kd*dedt;
 T = -T; % for positive e, we need a negative torque; the +torque on torso acts in clcwise direction
 
+% torque is output at the wheel
 T = T*gear_ratio;
 
-% clamp the torque
+% clamp e_sum between -max_torque and max_torque
 T = min(max_torque, max(T, -max_torque));
 
 end

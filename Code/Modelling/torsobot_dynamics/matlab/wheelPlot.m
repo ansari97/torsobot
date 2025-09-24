@@ -8,7 +8,7 @@ wheel_com = p_contact + L*[-sin(theta + slope_ang), cos(theta + slope_ang)];
 
 % calculate torso location
 p_torso_com = wheel_com + l*[-sin(slope_ang + phi), cos(slope_ang + phi)];
-p_torso = wheel_com + l_t*[-sin(slope_ang + phi), cos(slope_ang + phi)];
+p_torso = wheel_com + l_t*[-sin(slope_ang + phi), cos(slope_ang + phi)]; % overall length of the torso
 
 % calculate the coordinates of all the spoke end points
 p_feet = feetCoordinates(slope_ang, wheel_com, L, n, theta);

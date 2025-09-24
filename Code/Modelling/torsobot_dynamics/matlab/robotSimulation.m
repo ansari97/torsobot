@@ -1,4 +1,4 @@
-function [sol, event_sol, frame]= robotSimulation(slope_angle, robot_param, solver_param, controller_param, phase_plot, fig_plot, frame_skip)
+function [sol, event_sol, frames]= robotSimulation(slope_angle, robot_param, solver_param, controller_param, phase_plot, motion_plot, frame_skip)
 %%% robotSimulation   Main function for simulating the torsobot
 %   [sol, event_sol, frame] = robotSimulation(slope_angle, L, M, Iw, n, init_con, stop_vel, time_interval, solver, solver_max_step, phase_plot, fig_plot)
 %   
@@ -95,7 +95,7 @@ disp(strcat('Simulation time: ', num2str(max(t)), ' s'));
 % plot the robot state wrt time
 figure;
 % theta
-subplot(4, 1, 1);
+subplot(5, 1, 1);
 plot(t, state(1, :));
 hold on;
 yline([0 -collision_angle collision_angle]);
@@ -107,7 +107,7 @@ ylabel('wheel angle (rad)');
 hold off;
 
 % theta_dot
-subplot(4, 1, 2);
+subplot(5, 1, 2);
 plot(t, state(3, :));
 hold on;
 yline(0);
@@ -115,23 +115,23 @@ yline(0);
 xlim(time_interval);
 title('Wheel Angular velocity');
 xlabel('time (s)');
-ylabel('theta\_dot (rad/s)');
+ylabel('theta_{dot} (rad/s)');
 hold off;
 
 % phi
-subplot(4, 1, 3);
+subplot(5, 1, 3);
 plot(t, state(2, :));
 hold on;
 yline(0);
-
+plot(t, ones(size(t))*controller_param.phi_desired, "r-");
 xlim(time_interval);
 title('Torso Angle from normal');
 xlabel('time (s)');
 ylabel('torso angle (rad)');
 hold off;
 
-% phi
-subplot(4, 1, 4);
+% phi_dot
+subplot(5, 1, 4);
 plot(t, state(4, :));
 hold on;
 yline(0);
@@ -139,19 +139,37 @@ yline(0);
 xlim(time_interval);
 title('Torso Angular velocity');
 xlabel('time (s)');
-ylabel('phi\_dot (rad/s)');
+ylabel('phi_{dot} (rad/s)');
 hold off;
+
+% external calculations for torque
+for i = 1:1:length(t)
+    [T(i), e(i)] = torqueController(t(i), state(:, i), controller_param);
+end
+
+% torque
+subplot(5, 1, 5);
+plot(t, T);
+hold on;
+yline(0);
+
+xlim(time_interval);
+title('Torque at joint');
+xlabel('time (s)');
+ylabel('Torque (Nm)');
+hold off;
+
 
 % plot the phase plot with plot_type=2, plot_type 1 is under construction
 if phase_plot == true
-    phasePlot(state(1, :), state(3, :), collision_angle, solver_max_step, 2);
+    phasePlot(sol, collision_angle, solver_max_step, 2);
 end
 
 % plot the wheel trajectory
 
-if fig_plot == true
-    frame = wheelTrajPlot(slope_angle, robot_param, sol, frame_skip);
+if motion_plot == true
+    frames = wheelTrajPlot(slope_angle, robot_param, sol, frame_skip);
 else
-    frame = 0;
+    frames = 0;
 end
 end
