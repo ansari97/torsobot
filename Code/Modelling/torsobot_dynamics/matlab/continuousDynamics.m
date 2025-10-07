@@ -38,24 +38,38 @@ g2 = -(m + M)*g*L*sin(slope_angle + y(1));
 f1 = c1 + g1;
 f2 = c2 + g2;
 
+N = [R, S; 
+    V, R];
 
-N = [1, 0, 0, 0;
-    0, 1, 0, 0;
-    0, 0, R, S;
-    0, 0, V, R];
+% N = [1, 0, 0, 0;
+%     0, 1, 0, 0;
+%     0, 0, R, S;
+%     0, 0, V, R];
 
-f = [-y(3), -y(4), f1, f2]';
+f = [f1, f2]';
 
-H = [0, 0, -1, 1]';
+H = [-1, 1]';
 
 %% Torque controller
 controller_param = p.controller_param;
-[T, e] = torqueController(t, y, controller_param);
+[u, e] = torqueController(t, y, controller_param); % u is the PD output
 
-% Adding the gravity term to the torque controller
-T = T + m*g*l*sin(slope_angle + y(2));
+%solve for theta_ddot (which is q3_dot) and T
+A_solve= [R, 1;
+    V, -1];
+b_solve = [-S*u - f1; -R*u - f2];
+
+x_solve = A_solve\b_solve;
+
+T = x_solve(2);
 
 %% Derivative
-dydt = N\(H*T - f);
+dydt = zeros(5, 1); % Ensure it's a column vector
+dydt(1) = y(3);
+dydt(2) = y(4);
+dydt(3) = x_solve(1);
+dydt(4) = u;
+
 dydt(5) = e;
+
 end

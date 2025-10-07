@@ -144,6 +144,7 @@ hold off;
 
 % external calculations for torque
 for i = 1:1:length(t)
+    % This is no longer the torque
     [T(i), e(i)] = torqueController(t(i), state(:, i), controller_param);
 end
 

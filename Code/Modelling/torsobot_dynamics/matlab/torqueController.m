@@ -28,16 +28,18 @@ elseif e < -pi
 end
 
 % clamp e_sum between -control_max_integral and control_max_integral
-e_sum = min(control_max_integral, max(e_sum, -control_max_integral));
+% e_sum = min(control_max_integral, max(e_sum, -control_max_integral));
 
 % compute torque
 T = kp*e + ki*e_sum + kd*dedt;
-T = -T; % for positive e, we need a negative torque; the +torque on torso acts in clcwise direction
+% T = -T; % for positive e, we need a negative torque; the +torque on torso
+% acts in clcwise direction; commented out; negative outside of this
+% function
 
 % torque is output at the wheel
-T = T*gear_ratio;
+% T = T*gear_ratio;
 
 % clamp e_sum between -max_torque and max_torque
-T = min(max_torque, max(T, -max_torque));
+% T = min(max_torque, max(T, -max_torque));
 
 end

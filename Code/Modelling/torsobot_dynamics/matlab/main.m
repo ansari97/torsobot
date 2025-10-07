@@ -18,7 +18,7 @@ slope_angle = 0; % slope angle in degrees, positive slope is downwards from left
 
 %% Initial conditions
 theta_init = 0; % initial theta (wheel angle)
-phi_init = deg2rad(180 - slope_angle); % initial phi (torso angle from the reference axis)
+phi_init = deg2rad(0 - slope_angle); % initial phi (torso angle from the reference axis)
 theta_dot_init = 0.5; % initial theta rate
 phi_dot_init = 0; % initial phi rate
 
@@ -32,9 +32,10 @@ save_var = true;
 
 %% Controller parameters
 % for PID controller
-PID_controller.kp = 0.65;
+desired_settling_period = 0.1;
+PID_controller.kp = (4.7/(desired_settling_period*0.8))^2;
 PID_controller.ki = 0.00; % removed I = 0.05 term and added gravity compesnation for the torso angle
-PID_controller.kd = 0.08;
+PID_controller.kd = 2*1*(4.7/(desired_settling_period*0.8));
 PID_controller.control_max_integral = 4.0; % for the error sum (error integral term)
 
 % make generic controller
@@ -46,7 +47,7 @@ controller_param.max_torque = 5.0; % at the wheel
 controller_param.gear_ratio = 48/16*38/16;
 
 %% Solver setup
-time_interval = [0 5]; % time interval for the ODE solution
+time_interval = [0 3]; % time interval for the ODE solution
 solver_type = 'ode45';
 solver_max_step = 0.1; % max time step; 0.02 is reasonable
 frame_skip = 10; % number of frames to skip for animation;
