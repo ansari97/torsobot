@@ -26,15 +26,25 @@ R = m*l*L*cos(y(1) - y(2));
 S = l^2*m + It;
 V = Iw + L^2*(m + M);
 
-f1 = m*l*L*y(3)^2*sin(y(1) - y(2)) + m*g*l*sin(slope_angle + y(2));
-f2 = -m*l*L*y(4)^2*sin(y(1) - y(2)) + (m + M)*g*L*sin(slope_angle + y(1));
+% f1 = m*l*L*y(3)^2*sin(y(1) - y(2)) + m*g*l*sin(slope_angle + y(2));
+% f2 = -m*l*L*y(4)^2*sin(y(1) - y(2)) + (m + M)*g*L*sin(slope_angle + y(1));
+
+c1 = -m*l*L*y(3)^2*sin(y(1) - y(2));
+c2 = m*l*L*y(4)^2*sin(y(1) - y(2));
+
+g1 = -m*g*l*sin(slope_angle + y(2));
+g2 = -(m + M)*g*L*sin(slope_angle + y(1));
+
+f1 = c1 + g1;
+f2 = c2 + g2;
+
 
 N = [1, 0, 0, 0;
     0, 1, 0, 0;
     0, 0, R, S;
     0, 0, V, R];
 
-f = [y(3), y(4), f1, f2]';
+f = [-y(3), -y(4), f1, f2]';
 
 H = [0, 0, -1, 1]';
 
@@ -42,7 +52,10 @@ H = [0, 0, -1, 1]';
 controller_param = p.controller_param;
 [T, e] = torqueController(t, y, controller_param);
 
+% Adding the gravity term to the torque controller
+T = T + m*g*l*sin(slope_angle + y(2));
+
 %% Derivative
-dydt = N\(H*T + f);
+dydt = N\(H*T - f);
 dydt(5) = e;
 end

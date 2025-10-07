@@ -147,8 +147,11 @@ for i = 1:1:length(t)
     [T(i), e(i)] = torqueController(t(i), state(:, i), controller_param);
 end
 
-% torque
-subplot(5, 1, 5);
+% calculations for motor power at the wheel
+mot_pow = T.*state(3, :);
+figure;
+
+subplot(2, 1, 1);
 plot(t, T);
 hold on;
 yline(0);
@@ -159,10 +162,20 @@ xlabel('time (s)');
 ylabel('Torque (Nm)');
 hold off;
 
+subplot(2, 1, 2);
+plot(t, mot_pow);
+hold on;
+yline(0);
+
+xlim(time_interval);
+title('Motor power');
+xlabel('time (s)');
+ylabel('Motor Power (W)');
+hold off;
 
 % plot the phase plot with plot_type=2, plot_type 1 is under construction
 if phase_plot == true
-    phasePlot(sol, collision_angle, solver_max_step, 2);
+    phasePlot(sol, controller_param, collision_angle, solver_max_step, 2);
 end
 
 % plot the wheel trajectory
