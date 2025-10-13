@@ -1,4 +1,4 @@
-function [T, e] = torqueController(t, y, controller_param)
+function [T, e] = PDTorqueController(t, y, controller_param)
 %%% torqueController returns the T for each timestep based on state and
 %%% controller parameters
 
@@ -18,7 +18,7 @@ phi = wrapTo2Pi(y(2)); % changed from wrapToPi to wrapto2Pi
 % compute error, rate of change of error and error buildup
 e = phi_desired - phi;
 dedt = -y(4);
-e_sum = y(5);
+% e_sum = y(5);
 
 % wrap e around (-pi, pi]
 if e > pi
@@ -31,7 +31,7 @@ end
 % e_sum = min(control_max_integral, max(e_sum, -control_max_integral));
 
 % compute torque
-T = kp*e + ki*e_sum + kd*dedt;
+T = kp*e + kd*dedt; % + ki*e_sum 
 % T = -T; % for positive e, we need a negative torque; the +torque on torso
 % acts in clcwise direction; commented out; negative outside of this
 % function
