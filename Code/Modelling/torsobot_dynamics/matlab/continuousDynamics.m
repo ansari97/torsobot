@@ -50,9 +50,9 @@ f = [f1, f2]';
 
 H = [-1, 1]';
 
-%% Torque controller
+%% Torque controller using feedback linearization
 controller_param = p.controller_param;
-[u, e] = torqueController(t, y, controller_param); % u is the PD output
+[u, e] = PDTorqueController(t, y, controller_param); % u is the PD output
 
 %solve for theta_ddot (which is q3_dot) and T
 A_solve= [R, 1;
@@ -64,12 +64,12 @@ x_solve = A_solve\b_solve;
 T = x_solve(2);
 
 %% Derivative
-dydt = zeros(5, 1); % Ensure it's a column vector
+dydt = zeros(4, 1); % Ensure it's a column vector
 dydt(1) = y(3);
 dydt(2) = y(4);
 dydt(3) = x_solve(1);
 dydt(4) = u;
 
-dydt(5) = e;
+% dydt(5) = e;
 
 end

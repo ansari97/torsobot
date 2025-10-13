@@ -95,7 +95,7 @@ disp(strcat('Simulation time: ', num2str(max(t)), ' s'));
 % plot the robot state wrt time
 figure;
 % theta
-subplot(5, 1, 1);
+subplot(4, 1, 1);
 plot(t, state(1, :));
 hold on;
 yline([0 -collision_angle collision_angle]);
@@ -107,7 +107,7 @@ ylabel('wheel angle (rad)');
 hold off;
 
 % theta_dot
-subplot(5, 1, 2);
+subplot(4, 1, 2);
 plot(t, state(3, :));
 hold on;
 yline(0);
@@ -119,7 +119,7 @@ ylabel('theta_{dot} (rad/s)');
 hold off;
 
 % phi
-subplot(5, 1, 3);
+subplot(4, 1, 3);
 plot(t, state(2, :));
 hold on;
 yline(0);
@@ -131,7 +131,7 @@ ylabel('torso angle (rad)');
 hold off;
 
 % phi_dot
-subplot(5, 1, 4);
+subplot(4, 1, 4);
 plot(t, state(4, :));
 hold on;
 yline(0);
@@ -145,7 +145,7 @@ hold off;
 % external calculations for torque
 for i = 1:1:length(t)
     % This is no longer the torque
-    [T(i), e(i)] = torqueController(t(i), state(:, i), controller_param);
+    [T(i), e(i)] = PDTorqueController(t(i), state(:, i), controller_param);
 end
 
 % calculations for motor power at the wheel

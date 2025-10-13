@@ -3,20 +3,23 @@ function y = takeOneStep(init_con, p)
 % right after a collision, and returns the state right after the next
 % collision
 
-slope_angle = p{1};
-robot_param= p{2};
-collision_angle= p{3};
-solver_param = p{4};
+slope_angle = p.slope_angle;
+robot_param = p.robot_param;
+collision_angle= p.collision_angle;
+solver_param = p.solver_param;
 
-[stop_vel, time_interval, solver_type, solver_max_step] = solver_param{:};
+stop_vel = solver_param.stop_vel;
+time_interval = solver_param.time_interval;
+solver_type = solver_param.solver_type;
+solver_max_step = solver_param.solver_max_step;
+
+p.stop_vel = stop_vel;
 
 % continuous dynamics
 % return state just before collision
 E = odeEvent(EventFcn=@collisionEvent, ...
     Direction="ascending", ...
     Response="stop");
-
-p = {slope_angle, robot_param, collision_angle, stop_vel};
 
 % create ode object
 F = ode(ODEFcn = @continuousDynamics, InitialValue = init_con, EventDefinition = E, Solver= solver_type, Parameters=p);

@@ -13,14 +13,15 @@ close all; % close all open figures
 clear; % clear the workspace
 clc; % clear command window
 
-%% Change these variables
-slope_angle = 0; % slope angle in degrees, positive slope is downwards from left to right
+% get the parameter file
+parameters;
+% pause();
 
 %% Initial conditions
-theta_init = 0; % initial theta (wheel angle)
-phi_init = deg2rad(0 - slope_angle); % initial phi (torso angle from the reference axis)
-theta_dot_init = 0.5; % initial theta rate
-phi_dot_init = 0; % initial phi rate
+theta_init = -collision_angle; % initial theta (wheel angle)
+phi_init = 1.5708;%deg2rad(0 - slope_angle); % initial phi (torso angle from the reference axis)
+theta_dot_init = 2.2306; % initial theta rate
+phi_dot_init = 3.9589; % initial phi rate
 
 %% Plotting and saving options
 phase_plot = true;
@@ -30,59 +31,12 @@ save_movie = false;
 frames_per_sec = 5;
 save_var = true;
 
-%% Controller parameters
-% for PID controller
-desired_settling_period = 0.1;
-PID_controller.kp = (4.7/(desired_settling_period*0.8))^2;
-PID_controller.ki = 0.00; % removed I = 0.05 term and added gravity compesnation for the torso angle
-PID_controller.kd = 2*1*(4.7/(desired_settling_period*0.8));
-PID_controller.control_max_integral = 4.0; % for the error sum (error integral term)
-
-% make generic controller
-controller_param = PID_controller;
-
-controller_param.phi_desired = deg2rad(90);
-controller_param.theta_dot_desired = 2;
-controller_param.max_torque = 5.0; % at the wheel
-controller_param.gear_ratio = 48/16*38/16;
-
 %% Solver setup
-time_interval = [0 3]; % time interval for the ODE solution
+time_interval = [0 15]; % time interval for the ODE solution
 solver_type = 'ode45';
 solver_max_step = 0.1; % max time step; 0.02 is reasonable
 frame_skip = 10; % number of frames to skip for animation;
 % skipping too many frames creates a seemingly disconneted animation
-
-%% Do not change
-% robot_param = {L, M, Iw, n, l, m, It};
-
-% All in SI units, m, kg, s
-% wheel
-L = 412.5e-3;   % spoke length in m
-M = 2*1.3;  % mass in kg
-Iw = 136917590e-9;  % moment of inertia about com/center of the wheel in kgm^2
-n = 10; % number of spokes
-
-% torso
-l_t = 253.18e-3; % total length of torso from axis of revolution to top
-l = sqrt(83.6^2+6.12^2)/1000; % distance of torso coM to wheel center
-m = 1577.83e-3; % torso mass in kg
-It = 9324204e-9;%m*l^2; % torso moment of inertia about the y axis coincident with the coM of the torso
-
-% struct of robot parameters
-robot_param.L = L;
-robot_param.M = M;
-robot_param.Iw = Iw;
-robot_param.n = n;
-robot_param.l_t = l_t;
-robot_param.l = l;
-robot_param.m = m;
-robot_param.It = It;
-
-% collision angle
-collision_angle = pi/n;
-
-g = 9.81;   % gravitational acceleration in m/s^2
 
 % This block corrects the initial conditions
 % going up and collision angle incorrectly set to just before colliding
@@ -109,7 +63,7 @@ end
 
 e_sum = 0; % for PID controller
 
-init_con = [theta_init, phi_init, theta_dot_init, phi_dot_init, e_sum];
+init_con = [theta_init, phi_init, theta_dot_init, phi_dot_init]; %, e_sum];
 
 stop_vel = 0.02; % stop simulation if wheel angular velocity is less than this value
 
