@@ -121,7 +121,7 @@ const uint8_t MOT_VEL_CMD = 0X0E;  // mot_vel
 // hardware parameters
 const float gear_ratio = (38 / 16) * (48 / 16);
 const int num_spokes = 10;
-
+  
 // robot data variables
 int8_t mot_drv_mode;
 float torso_pitch, torso_pitch_rate;
