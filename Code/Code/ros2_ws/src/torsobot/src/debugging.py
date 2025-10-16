@@ -9,10 +9,16 @@ num_spokes = 10
 
 wheel_pos_init = -math.pi / num_spokes
 
+<<<<<<< HEAD
 # directory_path = "/home/pi/torsobot/Code/Code/ros2_ws/data_logs/"
 directory_path = "/home/aansari/torsobot/Code/Code/ros2_ws/data_logs/"
 date_time = "2025-08-15_16-31-59"
 csv_file_name = "torsobot_data_csv_" + date_time + ".csv"
+=======
+directory_path = "/home/pi/torsobot/Code/Code/ros2_ws/data_logs/"
+date_time = "2025-09-16_18-54-18"
+csv_file_name = "csv_" + date_time + ".csv"
+>>>>>>> 4b0afdb (more runs)
 save_file = "debugging_" + date_time + ".png"
 
 df = pd.read_csv(directory_path + csv_file_name)
@@ -23,15 +29,21 @@ torso_pitch_rate = df["torso_pitch_rate"].values
 mot_pos = df["mot_pos"].values
 mot_vel = df["mot_vel"].values
 
+<<<<<<< HEAD
 # >>> make modifications to data >>>
 # timestamp is in nanosecs
 timestamp = timestamp - timestamp[0]
 timestamp = timestamp / (1000 * 1000)  # millisecs
 # print(timestamp[0:5])
+=======
+mot_pos_init = 22.4194
+wheel_vel_wrt_torso = (mot_pos - mot_pos_init)/gear_ratio
+>>>>>>> 4b0afdb (more runs)
 
 #  Numerically differentiate data
 # 1. torso_pitch rate from torso_pitch
 
+<<<<<<< HEAD
 
 mot_pos_init = 353.156  # change for each run unless reading from MCU
 wheel_pos_wrt_torso = (mot_pos - mot_pos_init) / gear_ratio
@@ -39,6 +51,9 @@ wheel_pos_wrt_torso = (mot_pos - mot_pos_init) / gear_ratio
 # wheel_pos_wrt_torso = np.fmod(wheel_pos_wrt_torso, 2 * math.pi / num_spokes)
 
 torso_pitch_init = 3.12944  # change for each run
+=======
+torso_pitch_init = 3.11135
+>>>>>>> 4b0afdb (more runs)
 torso_pitch_check = torso_pitch - torso_pitch_init
 
 # initialize wheel_pos at initial standing position of the wheel at two spokes
@@ -122,6 +137,15 @@ axs[2].grid(which="both")
 axs[2].set_ylabel("wheel_vel_raw")
 axs[2].set_ylim([-2, 3.2])
 
+<<<<<<< HEAD
+=======
+# axs[3].plot(timestamp, wheel_vel_wrt_torso, label="wheel_vel_wrt_torso")
+# axs[3].plot(timestamp, torso_pitch_check, label="torso_pitch_check")
+axs[3].plot(timestamp, wheel_pos, label="wheel_pos")
+axs[3].legend()
+axs[3].axhline(np.pi/10, color="red")
+axs[3].axhline(-np.pi/10, color="red")
+>>>>>>> 4b0afdb (more runs)
 axs[3].minorticks_on()
 axs[3].plot(timestamp, wheel_vel_calc)
 axs[3].grid(which="both")
