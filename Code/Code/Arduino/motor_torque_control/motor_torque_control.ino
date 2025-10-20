@@ -165,6 +165,7 @@ char kp_data[float_len];
 char ki_data[float_len];
 char kd_data[float_len];
 char control_max_integral_data[float_len];
+char controller_data[sizeof(int)];
 
 char wheel_cmd_torque_data[float_len];
 
@@ -808,6 +809,16 @@ void i2cRecv(int len) {
       memcpy(&temp_val, control_max_integral_data, sizeof(float));
 
       max_integral = temp_val;
+    }
+  }
+  // else if it is the controller
+  else if (static_cast<uint8_t>(read_command) == CONTROLLER_CMD) {
+    if (len == 5) {
+      for (int i = 0; i < remaining_bytes; i++) { controller_data[i] = Wire.read(); }
+      int temp_val;
+      memcpy(&temp_val, controller_data, sizeof(int));
+
+      controller = temp_val;
     }
   }
   // ensures that if there are remaining bytes, they are read so that the buffer is emptied
