@@ -31,6 +31,8 @@ torsobot_interfaces__msg__TorsobotData__init(torsobot_interfaces__msg__TorsobotD
   // mot_drv_mode
   // mot_pos
   // mot_vel
+  // mot_pos_init
+  // torso_pitch_init
   return true;
 }
 
@@ -47,6 +49,8 @@ torsobot_interfaces__msg__TorsobotData__fini(torsobot_interfaces__msg__TorsobotD
   // mot_drv_mode
   // mot_pos
   // mot_vel
+  // mot_pos_init
+  // torso_pitch_init
 }
 
 bool
@@ -81,6 +85,14 @@ torsobot_interfaces__msg__TorsobotData__are_equal(const torsobot_interfaces__msg
   if (lhs->mot_vel != rhs->mot_vel) {
     return false;
   }
+  // mot_pos_init
+  if (lhs->mot_pos_init != rhs->mot_pos_init) {
+    return false;
+  }
+  // torso_pitch_init
+  if (lhs->torso_pitch_init != rhs->torso_pitch_init) {
+    return false;
+  }
   return true;
 }
 
@@ -108,6 +120,10 @@ torsobot_interfaces__msg__TorsobotData__copy(
   output->mot_pos = input->mot_pos;
   // mot_vel
   output->mot_vel = input->mot_vel;
+  // mot_pos_init
+  output->mot_pos_init = input->mot_pos_init;
+  // torso_pitch_init
+  output->torso_pitch_init = input->torso_pitch_init;
   return true;
 }
 

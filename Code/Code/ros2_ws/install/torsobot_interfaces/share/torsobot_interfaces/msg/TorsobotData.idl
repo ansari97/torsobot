@@ -18,6 +18,10 @@ module torsobot_interfaces {
       double mot_pos;
 
       double mot_vel;
+
+      double mot_pos_init;
+
+      double torso_pitch_init;
     };
   };
 };

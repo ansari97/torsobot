@@ -24,16 +24,48 @@ namespace msg
 namespace builder
 {
 
+class Init_TorsobotData_torso_pitch_init
+{
+public:
+  explicit Init_TorsobotData_torso_pitch_init(::torsobot_interfaces::msg::TorsobotData & msg)
+  : msg_(msg)
+  {}
+  ::torsobot_interfaces::msg::TorsobotData torso_pitch_init(::torsobot_interfaces::msg::TorsobotData::_torso_pitch_init_type arg)
+  {
+    msg_.torso_pitch_init = std::move(arg);
+    return std::move(msg_);
+  }
+
+private:
+  ::torsobot_interfaces::msg::TorsobotData msg_;
+};
+
+class Init_TorsobotData_mot_pos_init
+{
+public:
+  explicit Init_TorsobotData_mot_pos_init(::torsobot_interfaces::msg::TorsobotData & msg)
+  : msg_(msg)
+  {}
+  Init_TorsobotData_torso_pitch_init mot_pos_init(::torsobot_interfaces::msg::TorsobotData::_mot_pos_init_type arg)
+  {
+    msg_.mot_pos_init = std::move(arg);
+    return Init_TorsobotData_torso_pitch_init(msg_);
+  }
+
+private:
+  ::torsobot_interfaces::msg::TorsobotData msg_;
+};
+
 class Init_TorsobotData_mot_vel
 {
 public:
   explicit Init_TorsobotData_mot_vel(::torsobot_interfaces::msg::TorsobotData & msg)
   : msg_(msg)
   {}
-  ::torsobot_interfaces::msg::TorsobotData mot_vel(::torsobot_interfaces::msg::TorsobotData::_mot_vel_type arg)
+  Init_TorsobotData_mot_pos_init mot_vel(::torsobot_interfaces::msg::TorsobotData::_mot_vel_type arg)
   {
     msg_.mot_vel = std::move(arg);
-    return std::move(msg_);
+    return Init_TorsobotData_mot_pos_init(msg_);
   }
 
 private:

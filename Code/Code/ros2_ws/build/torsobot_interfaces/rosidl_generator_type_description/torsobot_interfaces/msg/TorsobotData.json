@@ -62,6 +62,26 @@
             "nested_type_name": ""
           },
           "default_value": ""
+        },
+        {
+          "name": "mot_pos_init",
+          "type": {
+            "type_id": 11,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        },
+        {
+          "name": "torso_pitch_init",
+          "type": {
+            "type_id": 11,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
         }
       ]
     },
@@ -116,7 +136,7 @@
   "type_hashes": [
     {
       "type_name": "torsobot_interfaces/msg/TorsobotData",
-      "hash_string": "RIHS01_73c661f69e22098ffb7c79015e104aa25ca3b1687b2afaf2468ab5f9b4b1fa68"
+      "hash_string": "RIHS01_b1e040926f15c8d54cd92e74dec3592ccfb629dd3de1a63bf1916b4d0570ab75"
     },
     {
       "type_name": "torsobot_interfaces/msg/TorsobotState",

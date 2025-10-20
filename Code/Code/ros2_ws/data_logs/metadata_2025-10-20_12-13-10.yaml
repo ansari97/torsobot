@@ -1,0 +1,15 @@
+/**:
+  ros__parameters:
+    desired_torso_pitch: 90.0
+    controller: 1
+    kp: 0.80
+    ki: 0.02
+    kd: 0.12
+    wheel_max_torque: 9.0
+    control_max_integral: 4.0
+    log_data: true
+    define_log_name: false
+    log_name: testing
+trial_values:
+  torso_pitch_init: 3.1425836086273193
+  mot_pos_init: -13.961142539978027

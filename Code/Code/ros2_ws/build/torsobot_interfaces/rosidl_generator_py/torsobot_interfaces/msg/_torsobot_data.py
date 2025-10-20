@@ -74,6 +74,8 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         '_mot_drv_mode',
         '_mot_pos',
         '_mot_vel',
+        '_mot_pos_init',
+        '_torso_pitch_init',
         '_check_fields',
     ]
 
@@ -84,6 +86,8 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         'mot_drv_mode': 'int8',
         'mot_pos': 'double',
         'mot_vel': 'double',
+        'mot_pos_init': 'double',
+        'torso_pitch_init': 'double',
     }
 
     # This attribute is used to store an rosidl_parser.definition variable
@@ -93,6 +97,8 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('int8'),  # noqa: E501
+        rosidl_parser.definition.BasicType('double'),  # noqa: E501
+        rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
         rosidl_parser.definition.BasicType('double'),  # noqa: E501
     )
@@ -113,6 +119,8 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         self.mot_drv_mode = kwargs.get('mot_drv_mode', int())
         self.mot_pos = kwargs.get('mot_pos', float())
         self.mot_vel = kwargs.get('mot_vel', float())
+        self.mot_pos_init = kwargs.get('mot_pos_init', float())
+        self.torso_pitch_init = kwargs.get('torso_pitch_init', float())
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -155,6 +163,10 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
         if self.mot_pos != other.mot_pos:
             return False
         if self.mot_vel != other.mot_vel:
+            return False
+        if self.mot_pos_init != other.mot_pos_init:
+            return False
+        if self.torso_pitch_init != other.torso_pitch_init:
             return False
         return True
 
@@ -251,3 +263,33 @@ class TorsobotData(metaclass=Metaclass_TorsobotData):
             assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
                 "The 'mot_vel' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
         self._mot_vel = value
+
+    @builtins.property
+    def mot_pos_init(self):
+        """Message field 'mot_pos_init'."""
+        return self._mot_pos_init
+
+    @mot_pos_init.setter
+    def mot_pos_init(self, value):
+        if self._check_fields:
+            assert \
+                isinstance(value, float), \
+                "The 'mot_pos_init' field must be of type 'float'"
+            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
+                "The 'mot_pos_init' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
+        self._mot_pos_init = value
+
+    @builtins.property
+    def torso_pitch_init(self):
+        """Message field 'torso_pitch_init'."""
+        return self._torso_pitch_init
+
+    @torso_pitch_init.setter
+    def torso_pitch_init(self, value):
+        if self._check_fields:
+            assert \
+                isinstance(value, float), \
+                "The 'torso_pitch_init' field must be of type 'float'"
+            assert not (value < -1.7976931348623157e+308 or value > 1.7976931348623157e+308) or math.isinf(value), \
+                "The 'torso_pitch_init' field must be a double in [-1.7976931348623157e+308, 1.7976931348623157e+308]"
+        self._torso_pitch_init = value

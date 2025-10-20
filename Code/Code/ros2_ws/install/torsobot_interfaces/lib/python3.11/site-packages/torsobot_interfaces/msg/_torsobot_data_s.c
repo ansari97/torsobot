@@ -108,6 +108,24 @@ bool torsobot_interfaces__msg__torsobot_data__convert_from_py(PyObject * _pymsg,
     ros_message->mot_vel = PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
+  {  // mot_pos_init
+    PyObject * field = PyObject_GetAttrString(_pymsg, "mot_pos_init");
+    if (!field) {
+      return false;
+    }
+    assert(PyFloat_Check(field));
+    ros_message->mot_pos_init = PyFloat_AS_DOUBLE(field);
+    Py_DECREF(field);
+  }
+  {  // torso_pitch_init
+    PyObject * field = PyObject_GetAttrString(_pymsg, "torso_pitch_init");
+    if (!field) {
+      return false;
+    }
+    assert(PyFloat_Check(field));
+    ros_message->torso_pitch_init = PyFloat_AS_DOUBLE(field);
+    Py_DECREF(field);
+  }
 
   return true;
 }
@@ -193,6 +211,28 @@ PyObject * torsobot_interfaces__msg__torsobot_data__convert_to_py(void * raw_ros
     field = PyFloat_FromDouble(ros_message->mot_vel);
     {
       int rc = PyObject_SetAttrString(_pymessage, "mot_vel", field);
+      Py_DECREF(field);
+      if (rc) {
+        return NULL;
+      }
+    }
+  }
+  {  // mot_pos_init
+    PyObject * field = NULL;
+    field = PyFloat_FromDouble(ros_message->mot_pos_init);
+    {
+      int rc = PyObject_SetAttrString(_pymessage, "mot_pos_init", field);
+      Py_DECREF(field);
+      if (rc) {
+        return NULL;
+      }
+    }
+  }
+  {  // torso_pitch_init
+    PyObject * field = NULL;
+    field = PyFloat_FromDouble(ros_message->torso_pitch_init);
+    {
+      int rc = PyObject_SetAttrString(_pymessage, "torso_pitch_init", field);
       Py_DECREF(field);
       if (rc) {
         return NULL;

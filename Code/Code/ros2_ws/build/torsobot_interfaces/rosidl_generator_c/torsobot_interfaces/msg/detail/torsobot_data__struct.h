@@ -32,6 +32,8 @@ typedef struct torsobot_interfaces__msg__TorsobotData
   int8_t mot_drv_mode;
   double mot_pos;
   double mot_vel;
+  double mot_pos_init;
+  double torso_pitch_init;
 } torsobot_interfaces__msg__TorsobotData;
 
 // Struct for a sequence of torsobot_interfaces__msg__TorsobotData.
