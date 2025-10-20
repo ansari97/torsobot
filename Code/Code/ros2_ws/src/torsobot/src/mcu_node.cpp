@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <functional>
 #include <gpiod.hpp> //for GPIO control
+#include <limits>    // for nan
 
 #include "rclcpp/rclcpp.hpp"
 #include "torsobot_interfaces/msg/torsobot_data.hpp"  //data from the torsobot including state variables
@@ -44,6 +45,9 @@ volatile float desired_torso_pitch;
 volatile float wheel_max_torque, mot_max_torque, control_max_integral;
 volatile float kp, ki, kd;
 
+float torso_pitch_init = std::numeric_limits<float>::quiet_NaN(), mot_pos_init = std::numeric_limits<float>::quiet_NaN();
+;
+
 // I2C write cmd for mcu data
 const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00; // desired torso_pitch
 const uint8_t TORSO_PITCH_CMD = 0x01;         // torso_pitch
@@ -58,11 +62,18 @@ const uint8_t KP_CMD = 0X08;                // Kp value
 const uint8_t KI_CMD = 0X09;                // Ki value
 const uint8_t KD_CMD = 0X0A;                // Kd value
 const uint8_t CTRL_MAX_INTEGRAL_CMD = 0X0B; // max integral term
+const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
 
 const uint8_t MOT_POS_CMD = 0X0D; // mot_pos
 const uint8_t MOT_VEL_CMD = 0X0E; // mot_vel
 
-const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C; // commanded motor torque
+// for the initial values
+const uint8_t MOT_POS_INIT_CMD = 0X0F;
+const uint8_t TORSO_PITCH_INIT_CMD = 0X10;
+
+// controller type
+const uint8_t CONTROLLER_CMD = 0X11;
+volatile int controller = 1; // default is 1, but this is overwritten from the param file
 
 // Heartbeat variables
 const uint8_t HEARTBEAT_ID = 0xAA;
@@ -71,7 +82,11 @@ uint8_t heartbeat_checksum = 0;
 
 int bytes_written;
 
+// counter for the nan values encountered udring I2C receive
 uint64_t nan_ctr = 0;
+
+// counter for the callback function
+uint64_t data_callback_ctr = 0;
 
 class MCUNode : public rclcpp::Node
 {
@@ -97,14 +112,16 @@ public:
     this->declare_parameter("kd", 0.0);                    // default value of 0
     this->declare_parameter("wheel_max_torque", 0.0);      // default value of 0
     this->declare_parameter("control_max_integral", 0.0);  // default value of 0
+    this->declare_parameter("controller", 1);              // default value of 1 (GCPD controller)
 
-    // get ROS2 parameters from the param file (listed in launch file) and assign to these variables
+    // get ROS2 parameters from the param file (listed in launch file) and assign to these variables (2nd argument)
     this->get_parameter("desired_torso_pitch", desired_torso_pitch);
     this->get_parameter("kp", kp);
     this->get_parameter("ki", ki);
     this->get_parameter("kd", kd);
     this->get_parameter("wheel_max_torque", wheel_max_torque);
     this->get_parameter("control_max_integral", control_max_integral);
+    this->get_parameter("controller", controller);
 
     RCLCPP_INFO(this->get_logger(), "Desired torso pitch is %f: ", desired_torso_pitch);
     RCLCPP_INFO(this->get_logger(), "kp %f: ", kp);
@@ -112,7 +129,9 @@ public:
     RCLCPP_INFO(this->get_logger(), "kd %f: ", kd);
     RCLCPP_INFO(this->get_logger(), "wheel_max_torque %f: ", wheel_max_torque);
     RCLCPP_INFO(this->get_logger(), "control_max_integral %f: ", control_max_integral);
+    RCLCPP_INFO(this->get_logger(), "controller %d: ", controller);
 
+    // for the i2c bus
     char filename[20];
     snprintf(filename, 19, "/dev/i2c-%d", I2C_BUS);
 
@@ -137,6 +156,7 @@ public:
 
     // write the desired values to pico
     sendDataToMCU(DESIRED_TORSO_PITCH_CMD, &desired_torso_pitch);
+    sendDataToMCU(CONTROLLER_CMD, &controller);
     sendDataToMCU(KP_CMD, &kp);
     sendDataToMCU(KI_CMD, &ki);
     sendDataToMCU(KD_CMD, &kd);
@@ -180,10 +200,27 @@ private:
     }
   }
 
+  // send desired values to the pico (int version)
+  void sendDataToMCU(uint8_t cmd, volatile int *sensor_val_addr)
+  {
+    char data_write_buff[sizeof(int) + 1]; // 4 bytes for the data and 1 for the cmd
+    data_write_buff[0] = cmd;
+    memcpy(&data_write_buff[1], const_cast<int *>(sensor_val_addr), sizeof(int));
+
+    int write_result = write(i2c_handle, &data_write_buff, sizeof(data_write_buff));
+
+    if (write_result != sizeof(data_write_buff))
+    {
+      RCLCPP_ERROR(this->get_logger(), "Error sending data to MCU for %d", cmd);
+      exitNode();
+    }
+  }
+
   // timer callback for getting data on i2c
   void i2cDataCallback(void)
   {
 
+    // print a warning for nan values
     if (nan_ctr >= 100)
     {
       RCLCPP_WARN(this->get_logger(), "100 nan values found!");
@@ -201,6 +238,14 @@ private:
 
     (void)getSensorValue(MOT_POS_CMD, &mot_pos);
     (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
+
+    // after about 2000ms
+    if (data_callback_ctr == 210)
+    {
+      // get this value only once
+      (void)getSensorValue(TORSO_PITCH_INIT_CMD, &torso_pitch_init);
+      (void)getSensorValue(MOT_POS_INIT_CMD, &mot_pos_init);
+    }
 
     if (mot_drv_mode == 0)
     {
@@ -236,6 +281,8 @@ private:
       data_message.wheel_cmd_torque = wheel_cmd_torque;
       data_message.mot_pos = mot_pos;
       data_message.mot_vel = mot_vel;
+      data_message.torso_pitch_init = torso_pitch_init;
+      data_message.mot_pos_init = mot_pos_init;
 
       this->data_publisher_->publish(data_message);
 
@@ -246,12 +293,17 @@ private:
       RCLCPP_INFO(this->get_logger(), "Wheel torque: '%f'", wheel_torque);
       RCLCPP_INFO(this->get_logger(), "Wheel cmd torque: '%f'", wheel_cmd_torque);
       RCLCPP_INFO(this->get_logger(), "Motor driver mode: '%d'", mot_drv_mode);
+      RCLCPP_INFO(this->get_logger(), "Torso init pitch: '%f'", torso_pitch_init);
+      RCLCPP_INFO(this->get_logger(), "Motor init pos: '%f'", mot_pos_init);
     }
     else
     {
       RCLCPP_ERROR(this->get_logger(), "Error reading sensor value");
     }
-  };
+
+    // increment data_callback_ctr
+    data_callback_ctr++;
+  }
 
   // Get sensor data over I2C
   int getSensorValue(uint8_t cmd, float *sensor_val_addr)
@@ -364,6 +416,7 @@ private:
   }
 };
 
+// Main
 int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
