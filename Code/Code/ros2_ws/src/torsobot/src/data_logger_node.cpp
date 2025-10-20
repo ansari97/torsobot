@@ -17,6 +17,7 @@
 #include <functional> // For std::bind and std::placeholders
 #include <filesystem> // for copying YAML files
 #include <cstdlib>    // For getenv
+#include <cmath>      // for isnan()
 // #include <rosbag2_cpp/writer.hpp>
 
 // for parsing metadata yaml file
@@ -27,10 +28,10 @@ using namespace std::chrono_literals;
 // Define the CSV header row based on your message fields
 const std::string CSV_HEADER = "timestamp,torso_pitch,torso_pitch_rate,wheel_pos,wheel_vel,wheel_torque,wheel_cmd_torque,mot_drv_mode,mot_pos,mot_vel";
 
-// parameters
-volatile float desired_torso_pitch;
-volatile float mot_max_torque, control_max_integral;
-volatile float kp, ki, kd;
+// // parameters
+// volatile float desired_torso_pitch;
+// volatile float mot_max_torque, control_max_integral;
+// volatile float kp, ki, kd;
 
 class DataLoggerNode : public rclcpp::Node
 {
@@ -55,16 +56,16 @@ public:
     std::string csv_full_path_str = directory_name_str + "/" + csv_filename_str;
 
     std::string metadata_filename_str = "metadata_" + timestamp_str + ".yaml";
-    std::string metadata_full_path_str = directory_name_str + "/" + metadata_filename_str;
+    metadata_full_path_str_ = directory_name_str + "/" + metadata_filename_str;
 
     std::string param_source_file = "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/config/params.yaml";
 
     // read metadata yaml file
     YAML::Node param_yaml_file = YAML::LoadFile(param_source_file);
-    bool log_data = (param_yaml_file["/**"]["ros__parameters"]["log_data"].as<bool>());
+    log_data_ = (param_yaml_file["/**"]["ros__parameters"]["log_data"].as<bool>());
     // if datalogging is not required, do not copy metadata file and do not make a csv and subscriber
 
-    if (log_data)
+    if (log_data_)
     {
       // check if directory exists
       std::filesystem::path dir_path(directory_name_str);
@@ -94,14 +95,14 @@ public:
       // copy metdata file
       try
       {
-        std::filesystem::copy(param_source_file, metadata_full_path_str, std::filesystem::copy_options::overwrite_existing);
-        RCLCPP_INFO(this->get_logger(), "Parameter file copied successfully from %s to %s", param_source_file.c_str(), metadata_full_path_str.c_str());
+        std::filesystem::copy(param_source_file, metadata_full_path_str_, std::filesystem::copy_options::overwrite_existing);
+        RCLCPP_INFO(this->get_logger(), "Parameter file copied successfully from %s to %s", param_source_file.c_str(), metadata_full_path_str_.c_str());
 
-        // read the log_data parameter from the xml file
+        // read the log_data_ parameter from the xml file
       }
       catch (const std::filesystem::filesystem_error &e)
       {
-        RCLCPP_ERROR(this->get_logger(), "Parameter file copy from %s to %s failed!", param_source_file.c_str(), metadata_full_path_str.c_str());
+        RCLCPP_ERROR(this->get_logger(), "Parameter file copy from %s to %s failed!", param_source_file.c_str(), metadata_full_path_str_.c_str());
       }
 
       // create empty csv file
@@ -140,6 +141,10 @@ private:
   rclcpp::Subscription<torsobot_interfaces::msg::TorsobotData>::SharedPtr subscriber_;
   // rclcpp::TimerBase::SharedPtr timer_;
   std::ofstream output_file_;
+  std::string metadata_full_path_str_;
+  YAML::Node metadata_yaml_file_;
+  bool copied_init_values_ = false;
+  bool log_data_;
 
   void dataCallback(const torsobot_interfaces::msg::TorsobotData::SharedPtr msg)
   {
@@ -156,6 +161,22 @@ private:
     else
     {
       RCLCPP_WARN(this->get_logger(), "File is not open, cannot write data.");
+    }
+
+    if (log_data_ && !copied_init_values_)
+    {
+      if (!(std::isnan(msg->torso_pitch_init) || std::isnan(msg->mot_pos_init)))
+      {
+        // Copy init position values for the torso and the motor into the new xml file.
+        metadata_yaml_file_ = YAML::LoadFile(metadata_full_path_str_);
+        metadata_yaml_file_["trial_values"]["torso_pitch_init"] = msg->torso_pitch_init;
+        metadata_yaml_file_["trial_values"]["mot_pos_init"] = msg->mot_pos_init;
+
+        std::ofstream fout(metadata_full_path_str_);
+        fout << metadata_yaml_file_;
+
+        copied_init_values_ = true;
+      }
     }
   }
 };
