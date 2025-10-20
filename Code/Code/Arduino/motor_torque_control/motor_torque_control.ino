@@ -118,9 +118,20 @@ const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
 const uint8_t MOT_POS_CMD = 0X0D;  // mot_pos
 const uint8_t MOT_VEL_CMD = 0X0E;  // mot_vel
 
+const uint8_t MOT_POS_INIT_CMD = 0X0F;
+const uint8_t TORSO_PITCH_INIT_CMD = 0X10;
+
+const uint8_t CONTROLLER_CMD = 0X11;  // cmd to control which controller to run
+
 // hardware parameters
-const float gear_ratio = (38 / 16) * (48 / 16);
+const float gear_ratio = (38.0 / 16.0) * (48.0 / 16.0);
 const int num_spokes = 10;
+const float torso_mass = 1577.83e-3;  //mass in kg from Solidworks
+const float torso_com_length = sqrt(pow(83.6, 2) + pow(6.12, 2)) / 1000;
+
+// gravity
+const int g = 9.81;                   // gravity m/s-2
+float gravity_compensation_term = 0;  // for gravity compensation of the controller
 
 // robot data variables
 int8_t mot_drv_mode;
@@ -146,6 +157,8 @@ char wheel_torque_data[float_len];
 char mot_drv_mode_data[sizeof(int8_t)];
 char mot_vel_data[float_len];
 char mot_pos_data[float_len];
+char mot_pos_init_data[float_len];
+char torso_pitch_init_data[float_len];
 
 char mot_max_torque_data[float_len];
 char kp_data[float_len];
@@ -155,7 +168,7 @@ char control_max_integral_data[float_len];
 
 char wheel_cmd_torque_data[float_len];
 
-// char torso_pos_init_data[float_len];
+// char torso_pitch_init_data[float_len];
 // char wheel_cmd_torque_data[float_len];
 
 // char write_buff[float_len + 10];
@@ -163,18 +176,20 @@ char wheel_cmd_torque_data[float_len];
 
 volatile char read_command;
 
-float imu_angle_adjustment = 0.0477;  // // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
+float imu_angle_adjustment = 0.0477;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
 
 // Control parameters
 const float control_freq = 250;             // control torque write freq
 const int SENSORS_UPDATE_PERIOD_LOOPS = 2;  // get motor values every x loop
 
 // ------------Received from PI---------------
+volatile int controller = 1;  // 0 for PD/PID, 1 for PD + gravity compensation; 1 by default; not implmented on PI yet
+
 volatile float desired_torso_pitch = PI;  // default desired torso angle in radians; changed from PI
 
-volatile float kp = 0.5;  // N.m per rad
-volatile float ki = 0.0;  // N.m per (rad.s)
-volatile float kd = 0.0;  // N.m per (rad/s)
+volatile float kp = 0.65;  // N.m per rad
+volatile float ki = 0.0;   // N.m per (rad.s)
+volatile float kd = 0.08;  // N.m per (rad/s)
 
 // max motor torque
 volatile float mot_max_torque = 0.5, wheel_max_torque;
@@ -185,7 +200,7 @@ volatile float max_integral = 100;  // rad.s
 
 float control_error = 0, control_error_integral = 0;
 
-float mot_cmd_torque, wheel_cmd_torque;  // torque command to the motor
+float mot_cmd_torque = 0, wheel_cmd_torque = 0;  // torque command to the motor
 
 uint64_t time_now = 0, time_last, time_since_last = 0;
 
@@ -395,7 +410,7 @@ void loop() {
 
   // checks then increments
   if (loop_count++ == 0) {
-    start_time = millis();  // stores start time of the loop function
+    start_time = millis();  // stores start time of the main loop function
     Serial.print("loop start time:  ");
     Serial.println(start_time);
   }
@@ -421,23 +436,48 @@ void loop() {
     emergencyStop();  // call the stop routine
   }
 
+  // Print values for debugging
   Serial.println("<<<---<<<");
-  Serial.println(desired_torso_pitch);
-  Serial.println(torso_pitch);
-  Serial.println(torso_pitch_rate);
+  Serial.print(desired_torso_pitch);
+  Serial.print("\t");
+  Serial.print(torso_pitch);
+  Serial.print("\t");
+  Serial.print(torso_pitch_rate);
+  Serial.print("\t");
   // Serial.println(isnan(torso_pitch));
-  Serial.println(mot_pos);
-  Serial.println(mot_vel);
-
+  Serial.print(mot_pos);
+  Serial.print("\t");
+  Serial.print(mot_vel);
+  Serial.print("\t");
+  Serial.print(torso_mass);
+  Serial.print("\t");
+  Serial.print(g);
+  Serial.print("\t");
+  Serial.print(torso_com_length);
+  Serial.print("\t");
+  Serial.print(sin(torso_pitch));
+  Serial.print("\t");
+  Serial.print(gravity_compensation_term);
+  Serial.print("\t");
   Serial.println(mot_cmd_torque);
+  Serial.print("\t");
 
-  // Serial.println(kp);
-  // Serial.println(ki);
-  // Serial.println(kd);
-  // Serial.println(mot_max_torque);
-  // Serial.println(max_integral);
-  // Serial.println(control_error);
-  // Serial.println("---");
+  // These values are received over I2C
+  Serial.print(kp);
+  Serial.print("\t");
+  Serial.print(ki);
+  Serial.print("\t");
+  Serial.print(kd);
+  Serial.print("\t");
+  Serial.print(wheel_max_torque);
+  Serial.print("\t");
+  Serial.print(mot_max_torque);
+  Serial.print("\t");
+  Serial.print(max_integral);
+  Serial.print("\t");
+  Serial.print(control_error);
+  Serial.print("\t");
+  Serial.println("---");
 
   if (bno08x.wasReset()) {
     Serial.print("Sensor was reset during loop!");
@@ -504,9 +544,14 @@ void loop() {
     mot_pos = revsToRad(moteus.last_result().values.position);  //radians
     mot_vel = revsToRad(moteus.last_result().values.velocity);  // radians/s
 
-    // keep reading these values; the last value stored when ctr gets updated is the one that we want
+    // keep reading these values; the last value stored before control gets updated is the one that we want
     torso_pitch_init = torso_pitch;
     mot_pos_init = mot_pos;
+
+    // copy into buffer
+    memcpy(mot_pos_init_data, &mot_pos_init, sizeof(float));
+    memcpy(torso_pitch_init_data, &torso_pitch_init, sizeof(float));
+
     // Serial.print("mot_pos_init:\t");
     // Serial.print(mot_pos_init);
     // Serial.print("\t");
@@ -527,6 +572,7 @@ void loop() {
 
   // Fault mot_drv_mode
   // 10 is the position mode
+  // 11 is position timeout error
   if (static_cast<int>(moteus.last_result().values.mode) == 11) {
     Serial.println("motor driver fault");
     moteus.SetStop();
@@ -541,7 +587,8 @@ void loop() {
   time_now = millis();                     // get current time
   time_since_last = time_now - time_last;  //time since last loop
 
-  // Calculate torque required
+  // ***Calculate torque required***
+  // Calculate error
   control_error = desired_torso_pitch - torso_pitch;  // radians
 
   // wrap error so that it is always between -PI to PI radians
@@ -559,9 +606,17 @@ void loop() {
   // time derivative of control error = -torso_pitch_rate ; because desired_pitch_rate is constant
 
   mot_cmd_torque = kp * control_error + ki * control_error_integral + kd * (-torso_pitch_rate);
-  mot_cmd_torque = -mot_cmd_torque;  //- sign corrects for siogn difference between +torque on torso vs +torso rotation
 
-  mot_cmd_torque = min(mot_max_torque, max(-mot_max_torque, mot_cmd_torque));  // second safety net; max torque has already been defined for the board but this line ensures no value greater than max is written
+  // term for integral torque
+  // mot_cmd_torque += ki * control_error_integral;
+  if (controller == 1) {  // term for gravity compensation
+    gravity_compensation_term = torso_mass * g * torso_com_length * sin(torso_pitch);
+    mot_cmd_torque -= gravity_compensation_term / gear_ratio;  // add a gravity compensation term (adjusted for gear ratio) at the motor
+  }
+
+  mot_cmd_torque = min(mot_max_torque, max(-mot_max_torque, mot_cmd_torque));  // second safety net; max torque has already been defined for the motor board but this line ensures no value greater than max is written
+
+  mot_cmd_torque = -mot_cmd_torque;  //- sign corrects for sign difference between +torque on torso vs +torso rotation; +torso rotation is anticlockwise when viwed from motor driver end
 
   // write to cmd
   position_cmd.maximum_torque = mot_max_torque;
@@ -812,6 +867,12 @@ void i2cReq() {
       break;
     case MOT_VEL_CMD:
       Wire.write(mot_vel_data, sizeof(mot_vel_data));
+      break;
+    case MOT_POS_INIT_CMD:
+      Wire.write(mot_pos_init_data, sizeof(mot_pos_init_data));
+      break;
+    case TORSO_PITCH_INIT_CMD:
+      Wire.write(torso_pitch_init_data, sizeof(torso_pitch_init_data));
       break;
   }
 }
