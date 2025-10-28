@@ -88,13 +88,18 @@ uint64_t nan_ctr = 0;
 // counter for the callback function
 uint64_t data_callback_ctr = 0;
 
+// int check received from the pico if the robot has went into exit state
+volatile uint8_t has_robot_stopped;
+
 class MCUNode : public rclcpp::Node
 {
 public:
   MCUNode() : Node("mcu_node")
   {
     // call the reset mcu function to reset the mcu
+    RCLCPP_INFO(this->get_logger(), "Resetting the MCU...");
     this->resetMCU();
+    RCLCPP_INFO(this->get_logger(), "Reset the MCU!");
 
     // Create publisher for "torsobot_state" topic
     state_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotState>("torsobot_state", 10);
@@ -381,6 +386,23 @@ private:
       RCLCPP_ERROR(this->get_logger(), "I2C heartbeat write failed! ");
       exitNode();
       // return 1; // Indicate error
+    }
+
+    // Request sensor data from slave
+    if (read(i2c_handle, (void *)&has_robot_stopped, sizeof(uint8_t)) == sizeof(uint8_t))
+    {
+      if (has_robot_stopped == 0xFF)
+      {
+        // robot has gone into while loop
+        RCLCPP_ERROR(this->get_logger(), "Robot has entered the exit while loop!");
+        exitNode();
+      }
+    }
+    else
+    {
+      RCLCPP_ERROR(this->get_logger(), "heartbeat I2C read failed! %s (%d)", strerror(errno), errno);
+      // exitNode();
+      // return -2; // Indicate error
     }
 
     RCLCPP_INFO(this->get_logger(), "Sent hbeat: ID=0x%x, ctr=%d, csum=0x%x",
