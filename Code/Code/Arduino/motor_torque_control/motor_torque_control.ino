@@ -126,17 +126,15 @@ const uint8_t CONTROLLER_CMD = 0X11;  // cmd to control which controller to run
 // hardware parameters
 const float gear_ratio = (38.0 / 16.0) * (48.0 / 16.0);
 const int num_spokes = 10;
-<<<<<<< HEAD
-  
-=======
+
 const float torso_mass = 1577.83e-3;  //mass in kg from Solidworks
 const float torso_com_length = sqrt(pow(83.6, 2) + pow(6.12, 2)) / 1000;
 
 // gravity
 const int g = 9.81;                   // gravity m/s-2
 float gravity_compensation_term = 0;  // for gravity compensation of the controller
+float gravity_constant = 0;           // mass * length * g
 
->>>>>>> implement-gravity-compensation
 // robot data variables
 int8_t mot_drv_mode;
 float torso_pitch, torso_pitch_rate;
@@ -216,6 +214,9 @@ uint16_t control_loop_ctr = 0;
 uint64_t start_time = 0, wait_time = 2 * 1000;  //milliseconds
 uint64_t loop_count = 0;
 
+// for the reed switch
+volatile uint8_t has_robot_stopped = 0x00;  // 0x00 is false, 0xFF is true
+
 // IMU struct for euler angles
 euler_t ypr;
 
@@ -271,8 +272,17 @@ void setup() {
 
   Serial.begin(115200);
   delay(100);
+  // digitalWrite(STOP_LED, LOW);
 
   Serial.println("Starting torsobot ...");
+
+  while (!digitalRead(REED_SWITCH)) {
+    digitalWrite(STOP_LED, HIGH);
+    Serial.println("Reed switch not okay");
+    delay(10);
+  }
+  Serial.println("Reed switch okay");
+  digitalWrite(STOP_LED, LOW);
 
   // I2C lines
   Wire.setSDA(I2C_SDA);
@@ -281,9 +291,12 @@ void setup() {
   Wire.begin(PICO_SLAVE_ADDRESS);
   Wire.setClock(I2C_BAUDRATE);
 
+  // Serial.println("I am here");
+
   // set interrup functions for I2C
   Wire.onReceive(i2cRecv);
   Wire.onRequest(i2cReq);
+  // Serial.println("Now here");
 
   // Set SPI pins
   SPI.setSCK(BNO08X_SCK);
@@ -295,17 +308,21 @@ void setup() {
   SPI1.setMOSI(MCP2517_MOSI);
   SPI1.setMISO(MCP2517_MISO);
   SPI1.setCS(MCP2517_CS);
+  // Serial.println("Now here");
 
   SPI1.begin();
+  // Serial.println("Now here");
 
   // bno spi communication
   if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
+    // digitalWrite(STOP_LED, HIGH);
     Serial.println(F("Failed to find BNO08x chip"));
     while (1) {
       delay(10);
     }
   }
   Serial.println("BNO08x Found!");
+  // digitalWrite(STOP_LED, LOW);
 
   bno08x.hardwareReset();
   delay(100);
@@ -313,6 +330,7 @@ void setup() {
   Serial.println(bno08x.wasReset());
 
   setReports(reportIntervalUs);
+  digitalWrite(STOP_LED, HIGH);
 
   // This operates the CAN-FD bus at 1Mbit for both the arbitration
   // and data rate.  Most arduino shields cannot operate at 5Mbps
@@ -383,10 +401,7 @@ void setup() {
   memcpy(mot_pos_data, &nan_float, sizeof(float));
   memcpy(mot_vel_data, &nan_float, sizeof(float));
 
-  // while (!digitalRead(REED_SWITCH)) {
-  //   digitalWrite(STOP_LED, HIGH);
-  // }
-  // Serial.println("Reed switch okay");
+  // Serial.println("Now here");
 
   Serial.println("Waiting for heartbeat from the PI...");
 
@@ -394,9 +409,11 @@ void setup() {
   while (!was_heartbeat_rcvd) {
     digitalWrite(STOP_LED, HIGH);
   }  // Serial.println(was_heartbeat_rcvd); }
+  // digitalWrite(STOP_LED, HIGH);
 
   digitalWrite(LED_BUILTIN, LOW);
   digitalWrite(OK_LED, LOW);
+  digitalWrite(STOP_LED, LOW);
 
   // save the last counter value
   heartbeat_last_ctr = heartbeat_ctr;
@@ -407,6 +424,10 @@ void setup() {
   // delay(100);
   digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(OK_LED, HIGH);
+
+  // Evaluate the gravity constant
+  // gravity_constant = torso_mass * g * torso_com_length;
+  gravity_constant = 2.10;  // evaluated using three trial runs
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -420,10 +441,10 @@ void loop() {
     Serial.println(start_time);
   }
 
-  // if (!digitalRead(REED_SWITCH)) {
-  //   Serial.println("Reed switch not detected!");
-  //   emergencyStop();
-  // }
+  if (!digitalRead(REED_SWITCH)) {
+    Serial.println("Reed switch not detected!");
+    emergencyStop();
+  }
 
   // is_heartbeat_valid = checkHeartbeatValidity();
   millis_since_last_heartbeat = millis() - heartbeat_timer;  // heartbeat_timer is updated by the i2cRecv function if heartbeat is valid
@@ -615,7 +636,7 @@ void loop() {
   // term for integral torque
   // mot_cmd_torque += ki * control_error_integral;
   if (controller == 1) {  // term for gravity compensation
-    gravity_compensation_term = torso_mass * g * torso_com_length * sin(torso_pitch);
+    gravity_compensation_term = gravity_constant * sin(torso_pitch);
     mot_cmd_torque -= gravity_compensation_term / gear_ratio;  // add a gravity compensation term (adjusted for gear ratio) at the motor
   }
 
@@ -837,6 +858,8 @@ void i2cRecv(int len) {
 void i2cReq() {
   i2c_read_ctr++;
   switch (read_command) {
+    case HEARTBEAT_ID:
+      Wire.write(has_robot_stopped);
     case DESIRED_TORSO_PITCH_CMD:
       // do nothing; since we're now writing this value to the pico
       // Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
@@ -1063,6 +1086,7 @@ int signof(float num) {
 
 // called when program has to stop
 void emergencyStop(void) {
+  has_robot_stopped = 0xFF;  // true
   Serial.println("Stopping program! :(");
   Serial.println(is_heartbeat_valid);
   Serial.println(millis_since_last_heartbeat);
