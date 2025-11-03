@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/aansari/torsobot/Code/Code/ros2_ws/src/torsobot",
+    "cmake.sourceDirectory": "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot",
     "python.autoComplete.extraPaths": [
         "/opt/ros/jazzy/lib/python3.12/site-packages",
         "/home/pi/torsobot/Code/Code/ros2_ws/install/torsobot_interfaces/lib/python3.11/site-packages",
