@@ -51,12 +51,12 @@ control_max_integral = metadata["/**"]["ros__parameters"]["control_max_integral"
 kp = metadata["/**"]["ros__parameters"]["kp"]
 ki = metadata["/**"]["ros__parameters"]["ki"]
 kd = metadata["/**"]["ros__parameters"]["kd"]
+controller = metadata["/**"]["ros__parameters"]["controller"]
 
 
 # plot text
-plot_text = "desired_torso_pitch:" + str(desired_torso_pitch) + "\nkp: " + str(kp) + ", ki: " + str(ki) + ", kd: " + \
-    str(kd) + "\wheel_max_torque: " + str(wheel_max_torque) + \
-    "\ncontrol_max_integral: " + str(control_max_integral)
+plot_text = "desired_torso_pitch:" + str(desired_torso_pitch) + "\ncontroller: " + "str(controller)" + "\nkp: " + str(kp) + ", ki: " + str(ki) + ", kd: " + \
+    str(kd) +"\ncontrol_max_integral: " + str(control_max_integral) + "\wheel_max_torque: " + str(wheel_max_torque) 
 
 # read csv
 df = pd.read_csv(csv_file_path)
