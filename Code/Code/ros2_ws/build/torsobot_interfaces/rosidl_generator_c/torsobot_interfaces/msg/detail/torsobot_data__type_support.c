@@ -4,10 +4,10 @@
 
 #include <string.h>
 
-#include "torsobot_interfaces/msg/detail/torsobot_data__functions.h"
-#include "torsobot_interfaces/msg/detail/torsobot_data__type_support.h"
 #include "rosidl_typesupport_interface/macros.h"
+#include "torsobot_interfaces/msg/detail/torsobot_data__functions.h"
 #include "torsobot_interfaces/msg/detail/torsobot_data__struct.h"
+#include "torsobot_interfaces/msg/detail/torsobot_data__type_support.h"
 
 #ifdef __cplusplus
 extern "C"

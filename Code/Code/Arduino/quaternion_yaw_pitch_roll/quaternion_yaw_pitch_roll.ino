@@ -40,7 +40,8 @@ sh2_SensorId_t reportType = SH2_GYRO_INTEGRATED_RV;
 long reportIntervalUs = 2000;
 #else
 // Top frequency is about 250Hz but this report is more accurate
-sh2_SensorId_t reportType = SH2_ARVR_STABILIZED_RV;
+// sh2_SensorId_t reportType = SH2_ARVR_STABILIZED_RV;
+sh2_SensorId_t reportType = SH2_ROTATION_VECTOR;
 long reportIntervalUs = 5000;
 #endif
 void setReports(sh2_SensorId_t reportType, long report_interval) {
@@ -78,6 +79,13 @@ void setup(void) {
   delay(100);
 }
 
+// wrap angle from 0 to 360
+float wrapTo360(float angle) {
+
+  if (angle < 0) { angle += 360; }
+  return angle;
+}
+
 void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false) {
 
   float sqr = sq(qr);
@@ -104,6 +112,40 @@ void quaternionToEulerGI(sh2_GyroIntegratedRV_t* rotational_vector, euler_t* ypr
   quaternionToEuler(rotational_vector->real, rotational_vector->i, rotational_vector->j, rotational_vector->k, ypr, degrees);
 }
 
+float imu_pitch;
+float imu_pitch_calibration_constant;  // = (-176.57 + 180);  // degrees
+
+// gets the angle between imu's x-axis and the global horizontal plane
+void quaternionToPitch(sh2_RotationVectorWAcc_t* rotational_vector, float* pitch, bool degrees = false) {
+  float qw = rotational_vector->real;
+  float qx = rotational_vector->i;
+  float qy = rotational_vector->j;
+  float qz = rotational_vector->k;
+
+  float sqx = sq(qx);
+  float sqy = sq(qy);
+  float sqz = sq(qz);
+
+  float xy = qx * qy;
+  float xz = qx * qz;
+  float zw = qz * qw;
+  float yw = qy * qw;
+
+  // Rotation matrix terms
+  float R11 = 1 - 2 * sqy - 2 * sqz;
+  float R21 = 2 * (xy + zw);
+  float R31 = 2 * (xz - yw);
+  float R33 = 1 - 2 * sqx - 2 * sqy;
+
+  // apparently the IMU treats global Z as up
+  *pitch = atan2(-R31, signof(R33) * sqrt(sq(R11) + sq(R21)));
+
+  if (degrees) {
+    *pitch *= RAD_TO_DEG;
+  }
+}
+
+
 void loop() {
 
   if (bno08x.wasReset()) {
@@ -114,13 +156,26 @@ void loop() {
   if (bno08x.getSensorEvent(&sensorValue)) {
     // in this demo only one report type will be received depending on FAST_MODE define (above)
     switch (sensorValue.sensorId) {
-      case SH2_ARVR_STABILIZED_RV:
-        quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
+      // case SH2_ARVR_STABILIZED_RV:
+      //   quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
+      case SH2_ROTATION_VECTOR:
+        // quaternionToEulerRV(&sensorValue.un.rotationVector, &ypr, true);
+        // quaternionToPitch(&sensorValue.un.rotationVector, &imu_pitch, true);
+        // rotation vector uses the magnetomoeter and causes x/y values to jump due to corrections - arvrstabilizedrv does not use magnetometer
+        quaternionToPitch(&sensorValue.un.arvrStabilizedRV, &imu_pitch, true);
+        // imu_pitch -= imu_pitch_calibration_constant;
+        imu_pitch = wrapTo360(imu_pitch);
+
+        // to get the correction constant, allow torso to dnagle at the lower vertical and let the readings stabilize
+        imu_pitch_calibration_constant = imu_pitch - 180;
+        // quaternionToEulerRV(&sensorValue.un.arvrStabilizedRV, &ypr, true);
       case SH2_GYRO_INTEGRATED_RV:
         // faster (more noise?)
         quaternionToEulerGI(&sensorValue.un.gyroIntegratedRV, &ypr, true);
         break;
     }
+
+
     static long last = 0;
     long now = micros();
 
@@ -132,14 +187,24 @@ void loop() {
     last = now;
     Serial.print(sensorValue.status);
     Serial.print("\t");  // This is accuracy in the range of 0 to 3
-    Serial.print(ypr.yaw);
+    // Serial.print(ypr.yaw);
+    // Serial.print("\t");
+    // Serial.print(ypr.pitch);
+    // Serial.print("\t");
+    Serial.print(imu_pitch, 4);
     Serial.print("\t");
-    Serial.print(ypr.pitch);
+    Serial.println(imu_pitch_calibration_constant, 4);
     Serial.print("\t");
-    Serial.print(ypr.roll);
+    Serial.println(imu_pitch_calibration_constant / RAD_TO_DEG, 4);
+    // Serial.print(ypr.roll);
     // Serial.print("\t");
     // Serial.println(sensorValue.un.tiltDetector.tilt);
     Serial.println();
     loop_no++;
   }
+}
+
+// sign function
+int signof(float num) {
+  return (num > 0) - (num < 0);
 }

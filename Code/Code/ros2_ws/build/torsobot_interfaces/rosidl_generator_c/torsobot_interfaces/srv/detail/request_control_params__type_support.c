@@ -5,8 +5,8 @@
 #include <string.h>
 
 #include "torsobot_interfaces/srv/detail/request_control_params__functions.h"
-#include "rosidl_typesupport_interface/macros.h"
 #include "torsobot_interfaces/srv/detail/request_control_params__type_support.h"
+#include "rosidl_typesupport_interface/macros.h"
 #include "torsobot_interfaces/srv/detail/request_control_params__struct.h"
 
 #ifdef __cplusplus

@@ -1,3 +1,6 @@
 browse.vc.db
 browse.vc.db-shm
 browse.vc.db-wal
+**/build/
+**/install/
+**/log/

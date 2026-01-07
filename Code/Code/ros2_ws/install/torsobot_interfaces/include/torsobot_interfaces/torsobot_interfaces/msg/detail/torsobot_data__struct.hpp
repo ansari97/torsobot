@@ -49,6 +49,10 @@ struct TorsobotData_
       this->wheel_torque = 0.0;
       this->wheel_cmd_torque = 0.0;
       this->mot_drv_mode = 0;
+      this->mot_pos = 0.0;
+      this->mot_vel = 0.0;
+      this->mot_pos_init = 0.0;
+      this->torso_pitch_init = 0.0;
     }
   }
 
@@ -61,6 +65,10 @@ struct TorsobotData_
       this->wheel_torque = 0.0;
       this->wheel_cmd_torque = 0.0;
       this->mot_drv_mode = 0;
+      this->mot_pos = 0.0;
+      this->mot_vel = 0.0;
+      this->mot_pos_init = 0.0;
+      this->torso_pitch_init = 0.0;
     }
   }
 
@@ -77,6 +85,18 @@ struct TorsobotData_
   using _mot_drv_mode_type =
     int8_t;
   _mot_drv_mode_type mot_drv_mode;
+  using _mot_pos_type =
+    double;
+  _mot_pos_type mot_pos;
+  using _mot_vel_type =
+    double;
+  _mot_vel_type mot_vel;
+  using _mot_pos_init_type =
+    double;
+  _mot_pos_init_type mot_pos_init;
+  using _torso_pitch_init_type =
+    double;
+  _torso_pitch_init_type torso_pitch_init;
 
   // setters for named parameter idiom
   Type & set__torsobot_state(
@@ -101,6 +121,30 @@ struct TorsobotData_
     const int8_t & _arg)
   {
     this->mot_drv_mode = _arg;
+    return *this;
+  }
+  Type & set__mot_pos(
+    const double & _arg)
+  {
+    this->mot_pos = _arg;
+    return *this;
+  }
+  Type & set__mot_vel(
+    const double & _arg)
+  {
+    this->mot_vel = _arg;
+    return *this;
+  }
+  Type & set__mot_pos_init(
+    const double & _arg)
+  {
+    this->mot_pos_init = _arg;
+    return *this;
+  }
+  Type & set__torso_pitch_init(
+    const double & _arg)
+  {
+    this->torso_pitch_init = _arg;
     return *this;
   }
 
@@ -156,6 +200,18 @@ struct TorsobotData_
       return false;
     }
     if (this->mot_drv_mode != other.mot_drv_mode) {
+      return false;
+    }
+    if (this->mot_pos != other.mot_pos) {
+      return false;
+    }
+    if (this->mot_vel != other.mot_vel) {
+      return false;
+    }
+    if (this->mot_pos_init != other.mot_pos_init) {
+      return false;
+    }
+    if (this->torso_pitch_init != other.torso_pitch_init) {
       return false;
     }
     return true;

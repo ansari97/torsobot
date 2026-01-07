@@ -14,6 +14,14 @@ module torsobot_interfaces {
       double wheel_cmd_torque;
 
       int8 mot_drv_mode;
+
+      double mot_pos;
+
+      double mot_vel;
+
+      double mot_pos_init;
+
+      double torso_pitch_init;
     };
   };
 };

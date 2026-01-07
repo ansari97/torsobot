@@ -38,7 +38,7 @@ void setup() {
 
   // Let the world know we have begun!
   Serial.begin(115200);
-  while (!Serial) {}
+  // while (!Serial) {}
   Serial.println("started");
 
   SPI1.setCS(MCP2517_CS);

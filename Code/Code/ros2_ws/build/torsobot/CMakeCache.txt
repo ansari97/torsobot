@@ -514,6 +514,9 @@ type_description_interfaces_DIR:PATH=/home/pi/ros2_jazzy/install/type_descriptio
 //Path to a program.
 xmllint_BIN:FILEPATH=/usr/bin/xmllint
 
+//The directory containing a CMake configuration file for yaml-cpp.
+yaml-cpp_DIR:PATH=/home/pi/ros2_jazzy/install/yaml_cpp_vendor/opt/yaml_cpp_vendor/lib/cmake/yaml-cpp
+
 
 ########################
 # INTERNAL cache entries
@@ -710,7 +713,7 @@ _OPENSSL_STATIC_LIBS:INTERNAL=
 _OPENSSL_STATIC_LIBS_L:INTERNAL=
 _OPENSSL_STATIC_LIBS_OTHER:INTERNAL=
 _OPENSSL_STATIC_LIBS_PATHS:INTERNAL=
-_OPENSSL_VERSION:INTERNAL=3.0.16
+_OPENSSL_VERSION:INTERNAL=3.0.17
 _OPENSSL_openssl_INCLUDEDIR:INTERNAL=
 _OPENSSL_openssl_LIBDIR:INTERNAL=
 _OPENSSL_openssl_PREFIX:INTERNAL=

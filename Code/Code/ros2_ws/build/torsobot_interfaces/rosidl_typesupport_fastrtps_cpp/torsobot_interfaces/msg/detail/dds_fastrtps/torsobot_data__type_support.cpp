@@ -85,6 +85,18 @@ cdr_serialize(
   // Member: mot_drv_mode
   cdr << ros_message.mot_drv_mode;
 
+  // Member: mot_pos
+  cdr << ros_message.mot_pos;
+
+  // Member: mot_vel
+  cdr << ros_message.mot_vel;
+
+  // Member: mot_pos_init
+  cdr << ros_message.mot_pos_init;
+
+  // Member: torso_pitch_init
+  cdr << ros_message.torso_pitch_init;
+
   return true;
 }
 
@@ -106,6 +118,18 @@ cdr_deserialize(
 
   // Member: mot_drv_mode
   cdr >> ros_message.mot_drv_mode;
+
+  // Member: mot_pos
+  cdr >> ros_message.mot_pos;
+
+  // Member: mot_vel
+  cdr >> ros_message.mot_vel;
+
+  // Member: mot_pos_init
+  cdr >> ros_message.mot_pos_init;
+
+  // Member: torso_pitch_init
+  cdr >> ros_message.torso_pitch_init;
 
   return true;
 }
@@ -146,6 +170,34 @@ get_serialized_size(
   // Member: mot_drv_mode
   {
     size_t item_size = sizeof(ros_message.mot_drv_mode);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Member: mot_pos
+  {
+    size_t item_size = sizeof(ros_message.mot_pos);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Member: mot_vel
+  {
+    size_t item_size = sizeof(ros_message.mot_vel);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Member: mot_pos_init
+  {
+    size_t item_size = sizeof(ros_message.mot_pos_init);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Member: torso_pitch_init
+  {
+    size_t item_size = sizeof(ros_message.torso_pitch_init);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -209,6 +261,34 @@ max_serialized_size_TorsobotData(
     last_member_size = array_size * sizeof(uint8_t);
     current_alignment += array_size * sizeof(uint8_t);
   }
+  // Member: mot_pos
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+  // Member: mot_vel
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+  // Member: mot_pos_init
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+  // Member: torso_pitch_init
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
 
   size_t ret_val = current_alignment - initial_alignment;
   if (is_plain) {
@@ -218,7 +298,7 @@ max_serialized_size_TorsobotData(
     using DataType = torsobot_interfaces::msg::TorsobotData;
     is_plain =
       (
-      offsetof(DataType, mot_drv_mode) +
+      offsetof(DataType, torso_pitch_init) +
       last_member_size
       ) == ret_val;
   }
@@ -245,6 +325,18 @@ cdr_serialize_key(
 
   // Member: mot_drv_mode
   cdr << ros_message.mot_drv_mode;
+
+  // Member: mot_pos
+  cdr << ros_message.mot_pos;
+
+  // Member: mot_vel
+  cdr << ros_message.mot_vel;
+
+  // Member: mot_pos_init
+  cdr << ros_message.mot_pos_init;
+
+  // Member: torso_pitch_init
+  cdr << ros_message.torso_pitch_init;
 
   return true;
 }
@@ -284,6 +376,34 @@ get_serialized_size_key(
   // Member: mot_drv_mode
   {
     size_t item_size = sizeof(ros_message.mot_drv_mode);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Member: mot_pos
+  {
+    size_t item_size = sizeof(ros_message.mot_pos);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Member: mot_vel
+  {
+    size_t item_size = sizeof(ros_message.mot_vel);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Member: mot_pos_init
+  {
+    size_t item_size = sizeof(ros_message.mot_pos_init);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
+
+  // Member: torso_pitch_init
+  {
+    size_t item_size = sizeof(ros_message.torso_pitch_init);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -350,6 +470,38 @@ max_serialized_size_key_TorsobotData(
     current_alignment += array_size * sizeof(uint8_t);
   }
 
+  // Member: mot_pos
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
+  // Member: mot_vel
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
+  // Member: mot_pos_init
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
+  // Member: torso_pitch_init
+  {
+    size_t array_size = 1;
+    last_member_size = array_size * sizeof(uint64_t);
+    current_alignment += array_size * sizeof(uint64_t) +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
+  }
+
   size_t ret_val = current_alignment - initial_alignment;
   if (is_plain) {
     // All members are plain, and type is not empty.
@@ -358,7 +510,7 @@ max_serialized_size_key_TorsobotData(
     using DataType = torsobot_interfaces::msg::TorsobotData;
     is_plain =
       (
-      offsetof(DataType, mot_drv_mode) +
+      offsetof(DataType, torso_pitch_init) +
       last_member_size
       ) == ret_val;
   }
