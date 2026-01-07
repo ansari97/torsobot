@@ -17,22 +17,25 @@
 //  The following pins are selected for the CANBed FD board.
 //——————————————————————————————————————————————————————————————————————————————
 
-static const byte MCP2517_SCK = 2;  // SCK input of MCP2517
-static const byte MCP2517_SDI = 3;  // SDI input of MCP2517
-static const byte MCP2517_SDO = 4;  // SDO output of MCP2517
-
-static const byte MCP2517_CS = 5;   // CS input of MCP2517
-static const byte MCP2517_INT = 7;  // INT output of MCP2517
+#define MCP2517_SCK 10
+#define MCP2517_MOSI 11
+#define MCP2517_MISO 12
+#define MCP2517_CS 13  // CS input of MCP2517
+#define MCP2517_INT 9  // INT output of MCP2517
 
 static uint32_t gNextSendMillis = 0;
+
+float pos;
+const float gear_ratio = (38.0 / 16.0) * (48.0 / 16.0);
+float init_pos;
 
 //——————————————————————————————————————————————————————————————————————————————
 //  ACAN2517FD Driver object
 //——————————————————————————————————————————————————————————————————————————————
 
-ACAN2517FD can(MCP2517_CS, SPI, MCP2517_INT);
+ACAN2517FD can(MCP2517_CS, SPI1, MCP2517_INT);
 
-Moteus moteus1(can, []() {
+Moteus moteus(can, []() {
   Moteus::Options options;
   options.id = 1;
   return options;
@@ -44,6 +47,9 @@ Moteus moteus1(can, []() {
 // }());
 
 Moteus::PositionMode::Command position_cmd;
+Moteus::PositionMode::Format position_fmt;
+Moteus::CurrentMode::Command current_cmd;
+Moteus::CurrentMode::Format current_fmt;
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
@@ -52,12 +58,12 @@ void setup() {
   Serial.begin(115200);
   while (!Serial) {}
   Serial.println(F("started"));
-  SPI.setCS(MCP2517_CS);
-  SPI.setSCK(MCP2517_SCK);
-  SPI.setTX(MCP2517_SDI);
-  SPI.setRX(MCP2517_SDO);
+  SPI1.setCS(MCP2517_CS);
+  SPI1.setSCK(MCP2517_SCK);
+  SPI1.setTX(MCP2517_MOSI);
+  SPI1.setRX(MCP2517_MISO);
 
-  SPI.begin();
+  SPI1.begin();
 
   // This operates the CAN-FD bus at 1Mbit for both the arbitration
   // and data rate.  Most arduino shields cannot operate at 5Mbps
@@ -77,7 +83,9 @@ void setup() {
   //   can.isr();
   // });
 
-  const uint32_t errorCode = can.begin(settings, []{can.isr();});
+  const uint32_t errorCode = can.begin(settings, [] {
+    can.isr();
+  });
 
   if (errorCode != 0) {
     Serial.print(F("CAN error 0x"));
@@ -87,9 +95,26 @@ void setup() {
 
   // To clear any faults the controllers may have, we start by sending
   // a stop command to each.
-  moteus1.SetStop();
+  moteus.SetStop();
   // moteus2.SetStop();
   Serial.println(F("all stopped"));
+
+  position_fmt.kp_scale = Moteus::kFloat;
+  position_fmt.kd_scale = Moteus::kFloat;
+  position_fmt.feedforward_torque = Moteus::kFloat;
+  // position_fmt.velocity = Moteus::kIgnore;
+
+  position_cmd.position = NaN;
+  position_cmd.velocity = 0.0f;  // Not required as resolution is set to ignore
+  position_cmd.kp_scale = 0.0f;
+  position_cmd.kd_scale = 0.0f;
+
+  position_cmd.maximum_torque = 0.01;
+  position_cmd.feedforward_torque = 0;
+
+  // **Write to the motor
+  moteus.SetPosition(position_cmd, &position_fmt);
+  init_pos = moteus.last_result().values.position;
 }
 
 uint16_t gLoopCount = 0;
@@ -102,11 +127,12 @@ void loop() {
   gNextSendMillis += 20;
   gLoopCount++;
 
-  Moteus::PositionMode::Command cmd;
-  cmd.position = NaN;
-  cmd.velocity = 0.2 * ::sin(time / 1000.0);
+  position_cmd.maximum_torque = 0.01;
+  position_cmd.feedforward_torque = 0;
 
-  moteus1.SetPosition(cmd);
+  // **Write to the motor
+  moteus.SetPosition(position_cmd, &position_fmt);
+  // moteus1.SetPosition(cmd);
   // moteus2.SetBrake();
 
   if (gLoopCount % 5 != 0) { return; }
@@ -116,19 +142,25 @@ void loop() {
   Serial.print(F("time "));
   Serial.print(gNextSendMillis);
 
-  auto print_moteus = [](const Moteus::Query::Result& query) {
-    Serial.print(F("  mode: "));
-    Serial.print(static_cast<int>(query.mode));
-    Serial.print(F("  position: "));
-    Serial.print(query.position);
-    Serial.print(F("  velocity "));
-    Serial.print(query.velocity);
-    Serial.print(F("  temperature "));
-    Serial.print(query.temperature);
-  };
+  pos = moteus.last_result().values.position;
 
-  print_moteus(moteus1.last_result().values);
-  // Serial.print(F(" / "));
-  // print_moteus(moteus2.last_result().values);
+  Serial.print("\tGear Ratio:");
+  Serial.print(gear_ratio);
+
+  Serial.print("\tMotor Position: ");
+  Serial.print(revsToRad(pos - init_pos));
+
+  Serial.print("\tWheel Position: ");
+  Serial.print(revsToRad((pos - init_pos) / gear_ratio));
+
   Serial.println();
+}
+
+float radToDeg(float rad) {
+  return rad * 180 / PI;
+}
+
+// change from revolutions to radians
+float revsToRad(float revs) {
+  return revs * 2 * PI;
 }
