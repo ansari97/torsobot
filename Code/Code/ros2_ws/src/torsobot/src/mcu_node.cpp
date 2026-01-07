@@ -228,7 +228,7 @@ private:
     // print a warning for nan values
     if (nan_ctr >= 100)
     {
-      RCLCPP_WARN(this->get_logger(), "100 nan values found!");
+      // RCLCPP_WARN(this->get_logger(), "100 nan values found!");
       // exitNode();
     }
 
@@ -291,15 +291,17 @@ private:
 
       this->data_publisher_->publish(data_message);
 
-      RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", torso_pitch);
-      RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", torso_pitch_rate);
-      RCLCPP_INFO(this->get_logger(), "Wheel position: '%f'", wheel_pos);
-      RCLCPP_INFO(this->get_logger(), "Wheel velocity: '%f'", wheel_vel);
-      RCLCPP_INFO(this->get_logger(), "Wheel torque: '%f'", wheel_torque);
-      RCLCPP_INFO(this->get_logger(), "Wheel cmd torque: '%f'", wheel_cmd_torque);
-      RCLCPP_INFO(this->get_logger(), "Motor driver mode: '%d'", mot_drv_mode);
-      RCLCPP_INFO(this->get_logger(), "Torso init pitch: '%f'", torso_pitch_init);
-      RCLCPP_INFO(this->get_logger(), "Motor init pos: '%f'", mot_pos_init);
+      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %d", torso_pitch, torso_pitch_rate, mot_pos, mot_vel, mot_drv_mode);
+
+      // RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", torso_pitch);
+      // RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", torso_pitch_rate);
+      // RCLCPP_INFO(this->get_logger(), "Wheel position: '%f'", wheel_pos);
+      // RCLCPP_INFO(this->get_logger(), "Wheel velocity: '%f'", wheel_vel);
+      // RCLCPP_INFO(this->get_logger(), "Wheel torque: '%f'", wheel_torque);
+      // RCLCPP_INFO(this->get_logger(), "Wheel cmd torque: '%f'", wheel_cmd_torque);
+      // RCLCPP_INFO(this->get_logger(), "Motor driver mode: '%d'", mot_drv_mode);
+      // RCLCPP_INFO(this->get_logger(), "Torso init pitch: '%f'", torso_pitch_init);
+      // RCLCPP_INFO(this->get_logger(), "Motor init pos: '%f'", mot_pos_init);
     }
     else
     {
