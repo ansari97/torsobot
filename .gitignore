@@ -21,3 +21,6 @@ Old/*
 
 # VS code folder
 .vscode/*
+
+# All pdfs
+*.pdf
