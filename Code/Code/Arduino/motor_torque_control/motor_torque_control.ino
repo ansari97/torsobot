@@ -182,7 +182,7 @@ volatile char read_command;
 float imu_angle_adjustment = 0.0477;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
 
 // Control parameters
-const float control_freq = 250;             // control torque write freq
+const float control_freq = 100;             // control torque write freq
 const int SENSORS_UPDATE_PERIOD_LOOPS = 2;  // get motor values every x loop
 
 // ------------Received from PI---------------
@@ -464,46 +464,48 @@ void loop() {
 
   // Print values for debugging
   Serial.println("<<<---<<<");
-  Serial.print(desired_torso_pitch);
+  Serial.print(desired_torso_pitch, 4);
   Serial.print("\t");
-  Serial.print(torso_pitch);
+  Serial.print(torso_pitch, 4);
   Serial.print("\t");
-  Serial.print(torso_pitch_rate);
+  Serial.print(torso_pitch_rate, 4);
   Serial.print("\t");
   // Serial.println(isnan(torso_pitch));
-  Serial.print(mot_pos);
+  Serial.print(mot_pos, 4);
   Serial.print("\t");
-  Serial.print(mot_vel);
+  Serial.print(mot_pos / gear_ratio, 4);
   Serial.print("\t");
-  Serial.print(torso_mass);
+  Serial.print(mot_vel, 4);
   Serial.print("\t");
-  Serial.print(g);
+  Serial.print(torso_mass, 4);
   Serial.print("\t");
-  Serial.print(torso_com_length);
+  Serial.print(g, 4);
   Serial.print("\t");
-  Serial.print(sin(torso_pitch));
+  Serial.print(torso_com_length, 4);
   Serial.print("\t");
-  Serial.print(gravity_compensation_term);
+  Serial.print(sin(torso_pitch), 4);
   Serial.print("\t");
-  Serial.println(mot_cmd_torque);
+  Serial.print(gravity_compensation_term, 4);
   Serial.print("\t");
+  Serial.println(mot_cmd_torque, 4);
+  // Serial.print("\t");
 
-  // These values are received over I2C
-  Serial.print(kp);
-  Serial.print("\t");
-  Serial.print(ki);
-  Serial.print("\t");
-  Serial.print(kd);
-  Serial.print("\t");
-  Serial.print(wheel_max_torque);
-  Serial.print("\t");
-  Serial.print(mot_max_torque);
-  Serial.print("\t");
-  Serial.print(max_integral);
-  Serial.print("\t");
-  Serial.print(control_error);
-  Serial.print("\t");
-  Serial.println("---");
+  // // These values are received over I2C
+  // Serial.print(kp);
+  // Serial.print("\t");
+  // Serial.print(ki);
+  // Serial.print("\t");
+  // Serial.print(kd);
+  // Serial.print("\t");
+  // Serial.print(wheel_max_torque);
+  // Serial.print("\t");
+  // Serial.print(mot_max_torque);
+  // Serial.print("\t");
+  // Serial.print(max_integral);
+  // Serial.print("\t");
+  // Serial.print(control_error);
+  // Serial.print("\t");
+  // Serial.println("---");
 
   if (bno08x.wasReset()) {
     Serial.print("Sensor was reset during loop!");
@@ -647,6 +649,7 @@ void loop() {
   // write to cmd
   position_cmd.maximum_torque = mot_max_torque;
   position_cmd.feedforward_torque = mot_cmd_torque;
+  // position_cmd.feedforward_torque = 0;  //testing
 
   // **Write to the motor
   // Serial.println(millis());
@@ -690,7 +693,7 @@ void loop() {
   wheel_pos = (mot_pos - mot_pos_init) / gear_ratio;
 
   // wrap around [0, 2*PI) because mot_pos output is continuous
-  wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
+  // wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
 
   // when looked from the driver's side, motor aclc is positive, torso acls is positive
   wheel_pos += (torso_pitch - torso_pitch_init);
@@ -698,13 +701,14 @@ void loop() {
   // When the robot starts, it's wheel angle is -collision angle
   wheel_pos += wheel_pos_init;
 
-  // wrap around (-PI/n, PI/n]
+  // wrap around [-PI/n, PI/n)
   wheel_pos = fmod(wheel_pos, 2 * PI / num_spokes);
 
-  if (wheel_pos <= -PI / num_spokes) {
+  if (wheel_pos < -PI / num_spokes) {
     wheel_pos += 2 * PI / num_spokes;
-  } else if (wheel_pos > PI / num_spokes) {
+  } else if (wheel_pos >= PI / num_spokes) {
     wheel_pos -= 2 * PI / num_spokes;
+  } else {  //do nothing
   }
 
   // get other wheel values
