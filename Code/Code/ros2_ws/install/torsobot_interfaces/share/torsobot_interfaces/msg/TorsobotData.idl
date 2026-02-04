@@ -15,12 +15,10 @@ module torsobot_interfaces {
 
       int8 mot_drv_mode;
 
-      double mot_pos;
-
-      double mot_vel;
-
-      double mot_pos_init;
-
+      @verbatim (language="comment", text=
+        "float64 mot_pos" "\n"
+        "float64 mot_vel" "\n"
+        "float64 mot_pos_init")
       double torso_pitch_init;
     };
   };

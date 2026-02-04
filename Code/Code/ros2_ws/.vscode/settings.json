@@ -611,5 +611,6 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "variant": "cpp"
-    }
+    },
+    "ROS2.distro": "jazzy"
 }

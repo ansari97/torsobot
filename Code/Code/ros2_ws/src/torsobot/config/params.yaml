@@ -8,6 +8,6 @@
     kd: 0.08
     wheel_max_torque: 9.0 # at the wheel;
     control_max_integral: 5.0
-    log_data: true # true for logging data and false for not
+    log_data: false # true for logging data and false for not
     define_log_name: false
     log_name: "testing"

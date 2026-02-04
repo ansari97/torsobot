@@ -45,7 +45,7 @@ volatile float desired_torso_pitch;
 volatile float wheel_max_torque, mot_max_torque, control_max_integral;
 volatile float kp, ki, kd;
 
-float torso_pitch_init = std::numeric_limits<float>::quiet_NaN(), mot_pos_init = std::numeric_limits<float>::quiet_NaN();
+float torso_pitch_init = std::numeric_limits<float>::quiet_NaN(); //, mot_pos_init = std::numeric_limits<float>::quiet_NaN();
 ;
 
 // I2C write cmd for mcu data
@@ -241,15 +241,15 @@ private:
     int get_sensor_val_motor_drv_mode = getSensorValue(MOTOR_DRV_MODE_CMD, &mot_drv_mode);
     int get_sensor_val_wheel_cmd_torque = getSensorValue(WHEEL_CMD_TORQUE_CMD, &wheel_cmd_torque);
 
-    (void)getSensorValue(MOT_POS_CMD, &mot_pos);
-    (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
+    // (void)getSensorValue(MOT_POS_CMD, &mot_pos);
+    // (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
 
     // after about 2000ms
     if (data_callback_ctr == 210)
     {
       // get this value only once
       (void)getSensorValue(TORSO_PITCH_INIT_CMD, &torso_pitch_init);
-      (void)getSensorValue(MOT_POS_INIT_CMD, &mot_pos_init);
+      // (void)getSensorValue(MOT_POS_INIT_CMD, &mot_pos_init);
     }
 
     if (mot_drv_mode == 0)
@@ -284,14 +284,14 @@ private:
       data_message.wheel_torque = wheel_torque;
       data_message.mot_drv_mode = mot_drv_mode;
       data_message.wheel_cmd_torque = wheel_cmd_torque;
-      data_message.mot_pos = mot_pos;
-      data_message.mot_vel = mot_vel;
+      // data_message.mot_pos = mot_pos;
+      // data_message.mot_vel = mot_vel;
       data_message.torso_pitch_init = torso_pitch_init;
-      data_message.mot_pos_init = mot_pos_init;
+      // data_message.mot_pos_init = mot_pos_init;
 
       this->data_publisher_->publish(data_message);
 
-      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %d", torso_pitch, torso_pitch_rate, mot_pos, mot_vel, mot_drv_mode);
+      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %d", torso_pitch, torso_pitch_rate, wheel_pos, wheel_vel, mot_drv_mode);
 
       // RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", torso_pitch);
       // RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", torso_pitch_rate);

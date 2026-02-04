@@ -85,15 +85,6 @@ cdr_serialize(
   // Member: mot_drv_mode
   cdr << ros_message.mot_drv_mode;
 
-  // Member: mot_pos
-  cdr << ros_message.mot_pos;
-
-  // Member: mot_vel
-  cdr << ros_message.mot_vel;
-
-  // Member: mot_pos_init
-  cdr << ros_message.mot_pos_init;
-
   // Member: torso_pitch_init
   cdr << ros_message.torso_pitch_init;
 
@@ -118,15 +109,6 @@ cdr_deserialize(
 
   // Member: mot_drv_mode
   cdr >> ros_message.mot_drv_mode;
-
-  // Member: mot_pos
-  cdr >> ros_message.mot_pos;
-
-  // Member: mot_vel
-  cdr >> ros_message.mot_vel;
-
-  // Member: mot_pos_init
-  cdr >> ros_message.mot_pos_init;
 
   // Member: torso_pitch_init
   cdr >> ros_message.torso_pitch_init;
@@ -170,27 +152,6 @@ get_serialized_size(
   // Member: mot_drv_mode
   {
     size_t item_size = sizeof(ros_message.mot_drv_mode);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-
-  // Member: mot_pos
-  {
-    size_t item_size = sizeof(ros_message.mot_pos);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-
-  // Member: mot_vel
-  {
-    size_t item_size = sizeof(ros_message.mot_vel);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-
-  // Member: mot_pos_init
-  {
-    size_t item_size = sizeof(ros_message.mot_pos_init);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -261,27 +222,6 @@ max_serialized_size_TorsobotData(
     last_member_size = array_size * sizeof(uint8_t);
     current_alignment += array_size * sizeof(uint8_t);
   }
-  // Member: mot_pos
-  {
-    size_t array_size = 1;
-    last_member_size = array_size * sizeof(uint64_t);
-    current_alignment += array_size * sizeof(uint64_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
-  }
-  // Member: mot_vel
-  {
-    size_t array_size = 1;
-    last_member_size = array_size * sizeof(uint64_t);
-    current_alignment += array_size * sizeof(uint64_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
-  }
-  // Member: mot_pos_init
-  {
-    size_t array_size = 1;
-    last_member_size = array_size * sizeof(uint64_t);
-    current_alignment += array_size * sizeof(uint64_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
-  }
   // Member: torso_pitch_init
   {
     size_t array_size = 1;
@@ -326,15 +266,6 @@ cdr_serialize_key(
   // Member: mot_drv_mode
   cdr << ros_message.mot_drv_mode;
 
-  // Member: mot_pos
-  cdr << ros_message.mot_pos;
-
-  // Member: mot_vel
-  cdr << ros_message.mot_vel;
-
-  // Member: mot_pos_init
-  cdr << ros_message.mot_pos_init;
-
   // Member: torso_pitch_init
   cdr << ros_message.torso_pitch_init;
 
@@ -376,27 +307,6 @@ get_serialized_size_key(
   // Member: mot_drv_mode
   {
     size_t item_size = sizeof(ros_message.mot_drv_mode);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-
-  // Member: mot_pos
-  {
-    size_t item_size = sizeof(ros_message.mot_pos);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-
-  // Member: mot_vel
-  {
-    size_t item_size = sizeof(ros_message.mot_vel);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-
-  // Member: mot_pos_init
-  {
-    size_t item_size = sizeof(ros_message.mot_pos_init);
     current_alignment += item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
@@ -468,30 +378,6 @@ max_serialized_size_key_TorsobotData(
     size_t array_size = 1;
     last_member_size = array_size * sizeof(uint8_t);
     current_alignment += array_size * sizeof(uint8_t);
-  }
-
-  // Member: mot_pos
-  {
-    size_t array_size = 1;
-    last_member_size = array_size * sizeof(uint64_t);
-    current_alignment += array_size * sizeof(uint64_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
-  }
-
-  // Member: mot_vel
-  {
-    size_t array_size = 1;
-    last_member_size = array_size * sizeof(uint64_t);
-    current_alignment += array_size * sizeof(uint64_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
-  }
-
-  // Member: mot_pos_init
-  {
-    size_t array_size = 1;
-    last_member_size = array_size * sizeof(uint64_t);
-    current_alignment += array_size * sizeof(uint64_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint64_t));
   }
 
   // Member: torso_pitch_init
