@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "PicoEncoder.h"
 #include <Wire.h>
 #include <cstdlib>
 #include <SPI.h>
@@ -26,21 +27,26 @@
 #define BNO08X_INT 6
 #define BNO08X_RESET 7
 
+#define MCP2517_INT 9  // INT output of MCP2517
 #define MCP2517_SCK 10
 #define MCP2517_MOSI 11
 #define MCP2517_MISO 12
 #define MCP2517_CS 13  // CS input of MCP2517
-#define MCP2517_INT 9  // INT output of MCP2517
 
 // Defining fast mot_drv_mode runs the IMU at a higher frequency but causes values to drift
 // #define BNO08X_FAST_MODE
 
-// Reed switch
-#define REED_SWITCH 20
+// driveshaft encoder
+// must be consecutive pins on the rp2040
+#define encoder_pinA 15
+#define encoder_pinB 16
 
 // State LED
 #define OK_LED 18
 #define STOP_LED 19
+
+// Reed switch
+#define REED_SWITCH 20
 
 // ——————————————————————————————————————————————————————————————————————————————
 //  Variables definition
@@ -131,7 +137,7 @@ const float torso_mass = 1577.83e-3;  //mass in kg from Solidworks
 const float torso_com_length = sqrt(pow(83.6, 2) + pow(6.12, 2)) / 1000;
 
 // gravity
-const int g = 9.81;                   // gravity m/s-2
+const float g = 9.81;                 // gravity m/s-2
 float gravity_compensation_term = 0;  // for gravity compensation of the controller
 float gravity_constant = 0;           // mass * length * g
 
@@ -142,6 +148,14 @@ float mot_vel, mot_pos, mot_torque;        // at the motor
 float wheel_pos, wheel_vel, wheel_torque;  // at the wheel
 float mot_pos_init, torso_pitch_init;
 float wheel_pos_init = -PI / num_spokes;  //assuming wheel going in positive direction
+
+// Encoder variables
+const int ENCODER_PPR = 2048;               // puses per rev
+const int ENCODER_CPR = ENCODER_PPR * 4;    // counts per rev
+const int ENCODER_uSPR = ENCODER_CPR * 64;  //usteps per rev
+int32_t signed_encoder_val;
+float wheel_rel_pos, wheel_rel_pos_init;  // relative angle
+float wheel_rel_vel;
 
 // for imu correction
 float gravity_x = 0;
@@ -182,7 +196,7 @@ volatile char read_command;
 float imu_angle_adjustment = 0.0477;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
 
 // Control parameters
-const float control_freq = 250;             // control torque write freq
+const float CONTROL_FREQ = 100;             // control torque write freq
 const int SENSORS_UPDATE_PERIOD_LOOPS = 2;  // get motor values every x loop
 
 // ------------Received from PI---------------
@@ -208,7 +222,7 @@ float mot_cmd_torque = 0, wheel_cmd_torque = 0;  // torque command to the motor
 uint64_t time_now = 0, time_last, time_since_last = 0;
 
 // For the control signals
-static uint32_t control_next_send_millis = 1000 / control_freq;  // initialized so that first control signal is NOT sent in the first loop iter
+static uint32_t control_next_send_millis = 1000 / CONTROL_FREQ;  // initialized so that first control signal is NOT sent in the first loop iter
 uint16_t control_loop_ctr = 0;
 
 uint64_t start_time = 0, wait_time = 2 * 1000;  //milliseconds
@@ -257,6 +271,9 @@ Moteus::PositionMode::Command position_cmd;
 Moteus::PositionMode::Format position_fmt;
 Moteus::CurrentMode::Command current_cmd;
 Moteus::CurrentMode::Format current_fmt;
+
+// encoder object
+PicoEncoder encoder;
 
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -323,6 +340,18 @@ void setup() {
   }
   Serial.println("BNO08x Found!");
   // digitalWrite(STOP_LED, LOW);
+
+  delay(100);
+  // setup encoder
+  if (encoder.begin(encoder_pinA)) {
+    // If begin() returns FALSE (Failure), we enter this block
+    Serial.println("Encoder NOT found! System Halted.");
+    while (1) {
+      // Freeze here so we don't try to run a broken robot
+      delay(100);
+    }
+  }
+  Serial.println("Encoder found!");
 
   bno08x.hardwareReset();
   delay(100);
@@ -406,9 +435,11 @@ void setup() {
   Serial.println("Waiting for heartbeat from the PI...");
 
   // waits for heatrbeat
-  while (!was_heartbeat_rcvd) {
-    digitalWrite(STOP_LED, HIGH);
-  }  // Serial.println(was_heartbeat_rcvd); }
+  digitalWrite(STOP_LED, HIGH);
+  // while (!was_heartbeat_rcvd) {
+  //   Serial.println("Heartbeat not received");
+  //   delay(10);
+  // }  // Serial.println(was_heartbeat_rcvd); }
   // digitalWrite(STOP_LED, HIGH);
 
   digitalWrite(LED_BUILTIN, LOW);
@@ -450,60 +481,66 @@ void loop() {
   millis_since_last_heartbeat = millis() - heartbeat_timer;  // heartbeat_timer is updated by the i2cRecv function if heartbeat is valid
 
   // checks for 1) heartbeat validity (checksum an expected counter value) and 2) time since last heartbeat received
-  if (!is_heartbeat_valid || (millis_since_last_heartbeat > HEARTBEAT_TIMEOUT)) {
-    Serial.print("millis_since_last_heartbeat: ");
-    Serial.println(millis_since_last_heartbeat);
+  // if (!is_heartbeat_valid || (millis_since_last_heartbeat > HEARTBEAT_TIMEOUT)) {
+  //   Serial.print("millis_since_last_heartbeat: ");
+  //   Serial.println(millis_since_last_heartbeat);
 
-    Serial.print("is_heartbeat_valid?: ");
-    Serial.println(is_heartbeat_valid);
+  //   Serial.print("is_heartbeat_valid?: ");
+  //   Serial.println(is_heartbeat_valid);
 
-    Serial.println("heartbeat not valid or heartbeat timeout reached!");
+  //   Serial.println("heartbeat not valid or heartbeat timeout reached!");
 
-    emergencyStop();  // call the stop routine
-  }
+  //   emergencyStop();  // call the stop routine
+  // }
+
+  // update encoder value
+  encoder.update();
 
   // Print values for debugging
   Serial.println("<<<---<<<");
-  Serial.print(desired_torso_pitch);
+  Serial.print(desired_torso_pitch, 4);
   Serial.print("\t");
-  Serial.print(torso_pitch);
+  Serial.print(torso_pitch, 4);
   Serial.print("\t");
-  Serial.print(torso_pitch_rate);
+  Serial.print(torso_pitch_rate, 4);
   Serial.print("\t");
   // Serial.println(isnan(torso_pitch));
-  Serial.print(mot_pos);
+  Serial.print(wheel_pos, 4);
   Serial.print("\t");
-  Serial.print(mot_vel);
+  Serial.print(radToDeg(wheel_pos), 4);
   Serial.print("\t");
-  Serial.print(torso_mass);
   Serial.print("\t");
-  Serial.print(g);
+  Serial.print(wheel_vel, 4);
+  // Serial.print("\t");
+  // Serial.print(torso_mass, 4);
+  // Serial.print("\t");
+  // Serial.print(g, 4);
   Serial.print("\t");
-  Serial.print(torso_com_length);
-  Serial.print("\t");
-  Serial.print(sin(torso_pitch));
-  Serial.print("\t");
-  Serial.print(gravity_compensation_term);
-  Serial.print("\t");
-  Serial.println(mot_cmd_torque);
-  Serial.print("\t");
+  // Serial.print(torso_com_length, 4);
+  // Serial.print("\t");
+  // Serial.print(sin(torso_pitch), 4);
+  // Serial.print("\t");
+  // Serial.print(gravity_compensation_term, 4);
+  // Serial.print("\t");
+  Serial.println(mot_cmd_torque, 4);
+  // Serial.print("\t");
 
-  // These values are received over I2C
-  Serial.print(kp);
-  Serial.print("\t");
-  Serial.print(ki);
-  Serial.print("\t");
-  Serial.print(kd);
-  Serial.print("\t");
-  Serial.print(wheel_max_torque);
-  Serial.print("\t");
-  Serial.print(mot_max_torque);
-  Serial.print("\t");
-  Serial.print(max_integral);
-  Serial.print("\t");
-  Serial.print(control_error);
-  Serial.print("\t");
-  Serial.println("---");
+  // // These values are received over I2C
+  // Serial.print(kp);
+  // Serial.print("\t");
+  // Serial.print(ki);
+  // Serial.print("\t");
+  // Serial.print(kd);
+  // Serial.print("\t");
+  // Serial.print(wheel_max_torque);
+  // Serial.print("\t");
+  // Serial.print(mot_max_torque);
+  // Serial.print("\t");
+  // Serial.print(max_integral);
+  // Serial.print("\t");
+  // Serial.print(control_error);
+  // Serial.print("\t");
+  // Serial.println("---");
 
   if (bno08x.wasReset()) {
     Serial.print("Sensor was reset during loop!");
@@ -572,10 +609,14 @@ void loop() {
 
     // keep reading these values; the last value stored before control gets updated is the one that we want
     torso_pitch_init = torso_pitch;
-    mot_pos_init = mot_pos;
+    signed_encoder_val = -static_cast<int32_t>(encoder.step);
+    wheel_rel_pos_init = static_cast<float>(signed_encoder_val) / ENCODER_CPR * 360;
+
+
+    // mot_pos_init = mot_pos;
 
     // copy into buffer
-    memcpy(mot_pos_init_data, &mot_pos_init, sizeof(float));
+    // memcpy(mot_pos_init_data, &mot_pos_init, sizeof(float));
     memcpy(torso_pitch_init_data, &torso_pitch_init, sizeof(float));
 
     // Serial.print("mot_pos_init:\t");
@@ -591,7 +632,7 @@ void loop() {
     // memcpy(mot_pos_init_data, &mot_drv_momot_pos_initde, sizeof(float));
   }
 
-  // We intend to send control frames every 1000/control_freq milliseconds; second condition allows imu values to stabilise at program start
+  // We intend to send control frames every 1000/CONTROL_FREQ milliseconds; second condition allows imu values to stabilise at program start
   if (control_next_send_millis >= millis() || (millis() - start_time) < wait_time) {
     return;  //early return >> next loop
   }
@@ -646,14 +687,15 @@ void loop() {
 
   // write to cmd
   position_cmd.maximum_torque = mot_max_torque;
-  position_cmd.feedforward_torque = mot_cmd_torque;
+  // position_cmd.feedforward_torque = mot_cmd_torque;
+  position_cmd.feedforward_torque = 0;  //testing
 
   // **Write to the motor
   // Serial.println(millis());
   moteus.SetPosition(position_cmd, &position_fmt);
   // Serial.println(millis());
 
-  control_next_send_millis += 1000 / control_freq;
+  control_next_send_millis += 1000 / CONTROL_FREQ;
   // control_loop_ctr++;
   // **************************************************************
 
@@ -669,9 +711,14 @@ void loop() {
 
   // print_moteus(moteus.last_result().values);
   // last result only returns values if something is written to the board
+
+  signed_encoder_val = static_cast<int32_t>(encoder.step);                        //check sign value based on encoder channel pins
+  wheel_rel_pos = static_cast<float>(signed_encoder_val) / ENCODER_CPR * 2 * PI;  // radians
+  wheel_rel_pos -= wheel_rel_pos_init;
+
   mot_drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
-  mot_pos = revsToRad(moteus.last_result().values.position);  //radians
-  mot_vel = revsToRad(moteus.last_result().values.velocity);  // radians/s
+  // mot_pos = revsToRad(moteus.last_result().values.position);  //radians
+  // mot_vel = revsToRad(moteus.last_result().values.velocity);  // radians/s
   mot_torque = moteus.last_result().values.torque;
 
   // get init values only in the 0th loop
@@ -687,28 +734,30 @@ void loop() {
   // calculate wheel position from motor and torso angles
   // mot pos is relative to the torso
   // this line gives wheel_pos relative to the torso
-  wheel_pos = (mot_pos - mot_pos_init) / gear_ratio;
+  // wheel_pos = (mot_pos - mot_pos_init) / gear_ratio;
 
   // wrap around [0, 2*PI) because mot_pos output is continuous
-  wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
+  // wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
 
   // when looked from the driver's side, motor aclc is positive, torso acls is positive
-  wheel_pos += (torso_pitch - torso_pitch_init);
+  wheel_pos = wheel_rel_pos + (torso_pitch - torso_pitch_init);
 
   // When the robot starts, it's wheel angle is -collision angle
   wheel_pos += wheel_pos_init;
 
-  // wrap around (-PI/n, PI/n]
+  // wrap around [-PI/n, PI/n)
   wheel_pos = fmod(wheel_pos, 2 * PI / num_spokes);
 
-  if (wheel_pos <= -PI / num_spokes) {
+  if (wheel_pos < -PI / num_spokes) {
     wheel_pos += 2 * PI / num_spokes;
-  } else if (wheel_pos > PI / num_spokes) {
+  } else if (wheel_pos >= PI / num_spokes) {
     wheel_pos -= 2 * PI / num_spokes;
+  } else {  //do nothing
   }
 
   // get other wheel values
-  wheel_vel = torso_pitch_rate + mot_vel / gear_ratio;  // does not require init values for the mot or the torso
+  wheel_rel_vel = (encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
+  wheel_vel = torso_pitch_rate + wheel_rel_vel;             // does not require init values for the mot or the torso
   wheel_torque = mot_torque * gear_ratio;
   wheel_cmd_torque = mot_cmd_torque * gear_ratio;
 
@@ -726,8 +775,8 @@ void loop() {
   // Serial.println(mot_vel);
 
   // copy to buffer to send to pi
-  memcpy(mot_pos_data, &mot_pos, sizeof(float));
-  memcpy(mot_vel_data, &mot_vel, sizeof(float));                    //
+  // memcpy(mot_pos_data, &mot_pos, sizeof(float));
+  // memcpy(mot_vel_data, &mot_vel, sizeof(float));                    //
   memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
   memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
   memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
@@ -901,14 +950,14 @@ void i2cReq() {
       Wire.write(wheel_cmd_torque_data, sizeof(wheel_cmd_torque_data));
       break;
     case MOT_POS_CMD:
-      Wire.write(mot_pos_data, sizeof(mot_pos_data));
-      break;
+    //   Wire.write(mot_pos_data, sizeof(mot_pos_data));
+    //   break;
     case MOT_VEL_CMD:
-      Wire.write(mot_vel_data, sizeof(mot_vel_data));
-      break;
+    //   Wire.write(mot_vel_data, sizeof(mot_vel_data));
+    //   break;
     case MOT_POS_INIT_CMD:
-      Wire.write(mot_pos_init_data, sizeof(mot_pos_init_data));
-      break;
+    //   Wire.write(mot_pos_init_data, sizeof(mot_pos_init_data));
+    //   break;
     case TORSO_PITCH_INIT_CMD:
       Wire.write(torso_pitch_init_data, sizeof(torso_pitch_init_data));
       break;
@@ -1104,6 +1153,6 @@ void emergencyStop(void) {
   Serial.println("Entering infinite while loop!");
 
   while (true) {
-    // infinite while loop
+    // infinite while looprestore_interrupts(status);
   }
 }
