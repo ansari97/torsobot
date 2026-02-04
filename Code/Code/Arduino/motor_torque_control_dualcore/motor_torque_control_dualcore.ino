@@ -38,7 +38,7 @@
 // #define BNO08X_FAST_MODE
 
 // driveshaft encoder
-// must be consecutive pins on the rp2040
+// must be consecutive pins on the pico
 #define encoder_pinA 15
 #define encoder_pinB 16
 
@@ -70,17 +70,18 @@ void i2cReq(void);
 void i2cRecv(void);
 void emergencyStop(void);
 
-int signof(float);
+int signof(float var);
 
-float degToRevs(float);
-float revsToRad(float);
-float imuAngleCorrection(float, float, float, float);
-float gravityMagnitude(float, float, float);
-float degToRad(float);
-float radToDeg(float);
-float wrapTo2PI(float);
+float imuAngleCorrection(float pitch, float gravity_x, float gravity_y, float gravity_z);
+float gravityMagnitude(float gravity_x, float gravity_y, float gravity_z);
+float degToRevs(float deg);
+float revsToRad(float rev);
+float degToRad(float deg);
+float radToDeg(float rad);
+float wrapTo2PI(float ang);
 
 bool checkHeartbeatValidity(void);
+
 // ——————————————————————————————————————————————————————————————————————————————
 //   Variable declarations
 // ——————————————————————————————————————————————————————————————————————————————
@@ -91,6 +92,7 @@ int i2c_read_ctr = 0;                // reads the number of times mcu is read fr
 
 // dual core variables
 volatile bool encoder_initialized = false;
+volatile bool core1_setup_complete = false;
 
 // heartbeat variables
 const uint8_t HEARTBEAT_ID = 0XAA;
@@ -154,12 +156,12 @@ float mot_pos_init, torso_pitch_init;
 float wheel_pos_init = -PI / num_spokes;  //assuming wheel going in positive direction
 
 // Encoder variables
-const float ENCODER_PPR = 2048.0;               // puses per rev
+const float ENCODER_PPR = 2048.0;             // puses per rev
 const float ENCODER_CPR = ENCODER_PPR * 4;    // counts per rev
 const float ENCODER_uSPR = ENCODER_CPR * 64;  //usteps per rev
 volatile int32_t signed_encoder_steps;        // volatile shared variable between cores
-int32_t local_signed_encoder_steps;         // local encoder step variable
-float wheel_rel_pos, wheel_rel_pos_init;    // relative angle
+int32_t local_signed_encoder_steps;           // local encoder step variable
+float wheel_rel_pos, wheel_rel_pos_init;      // relative angle
 float wheel_rel_vel;
 
 // for imu correction
@@ -292,81 +294,98 @@ void setup() {
   pinMode(STOP_LED, OUTPUT);
   pinMode(REED_SWITCH, INPUT);
 
+  // turn all LEDs high momentarily
+  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(OK_LED, HIGH);
+  digitalWrite(STOP_LED, HIGH);
+
+  Serial.begin(115200);
+
+  unsigned long t = millis();  //current time
+  // and condition ensures that the mcu starts even when not connected to Serial
+  while (!Serial && millis() - t < 1000) {
+    delay(1);
+  }
+
+  // turn all LEDs OFF
   digitalWrite(LED_BUILTIN, LOW);
   digitalWrite(OK_LED, LOW);
   digitalWrite(STOP_LED, LOW);
 
-  Serial.begin(115200);
-  delay(100);
-  // digitalWrite(STOP_LED, LOW);
+  Serial.println("Starting torsobot on core 0 ...");
 
-  Serial.println("Starting torsobot ...");
+  // check core 1 setup completion status
+  Serial.println("Waiting for core 1 setup to complete ...");
+  while (!core1_setup_complete) {
+    if (digitalRead(STOP_LED) == LOW) digitalWrite(STOP_LED, HIGH);
+    delay(10);
+  }
+  Serial.println("Core 1 setup complete!");
+  digitalWrite(STOP_LED, LOW);
 
+  // check encoder initializatin from core 1
+  Serial.println("Checking encoder PIO initialization ...");
+  if (encoder_initialized) {
+    Serial.println("Encoder PIO setup okay!");
+    digitalWrite(STOP_LED, LOW);
+  } else {
+    digitalWrite(STOP_LED, HIGH);
+    Serial.println("Encoder PIO setup not okay!");
+    while (1) delay(1);
+  }
+
+  // Check reed switch
+  Serial.println("Checking reed switch ...");
   while (!digitalRead(REED_SWITCH)) {
     digitalWrite(STOP_LED, HIGH);
-    Serial.println("Reed switch not okay");
     delay(10);
   }
   Serial.println("Reed switch okay");
   digitalWrite(STOP_LED, LOW);
 
-  // I2C lines
+  // I2C setup
   Wire.setSDA(I2C_SDA);
   Wire.setSCL(I2C_SCL);
 
   Wire.begin(PICO_SLAVE_ADDRESS);
   Wire.setClock(I2C_BAUDRATE);
 
-  // Serial.println("I am here");
-
   // set interrup functions for I2C
   Wire.onReceive(i2cRecv);
   Wire.onRequest(i2cReq);
-  // Serial.println("Now here");
 
   // Set SPI pins
+  // IMU on SPI0
   SPI.setSCK(BNO08X_SCK);
   SPI.setMOSI(BNO08X_MOSI);
   SPI.setMISO(BNO08X_MISO);
   SPI.setCS(BNO08X_CS);
 
+  // CAN controller on SPI1
   SPI1.setSCK(MCP2517_SCK);
   SPI1.setMOSI(MCP2517_MOSI);
   SPI1.setMISO(MCP2517_MISO);
   SPI1.setCS(MCP2517_CS);
-  // Serial.println("Now here");
 
   SPI1.begin();
-  // Serial.println("Now here");
 
-  // bno spi communication
+  // IMU spi communication
   if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
-    // digitalWrite(STOP_LED, HIGH);
+    digitalWrite(STOP_LED, HIGH);
     Serial.println(F("Failed to find BNO08x chip"));
-    while (1) {
-      delay(10);
-    }
+    while (1) delay(10);
   }
   Serial.println("BNO08x Found!");
-  // digitalWrite(STOP_LED, LOW);
+  digitalWrite(STOP_LED, LOW);
 
+  // Reset the IMU
   delay(100);
-  // setup encoder
-  if (encoder_initialized) {
-    Serial.println("Encoder found!");
-  } else {
-    Serial.println("Encoder not found!");
-    while (1) delay(1);
-  }
-
-
   bno08x.hardwareReset();
   delay(100);
   Serial.print("Sensor reset?\t");
   Serial.println(bno08x.wasReset());
 
   setReports(reportIntervalUs);
-  digitalWrite(STOP_LED, HIGH);
 
   // This operates the CAN-FD bus at 1Mbit for both the arbitration
   // and data rate.  Most arduino shields cannot operate at 5Mbps
@@ -427,7 +446,7 @@ void setup() {
   memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
 
   // set nan values to all sensor buffers
-  float nan_float = NaN;
+  float nan_float = NaN;  // from mjbots
   memcpy(torso_pitch_data, &nan_float, sizeof(float));
   memcpy(torso_pitch_rate_data, &nan_float, sizeof(float));
   memcpy(wheel_pos_data, &nan_float, sizeof(float));
@@ -439,31 +458,25 @@ void setup() {
 
   // Serial.println("Now here");
 
-  Serial.println("Waiting for heartbeat from the PI...");
-
   // waits for heatrbeat
-  digitalWrite(STOP_LED, HIGH);
-  // while (!was_heartbeat_rcvd) {
-  //   Serial.println("Heartbeat not received");
-  //   delay(10);
-  // }  // Serial.println(was_heartbeat_rcvd); }
-  // digitalWrite(STOP_LED, HIGH);
-
-  digitalWrite(LED_BUILTIN, LOW);
-  digitalWrite(OK_LED, LOW);
+  Serial.println("Waiting for heartbeat from the PI...");
+  while (!was_heartbeat_rcvd) {
+    if (digitalRead(STOP_LED) == LOW) digitalWrite(STOP_LED, HIGH);
+    delay(10);
+  }  
+  Serial.println("Heartbeat was received!");
   digitalWrite(STOP_LED, LOW);
 
   // save the last counter value
   heartbeat_last_ctr = heartbeat_ctr;
   was_heartbeat_rcvd = false;
 
-  Serial.println("Heartbeat received from PI!");
-  Serial.println("Setup complete!");
-  // delay(100);
+  Serial.println("Core 0 setup complete!");
+
   digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(OK_LED, HIGH);
 
-  // Evaluate the gravity constant
+  // Evaluate the gravity constant for the torso
   // gravity_constant = torso_mass * g * torso_com_length;
   gravity_constant = 2.10;  // evaluated using three trial runs
 }
@@ -723,7 +736,7 @@ void loop() {
 
   // uint32_t status = save_and_disable_interrupts();
 
-  local_signed_encoder_steps = signed_encoder_steps;                                        //check sign value based on encoder channel pins
+  local_signed_encoder_steps = signed_encoder_steps;                                      //check sign value based on encoder channel pins
   wheel_rel_pos = static_cast<float>(local_signed_encoder_steps) / ENCODER_CPR * 2 * PI;  // radians
   wheel_rel_pos -= wheel_rel_pos_init;
 
@@ -805,14 +818,16 @@ void loop() {
 
 void setup1() {
   if (encoder.begin(encoder_pinA)) {
-    // If begin() returns FALSE (-1), we enter this block
+    // If begin() returns failure (-1), we enter this block
     encoder_initialized = false;
+    core1_setup_complete = true;
     while (1) {
       // Freeze here so we don't try to run a broken robot
       delay(1);
     }
   }
   encoder_initialized = true;
+  core1_setup_complete = true;
 }
 
 void loop1() {
