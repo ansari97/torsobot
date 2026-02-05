@@ -1,4 +1,4 @@
-browse.vc.db
+browse.vc.db*
 browse.vc.db-shm
 browse.vc.db-wal
 
@@ -20,7 +20,21 @@ Writing/*
 Old/*
 
 # VS code folder
-.vscode/*
+.vscode/
+**/.vscode
 
-# All pdfs
+# All pdfs, word and ppt files
 *.pdf
+*.docx
+*.pptx
+
+# ===========================
+# MCU / C++ Compilation Junk
+# ===========================
+# If you don't ignore these, your repo will fill with binary blobs
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+.pio/
