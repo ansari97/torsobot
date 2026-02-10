@@ -40,6 +40,7 @@ float wheel_pos, wheel_vel, wheel_torque;
 float mot_pos, mot_vel;
 float wheel_cmd_torque;
 int8_t mot_drv_mode;
+int32_t signed_encoder_steps;
 
 volatile float desired_torso_pitch;
 volatile float wheel_max_torque, mot_max_torque, control_max_integral;
@@ -74,6 +75,9 @@ const uint8_t TORSO_PITCH_INIT_CMD = 0X10;
 // controller type
 const uint8_t CONTROLLER_CMD = 0X11;
 volatile int controller = 1; // default is 1, but this is overwritten from the param file
+
+// encoder steps cmd
+const uint8_t ENCODER_STEPS_CMD = 0x12;  //signed encoder steps from the mcu
 
 // Heartbeat variables
 const uint8_t HEARTBEAT_ID = 0xAA;
@@ -240,6 +244,7 @@ private:
     int get_sensor_val_wheel_torque = getSensorValue(WHEEL_TORQUE_CMD, &wheel_torque);
     int get_sensor_val_motor_drv_mode = getSensorValue(MOTOR_DRV_MODE_CMD, &mot_drv_mode);
     int get_sensor_val_wheel_cmd_torque = getSensorValue(WHEEL_CMD_TORQUE_CMD, &wheel_cmd_torque);
+    int get_encoder_steps_mode = getSensorValue(ENCODER_STEPS_CMD, &signed_encoder_steps);
 
     // (void)getSensorValue(MOT_POS_CMD, &mot_pos);
     // (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
@@ -252,14 +257,15 @@ private:
       // (void)getSensorValue(MOT_POS_INIT_CMD, &mot_pos_init);
     }
 
-    if (mot_drv_mode == 0)
+    // check for position mode
+    if (mot_drv_mode != 10)
     {
-      RCLCPP_ERROR(this->get_logger(), "Driver mode is 0");
+      RCLCPP_ERROR(this->get_logger(), "Driver mode is not position mode!");
       // exitNode();
     }
 
     // if sensor return values not 0
-    bool sensor_val_okay = get_sensor_val_torso_pitch || get_sensor_val_torso_pitch_rate || get_sensor_val_wheel_pos || get_sensor_val_wheel_vel || get_sensor_val_wheel_torque || get_sensor_val_motor_drv_mode || get_sensor_val_wheel_cmd_torque;
+    bool sensor_val_okay = get_sensor_val_torso_pitch || get_sensor_val_torso_pitch_rate || get_sensor_val_wheel_pos || get_sensor_val_wheel_vel || get_sensor_val_wheel_torque || get_sensor_val_motor_drv_mode || get_sensor_val_wheel_cmd_torque || get_encoder_steps_mode;
     sensor_val_okay = !sensor_val_okay; // invert logic
 
     // if sensor_val_okay is 1
@@ -291,7 +297,7 @@ private:
 
       this->data_publisher_->publish(data_message);
 
-      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %d", torso_pitch, torso_pitch_rate, wheel_pos, wheel_vel, mot_drv_mode);
+      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %f, %f, %d, %d", torso_pitch, torso_pitch_rate, wheel_pos, wheel_vel, wheel_cmd_torque, wheel_torque, mot_drv_mode, signed_encoder_steps);
 
       // RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", torso_pitch);
       // RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", torso_pitch_rate);
@@ -374,6 +380,33 @@ private:
     return 0; // Success
   }
 
+  // Get sensor data over I2C for int data types
+  int getSensorValue(uint8_t cmd, int32_t *sensor_val_addr_int)
+  {
+    // Clear the read buffer
+    memset(read_buff, 0, float_len);
+
+    // Write command to slave
+    if (write(i2c_handle, &cmd, sizeof(cmd)) != sizeof(cmd))
+    {
+      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed for %d! %s (%d)", cmd, strerror(errno), errno);
+      return -1; // Indicate error
+    }
+
+    // Request sensor data from slave
+    if (read(i2c_handle, read_buff, float_len) != float_len)
+    {
+      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed for %d! %s (%d)", cmd, strerror(errno), errno);
+      return -2; // Indicate error
+    }
+    else
+    {
+      memcpy(sensor_val_addr_int, read_buff, sizeof(int32_t));
+    }
+
+    return 0; // Success
+  }
+
   //   Send heartbeat to pico
   void sendHeartbeat(void)
   {
@@ -429,7 +462,7 @@ private:
     mcu_run_line_.set_value(false); // set to low
     usleep(100 * 1000);             // 100 miliseconds
     mcu_run_line_.set_value(true);  // reset state
-    usleep(1 * 1000 * 1000);        // wait for 1 second for arduino loop to start before I2C
+    usleep(2 * 1000 * 1000);        // wait for 2 seconds for arduino loop to start before I2C
   }
 
   void exitNode(void)
