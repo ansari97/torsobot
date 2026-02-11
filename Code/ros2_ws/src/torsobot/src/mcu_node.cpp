@@ -244,7 +244,7 @@ private:
     int get_sensor_val_wheel_torque = getSensorValue(WHEEL_TORQUE_CMD, &wheel_torque);
     int get_sensor_val_motor_drv_mode = getSensorValue(MOTOR_DRV_MODE_CMD, &mot_drv_mode);
     int get_sensor_val_wheel_cmd_torque = getSensorValue(WHEEL_CMD_TORQUE_CMD, &wheel_cmd_torque);
-    int get_encoder_steps_mode = getSensorValue(ENCODER_STEPS_CMD, &signed_encoder_steps);
+    int get_encoder_steps = getSensorValue(ENCODER_STEPS_CMD, &signed_encoder_steps);
 
     // (void)getSensorValue(MOT_POS_CMD, &mot_pos);
     // (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
@@ -266,7 +266,7 @@ private:
     }
 
     // if sensor return values not 0
-    bool sensor_val_okay = get_sensor_val_torso_pitch || get_sensor_val_torso_pitch_rate || get_sensor_val_wheel_pos || get_sensor_val_wheel_vel || get_sensor_val_wheel_torque || get_sensor_val_motor_drv_mode || get_sensor_val_wheel_cmd_torque || get_encoder_steps_mode;
+    bool sensor_val_okay = get_sensor_val_torso_pitch || get_sensor_val_torso_pitch_rate || get_sensor_val_wheel_pos || get_sensor_val_wheel_vel || get_sensor_val_wheel_torque || get_sensor_val_motor_drv_mode || get_sensor_val_wheel_cmd_torque || get_encoder_steps;
     sensor_val_okay = !sensor_val_okay; // invert logic
 
     // if sensor_val_okay is 1
@@ -295,6 +295,7 @@ private:
       // data_message.mot_vel = mot_vel;
       data_message.torso_pitch_init = torso_pitch_init;
       data_message.wheel_rel_pos_init = wheel_rel_pos_init;
+      data_message.encoder_steps = signed_encoder_steps;
       // data_message.mot_pos_init = mot_pos_init;
 
       this->data_publisher_->publish(data_message);
