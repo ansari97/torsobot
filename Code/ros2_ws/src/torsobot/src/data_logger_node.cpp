@@ -51,14 +51,14 @@ public:
     std::string timestamp_str = ss.str();
 
     // directory name
-    std::string directory_name_str = "/home/pi/torsobot/Code/Code/ros2_ws/data_logs";
-    std::string csv_filename_str = "csv_" + timestamp_str + ".csv";
-    std::string csv_full_path_str = directory_name_str + "/" + csv_filename_str;
+    std::string directory_name_str = "/home/pi/torsobot/Code/ros2_ws/data_logs";
+    std::string csv_filename_str = timestamp_str + ".csv";
+    std::string csv_full_path_str = directory_name_str + "/csvs/" + csv_filename_str;
 
-    std::string metadata_filename_str = "metadata_" + timestamp_str + ".yaml";
-    metadata_full_path_str_ = directory_name_str + "/" + metadata_filename_str;
+    std::string metadata_filename_str = timestamp_str + ".yaml";
+    metadata_full_path_str_ = directory_name_str + "/metadata/" + metadata_filename_str;
 
-    std::string param_source_file = "/home/pi/torsobot/Code/Code/ros2_ws/src/torsobot/config/params.yaml";
+    std::string param_source_file = "/home/pi/torsobot/Code/ros2_ws/src/torsobot/config/params.yaml";
 
     // read metadata yaml file
     YAML::Node param_yaml_file = YAML::LoadFile(param_source_file);
@@ -170,6 +170,7 @@ private:
         // Copy init position values for the torso and the motor into the new xml file.
         metadata_yaml_file_ = YAML::LoadFile(metadata_full_path_str_);
         metadata_yaml_file_["trial_values"]["torso_pitch_init"] = msg->torso_pitch_init;
+        metadata_yaml_file_["trial_values"]["wheel_rel_pos_init"] = msg->wheel_rel_pos_init;
         // metadata_yaml_file_["trial_values"]["mot_pos_init"] = msg->mot_pos_init;
 
         std::ofstream fout(metadata_full_path_str_);
