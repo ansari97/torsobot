@@ -1,8 +1,0 @@
-/**:
-  ros__parameters:
-    desired_torso_pitch: 200.0
-    kp: 0.4
-    ki: 0.0
-    kd: 0.0
-    motor_max_torque: 0.5
-    control_max_integral: 75.0

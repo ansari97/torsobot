@@ -1,7 +1,0 @@
-{
-    "desired_torso_pitch": 177.0,
-    "kd": 0.5,
-    "ki": 3.0,
-    "kp": 4.0,
-    "mot_max_torque": 10.0
-}

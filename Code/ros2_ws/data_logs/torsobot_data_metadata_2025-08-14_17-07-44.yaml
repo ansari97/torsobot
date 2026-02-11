@@ -1,9 +1,0 @@
-/**:
-  ros__parameters:
-  # all parameters must be floats
-    desired_torso_pitch: 180.0 #degrees
-    kp: 0.34
-    ki: 0.05
-    kd: 0.05
-    wheel_max_torque: 5.0 # at the wheel
-    control_max_integral: 4.0
