@@ -47,7 +47,7 @@ volatile float wheel_max_torque, mot_max_torque, control_max_integral;
 volatile float kp, ki, kd;
 
 float torso_pitch_init = std::numeric_limits<float>::quiet_NaN(); //, mot_pos_init = std::numeric_limits<float>::quiet_NaN();
-;
+float wheel_rel_pos_init = std::numeric_limits<float>::quiet_NaN();
 
 // I2C write cmd for mcu data
 const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00; // desired torso_pitch
@@ -69,7 +69,7 @@ const uint8_t MOT_POS_CMD = 0X0D; // mot_pos
 const uint8_t MOT_VEL_CMD = 0X0E; // mot_vel
 
 // for the initial values
-const uint8_t MOT_POS_INIT_CMD = 0X0F;
+const uint8_t WHEEL_REL_POS_INIT_CMD = 0X0F;
 const uint8_t TORSO_PITCH_INIT_CMD = 0X10;
 
 // controller type
@@ -250,10 +250,11 @@ private:
     // (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
 
     // after about 2000ms
-    if (data_callback_ctr == 210)
+    if (data_callback_ctr == 250)
     {
       // get this value only once
       (void)getSensorValue(TORSO_PITCH_INIT_CMD, &torso_pitch_init);
+      (void)getSensorValue(WHEEL_REL_POS_INIT_CMD, &wheel_rel_pos_init);
       // (void)getSensorValue(MOT_POS_INIT_CMD, &mot_pos_init);
     }
 
@@ -293,6 +294,7 @@ private:
       // data_message.mot_pos = mot_pos;
       // data_message.mot_vel = mot_vel;
       data_message.torso_pitch_init = torso_pitch_init;
+      data_message.wheel_rel_pos_init = wheel_rel_pos_init;
       // data_message.mot_pos_init = mot_pos_init;
 
       this->data_publisher_->publish(data_message);
