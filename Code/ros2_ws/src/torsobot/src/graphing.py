@@ -18,24 +18,22 @@ def cycles2rad(cycles):
 
 
 # directory path for the data_logs
-dir_path = "/home/pi/torsobot/Code/Code/ros2_ws/data_logs"
+dir_path = "/home/pi/torsobot/Code/ros2_ws/data_logs"
 
 # Get user input for filename
 file_date = input("Enter date:  ")
 file_time = input("Enter time:  ")
 
-csv_file_name = "csv_" + \
-    file_date + "_" + file_time + ".csv"
-csv_file_path = dir_path + "/" + csv_file_name
+csv_file_name = file_date + "_" + file_time + ".csv"
+csv_file_path = dir_path + "/csvs/" + csv_file_name
 
 # json_file_name = "torsobot_data_metadata_" + \
 #     file_date + "_" + file_time + ".json"
 # json_file_path = dir_path + "/" + json_file_name
 
 # yaml path file
-yaml_file_name = "metadata_" + \
-    file_date + "_" + file_time + ".yaml"
-yaml_file_path = dir_path + "/" + yaml_file_name
+yaml_file_name = file_date + "_" + file_time + ".yaml"
+yaml_file_path = dir_path + "/metadata/" + yaml_file_name
 
 # for saving the figure as png
 save_file_name = csv_file_name.split(".")[0] + ".png"
