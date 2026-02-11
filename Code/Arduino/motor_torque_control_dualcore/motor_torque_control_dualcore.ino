@@ -80,6 +80,8 @@ float revsToRad(float rev);
 float degToRad(float deg);
 float radToDeg(float rad);
 float wrapTo2PI(float ang);
+float encoderCountsToRad(int32_t local_signed_encoder_steps);
+float encoderCountsToDeg(int32_t local_signed_encoder_steps);
 
 bool checkHeartbeatValidity(void);
 
@@ -88,7 +90,7 @@ bool checkHeartbeatValidity(void);
 // ——————————————————————————————————————————————————————————————————————————————
 
 // I2C speed; try changing it to 50kHz
-const int I2C_BAUDRATE = 50 * 1000;  // I2C speed in Hz
+const int I2C_BAUDRATE = 50 * 1000;  // I2C speed in Hz, must be the same on Pi
 int i2c_read_ctr = 0;                // reads the number of times mcu is read from
 
 // dual core variables
@@ -131,7 +133,7 @@ const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
 const uint8_t MOT_POS_CMD = 0X0D;  // mot_pos
 const uint8_t MOT_VEL_CMD = 0X0E;  // mot_vel
 
-const uint8_t MOT_POS_INIT_CMD = 0X0F;
+const uint8_t WHEEL_REL_POS_INIT_CMD = 0X0F;
 const uint8_t TORSO_PITCH_INIT_CMD = 0X10;
 
 const uint8_t CONTROLLER_CMD = 0X11;  // cmd to control which controller to run
@@ -186,6 +188,7 @@ char mot_vel_data[float_len];
 char mot_pos_data[float_len];
 char mot_pos_init_data[float_len];
 char torso_pitch_init_data[float_len];
+char wheel_rel_pos_init_data[float_len];
 
 char mot_max_torque_data[float_len];
 char kp_data[float_len];
@@ -576,8 +579,8 @@ void loop() {
     // position_cmd.maximum_torque = mot_max_torque;
     // position_cmd.feedforward_torque = 0;
 
-    // // // **Write to the motor
-    // moteus.SetPosition(position_cmd, &position_fmt);
+    // // // **Write to the motor; kkep ccmmented out
+    // // moteus.SetPosition(position_cmd, &position_fmt);
 
     // get values
     mot_drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
@@ -587,13 +590,13 @@ void loop() {
     // keep reading these values; the last value stored before control gets updated is the one that we want
     torso_pitch_init = torso_pitch;
     // local_signed_encoder_steps = signed_encoder_steps;
-    wheel_rel_pos_init = static_cast<float>(local_signed_encoder_steps) / ENCODER_CPR * 360.0;
+    wheel_rel_pos_init = encoderCountsToRad(local_signed_encoder_steps);
 
 
     // mot_pos_init = mot_pos;
 
     // copy into buffer
-    // memcpy(mot_pos_init_data, &mot_pos_init, sizeof(float));
+    memcpy(wheel_rel_pos_init_data, &wheel_rel_pos_init, sizeof(float));
     memcpy(torso_pitch_init_data, &torso_pitch_init, sizeof(float));
 
     // Serial.print("mot_pos_init:\t");
@@ -609,6 +612,30 @@ void loop() {
     // memcpy(mot_pos_init_data, &mot_drv_momot_pos_initde, sizeof(float));
   }
 
+  // Do wheel calculations
+  // local_signed_encoder_steps = signed_encoder_steps;                               //check sign value based on encoder channel pins
+  wheel_rel_pos = encoderCountsToRad(local_signed_encoder_steps);  // radians
+  wheel_rel_pos -= wheel_rel_pos_init;
+
+  // when looked from the driver's side, motor aclc is positive, torso acls is positive
+  wheel_pos = wheel_rel_pos + (torso_pitch - torso_pitch_init);
+
+  // When the robot starts, it's wheel angle is -collision angle
+  wheel_pos += wheel_pos_init;
+
+  // wrap around [-PI/n, PI/n)
+  wheel_pos = fmod(wheel_pos, 2 * PI / num_spokes);
+
+  if (wheel_pos < -PI / num_spokes) {
+    wheel_pos += 2 * PI / num_spokes;
+  } else if (wheel_pos >= PI / num_spokes) {
+    wheel_pos -= 2 * PI / num_spokes;
+  } else {  //do nothing
+  }
+
+  // get other wheel values
+  wheel_rel_vel = (encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
+  wheel_vel = torso_pitch_rate + wheel_rel_vel;             // does not require init values for the mot or the torso
 
   // We intend to send control frames every 1000/CONTROL_FREQ milliseconds
   if (control_next_send_millis >= millis()) return;  //early return >> next loop
@@ -760,9 +787,6 @@ void loop() {
 
   // uint32_t status = save_and_disable_interrupts();
 
-  // local_signed_encoder_steps = signed_encoder_steps;                               //check sign value based on encoder channel pins
-  wheel_rel_pos = static_cast<float>(local_signed_encoder_steps) / ENCODER_CPR * 2 * PI;  // radians
-  wheel_rel_pos -= wheel_rel_pos_init;
 
   mot_drv_mode = static_cast<int8_t>(moteus.last_result().values.mode);
   // mot_pos = revsToRad(moteus.last_result().values.position);  //radians
@@ -781,31 +805,8 @@ void loop() {
 
   // calculate wheel position from motor and torso angles
   // mot pos is relative to the torso
-  // this line gives wheel_pos relative to the torso
-  // wheel_pos = (mot_pos - mot_pos_init) / gear_ratio;
 
-  // wrap around [0, 2*PI) because mot_pos output is continuous
-  // wheel_pos = fmod(wheel_pos, 2 * PI) + (wheel_pos < 0) * 2 * PI;
 
-  // when looked from the driver's side, motor aclc is positive, torso acls is positive
-  wheel_pos = wheel_rel_pos + (torso_pitch - torso_pitch_init);
-
-  // When the robot starts, it's wheel angle is -collision angle
-  wheel_pos += wheel_pos_init;
-
-  // wrap around [-PI/n, PI/n)
-  wheel_pos = fmod(wheel_pos, 2 * PI / num_spokes);
-
-  if (wheel_pos < -PI / num_spokes) {
-    wheel_pos += 2 * PI / num_spokes;
-  } else if (wheel_pos >= PI / num_spokes) {
-    wheel_pos -= 2 * PI / num_spokes;
-  } else {  //do nothing
-  }
-
-  // get other wheel values
-  wheel_rel_vel = (encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
-  wheel_vel = torso_pitch_rate + wheel_rel_vel;             // does not require init values for the mot or the torso
   wheel_torque = mot_torque * gear_ratio;
   wheel_cmd_torque = mot_cmd_torque * gear_ratio;
 
@@ -1034,9 +1035,9 @@ void i2cReq() {
     case MOT_VEL_CMD:
     //   Wire.write(mot_vel_data, sizeof(mot_vel_data));
     //   break;
-    case MOT_POS_INIT_CMD:
-    //   Wire.write(mot_pos_init_data, sizeof(mot_pos_init_data));
-    //   break;
+    case WHEEL_REL_POS_INIT_CMD:
+      Wire.write(wheel_rel_pos_init_data, sizeof(wheel_rel_pos_init_data));
+      break;
     case TORSO_PITCH_INIT_CMD:
       Wire.write(torso_pitch_init_data, sizeof(torso_pitch_init_data));
       break;
@@ -1143,6 +1144,16 @@ float wrapTo2PI(float angle) {
 
   if (angle < 0) { angle += 2 * PI; }
   return angle;
+}
+
+// encoder counts (or steps) to radians
+float encoderCountsToRad(int32_t local_signed_encoder_steps) {
+  return static_cast<float>(local_signed_encoder_steps) / ENCODER_CPR * 2 * PI;
+}
+
+// encoder counts (or steps) to degrees
+float encoderCountsToDeg(int32_t local_signed_encoder_steps) {
+  return static_cast<float>(local_signed_encoder_steps) / ENCODER_CPR * 360.0;
 }
 
 // manipulates the IMU values
