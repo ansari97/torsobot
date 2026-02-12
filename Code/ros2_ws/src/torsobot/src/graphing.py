@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import math
 import numpy as np
+from pathlib import Path
 
 # import json
 
@@ -18,14 +19,16 @@ def cycles2rad(cycles):
 
 
 # directory path for the data_logs
-dir_path = "/home/pi/torsobot/Code/ros2_ws/data_logs"
+script_path = Path(__file__).resolve()
+# dir_path = "/home/pi/torsobot/Code/ros2_ws/data_logs"
+dir_path = script_path.parents[3] / "data_logs"
 
 # Get user input for filename
 file_date = input("Enter date:  ")
 file_time = input("Enter time:  ")
 
 csv_file_name = file_date + "_" + file_time + ".csv"
-csv_file_path = dir_path + "/csvs/" + csv_file_name
+csv_file_path = dir_path / "csvs" / csv_file_name
 
 # json_file_name = "torsobot_data_metadata_" + \
 #     file_date + "_" + file_time + ".json"
@@ -33,11 +36,11 @@ csv_file_path = dir_path + "/csvs/" + csv_file_name
 
 # yaml path file
 yaml_file_name = file_date + "_" + file_time + ".yaml"
-yaml_file_path = dir_path + "/metadata/" + yaml_file_name
+yaml_file_path = dir_path / "metadata" / yaml_file_name
 
 # for saving the figure as png
 save_file_name = csv_file_name.split(".")[0] + ".png"
-save_file_path = dir_path + "/graphs/" + save_file_name
+save_file_path = dir_path / "graphs" / save_file_name
 
 # read yaml
 with open(yaml_file_path, 'r') as yaml_file:
@@ -54,7 +57,7 @@ controller = metadata["/**"]["ros__parameters"]["controller"]
 
 # plot text
 plot_text = "desired_torso_pitch:" + str(desired_torso_pitch) + "\ncontroller: " + "str(controller)" + "\nkp: " + str(kp) + ", ki: " + str(ki) + ", kd: " + \
-    str(kd) +"\ncontrol_max_integral: " + str(control_max_integral) + "\wheel_max_torque: " + str(wheel_max_torque) 
+    str(kd) +"\ncontrol_max_integral: " + str(control_max_integral) + "\nwheel_max_torque: " + str(wheel_max_torque) 
 
 # read csv
 df = pd.read_csv(csv_file_path)

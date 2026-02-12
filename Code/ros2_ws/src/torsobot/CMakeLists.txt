@@ -74,6 +74,10 @@ install(TARGETS
   data_logger_node
   DESTINATION lib/${PROJECT_NAME})
 
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
+
   # Find all launch files in the launch directory
 file(GLOB LAUNCH_FILES launch/*.py)
 

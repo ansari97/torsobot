@@ -51,14 +51,19 @@ public:
     std::string timestamp_str = ss.str();
 
     // directory name
-    std::string directory_name_str = "/home/pi/torsobot/Code/ros2_ws/data_logs";
+    this->declare_parameter("datalogs_path", "default_logs");
+    std::string directory_name_str = this->get_parameter("datalogs_path").as_string();
+    
+    // std::string directory_name_str = "/home/pi/torsobot/Code/ros2_ws/data_logs";
     std::string csv_filename_str = timestamp_str + ".csv";
     std::string csv_full_path_str = directory_name_str + "/csvs/" + csv_filename_str;
 
     std::string metadata_filename_str = timestamp_str + ".yaml";
     metadata_full_path_str_ = directory_name_str + "/metadata/" + metadata_filename_str;
 
-    std::string param_source_file = "/home/pi/torsobot/Code/ros2_ws/src/torsobot/config/params.yaml";
+    // param file from the install/share directory, passed to node as parameter
+    this->declare_parameter("param_source_file", "default_param_file_path");
+    std::string param_source_file = this->get_parameter("param_source_file").as_string();
 
     // read metadata yaml file
     YAML::Node param_yaml_file = YAML::LoadFile(param_source_file);
