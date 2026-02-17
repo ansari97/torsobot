@@ -62,7 +62,7 @@ struct euler_t {
 };
 
 // function prototypes
-void quaternionToPitch(sh2_RotationVectorWAcc_t *, float *, bool degrees = false);
+void quaternionToPitch(sh2_RotationVector_t *, float *, bool degrees = false);
 void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t *ypr, bool degrees);
 void quaternionToEulerRV(sh2_RotationVectorWAcc_t *rotational_vector, euler_t *ypr, bool deegrees);
 void quaternionToEulerGI(sh2_GyroIntegratedRV_t *rotational_vector, euler_t *ypr, bool degrees);
@@ -107,7 +107,8 @@ volatile uint8_t heartbeat_last_ctr;
 volatile bool was_heartbeat_rcvd = false;
 volatile bool is_heartbeat_valid = false;
 volatile bool is_heartbeat_ctr_valid = false;
-const int HEARTBEAT_PERIOD = 50;                     // milliseconds
+volatile bool is_reed_switch_present = false;
+const int HEARTBEAT_PERIOD = 200;                     // milliseconds
 const int HEARTBEAT_FREQ = 1000 / HEARTBEAT_PERIOD;  // hz; must be same as from pi
 const int HEARTBEAT_TIMEOUT = 5 * HEARTBEAT_PERIOD;  // miliseconds
 volatile uint64_t heartbeat_timer = 0;               // = millis();
@@ -207,7 +208,8 @@ char wheel_cmd_torque_data[float_len];
 
 volatile char read_command;
 
-float imu_angle_adjustment = 0.0477;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
+float imu_angle_adjustment = 0.1585;       // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
+float imu_scale_adjustment = PI / 2.9679;  //for some reason imu does not consider down to be 3.14
 
 // Control parameters
 const float CONTROL_FREQ = 100;             // control torque write freq
@@ -247,6 +249,7 @@ volatile uint8_t has_robot_stopped = 0x00;  // 0x00 is false, 0xFF is true
 
 // IMU struct for euler angles
 euler_t ypr;
+
 
 // ——————————————————————————————————————————————————————————————————————————————
 //   BNO08X object
@@ -348,6 +351,7 @@ void setup() {
     delay(10);
   }
   Serial.println("Reed switch okay");
+  is_reed_switch_present = true;
   digitalWrite(STOP_LED, LOW);
 
   Serial.println("Setting up I2C ...");
@@ -501,8 +505,10 @@ void loop() {
 
   if (!digitalRead(REED_SWITCH)) {
     Serial.println("Reed switch not detected!");
+    is_reed_switch_present = false;
     emergencyStop();
   }
+  is_reed_switch_present = true;
 
   // is_heartbeat_valid = checkHeartbeatValidity();
   millis_since_last_heartbeat = millis() - heartbeat_timer;  // heartbeat_timer is updated by the i2cRecv function if heartbeat is valid
@@ -543,12 +549,13 @@ void loop() {
         //   // torso_pitch = degToRad(imuAngleCorrection(ypr.pitch, gravity_x, gravity_y, gravity_z)) + imu_angle_adjustment;  // adjusts sign and adds the angle between the imu axes and the COM
         //   // break;
 
-      case SH2_ROTATION_VECTOR:
+      case SH2_GAME_ROTATION_VECTOR:
         // torso_pitch is updated by reference
         // &sensorValue.un.rotationVector uses the magnetomoeter and causes x/y values to jump due to yaw corrections
         // arvrstabilizedrv does not use magnetometer
-        quaternionToPitch(&sensorValue.un.arvrStabilizedRV, &torso_pitch);
+        quaternionToPitch(&sensorValue.un.gameRotationVector, &torso_pitch);
         torso_pitch -= imu_angle_adjustment;
+        torso_pitch *= imu_scale_adjustment;
         torso_pitch = wrapTo2PI(torso_pitch);  // we need angles in the [0, 2*PI) range
         break;
 
@@ -637,6 +644,9 @@ void loop() {
   wheel_rel_vel = (encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
   wheel_vel = torso_pitch_rate + wheel_rel_vel;             // does not require init values for the mot or the torso
 
+    memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
+  memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
+
   // We intend to send control frames every 1000/CONTROL_FREQ milliseconds
   if (control_next_send_millis >= millis()) return;  //early return >> next loop
 
@@ -644,37 +654,37 @@ void loop() {
   control_next_send_millis += 1000 / CONTROL_FREQ;
 
   // Print values for debugging (not in each loop)
-  Serial.println("<<<---<<<");
-  Serial.print(desired_torso_pitch, 4);
-  Serial.print("\t");
-  Serial.print(torso_pitch, 4);
-  Serial.print("\t");
-  Serial.print(torso_pitch_rate, 4);
-  Serial.print("\t");
-  // Serial.println(isnan(torso_pitch));
-  Serial.print(wheel_pos, 4);
-  Serial.print("\t");
-  Serial.print(local_signed_encoder_steps);
+  // Serial.println("<<<---<<<");
+  // Serial.print(desired_torso_pitch, 4);
   // Serial.print("\t");
-  // Serial.print(radToDeg(wheel_pos), 4);
-  Serial.print("\t");
-  Serial.print(wheel_vel, 4);
+  // Serial.print(torso_pitch, 4);
   // Serial.print("\t");
-  // Serial.print(torso_mass, 4);
+  // Serial.print(torso_pitch_rate, 4);
   // Serial.print("\t");
-  // Serial.print(g, 4);
-  Serial.print("\t");
-  // Serial.print(torso_com_length, 4);
+  // // Serial.println(isnan(torso_pitch));
+  // Serial.print(wheel_pos, 4);
   // Serial.print("\t");
-  // Serial.print(sin(torso_pitch), 4);
+  // Serial.print(local_signed_encoder_steps);
+  // // Serial.print("\t");
+  // // Serial.print(radToDeg(wheel_pos), 4);
   // Serial.print("\t");
-  // Serial.print(gravity_compensation_term, 4);
+  // Serial.print(wheel_vel, 4);
+  // // Serial.print("\t");
+  // // Serial.print(torso_mass, 4);
+  // // Serial.print("\t");
+  // // Serial.print(g, 4);
   // Serial.print("\t");
-  Serial.println(mot_cmd_torque, 4);
-  Serial.print("\t");
-  Serial.print(mot_torque, 4);
-  Serial.print("\t");
-  Serial.print(mot_drv_mode, 4);
+  // // Serial.print(torso_com_length, 4);
+  // // Serial.print("\t");
+  // // Serial.print(sin(torso_pitch), 4);
+  // // Serial.print("\t");
+  // // Serial.print(gravity_compensation_term, 4);
+  // // Serial.print("\t");
+  // Serial.println(mot_cmd_torque, 4);
+  // Serial.print("\t");
+  // Serial.print(mot_torque, 4);
+  // Serial.print("\t");
+  // Serial.print(mot_drv_mode, 4);
 
 
   // // These values are received over I2C
@@ -764,9 +774,13 @@ void loop() {
   position_cmd.feedforward_torque = mot_cmd_torque;
   // position_cmd.feedforward_torque = 0;  //testing
 
-  // // **Write to the motor
+  // // **Write to the motor only if imu values are not nan
   // // Serial.println(millis());
+  // float check_pitch_nan;
+  // memcpy(&check_pitch_nan, torso_pitch_data, sizeof(float));
+
   moteus.SetPosition(position_cmd, &position_fmt);
+
   // Serial.println(millis());
 
   // control_loop_ctr++;
@@ -827,8 +841,7 @@ void loop() {
   // memcpy(mot_pos_data, &mot_pos, sizeof(float));
   // memcpy(mot_vel_data, &mot_vel, sizeof(float));                    //
 
-  memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
-  memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
+
   memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
   memcpy(wheel_torque_data, &wheel_torque, sizeof(float));
   memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
@@ -1046,7 +1059,10 @@ void i2cReq() {
 
 void setReports(long report_interval) {
   Serial.println("Setting desired reports");
-  if (!bno08x.enableReport(SH2_ROTATION_VECTOR, report_interval)) {
+  // if (!bno08x.enableReport(SH2_ROTATION_VECTOR, report_interval)) {
+  //   Serial.println("Could not enable rotation vector");
+  // }
+  if (!bno08x.enableReport(SH2_GAME_ROTATION_VECTOR, report_interval)) {
     Serial.println("Could not enable rotation vector");
   }
   if (!bno08x.enableReport(SH2_GYROSCOPE_CALIBRATED, report_interval)) {
@@ -1080,29 +1096,24 @@ void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t *ypr, boo
 
 // quaternion to pitch angle using rotation matrices to bypass euler pitch singularity
 // gets the angle between imu's x-axis and the global horizontal plane; same as euler pitch
-void quaternionToPitch(sh2_RotationVectorWAcc_t *rotational_vector, float *pitch, bool degrees) {
+void quaternionToPitch(sh2_RotationVector_t *rotational_vector, float *pitch, bool degrees) {
   float qw = rotational_vector->real;
   float qx = rotational_vector->i;
   float qy = rotational_vector->j;
   float qz = rotational_vector->k;
 
-  float sqx = sq(qx);
-  float sqy = sq(qy);
-  float sqz = sq(qz);
+  // Calculate the two components of the Rotation Matrix we care about
+  // These represent the relationship between the Body's X/Z axes and World Gravity.
 
-  float xy = qx * qy;
-  float xz = qx * qz;
-  float zw = qz * qw;
-  float yw = qy * qw;
+  // R31: Projection of World Z on Body X (Sine component for Y-rotation)
+  float R31 = 2.0f * (qx * qz - qw * qy);
 
-  // Rotation matrix terms
-  float R11 = 1 - 2 * sqy - 2 * sqz;
-  float R21 = 2 * (xy + zw);
-  float R31 = 2 * (xz - yw);
-  float R33 = 1 - 2 * sqx - 2 * sqy;
+  // R33: Projection of World Z on Body Z (Cosine component for Y-rotation)
+  float R33 = 1.0f - 2.0f * (qx * qx + qy * qy);
 
-  // apparently the IMU treats global Z as up
-  *pitch = atan2(-R31, signof(R33) * sqrt(sq(R11) + sq(R21)));
+  // Calculate the full 360-degree angle (atan2 handles all 4 quadrants automatically)
+  // We use -R31 because standard pitch definition often opposes the matrix index direction
+  *pitch = atan2(-R31, R33);
 
   if (degrees) {
     *pitch *= RAD_TO_DEG;
