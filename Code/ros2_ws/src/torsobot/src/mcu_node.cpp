@@ -77,7 +77,7 @@ const uint8_t CONTROLLER_CMD = 0X11;
 volatile int controller = 1; // default is 1, but this is overwritten from the param file
 
 // encoder steps cmd
-const uint8_t ENCODER_STEPS_CMD = 0x12;  //signed encoder steps from the mcu
+const uint8_t ENCODER_STEPS_CMD = 0x12; // signed encoder steps from the mcu
 
 // Heartbeat variables
 const uint8_t HEARTBEAT_ID = 0xAA;
@@ -173,10 +173,10 @@ public:
     sendDataToMCU(CTRL_MAX_INTEGRAL_CMD, &control_max_integral);
 
     // heartbeat timer for 10ms (100Hz)
-    heartbeat_timer_ = this->create_wall_timer(50ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
+    heartbeat_timer_ = this->create_wall_timer(100ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
-    data_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::i2cDataCallback, this)); // Use std::bind
+    data_timer_ = this->create_wall_timer(1000ms, std::bind(&MCUNode::i2cDataCallback, this)); // Use std::bind
 
     RCLCPP_INFO(this->get_logger(), "Starting node!");
   }
@@ -250,7 +250,7 @@ private:
     // (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
 
     // after about 2000ms
-    if (data_callback_ctr == 250)
+    if (data_callback_ctr == 350)
     {
       // get this value only once
       (void)getSensorValue(TORSO_PITCH_INIT_CMD, &torso_pitch_init);
@@ -465,7 +465,7 @@ private:
     mcu_run_line_.set_value(false); // set to low
     usleep(100 * 1000);             // 100 miliseconds
     mcu_run_line_.set_value(true);  // reset state
-    usleep(2 * 1000 * 1000);        // wait for 2 seconds for arduino loop to start before I2C
+    usleep(2.5 * 1000 * 1000);      // wait for 2 seconds for arduino loop to start before I2C
   }
 
   void exitNode(void)
