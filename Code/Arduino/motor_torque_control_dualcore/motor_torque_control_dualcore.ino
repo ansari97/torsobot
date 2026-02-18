@@ -90,8 +90,8 @@ bool checkHeartbeatValidity(void);
 // ——————————————————————————————————————————————————————————————————————————————
 
 // I2C speed; try changing it to 50kHz
-const int I2C_BAUDRATE = 50 * 1000;  // I2C speed in Hz, must be the same on Pi
-int i2c_read_ctr = 0;                // reads the number of times mcu is read from
+const int I2C_BAUDRATE = 100 * 1000;  // I2C speed in Hz, must be the same on Pi
+int i2c_read_ctr = 0;                 // reads the number of times mcu is read from
 
 // dual core variables
 volatile bool encoder_initialized = false;
@@ -103,12 +103,13 @@ volatile uint8_t heartbeat_rcvd_ID;
 volatile uint8_t heartbeat_ctr;
 volatile uint8_t heartbeat_expected_checksum;
 volatile uint8_t heartbeat_rcvd_checksum;
-volatile uint8_t heartbeat_last_ctr;
+volatile uint8_t heartbeat_last_ctr = 255;
 volatile bool was_heartbeat_rcvd = false;
-volatile bool is_heartbeat_valid = false;
-volatile bool is_heartbeat_ctr_valid = false;
+volatile bool is_heartbeat_valid = true;
+volatile bool heartbeat_timeout_exceeded = false;
+volatile bool is_heartbeat_ctr_valid = true;
 volatile bool is_reed_switch_present = false;
-const int HEARTBEAT_PERIOD = 200;                     // milliseconds
+const int HEARTBEAT_PERIOD = 50;                     // milliseconds
 const int HEARTBEAT_FREQ = 1000 / HEARTBEAT_PERIOD;  // hz; must be same as from pi
 const int HEARTBEAT_TIMEOUT = 5 * HEARTBEAT_PERIOD;  // miliseconds
 volatile uint64_t heartbeat_timer = 0;               // = millis();
@@ -469,7 +470,7 @@ void setup() {
   digitalWrite(STOP_LED, LOW);
 
   // save the last counter value
-  heartbeat_last_ctr = heartbeat_ctr;
+  // heartbeat_last_ctr = heartbeat_ctr;
   was_heartbeat_rcvd = false;
 
   // To clear any faults the controllers may have, we start by sending
@@ -513,8 +514,14 @@ void loop() {
   // is_heartbeat_valid = checkHeartbeatValidity();
   millis_since_last_heartbeat = millis() - heartbeat_timer;  // heartbeat_timer is updated by the i2cRecv function if heartbeat is valid
 
-  // checks for 1) heartbeat validity (checksum an expected counter value) and 2) time since last heartbeat received
-  if (!is_heartbeat_valid || (millis_since_last_heartbeat > HEARTBEAT_TIMEOUT)) {
+  if (millis_since_last_heartbeat > HEARTBEAT_TIMEOUT) {
+    heartbeat_timeout_exceeded = true;
+  } else {
+    heartbeat_timeout_exceeded = false;
+  }
+
+  // checks for 1) heartbeat validity (checksum and expected counter value) and 2) time since last heartbeat received
+  if (!is_heartbeat_valid || heartbeat_timeout_exceeded) {
     Serial.print("millis_since_last_heartbeat: ");
     Serial.println(millis_since_last_heartbeat);
 
@@ -644,7 +651,7 @@ void loop() {
   wheel_rel_vel = (encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
   wheel_vel = torso_pitch_rate + wheel_rel_vel;             // does not require init values for the mot or the torso
 
-    memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
+  memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
   memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
 
   // We intend to send control frames every 1000/CONTROL_FREQ milliseconds
@@ -892,21 +899,24 @@ void i2cRecv(int len) {
   if (static_cast<uint8_t>(read_command) == HEARTBEAT_ID) {
     if (len == 3) {
       heartbeat_rcvd_ID = read_command;
-      heartbeat_ctr = Wire.read();            // read second bit
-      heartbeat_rcvd_checksum = Wire.read();  // read third bit
+      heartbeat_ctr = Wire.read();            // read second byte
+      heartbeat_rcvd_checksum = Wire.read();  // read third byte
       was_heartbeat_rcvd = true;
 
       heartbeat_expected_checksum = heartbeat_ctr ^ heartbeat_rcvd_ID;
 
-      if ((heartbeat_expected_checksum == heartbeat_rcvd_checksum))  // && (heartbeat_ctr == (heartbeat_last_ctr + 1) % 256)) {
-      {
+      if (heartbeat_expected_checksum == heartbeat_rcvd_checksum) {  // && (heartbeat_ctr == (heartbeat_last_ctr + 1) % 256)) {
+
         is_heartbeat_valid = true;
 
-        if (heartbeat_ctr == (heartbeat_last_ctr + 1) % 256) {
+        if (heartbeat_ctr != heartbeat_last_ctr) {  //(heartbeat_ctr == (heartbeat_last_ctr + 1) % 256) {
           is_heartbeat_ctr_valid = true;
           heartbeat_last_ctr = heartbeat_ctr;
           heartbeat_timer = millis();
+        } else {
+          is_heartbeat_ctr_valid = false;
         }
+
       } else {
         is_heartbeat_valid = false;
       }
@@ -999,10 +1009,11 @@ void i2cReq() {
   switch (read_command) {
     case HEARTBEAT_ID:
       Wire.write(has_robot_stopped);
-    case DESIRED_TORSO_PITCH_CMD:
-      // do nothing; since we're now writing this value to the pico
-      // Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
       break;
+    // case DESIRED_TORSO_PITCH_CMD:
+    //   // do nothing; since we're now writing this value to the pico
+    //   // Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
+    //   break;
     case TORSO_PITCH_CMD:
       Wire.write(torso_pitch_data, sizeof(torso_pitch_data));
       break;
@@ -1027,25 +1038,25 @@ void i2cReq() {
     case WHEEL_MAX_TORQUE_CMD:
       Wire.write(mot_max_torque_data, sizeof(mot_max_torque_data));
       break;
-    case KP_CMD:
-      // Wire.write(kp_data, sizeof(kp_data));
-      break;
-    case KI_CMD:
-      // Wire.write(ki_data, sizeof(ki_data));
-      break;
-    case KD_CMD:
-      // Wire.write(kd_data, sizeof(kd_data));
-      break;
-    case CTRL_MAX_INTEGRAL_CMD:
-      // Wire.write(kd_data, sizeof(kd_data));
-      break;
+    // case KP_CMD:
+    //   // Wire.write(kp_data, sizeof(kp_data));
+    //   break;
+    // case KI_CMD:
+    //   // Wire.write(ki_data, sizeof(ki_data));
+    //   break;
+    // case KD_CMD:
+    //   // Wire.write(kd_data, sizeof(kd_data));
+    //   break;
+    // case CTRL_MAX_INTEGRAL_CMD:
+    //   // Wire.write(kd_data, sizeof(kd_data));
+    //   break;
     case WHEEL_CMD_TORQUE_CMD:
       Wire.write(wheel_cmd_torque_data, sizeof(wheel_cmd_torque_data));
       break;
-    case MOT_POS_CMD:
-    //   Wire.write(mot_pos_data, sizeof(mot_pos_data));
-    //   break;
-    case MOT_VEL_CMD:
+    // case MOT_POS_CMD:
+    // //   Wire.write(mot_pos_data, sizeof(mot_pos_data));
+    // //   break;
+    // case MOT_VEL_CMD:
     //   Wire.write(mot_vel_data, sizeof(mot_vel_data));
     //   break;
     case WHEEL_REL_POS_INIT_CMD:
@@ -1236,9 +1247,15 @@ int signof(float num) {
 
 // called when program has to stop
 void emergencyStop(void) {
-  has_robot_stopped = 0xFF;  // true
+  // has_robot_stopped = 0xFF;  // true
   Serial.println("!!! Stopping program! :(");
   Serial.println(is_heartbeat_valid);
+
+  if (!is_heartbeat_valid) has_robot_stopped = 0xAA;
+  else if (!is_heartbeat_ctr_valid) has_robot_stopped = 0xBB;
+  else if (heartbeat_timeout_exceeded) has_robot_stopped = 0xCC;
+
+  Serial.println(is_heartbeat_ctr_valid);
   Serial.println(millis_since_last_heartbeat);
   Serial.print(heartbeat_last_ctr);
   Serial.print("\t");
