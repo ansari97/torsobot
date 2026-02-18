@@ -93,7 +93,7 @@ uint64_t nan_ctr = 0;
 uint64_t data_callback_ctr = 0;
 
 // int check received from the pico if the robot has went into exit state
-volatile uint8_t has_robot_stopped;
+volatile uint8_t has_robot_stopped = 0x00;
 
 class MCUNode : public rclcpp::Node
 {
@@ -173,10 +173,10 @@ public:
     sendDataToMCU(CTRL_MAX_INTEGRAL_CMD, &control_max_integral);
 
     // heartbeat timer for 10ms (100Hz)
-    heartbeat_timer_ = this->create_wall_timer(100ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
+    heartbeat_timer_ = this->create_wall_timer(50ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
-    data_timer_ = this->create_wall_timer(1000ms, std::bind(&MCUNode::i2cDataCallback, this)); // Use std::bind
+    data_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::i2cDataCallback, this)); // Use std::bind
 
     RCLCPP_INFO(this->get_logger(), "Starting node!");
   }
@@ -429,7 +429,9 @@ private:
     // Request sensor data from slave
     if (read(i2c_handle, (void *)&has_robot_stopped, sizeof(uint8_t)) == sizeof(uint8_t))
     {
-      if (has_robot_stopped == 0xFF)
+      RCLCPP_INFO(this->get_logger(), "Robot running code: 0x%02X", has_robot_stopped);
+
+      if (has_robot_stopped == 0xFF || has_robot_stopped == 0xAA || has_robot_stopped == 0xBB)
       {
         // robot has gone into while loop
         RCLCPP_ERROR(this->get_logger(), "Robot has entered the exit while loop!");
@@ -465,7 +467,7 @@ private:
     mcu_run_line_.set_value(false); // set to low
     usleep(100 * 1000);             // 100 miliseconds
     mcu_run_line_.set_value(true);  // reset state
-    usleep(2.5 * 1000 * 1000);      // wait for 2 seconds for arduino loop to start before I2C
+    usleep(2 * 1000 * 1000);        // wait for 2 seconds for arduino loop to start before I2C
   }
 
   void exitNode(void)
