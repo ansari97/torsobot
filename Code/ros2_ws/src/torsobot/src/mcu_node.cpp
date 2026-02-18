@@ -22,7 +22,7 @@ using namespace std::chrono_literals;
 
 // Configuration for the GPIO pin
 const std::string GPIO_CHIP_NAME = "gpiochip4"; // Verify with 'ls /dev/gpiochip*' on Pi5
-const unsigned int RPI_GPIO_FOR_PICO_RUN = 14;  // GPIO14
+const unsigned int RPI_GPIO_FOR_PICO_RUN = 23;  // GPIO23
 
 // pico slave address
 #define PICO_SLAVE_ADDRESS 0X30
