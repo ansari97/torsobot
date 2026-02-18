@@ -34,7 +34,13 @@ endif()
 
 add_executable(mcu_node src/mcu_node.cpp)
 add_executable(data_logger_node src/data_logger_node.cpp)
+add_executable(serial_test_node src/serial_test_node.cpp)
 # add_executable(i2c_manager_node src/i2c_manager_node.cpp)
+
+ament_target_dependencies(serial_test_node
+  rclcpp
+  torsobot_interfaces
+  std_msgs)
 
 ament_target_dependencies(mcu_node
   rclcpp
@@ -50,6 +56,9 @@ target_link_libraries(mcu_node ${GPIODCXX_LIBRARY})
 # target_link_libraries(mcu_node PRIVATE yaml-cpp::yaml-cpp)
 
 target_link_libraries(data_logger_node yaml-cpp::yaml-cpp)
+
+target_include_directories(serial_test_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
+target_link_libraries(serial_test_node ${GPIODCXX_LIBRARY})
 
 target_include_directories(data_logger_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -72,6 +81,7 @@ ament_target_dependencies(data_logger_node
 install(TARGETS
   mcu_node
   data_logger_node
+  serial_test_node
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY config
