@@ -209,8 +209,8 @@ char wheel_cmd_torque_data[float_len];
 
 volatile char read_command;
 
-float imu_angle_adjustment = 0.1585;       // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
-float imu_scale_adjustment = PI / 2.9679;  //for some reason imu does not consider down to be 3.14
+float imu_angle_adjustment = 4.0f * DEG_TO_RAD;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
+float imu_scale_adjustment = PI / 2.9679;        //for some reason imu does not consider down to be 3.14
 
 // Control parameters
 const float CONTROL_FREQ = 100;             // control torque write freq
@@ -246,7 +246,7 @@ uint64_t start_time = 0, wait_time = 2 * 1000;  //milliseconds
 uint64_t loop_count = 0;
 
 // for the reed switch
-volatile uint8_t has_robot_stopped = 0x00;  // 0x00 is false, 0xFF is true
+volatile uint8_t robot_run_status = 0x00;  // 0x00 is false, 0xFF is true
 
 // IMU struct for euler angles
 euler_t ypr;
@@ -562,7 +562,7 @@ void loop() {
         // arvrstabilizedrv does not use magnetometer
         quaternionToPitch(&sensorValue.un.gameRotationVector, &torso_pitch);
         torso_pitch -= imu_angle_adjustment;
-        torso_pitch *= imu_scale_adjustment;
+        // torso_pitch *= imu_scale_adjustment;
         torso_pitch = wrapTo2PI(torso_pitch);  // we need angles in the [0, 2*PI) range
         break;
 
@@ -1008,7 +1008,7 @@ void i2cReq() {
   i2c_read_ctr++;
   switch (read_command) {
     case HEARTBEAT_ID:
-      Wire.write(has_robot_stopped);
+      Wire.write(robot_run_status);
       break;
     // case DESIRED_TORSO_PITCH_CMD:
     //   // do nothing; since we're now writing this value to the pico
@@ -1116,7 +1116,7 @@ void quaternionToPitch(sh2_RotationVector_t *rotational_vector, float *pitch, bo
   // Calculate the two components of the Rotation Matrix we care about
   // These represent the relationship between the Body's X/Z axes and World Gravity.
 
-  // R31: Projection of World Z on Body X (Sine component for Y-rotation)
+  // R31: Projection of World Z on Body X (Sine component for Y-rotation); the world z is the gavity vector
   float R31 = 2.0f * (qx * qz - qw * qy);
 
   // R33: Projection of World Z on Body Z (Cosine component for Y-rotation)
@@ -1247,13 +1247,14 @@ int signof(float num) {
 
 // called when program has to stop
 void emergencyStop(void) {
-  // has_robot_stopped = 0xFF;  // true
+  // robot_run_status = 0xFF;  // true
   Serial.println("!!! Stopping program! :(");
   Serial.println(is_heartbeat_valid);
 
-  if (!is_heartbeat_valid) has_robot_stopped = 0xAA;
-  else if (!is_heartbeat_ctr_valid) has_robot_stopped = 0xBB;
-  else if (heartbeat_timeout_exceeded) has_robot_stopped = 0xCC;
+  if (!is_heartbeat_valid) robot_run_status = 0xAA;
+  else if (!is_heartbeat_ctr_valid) robot_run_status = 0xBB;
+  else if (heartbeat_timeout_exceeded) robot_run_status = 0xCC;
+  else if (!is_reed_switch_present) robot_run_status = 0xDD;
 
   Serial.println(is_heartbeat_ctr_valid);
   Serial.println(millis_since_last_heartbeat);
