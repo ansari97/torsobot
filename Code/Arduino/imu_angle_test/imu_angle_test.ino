@@ -22,9 +22,9 @@
 // #define BNO08X_FAST_MODE
 
 float imu_pitch;
-float torso_pitch;
-float imu_angle_adjustment = 0.1585;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
-float imu_scale_adjustment = PI/2.9679;
+float torso_pitch, torso_roll;
+float imu_angle_adjustment = 4.0f * DEG_TO_RAD;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
+float imu_scale_adjustment = PI / 2.9679;
 
 
 int ctr = 0;
@@ -35,7 +35,7 @@ struct euler_t {
   float roll;
 };
 
-void quaternionToPitch(sh2_RotationVector_t*, float*, bool degrees = false);
+void quaternionToPitch(sh2_RotationVector_t*, float*, float*, bool degrees = false);
 void setReports(long report_interval);
 void saveCalibration(void);
 
@@ -132,9 +132,9 @@ void loop() {
         // torso_pitch is updated by reference
         // &sensorValue.un.rotationVector uses the magnetomoeter and causes x/y values to jump due to yaw corrections
         // arvrstabilizedrv does not use magnetometer
-        quaternionToPitch(&sensorValue.un.gameRotationVector, &torso_pitch);
+        quaternionToPitch(&sensorValue.un.gameRotationVector, &torso_pitch, &torso_roll);
         torso_pitch -= imu_angle_adjustment;
-        torso_pitch *=imu_scale_adjustment;
+        // torso_pitch *= imu_scale_adjustment;
         torso_pitch = wrapTo2PI(torso_pitch);  // we need angles in the [0, 2*PI) range
         break;
     }
@@ -143,7 +143,9 @@ void loop() {
   // // Serial.println();
 
   Serial.print("torso pitch: ");
-  Serial.println(torso_pitch, 4);
+  Serial.print(torso_pitch, 4);
+  Serial.print("\ttorso roll: ");
+  Serial.println(torso_roll, 4);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -178,10 +180,12 @@ void saveCalibration() {
   } else {
     Serial.print("Failed to save calibration. Status: ");
     Serial.println(status);
+    Serial.println("stopping program...");
+    while (1) delay(10);
   }
 }
 
-void quaternionToPitch(sh2_RotationVector_t* rotational_vector, float* pitch, bool degrees) {
+void quaternionToPitch(sh2_RotationVector_t* rotational_vector, float* pitch, float* roll, bool degrees) {
   float qw = rotational_vector->real;
   float qx = rotational_vector->i;
   float qy = rotational_vector->j;
@@ -190,18 +194,21 @@ void quaternionToPitch(sh2_RotationVector_t* rotational_vector, float* pitch, bo
   // Calculate the two components of the Rotation Matrix we care about
   // These represent the relationship between the Body's X/Z axes and World Gravity.
 
-  // R31: Projection of World Z on Body X (Sine component for Y-rotation)
-  float R31 = 2.0f * (qx * qz - qw * qy);
-
-  // R33: Projection of World Z on Body Z (Cosine component for Y-rotation)
-  float R33 = 1.0f - 2.0f * (qx * qx + qy * qy);
+  // Projections of World Z (Gravity) onto Body axes
+  float R31 = 2.0f * (qx * qz - qw * qy);         // Body X (Pitch sine)
+  float R32 = 2.0f * (qy * qz + qw * qx);         // Body Y (Roll sine)
+  float R33 = 1.0f - 2.0f * (qx * qx + qy * qy);  // Body Z (Cosine)
 
   // Calculate the full 360-degree angle (atan2 handles all 4 quadrants automatically)
   // We use -R31 because standard pitch definition often opposes the matrix index direction
   *pitch = atan2(-R31, R33);
+  *roll = atan2(R32, R33);
+
+  // we could also use the atan2(-R31, sgn(R33) * sqrt(R11*R11 + R21*R21)); but this would cause jumps/singularities since R33 is changing sign and sqrt isapproacing 0 at the same time
 
   if (degrees) {
     *pitch *= RAD_TO_DEG;
+    *roll *= RAD_TO_DEG;
   }
 }
 
