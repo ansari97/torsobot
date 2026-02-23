@@ -22,7 +22,7 @@ using namespace std::chrono_literals;
 
 // Configuration for the GPIO pin
 const std::string GPIO_CHIP_NAME = "gpiochip4"; // Verify with 'ls /dev/gpiochip*' on Pi5
-const unsigned int RPI_GPIO_FOR_PICO_RUN = 23;  // GPIO23
+const unsigned int RPI_GPIO_FOR_PICO_RUN = 22;  // GPIO22; changed from 23 because i did not want to change the connections manually
 
 // pico slave address
 #define PICO_SLAVE_ADDRESS 0X30
@@ -431,10 +431,10 @@ private:
     {
       RCLCPP_INFO(this->get_logger(), "Robot running code: 0x%02X", has_robot_stopped);
 
-      if (has_robot_stopped == 0xFF || has_robot_stopped == 0xAA || has_robot_stopped == 0xBB)
+      if (has_robot_stopped != 0x00)
       {
         // robot has gone into while loop
-        RCLCPP_ERROR(this->get_logger(), "Robot has entered the exit while loop!");
+        RCLCPP_ERROR(this->get_logger(), "Robot has entered the exit while loop! error_code: 0x%02X", has_robot_stopped);
         exitNode();
       }
     }
