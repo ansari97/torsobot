@@ -169,7 +169,9 @@ const float ENCODER_uSPR = ENCODER_CPR * 64;  //usteps per rev
 volatile int32_t signed_encoder_steps;        // volatile shared variable between cores
 int32_t local_signed_encoder_steps;           // local encoder step variable
 float wheel_rel_pos, wheel_rel_pos_init;      // relative angle
-float wheel_rel_vel;
+
+volatile float wheel_rel_vel;
+float local_wheel_rel_vel;
 
 // for imu correction
 float gravity_x = 0;
@@ -497,6 +499,9 @@ void loop() {
   local_signed_encoder_steps = signed_encoder_steps;
   memcpy(encoder_steps_data, &local_signed_encoder_steps, sizeof(int32_t));
 
+  // get speed from core1
+  local_wheel_rel_vel = wheel_rel_vel;
+
   // checks then increments
   if (loop_count++ == 0) {
     start_time = millis();  // stores start time of the main loop function
@@ -648,8 +653,8 @@ void loop() {
   }
 
   // get other wheel values
-  wheel_rel_vel = (encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
-  wheel_vel = torso_pitch_rate + wheel_rel_vel;             // does not require init values for the mot or the torso
+  // wheel_rel_vel = (encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
+  wheel_vel = torso_pitch_rate + local_wheel_rel_vel;  // does not require init values for the mot or the torso
 
   memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
   memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
@@ -884,6 +889,7 @@ void loop1() {
   encoder.update();
 
   signed_encoder_steps = -static_cast<int32_t>(encoder.step);  // sign depends on pin connections for channel A and B
+  wheel_rel_vel = -(encoder.speed / ENCODER_uSPR) * 2 * PI;    // relative velocity in rad/s
   // mutex_exit(&encoder_mutex);
 }
 
