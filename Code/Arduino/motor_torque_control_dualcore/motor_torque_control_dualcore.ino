@@ -68,7 +68,7 @@ void quaternionToEulerRV(sh2_RotationVectorWAcc_t *rotational_vector, euler_t *y
 void quaternionToEulerGI(sh2_GyroIntegratedRV_t *rotational_vector, euler_t *ypr, bool degrees);
 void setReports(long report_interval);
 void i2cReq(void);
-void i2cRecv(void);
+void i2cRecv(int);
 void emergencyStop(void);
 
 int signof(float var);
@@ -89,6 +89,60 @@ bool checkHeartbeatValidity(void);
 //   Variable declarations
 // ——————————————————————————————————————————————————————————————————————————————
 
+// struct definitions
+
+// i2c command variables
+static constexpr uint8_t HEARTBEAT_ID = 0XAA;
+static constexpr uint8_t MCU_CONTROLLER_CONFIG_ID = 0XBB;
+static constexpr uint8_t INIT_DATA_ID = 0XCC;
+static constexpr uint8_t STATE_DATA_ID = 0XDD;
+
+// i2c structs
+// hearbeat
+struct __attribute__((packed)) Heartbeat {
+  uint8_t id;
+  uint8_t counter;
+  uint8_t checksum;
+} heartbeat_;
+
+// config data
+struct __attribute__((packed)) mcuConfigData {
+  uint8_t id;
+  float desired_torso_pitch;
+  float kp;
+  float ki;
+  float kd;
+  float wheel_max_torque;
+  float control_max_integral;
+  uint8_t controller;
+  uint8_t checksum;
+} config_data_interrupt, config_data;
+
+// init data
+struct __attribute__((packed)) InitData {
+  float torso_pitch_init = std::numeric_limits<float>::quiet_NaN();
+  float wheel_rel_pos_init = std::numeric_limits<float>::quiet_NaN();
+  uint8_t checksum;
+} init_data;
+
+// robot data
+struct __attribute__((packed)) StateData {
+  float torso_pitch;
+  float torso_pitch_rate;
+  float wheel_pos;
+  float wheel_vel;
+  int32_t encoder_steps;
+  float encoder_ang;
+  float encoder_speed;
+  uint8_t motor_drv_mode;
+  float wheel_cmd_torque;
+  float wheel_actual_torque;
+  uint8_t checksum;
+} state_data;
+
+// config data okay
+volatile uint8_t config_ack = 0;
+
 // I2C speed; try changing it to 50kHz
 const int I2C_BAUDRATE = 100 * 1000;  // I2C speed in Hz, must be the same on Pi
 int i2c_read_ctr = 0;                 // reads the number of times mcu is read from
@@ -98,49 +152,27 @@ volatile bool encoder_initialized = false;
 volatile bool core1_setup_complete = false;
 
 // heartbeat variables
-const uint8_t HEARTBEAT_ID = 0XAA;
 volatile uint8_t heartbeat_rcvd_ID;
 volatile uint8_t heartbeat_ctr;
 volatile uint8_t heartbeat_expected_checksum;
 volatile uint8_t heartbeat_rcvd_checksum;
 volatile uint8_t heartbeat_last_ctr = 255;
+
 volatile bool was_heartbeat_rcvd = false;
 volatile bool is_heartbeat_valid = true;
+
 volatile bool heartbeat_timeout_exceeded = false;
+
 volatile bool is_heartbeat_ctr_valid = true;
+
 volatile bool is_reed_switch_present = false;
+
 const int HEARTBEAT_PERIOD = 50;                     // milliseconds
 const int HEARTBEAT_FREQ = 1000 / HEARTBEAT_PERIOD;  // hz; must be same as from pi
 const int HEARTBEAT_TIMEOUT = 5 * HEARTBEAT_PERIOD;  // miliseconds
-volatile uint64_t heartbeat_timer = 0;               // = millis();
+
+volatile uint64_t heartbeat_timer = 0;  // = millis();
 uint32_t millis_since_last_heartbeat = 0;
-
-// I2C cmd for mcu data
-const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00;  // desired torso_pitch
-const uint8_t TORSO_PITCH_CMD = 0x01;          // torso_pitch
-const uint8_t TORSO_PITCH_RATE_CMD = 0x02;     // torso_pitch_rate
-const uint8_t WHEEL_POS_CMD = 0x03;            // motor rotor position (at wheel)
-const uint8_t WHEEL_VEL_CMD = 0x04;            // motor velocity position (at wheel)
-const uint8_t WHEEL_TORQUE_CMD = 0X05;         // motor torque (at wheel)
-const uint8_t MOTOR_DRV_MODE_CMD = 0X06;       // motor driver mode
-
-const uint8_t WHEEL_MAX_TORQUE_CMD = 0X07;   // motor max torque value
-const uint8_t KP_CMD = 0X08;                 // Kp value
-const uint8_t KI_CMD = 0X09;                 // Ki value
-const uint8_t KD_CMD = 0X0A;                 // Kd value
-const uint8_t CTRL_MAX_INTEGRAL_CMD = 0X0B;  // max integral term
-
-const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
-
-const uint8_t MOT_POS_CMD = 0X0D;  // mot_pos
-const uint8_t MOT_VEL_CMD = 0X0E;  // mot_vel
-
-const uint8_t WHEEL_REL_POS_INIT_CMD = 0X0F;
-const uint8_t TORSO_PITCH_INIT_CMD = 0X10;
-
-const uint8_t CONTROLLER_CMD = 0X11;  // cmd to control which controller to run
-
-const uint8_t ENCODER_STEPS_CMD = 0X12;  //cmd for encoder steps
 
 // hardware parameters
 const float gear_ratio = (38.0 / 16.0) * (48.0 / 16.0);
@@ -155,7 +187,7 @@ float gravity_compensation_term = 0;  // for gravity compensation of the control
 float gravity_constant = 0;           // mass * length * g
 
 // robot data variables
-int8_t mot_drv_mode;
+uint8_t mot_drv_mode;
 float torso_pitch, torso_pitch_rate;
 float mot_vel, mot_pos, mot_torque;        // at the motor
 float wheel_pos, wheel_vel, wheel_torque;  // at the wheel
@@ -169,6 +201,9 @@ const float ENCODER_uSPR = ENCODER_CPR * 64;  //usteps per rev
 volatile int32_t signed_encoder_steps;        // volatile shared variable between cores
 int32_t local_signed_encoder_steps;           // local encoder step variable
 float wheel_rel_pos, wheel_rel_pos_init;      // relative angle
+
+volatile float encoder_ang;
+float local_encoder_ang;
 
 volatile float wheel_rel_vel;
 float local_wheel_rel_vel;
@@ -209,7 +244,7 @@ char wheel_cmd_torque_data[float_len];
 // char write_buff[float_len + 10];
 // char write_buff2[float_len + 10];
 
-volatile char read_command;
+volatile char i2c_cmd_id;
 
 float imu_angle_adjustment = 4.0f * DEG_TO_RAD;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
 float imu_scale_adjustment = PI / 2.9679;        //for some reason imu does not consider down to be 3.14
@@ -445,22 +480,48 @@ void setup() {
   // position_cmd.maximum_torque = mot_max_torque; // moved to the loop since this value cannot be updated over I2C
 
   // Copy to char buffers
-  memcpy(desired_torso_pitch_data, const_cast<float *>(&desired_torso_pitch), sizeof(desired_torso_pitch));
-  memcpy(mot_max_torque_data, const_cast<float *>(&mot_max_torque), sizeof(mot_max_torque));
-  memcpy(kp_data, const_cast<float *>(&kp), sizeof(kp));
-  memcpy(ki_data, const_cast<float *>(&ki), sizeof(ki));
-  memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
+  // memcpy(desired_torso_pitch_data, const_cast<float *>(&desired_torso_pitch), sizeof(desired_torso_pitch));
+  // memcpy(mot_max_torque_data, const_cast<float *>(&mot_max_torque), sizeof(mot_max_torque));
+  // memcpy(kp_data, const_cast<float *>(&kp), sizeof(kp));
+  // memcpy(ki_data, const_cast<float *>(&ki), sizeof(ki));
+  // memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
 
-  // set nan values to all sensor buffers
-  float nan_float = NaN;  // from mjbots
-  memcpy(torso_pitch_data, &nan_float, sizeof(float));
-  memcpy(torso_pitch_rate_data, &nan_float, sizeof(float));
-  memcpy(wheel_pos_data, &nan_float, sizeof(float));
-  memcpy(wheel_vel_data, &nan_float, sizeof(float));
-  memcpy(wheel_torque_data, &nan_float, sizeof(float));
-  memcpy(wheel_cmd_torque_data, &nan_float, sizeof(float));
-  memcpy(mot_pos_data, &nan_float, sizeof(float));
-  memcpy(mot_vel_data, &nan_float, sizeof(float));
+  // // set nan values to all sensor buffers
+  // float nan_float = NaN;  // from mjbots
+  // memcpy(torso_pitch_data, &nan_float, sizeof(float));
+  // memcpy(torso_pitch_rate_data, &nan_float, sizeof(float));
+  // memcpy(wheel_pos_data, &nan_float, sizeof(float));
+  // memcpy(wheel_vel_data, &nan_float, sizeof(float));
+  // memcpy(wheel_torque_data, &nan_float, sizeof(float));
+  // memcpy(wheel_cmd_torque_data, &nan_float, sizeof(float));
+  // memcpy(mot_pos_data, &nan_float, sizeof(float));
+  // memcpy(mot_vel_data, &nan_float, sizeof(float));
+
+  torso_pitch = NaN;
+  torso_pitch_rate = NaN;
+  wheel_pos = NaN;
+  wheel_vel = NaN;
+  encoder_ang = NaN;
+  local_wheel_rel_vel = NaN;
+  wheel_cmd_torque = NaN;
+  wheel_torque = NaN;
+
+  mot_drv_mode = 255;
+
+  Serial.println("Waiting for config write from PI...");
+  while (!config_ack) {
+    if (digitalRead(STOP_LED) == LOW) digitalWrite(STOP_LED, HIGH);
+    delay(10);
+  }
+  Serial.println("Config was successful!");
+  digitalWrite(STOP_LED, LOW);
+
+  // briefly pause interrupts, copy the data, and turn them back on
+  noInterrupts();                       // Pauses I2C temporarily
+  config_data = config_data_interrupt;  // Instant, safe memory copy
+  interrupts();  // Resume normal I2C operation
+  
+  mot_max_torque = config_data.wheel_max_torque / gear_ratio;
 
   // waits for heatrbeat
   Serial.println("Waiting for heartbeat from the PI...");
@@ -497,10 +558,27 @@ void loop() {
 
   // get encoder steps from the shared memory
   local_signed_encoder_steps = signed_encoder_steps;
-  memcpy(encoder_steps_data, &local_signed_encoder_steps, sizeof(int32_t));
+  local_encoder_ang = encoder_ang;
+  // memcpy(encoder_steps_data, &local_signed_encoder_steps, sizeof(int32_t));
 
   // get speed from core1
   local_wheel_rel_vel = wheel_rel_vel;
+
+  // copy all values to the struct and pause interrupts!
+  noInterrupts();
+  state_data.torso_pitch = torso_pitch;
+  state_data.torso_pitch_rate = torso_pitch_rate;
+  state_data.wheel_pos = wheel_pos;
+  state_data.wheel_vel = wheel_vel;
+  state_data.encoder_steps = local_signed_encoder_steps;
+  state_data.encoder_ang = local_encoder_ang;
+  state_data.encoder_speed = local_wheel_rel_vel;
+  state_data.motor_drv_mode = mot_drv_mode;
+  state_data.wheel_cmd_torque = wheel_cmd_torque;
+  state_data.wheel_actual_torque = wheel_torque;
+
+  state_data.checksum = calculate_checksum<StateData>(state_data);
+  interrupts();
 
   // checks then increments
   if (loop_count++ == 0) {
@@ -584,8 +662,8 @@ void loop() {
   }
 
   // copy to buffers to send to pi
-  memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
-  memcpy(torso_pitch_rate_data, &torso_pitch_rate, sizeof(float));
+  // memcpy(torso_pitch_data, &torso_pitch, sizeof(float));
+  // memcpy(torso_pitch_rate_data, &torso_pitch_rate, sizeof(float));
   // // Serial.println();
 
   // **************************************************************
@@ -614,9 +692,12 @@ void loop() {
 
     // mot_pos_init = mot_pos;
 
-    // copy into buffer
-    memcpy(wheel_rel_pos_init_data, &wheel_rel_pos_init, sizeof(float));
-    memcpy(torso_pitch_init_data, &torso_pitch_init, sizeof(float));
+    // copy into struct
+    noInterrupts();
+    init_data.torso_pitch_init = torso_pitch_init;
+    init_data.wheel_rel_pos_init = wheel_rel_pos_init;
+    init_data.checksum = calculate_checksum<InitData>(init_data);
+    interrupts();
 
     // Serial.print("mot_pos_init:\t");
     // Serial.print(mot_pos_init);
@@ -764,15 +845,15 @@ void loop() {
   // Integral term
   control_error_integral += control_error * time_since_last;
   // clamp the integral to prevent integral windup
-  control_error_integral = min(max_integral, max(-max_integral, control_error_integral));
+  control_error_integral = min(config_data.control_max_integral, max(-config_data.control_max_integral, control_error_integral));
 
   // time derivative of control error = -torso_pitch_rate ; because desired_pitch_rate is constant
 
-  mot_cmd_torque = kp * control_error + ki * control_error_integral + kd * (-torso_pitch_rate);
+  mot_cmd_torque = config_data.kp * control_error + config_data.ki * control_error_integral + config_data.kd * (-torso_pitch_rate);
 
   // term for integral torque
   // mot_cmd_torque += ki * control_error_integral;
-  if (controller == 1) {  // term for gravity compensation
+  if (config_data.controller == 1) {  // term for gravity compensation
     gravity_compensation_term = gravity_constant * sin(torso_pitch);
     mot_cmd_torque -= gravity_compensation_term / gear_ratio;  // add a gravity compensation term (adjusted for gear ratio) at the motor
   }
@@ -889,35 +970,38 @@ void loop1() {
   encoder.update();
 
   signed_encoder_steps = -static_cast<int32_t>(encoder.step);  // sign depends on pin connections for channel A and B
-  wheel_rel_vel = -(encoder.speed / ENCODER_uSPR) * 2 * PI;    // relative velocity in rad/s
+  encoder_ang = encoderCountsToRad(signed_encoder_steps);
+  wheel_rel_vel = -(encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
   // mutex_exit(&encoder_mutex);
 }
 
 ///////////////////////////////////////////////////////////////////
 // Helper functions
 ///////////////////////////////////////////////////////////////////
-// Called when the I2C slave gets written to
+// Called when the I2C slave receives something from master
 void i2cRecv(int len) {
-  read_command = Wire.read();  // or the ID
 
-  int remaining_bytes = len - 1;
+  if (len < 1) return;
 
-  if (static_cast<uint8_t>(read_command) == HEARTBEAT_ID) {
-    if (len == 3) {
-      heartbeat_rcvd_ID = read_command;
-      heartbeat_ctr = Wire.read();            // read second byte
-      heartbeat_rcvd_checksum = Wire.read();  // read third byte
+  uint8_t i2c_cmd_id = Wire.peek();  // or the ID
+
+  if (i2c_cmd_id == HEARTBEAT_ID) {
+    if (len == sizeof(Heartbeat)) {
       was_heartbeat_rcvd = true;
 
-      heartbeat_expected_checksum = heartbeat_ctr ^ heartbeat_rcvd_ID;
+      Heartbeat incoming_heartbeat;
 
-      if (heartbeat_expected_checksum == heartbeat_rcvd_checksum) {  // && (heartbeat_ctr == (heartbeat_last_ctr + 1) % 256)) {
+      Wire.readBytes((uint8_t *)&incoming_heartbeat, sizeof(Heartbeat));
+
+      uint8_t calculated_checksum = calculate_checksum<Heartbeat>(incoming_heartbeat);
+
+      if (calculated_checksum == incoming_heartbeat.checksum) {  // && (heartbeat_ctr == (heartbeat_last_ctr + 1) % 256)) {
 
         is_heartbeat_valid = true;
 
-        if (heartbeat_ctr != heartbeat_last_ctr) {  //(heartbeat_ctr == (heartbeat_last_ctr + 1) % 256) {
+        if (incoming_heartbeat.counter != heartbeat_last_ctr) {  //(heartbeat_ctr == (heartbeat_last_ctr + 1) % 256) {
           is_heartbeat_ctr_valid = true;
-          heartbeat_last_ctr = heartbeat_ctr;
+          heartbeat_last_ctr = incoming_heartbeat.counter;
           heartbeat_timer = millis();
         } else {
           is_heartbeat_ctr_valid = false;
@@ -926,150 +1010,53 @@ void i2cRecv(int len) {
       } else {
         is_heartbeat_valid = false;
       }
+    } else {
+      while (Wire.available()) Wire.read();
     }
   }
-  // else if it is the desired torso angle
-  else if (static_cast<uint8_t>(read_command) == DESIRED_TORSO_PITCH_CMD) {
-    if (len == 5) {
-      for (int i = 0; i < remaining_bytes; i++) { desired_torso_pitch_data[i] = Wire.read(); }
-      float temp_val;
-      memcpy(&temp_val, desired_torso_pitch_data, sizeof(float));
+  //check for config_cmd
+  else if (i2c_cmd_id == MCU_CONTROLLER_CONFIG_ID) {
+    if (len == sizeof(mcuConfigData)) {
 
-      desired_torso_pitch = temp_val;
-      // received in degrees, then converted to radians
-      desired_torso_pitch = degToRad(desired_torso_pitch);
-    }
-  }
-  // else if it is the kp
-  else if (static_cast<uint8_t>(read_command) == KP_CMD) {
-    if (len == 5) {
-      for (int i = 0; i < remaining_bytes; i++) { kp_data[i] = Wire.read(); }
-      float temp_val;
-      memcpy(&temp_val, kp_data, sizeof(float));
+      mcuConfigData incoming_config_data;
 
-      kp = temp_val;
-    }
-  }
-  // else if it is the ki
-  else if (static_cast<uint8_t>(read_command) == KI_CMD) {
-    if (len == 5) {
-      for (int i = 0; i < remaining_bytes; i++) { ki_data[i] = Wire.read(); }
-      float temp_val;
-      memcpy(&temp_val, ki_data, sizeof(float));
+      Wire.readBytes((uint8_t *)&incoming_config_data, sizeof(mcuConfigData));
 
-      ki = temp_val;
-    }
-  }
-  // else if it is the kd
-  else if (static_cast<uint8_t>(read_command) == KD_CMD) {
-    if (len == 5) {
-      for (int i = 0; i < remaining_bytes; i++) { kd_data[i] = Wire.read(); }
-      float temp_val;
-      memcpy(&temp_val, kd_data, sizeof(float));
+      uint8_t calculated_checksum = calculate_checksum<mcuConfigData>(incoming_config_data);
 
-      kd = temp_val;
-    }
-  }
-  // else if it is the motor max torque
-  else if (static_cast<uint8_t>(read_command) == WHEEL_MAX_TORQUE_CMD) {
-    if (len == 5) {
-      for (int i = 0; i < remaining_bytes; i++) { mot_max_torque_data[i] = Wire.read(); }
-      float temp_val;
-      memcpy(&temp_val, mot_max_torque_data, sizeof(float));
+      if (calculated_checksum == incoming_config_data.checksum) {
+        config_data_interrupt = incoming_config_data;
+        config_ack = true;
+      } else {
+        config_ack = false;
+      }
 
-      wheel_max_torque = temp_val;
-      mot_max_torque = wheel_max_torque / gear_ratio;
+    } else {
+      while (Wire.available()) Wire.read();
     }
-  }
-  // else if it is the control max integral torque
-  else if (static_cast<uint8_t>(read_command) == CTRL_MAX_INTEGRAL_CMD) {
-    if (len == 5) {
-      for (int i = 0; i < remaining_bytes; i++) { control_max_integral_data[i] = Wire.read(); }
-      float temp_val;
-      memcpy(&temp_val, control_max_integral_data, sizeof(float));
 
-      max_integral = temp_val;
-    }
-  }
-  // else if it is the controller
-  else if (static_cast<uint8_t>(read_command) == CONTROLLER_CMD) {
-    if (len == 5) {
-      for (int i = 0; i < remaining_bytes; i++) { controller_data[i] = Wire.read(); }
-      int temp_val;
-      memcpy(&temp_val, controller_data, sizeof(int));
-
-      controller = temp_val;
-    }
   }
   // ensures that if there are remaining bytes, they are read so that the buffer is emptied
   else {
-    while (remaining_bytes--) {
-      (void)Wire.read();
-    }
+    while (Wire.available()) Wire.read();
   }
 }
 
 // Called when the I2C slave is read from
 void i2cReq() {
   i2c_read_ctr++;
-  switch (read_command) {
+  switch (i2c_cmd_id) {
     case HEARTBEAT_ID:
       Wire.write(robot_run_status);
       break;
-    // case DESIRED_TORSO_PITCH_CMD:
-    //   // do nothing; since we're now writing this value to the pico
-    //   // Wire.write(desired_torso_pitch_data, sizeof(desired_torso_pitch_data));
-    //   break;
-    case TORSO_PITCH_CMD:
-      Wire.write(torso_pitch_data, sizeof(torso_pitch_data));
+    case MCU_CONTROLLER_CONFIG_ID:
+      Wire.write(config_ack);
       break;
-    case TORSO_PITCH_RATE_CMD:
-      Wire.write(torso_pitch_rate_data, sizeof(torso_pitch_rate_data));
+    case STATE_DATA_ID:
+      Wire.write((uint8_t *)&state_data, sizeof(StateData));
       break;
-    case WHEEL_POS_CMD:
-      Wire.write(wheel_pos_data, sizeof(wheel_pos_data));
-      break;
-    case WHEEL_VEL_CMD:
-      Wire.write(wheel_vel_data, sizeof(wheel_vel_data));
-      break;
-    case WHEEL_TORQUE_CMD:
-      Wire.write(wheel_torque_data, sizeof(wheel_torque_data));
-      break;
-    case MOTOR_DRV_MODE_CMD:
-      Wire.write(mot_drv_mode_data, sizeof(mot_drv_mode_data));
-      break;
-    case ENCODER_STEPS_CMD:
-      Wire.write(encoder_steps_data, sizeof(encoder_steps_data));
-      break;
-    case WHEEL_MAX_TORQUE_CMD:
-      Wire.write(mot_max_torque_data, sizeof(mot_max_torque_data));
-      break;
-    // case KP_CMD:
-    //   // Wire.write(kp_data, sizeof(kp_data));
-    //   break;
-    // case KI_CMD:
-    //   // Wire.write(ki_data, sizeof(ki_data));
-    //   break;
-    // case KD_CMD:
-    //   // Wire.write(kd_data, sizeof(kd_data));
-    //   break;
-    // case CTRL_MAX_INTEGRAL_CMD:
-    //   // Wire.write(kd_data, sizeof(kd_data));
-    //   break;
-    case WHEEL_CMD_TORQUE_CMD:
-      Wire.write(wheel_cmd_torque_data, sizeof(wheel_cmd_torque_data));
-      break;
-    // case MOT_POS_CMD:
-    // //   Wire.write(mot_pos_data, sizeof(mot_pos_data));
-    // //   break;
-    // case MOT_VEL_CMD:
-    //   Wire.write(mot_vel_data, sizeof(mot_vel_data));
-    //   break;
-    case WHEEL_REL_POS_INIT_CMD:
-      Wire.write(wheel_rel_pos_init_data, sizeof(wheel_rel_pos_init_data));
-      break;
-    case TORSO_PITCH_INIT_CMD:
-      Wire.write(torso_pitch_init_data, sizeof(torso_pitch_init_data));
+    case INIT_DATA_ID:
+      Wire.write((uint8_t *)&init_data, sizeof(InitData));
       break;
   }
 }
@@ -1281,4 +1268,18 @@ void emergencyStop(void) {
     // infinite while loop
     delay(1);
   }
+}
+
+template<typename Type>
+uint8_t calculate_checksum(const Type &data) {
+  const uint8_t *data_buffer = reinterpret_cast<const uint8_t *>(&data);
+  size_t data_size = sizeof(data);
+
+  uint8_t checksum = 0;
+
+  for (size_t i = 0; i < data_size - 1; i++) {
+    checksum ^= data_buffer[i];
+  }
+
+  return checksum;
 }
