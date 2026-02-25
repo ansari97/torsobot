@@ -20,81 +20,6 @@
 
 using namespace std::chrono_literals;
 
-// Configuration for the GPIO pin
-const std::string GPIO_CHIP_NAME = "gpiochip4"; // Verify with 'ls /dev/gpiochip*' on Pi5
-const unsigned int RPI_GPIO_FOR_PICO_RUN = 22;  // GPIO22; changed from 23 because i did not want to change the connections manually
-
-// pico slave address
-#define PICO_SLAVE_ADDRESS 0X30
-
-// I2C_bus 1 for PI
-const int I2C_BUS = 1;
-
-int i2c_handle;
-
-// Buffers to read data and store vals; only for 4 byte floats
-const int float_len = sizeof(float);
-char read_buff[float_len];
-float torso_pitch, torso_pitch_rate;
-float wheel_pos, wheel_vel, wheel_torque;
-float mot_pos, mot_vel;
-float wheel_cmd_torque;
-int8_t mot_drv_mode;
-int32_t signed_encoder_steps;
-
-volatile float desired_torso_pitch;
-volatile float wheel_max_torque, mot_max_torque, control_max_integral;
-volatile float kp, ki, kd;
-
-float torso_pitch_init = std::numeric_limits<float>::quiet_NaN(); //, mot_pos_init = std::numeric_limits<float>::quiet_NaN();
-float wheel_rel_pos_init = std::numeric_limits<float>::quiet_NaN();
-
-// I2C write cmd for mcu data
-const uint8_t DESIRED_TORSO_PITCH_CMD = 0x00; // desired torso_pitch
-const uint8_t TORSO_PITCH_CMD = 0x01;         // torso_pitch
-const uint8_t TORSO_PITCH_RATE_CMD = 0x02;    // torso_pitch_rate
-const uint8_t WHEEL_POS_CMD = 0x03;           // motor rotor position (not wheel)
-const uint8_t WHEEL_VEL_CMD = 0x04;           // motor velocity position (not wheel)
-const uint8_t WHEEL_TORQUE_CMD = 0X05;        // motor torque at motor shaft (not wheel)
-const uint8_t MOTOR_DRV_MODE_CMD = 0X06;      // motor driver mode
-
-const uint8_t WHEEL_MAX_TORQUE_CMD = 0X07;  // motor max torque value
-const uint8_t KP_CMD = 0X08;                // Kp value
-const uint8_t KI_CMD = 0X09;                // Ki value
-const uint8_t KD_CMD = 0X0A;                // Kd value
-const uint8_t CTRL_MAX_INTEGRAL_CMD = 0X0B; // max integral term
-const uint8_t WHEEL_CMD_TORQUE_CMD = 0X0C;  // commanded motor torque
-
-const uint8_t MOT_POS_CMD = 0X0D; // mot_pos
-const uint8_t MOT_VEL_CMD = 0X0E; // mot_vel
-
-// for the initial values
-const uint8_t WHEEL_REL_POS_INIT_CMD = 0X0F;
-const uint8_t TORSO_PITCH_INIT_CMD = 0X10;
-
-// controller type
-const uint8_t CONTROLLER_CMD = 0X11;
-volatile int controller = 1; // default is 1, but this is overwritten from the param file
-
-// encoder steps cmd
-const uint8_t ENCODER_STEPS_CMD = 0x12; // signed encoder steps from the mcu
-
-// Heartbeat variables
-const uint8_t HEARTBEAT_ID = 0xAA;
-uint8_t heartbeat_ctr = 0;
-uint8_t heartbeat_checksum = 0;
-
-int bytes_written;
-
-// counter for the nan values encountered udring I2C receive
-uint64_t nan_ctr = 0;
-
-// counter for the callback function
-uint64_t data_callback_ctr = 0;
-
-// int check received from the pico if the robot has went into exit state
-volatile uint8_t has_robot_stopped = 0x00;
-
 class MCUNode : public rclcpp::Node
 {
 public:
@@ -111,72 +36,88 @@ public:
     // Create publisher for "torsobot_state" topic
     data_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotData>("torsobot_data", 10);
 
-    // Create service server for one-time values
-    // control_params_server_ = this->create_service<torsobot_interfaces::srv::RequestControlParams>("control_params", std::bind(&MCUNode::handleServiceRequest, this, std::placeholders::_1, std::placeholders::_2));
-
     // Create ROS2 parameters
-    this->declare_parameter("desired_torso_pitch", 180.0); // default value of 180 in degrees
-    this->declare_parameter("kp", 0.0);                    // default value of 0
-    this->declare_parameter("ki", 0.0);                    // default value of 0
-    this->declare_parameter("kd", 0.0);                    // default value of 0
-    this->declare_parameter("wheel_max_torque", 0.0);      // default value of 0
-    this->declare_parameter("control_max_integral", 0.0);  // default value of 0
-    this->declare_parameter("controller", 1);              // default value of 1 (GCPD controller)
+    this->declare_parameter("desired_torso_pitch_", 180.0); // default value of 180 in degrees
+    this->declare_parameter("kp_", 0.0);                    // default value of 0
+    this->declare_parameter("ki_", 0.0);                    // default value of 0
+    this->declare_parameter("kd_", 0.0);                    // default value of 0
+    this->declare_parameter("wheel_max_torque_", 0.0);      // default value of 0
+    this->declare_parameter("control_max_integral_", 0.0);  // default value of 0
+    this->declare_parameter("controller", 1);               // default value of 1 (GCPD controller)
 
     // get ROS2 parameters from the param file (listed in launch file) and assign to these variables (2nd argument)
-    this->get_parameter("desired_torso_pitch", desired_torso_pitch);
-    this->get_parameter("kp", kp);
-    this->get_parameter("ki", ki);
-    this->get_parameter("kd", kd);
-    this->get_parameter("wheel_max_torque", wheel_max_torque);
-    this->get_parameter("control_max_integral", control_max_integral);
-    this->get_parameter("controller", controller);
+    // Create temporary variables for parameter retrieval
+    float temp_pitch, temp_kp, temp_ki, temp_kd, temp_wheel, temp_max_integral;
+    int temp_controller; // ROS2 parameter integers usually bind to int, not uint8_t directly
 
-    RCLCPP_INFO(this->get_logger(), "Desired torso pitch is %f: ", desired_torso_pitch);
-    RCLCPP_INFO(this->get_logger(), "kp %f: ", kp);
-    RCLCPP_INFO(this->get_logger(), "ki %f: ", ki);
-    RCLCPP_INFO(this->get_logger(), "kd %f: ", kd);
-    RCLCPP_INFO(this->get_logger(), "wheel_max_torque %f: ", wheel_max_torque);
-    RCLCPP_INFO(this->get_logger(), "control_max_integral %f: ", control_max_integral);
-    RCLCPP_INFO(this->get_logger(), "controller %d: ", controller);
+    // Get parameters into the safe temporary variables
+    this->get_parameter("desired_torso_pitch_", temp_pitch);
+    this->get_parameter("kp_", temp_kp);
+    this->get_parameter("ki_", temp_ki);
+    this->get_parameter("kd_", temp_kd);
+    this->get_parameter("wheel_max_torque_", temp_wheel);
+    this->get_parameter("control_max_integral_", temp_max_integral);
+    this->get_parameter("controller", temp_controller);
+
+    // Copy the values into the packed struct
+    config_data_.desired_torso_pitch = temp_pitch;
+    config_data_.kp = temp_kp;
+    config_data_.ki = temp_ki;
+    config_data_.kd = temp_kd;
+    config_data_.wheel_max_torque = temp_wheel;
+    config_data_.control_max_integral = temp_max_integral;
+    config_data_.controller = static_cast<uint8_t>(temp_controller); // Safe cast to 8-bit
+
+    RCLCPP_INFO(this->get_logger(), "Desired torso pitch is %f: ", config_data_.desired_torso_pitch);
+    RCLCPP_INFO(this->get_logger(), "kp_ %f: ", config_data_.kp);
+    RCLCPP_INFO(this->get_logger(), "ki_ %f: ", config_data_.ki);
+    RCLCPP_INFO(this->get_logger(), "kd_ %f: ", config_data_.kd);
+    RCLCPP_INFO(this->get_logger(), "wheel_max_torque_ %f: ", config_data_.wheel_max_torque);
+    RCLCPP_INFO(this->get_logger(), "control_max_integral_ %f: ", config_data_.control_max_integral);
+    RCLCPP_INFO(this->get_logger(), "controller %d: ", config_data_.controller);
 
     // for the i2c bus
     char filename[20];
     snprintf(filename, 19, "/dev/i2c-%d", I2C_BUS);
 
     // initialize i2c
-    if ((i2c_handle = open(filename, O_RDWR)) < 0)
+    if ((i2c_handle_ = open(filename, O_RDWR)) < 0)
     {
-      RCLCPP_ERROR(this->get_logger(), "Error opening i2c, error: %d", i2c_handle);
-      exitNode();
+      RCLCPP_FATAL(this->get_logger(), "Error opening i2c, error: %d", i2c_handle_);
+      exit_node();
     }
-    RCLCPP_INFO(this->get_logger(), "Opened i2c");
+    RCLCPP_INFO(this->get_logger(), "Opened I2C handle");
 
     // open I2C channel
     // Specify slave address
-    if (ioctl(i2c_handle, I2C_SLAVE, PICO_SLAVE_ADDRESS) < 0)
+    if (ioctl(i2c_handle_, I2C_SLAVE, PICO_SLAVE_ADDRESS) < 0)
     {
-      RCLCPP_ERROR(this->get_logger(), "Failed to open I2C device/slave!");
-      close(i2c_handle);
+      RCLCPP_FATAL(this->get_logger(), "Failed to open I2C device/slave!");
+      close(i2c_handle_);
 
-      exitNode();
+      exit_node();
     }
     RCLCPP_INFO(this->get_logger(), "Successfully opened I2C device!");
 
     // write the desired values to pico
-    sendDataToMCU(DESIRED_TORSO_PITCH_CMD, &desired_torso_pitch);
-    sendDataToMCU(CONTROLLER_CMD, &controller);
-    sendDataToMCU(KP_CMD, &kp);
-    sendDataToMCU(KI_CMD, &ki);
-    sendDataToMCU(KD_CMD, &kd);
-    sendDataToMCU(WHEEL_MAX_TORQUE_CMD, &wheel_max_torque);
-    sendDataToMCU(CTRL_MAX_INTEGRAL_CMD, &control_max_integral);
+    int result = i2c_transaction<mcuConfigData, uint8_t>(config_data_, &config_ack_);
+    if (result == 1)
+    {
+      RCLCPP_FATAL(this->get_logger(), "Could not write config data to mcu!");
+      exit_node();
+    }
+
+    if (config_ack_ == 0)
+    {
+      RCLCPP_FATAL(this->get_logger(), "mcu did not acknowledge config write!");
+      exit_node();
+    }
 
     // heartbeat timer for 10ms (100Hz)
-    heartbeat_timer_ = this->create_wall_timer(50ms, std::bind(&MCUNode::sendHeartbeat, this)); // Use std::bind
+    heartbeat_timer_ = this->create_wall_timer(50ms, std::bind(&MCUNode::send_heartbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
-    data_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::i2cDataCallback, this)); // Use std::bind
+    data_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::i2c_data_callback, this)); // Use std::bind
 
     RCLCPP_INFO(this->get_logger(), "Starting node!");
   }
@@ -186,271 +127,212 @@ private:
   rclcpp::TimerBase::SharedPtr data_timer_;
   rclcpp::Publisher<torsobot_interfaces::msg::TorsobotState>::SharedPtr state_publisher_;
   rclcpp::Publisher<torsobot_interfaces::msg::TorsobotData>::SharedPtr data_publisher_;
-  // rclcpp::Service<torsobot_interfaces::srv::RequestControlParams>::SharedPtr control_params_server_;
-
-  bool read_control_params_ = false;
 
   gpiod::chip chip_;
   gpiod::line mcu_run_line_;
 
-  // send desired values to the pico
-  void sendDataToMCU(uint8_t cmd, volatile float *sensor_val_addr)
+  // --- Variables --- //
+  // Configuration for the GPIO pin
+  const std::string GPIO_CHIP_NAME = "gpiochip4"; // Verify with 'ls /dev/gpiochip*' on Pi5
+  const unsigned int RPI_GPIO_FOR_PICO_RUN = 22;  // GPIO22; changed from 23 because i did not want to change the connections manually
+
+  // I2C variables
+  static constexpr int PICO_SLAVE_ADDRESS = 0X30;
+  static constexpr int I2C_BUS = 1;
+  int i2c_handle_;
+
+  // i2c command variables
+  static constexpr uint8_t HEARTBEAT_ID_ = 0XAA;
+  static constexpr uint8_t MCU_CONTROLLER_CONFIG_ID_ = 0XBB;
+  static constexpr uint8_t INIT_DATA_ID_ = 0XCC;
+  static constexpr uint8_t STATE_DATA_ID = 0XDD;
+
+  // i2c structs
+  // hearbeat
+  struct __attribute__((packed)) Heartbeat
   {
-    char data_write_buff[sizeof(_Float32) + 1]; // 4 bytes for the data and 1 for the cmd
-    data_write_buff[0] = cmd;
-    memcpy(&data_write_buff[1], const_cast<float *>(sensor_val_addr), sizeof(_Float32));
+    const uint8_t id = HEARTBEAT_ID_;
+    uint8_t counter;
+    uint8_t checksum;
+  };
 
-    int write_result = write(i2c_handle, &data_write_buff, sizeof(data_write_buff));
-
-    if (write_result != sizeof(data_write_buff))
-    {
-      RCLCPP_ERROR(this->get_logger(), "Error sending data to MCU for %d", cmd);
-      exitNode();
-    }
-  }
-
-  // send desired values to the pico (int version)
-  void sendDataToMCU(uint8_t cmd, volatile int *sensor_val_addr)
+  // config data
+  struct __attribute__((packed)) mcuConfigData
   {
-    char data_write_buff[sizeof(int) + 1]; // 4 bytes for the data and 1 for the cmd
-    data_write_buff[0] = cmd;
-    memcpy(&data_write_buff[1], const_cast<int *>(sensor_val_addr), sizeof(int));
+    const uint8_t id = MCU_CONTROLLER_CONFIG_ID_;
+    float desired_torso_pitch;
+    float kp;
+    float ki;
+    float kd;
+    float wheel_max_torque;
+    float control_max_integral;
+    uint8_t controller;
+    uint8_t checksum;
+  } config_data_;
 
-    int write_result = write(i2c_handle, &data_write_buff, sizeof(data_write_buff));
+  // init data
+  struct __attribute__((packed)) InitData
+  {
+    float torso_pitch_init = std::numeric_limits<float>::quiet_NaN();
+    float wheel_rel_pos_init = std::numeric_limits<float>::quiet_NaN();
+    uint8_t checksum;
+  } init_data_;
 
-    if (write_result != sizeof(data_write_buff))
-    {
-      RCLCPP_ERROR(this->get_logger(), "Error sending data to MCU for %d", cmd);
-      exitNode();
-    }
-  }
+  // robot data
+  struct __attribute__((packed)) StateData
+  {
+    float torso_pitch;
+    float torso_pitch_rate;
+    float wheel_pos;
+    float wheel_vel;
+    int32_t encoder_steps;
+    float encoder_ang;
+    float encoder_speed;
+    uint8_t motor_drv_mode;
+    float wheel_cmd_torque;
+    float wheel_actual_torque;
+    uint8_t checksum;
+  };
+
+  // config data okay
+  uint8_t config_ack_ = 0;
+
+  // robot status
+  uint8_t robot_status_;
+
+  // counter for the nan values encountered udring I2C receive
+  uint64_t nan_ctr = 0;
+
+  // counter for the callback function
+  uint64_t data_callback_ctr = 0;
+
+  // counter for heartbeat
+  uint64_t heartbeat_ctr_ = 0;
 
   // timer callback for getting data on i2c
-  void i2cDataCallback(void)
+  void i2c_data_callback(void)
   {
-
+    StateData state_data_;
     // print a warning for nan values
     if (nan_ctr >= 100)
     {
       // RCLCPP_WARN(this->get_logger(), "100 nan values found!");
-      // exitNode();
+      // exit_node();
     }
 
     // Read / request sensor data from pico
-    int get_sensor_val_torso_pitch = getSensorValue(TORSO_PITCH_CMD, &torso_pitch);
-    int get_sensor_val_torso_pitch_rate = getSensorValue(TORSO_PITCH_RATE_CMD, &torso_pitch_rate);
-    int get_sensor_val_wheel_pos = getSensorValue(WHEEL_POS_CMD, &wheel_pos);
-    int get_sensor_val_wheel_vel = getSensorValue(WHEEL_VEL_CMD, &wheel_vel);
-    int get_sensor_val_wheel_torque = getSensorValue(WHEEL_TORQUE_CMD, &wheel_torque);
-    int get_sensor_val_motor_drv_mode = getSensorValue(MOTOR_DRV_MODE_CMD, &mot_drv_mode);
-    int get_sensor_val_wheel_cmd_torque = getSensorValue(WHEEL_CMD_TORQUE_CMD, &wheel_cmd_torque);
-    int get_encoder_steps = getSensorValue(ENCODER_STEPS_CMD, &signed_encoder_steps);
+    int result = i2c_transaction<uint8_t, StateData>(STATE_DATA_ID, &state_data_);
 
-    // (void)getSensorValue(MOT_POS_CMD, &mot_pos);
-    // (void)getSensorValue(MOT_VEL_CMD, &mot_vel);
+    if (result == 1)
+    {
+      RCLCPP_FATAL(this->get_logger(), "Could not write data cmd to mcu!");
+      exit_node();
+    }
+    else if (result == 2)
+    {
+      RCLCPP_FATAL(this->get_logger(), "Could not read state data from mcu!");
+      exit_node();
+    }
 
     // after about 2000ms
-    if (data_callback_ctr == 350)
+    if (data_callback_ctr++ == 350)
     {
-      // get this value only once
-      (void)getSensorValue(TORSO_PITCH_INIT_CMD, &torso_pitch_init);
-      (void)getSensorValue(WHEEL_REL_POS_INIT_CMD, &wheel_rel_pos_init);
-      // (void)getSensorValue(MOT_POS_INIT_CMD, &mot_pos_init);
+      // read init data
+      int result = i2c_transaction<uint8_t, InitData>(INIT_DATA_ID_, &init_data_);
+
+      if (result == 1)
+      {
+        RCLCPP_FATAL(this->get_logger(), "Could not write data cmd to mcu!");
+        exit_node();
+      }
+      else if (result == 2)
+      {
+        RCLCPP_FATAL(this->get_logger(), "Could not read state data from mcu!");
+        exit_node();
+      }
+
+      uint8_t init_data_calculated_checksum = calculate_checksum<InitData>(init_data_);
+
+      bool init_data_checksum_okay = init_data_calculated_checksum == init_data_.checksum;
+
+      // if received value checksum is okay
+      if (!init_data_checksum_okay)
+      {
+        RCLCPP_FATAL(this->get_logger(), "Checksum invalid for init data from mcu");
+        exit_node();
+      }
     }
 
     // check for position mode
-    if (mot_drv_mode != 10)
+    if (state_data_.motor_drv_mode != 10)
     {
       RCLCPP_ERROR(this->get_logger(), "Driver mode is not position mode!");
-      // exitNode();
+      // exit_node();
     }
 
-    // if sensor return values not 0
-    bool sensor_val_okay = get_sensor_val_torso_pitch || get_sensor_val_torso_pitch_rate || get_sensor_val_wheel_pos || get_sensor_val_wheel_vel || get_sensor_val_wheel_torque || get_sensor_val_motor_drv_mode || get_sensor_val_wheel_cmd_torque || get_encoder_steps;
-    sensor_val_okay = !sensor_val_okay; // invert logic
+    //  check checksum
+    uint8_t calculated_checksum = calculate_checksum<StateData>(state_data_);
 
+    bool state_checksum_okay = calculated_checksum == state_data_.checksum;
     // if sensor_val_okay is 1
-    if (sensor_val_okay)
+    if (state_checksum_okay)
     {
       auto state_message = torsobot_interfaces::msg::TorsobotState();
-      state_message.torso_pitch = torso_pitch;
-      state_message.torso_pitch_rate = torso_pitch_rate;
-      state_message.wheel_pos = wheel_pos;
-      state_message.wheel_vel = wheel_vel;
-      // state_message.wheel_torque = wheel_torque;
-      // state_message.motor_drv_mode = mot_drv_mode;
+      state_message.torso_pitch = state_data_.torso_pitch;
+      state_message.torso_pitch_rate = state_data_.torso_pitch_rate;
+      state_message.wheel_pos = state_data_.wheel_pos;
+      state_message.wheel_vel = state_data_.wheel_vel;
 
       this->state_publisher_->publish(state_message);
 
       auto data_message = torsobot_interfaces::msg::TorsobotData();
       data_message.torsobot_state = state_message;
-      // data_message.torsobot_state.torso_pitch = torso_pitch;
-      // data_message.torsobot_state.torso_pitch_rate = torso_pitch_rate;
-      // data_message.torsobot_state.wheel_pos = wheel_pos;
-      // data_message.torsobot_state.wheel_vel = wheel_vel;
-      data_message.wheel_torque = wheel_torque;
-      data_message.mot_drv_mode = mot_drv_mode;
-      data_message.wheel_cmd_torque = wheel_cmd_torque;
-      // data_message.mot_pos = mot_pos;
-      // data_message.mot_vel = mot_vel;
-      data_message.torso_pitch_init = torso_pitch_init;
-      data_message.wheel_rel_pos_init = wheel_rel_pos_init;
-      data_message.encoder_steps = signed_encoder_steps;
+
+      data_message.wheel_torque = state_data_.wheel_actual_torque;
+      data_message.mot_drv_mode = state_data_.motor_drv_mode;
+      data_message.wheel_cmd_torque = state_data_.wheel_cmd_torque;
+      data_message.torso_pitch_init = init_data_.torso_pitch_init;
+      data_message.wheel_rel_pos_init = init_data_.wheel_rel_pos_init;
+      data_message.encoder_steps = state_data_.encoder_steps;
       // data_message.mot_pos_init = mot_pos_init;
 
       this->data_publisher_->publish(data_message);
 
-      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %f, %f, %d, %d", torso_pitch, torso_pitch_rate, wheel_pos, wheel_vel, wheel_cmd_torque, wheel_torque, mot_drv_mode, signed_encoder_steps);
-
-      // RCLCPP_INFO(this->get_logger(), "IMU pitch: '%f'", torso_pitch);
-      // RCLCPP_INFO(this->get_logger(), "IMU pitch rate: '%f'", torso_pitch_rate);
-      // RCLCPP_INFO(this->get_logger(), "Wheel position: '%f'", wheel_pos);
-      // RCLCPP_INFO(this->get_logger(), "Wheel velocity: '%f'", wheel_vel);
-      // RCLCPP_INFO(this->get_logger(), "Wheel torque: '%f'", wheel_torque);
-      // RCLCPP_INFO(this->get_logger(), "Wheel cmd torque: '%f'", wheel_cmd_torque);
-      // RCLCPP_INFO(this->get_logger(), "Motor driver mode: '%d'", mot_drv_mode);
-      // RCLCPP_INFO(this->get_logger(), "Torso init pitch: '%f'", torso_pitch_init);
-      // RCLCPP_INFO(this->get_logger(), "Motor init pos: '%f'", mot_pos_init);
+      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %f, %f, %d, %d", state_data_.torso_pitch, state_data_.torso_pitch_rate, state_data_.wheel_pos, state_data_.wheel_vel, state_data_.wheel_cmd_torque, state_data_.wheel_actual_torque, state_data_.motor_drv_mode, state_data_.encoder_steps);
     }
     else
     {
-      RCLCPP_ERROR(this->get_logger(), "Error reading sensor value");
+      RCLCPP_ERROR(this->get_logger(), "Checksum invalid for state data from mcu");
     }
-
-    // increment data_callback_ctr
-    data_callback_ctr++;
-  }
-
-  // Get sensor data over I2C
-  int getSensorValue(uint8_t cmd, float *sensor_val_addr)
-  {
-    // Clear the read buffer
-    memset(read_buff, 0, float_len);
-
-    // Write command to slave
-    if (write(i2c_handle, &cmd, sizeof(cmd)) != sizeof(cmd))
-    {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed for %d! %s (%d)", cmd, strerror(errno), errno);
-      return -1; // Indicate error
-    }
-
-    // Request sensor data from slave
-    if (read(i2c_handle, read_buff, float_len) != float_len)
-    {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed for %d! %s (%d)", cmd, strerror(errno), errno);
-      return -2; // Indicate error
-    }
-    else
-    {
-      // float temp_sensor_val; // temporary variable to check for nan
-      // memcpy(&temp_sensor_val, read_buff, float_len);
-      memcpy(sensor_val_addr, read_buff, float_len);
-      if (std::isnan(*sensor_val_addr)) // if okay
-      {
-
-        RCLCPP_ERROR(this->get_logger(), "nan value received for %d!", cmd);
-        nan_ctr++;
-      }
-    }
-
-    return 0; // Success
-  }
-
-  // Get sensor data over I2C for int data types
-  int getSensorValue(uint8_t cmd, int8_t *sensor_val_addr_int)
-  {
-    // Clear the read buffer
-    memset(read_buff, 0, float_len);
-
-    // Write command to slave
-    if (write(i2c_handle, &cmd, sizeof(cmd)) != sizeof(cmd))
-    {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed for %d! %s (%d)", cmd, strerror(errno), errno);
-      return -1; // Indicate error
-    }
-
-    // Request sensor data from slave
-    if (read(i2c_handle, read_buff, float_len) != float_len)
-    {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed for %d! %s (%d)", cmd, strerror(errno), errno);
-      return -2; // Indicate error
-    }
-    else
-    {
-      memcpy(sensor_val_addr_int, read_buff, sizeof(uint8_t));
-    }
-
-    return 0; // Success
-  }
-
-  // Get sensor data over I2C for int data types
-  int getSensorValue(uint8_t cmd, int32_t *sensor_val_addr_int)
-  {
-    // Clear the read buffer
-    memset(read_buff, 0, float_len);
-
-    // Write command to slave
-    if (write(i2c_handle, &cmd, sizeof(cmd)) != sizeof(cmd))
-    {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C write failed for %d! %s (%d)", cmd, strerror(errno), errno);
-      return -1; // Indicate error
-    }
-
-    // Request sensor data from slave
-    if (read(i2c_handle, read_buff, float_len) != float_len)
-    {
-      RCLCPP_ERROR(this->get_logger(), "sensor value I2C read failed for %d! %s (%d)", cmd, strerror(errno), errno);
-      return -2; // Indicate error
-    }
-    else
-    {
-      memcpy(sensor_val_addr_int, read_buff, sizeof(int32_t));
-    }
-
-    return 0; // Success
   }
 
   //   Send heartbeat to pico
-  void sendHeartbeat(void)
+  void send_heartbeat(void)
   {
-    uint8_t hbt_message[3];
-    hbt_message[0] = HEARTBEAT_ID;                 // always constant
-    hbt_message[1] = heartbeat_ctr;                // incremented by 1
-    hbt_message[2] = heartbeat_ctr ^ HEARTBEAT_ID; // checksum to guard against data corrurption during i2c communication
+    Heartbeat heartbeat_;
+    // no need to write heartbeat id since it is always constant
+    heartbeat_.counter = heartbeat_ctr_;                  // incremented by 1
+    heartbeat_.checksum = heartbeat_ctr_ ^ HEARTBEAT_ID_; // checksum to guard against data corrurption during i2c communication
 
     // write heatrbeat to i2c
-    if (write(i2c_handle, &hbt_message, sizeof(hbt_message)) != sizeof(hbt_message))
-    {
-      RCLCPP_ERROR(this->get_logger(), "I2C heartbeat write failed! ");
-      exitNode();
-      // return 1; // Indicate error
-    }
+    int result = i2c_transaction<Heartbeat, uint8_t>(heartbeat_, &robot_status_);
 
-    // Request sensor data from slave
-    if (read(i2c_handle, (void *)&has_robot_stopped, sizeof(uint8_t)) == sizeof(uint8_t))
+    if (result == 1)
     {
-      RCLCPP_INFO(this->get_logger(), "Robot running code: 0x%02X", has_robot_stopped);
-
-      if (has_robot_stopped != 0x00)
-      {
-        // robot has gone into while loop
-        RCLCPP_ERROR(this->get_logger(), "Robot has entered the exit while loop! error_code: 0x%02X", has_robot_stopped);
-        exitNode();
-      }
+      RCLCPP_FATAL(this->get_logger(), "Could not write heartbeat to mcu!");
+      exit_node();
     }
-    else
+    else if (result == 2)
     {
-      RCLCPP_ERROR(this->get_logger(), "heartbeat I2C read failed! %s (%d)", strerror(errno), errno);
-      // exitNode();
-      // return -2; // Indicate error
+      RCLCPP_FATAL(this->get_logger(), "Could not read status from mcu!");
+      exit_node();
     }
 
     RCLCPP_INFO(this->get_logger(), "Sent hbeat: ID=0x%x, ctr=%d, csum=0x%x",
-                (int)hbt_message[0], (int)hbt_message[1], (int)hbt_message[2]);
+                (int)heartbeat_.id, (int)heartbeat_.counter, (int)heartbeat_.checksum);
 
-    heartbeat_ctr++;
-    heartbeat_ctr = heartbeat_ctr % 256; // wrap around 255
-    // return 0;
+    heartbeat_ctr_++;
+    heartbeat_ctr_ = heartbeat_ctr_ % 256; // wrap around 255
   }
 
   // Reset pico using the run pin
@@ -470,11 +352,54 @@ private:
     usleep(2 * 1000 * 1000);        // wait for 2 seconds for arduino loop to start before I2C
   }
 
-  void exitNode(void)
+  void exit_node(void)
   {
     RCLCPP_FATAL(this->get_logger(), "Exiting node!");
     rclcpp::shutdown();
     exit(EXIT_FAILURE); // Terminate the program
+  }
+
+  template <typename Type>
+  uint8_t calculate_checksum(const Type &data)
+  {
+    const uint8_t *data_buffer = reinterpret_cast<const uint8_t *>(&data);
+    size_t data_size = sizeof(data);
+
+    uint8_t checksum = 0;
+
+    for (size_t i = 0; i < data_size - 1; i++)
+    {
+      checksum ^= data_buffer[i];
+    }
+
+    return checksum;
+  }
+
+  template <typename TxType, typename RxType>
+  int i2c_transaction(const TxType &tx_data, RxType *rx_data = nullptr)
+  {
+    const uint8_t *tx_buffer = reinterpret_cast<const uint8_t *>(&tx_data);
+    size_t tx_size = sizeof(TxType);
+
+    if (write(i2c_handle_, tx_buffer, tx_size) != static_cast<ssize_t>(tx_size))
+    {
+      return 1; // write error
+    }
+
+    // if we expect to read something back
+    if (rx_data != nullptr)
+    {
+      // Convert the empty receive struct into a raw byte array so we can fill it
+      uint8_t *rx_buffer = reinterpret_cast<uint8_t *>(rx_data);
+      size_t rx_size = sizeof(RxType);
+
+      if (read(i2c_handle_, rx_buffer, rx_size) != static_cast<ssize_t>(rx_size))
+      {
+        return 2; // read error
+      }
+    }
+
+    return 0; // success
   }
 };
 
