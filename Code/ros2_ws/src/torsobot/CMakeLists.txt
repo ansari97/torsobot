@@ -55,6 +55,10 @@ target_include_directories(mcu_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
 target_link_libraries(mcu_node ${GPIODCXX_LIBRARY})
 # target_link_libraries(mcu_node PRIVATE yaml-cpp::yaml-cpp)
 
+target_include_directories(mcu_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
 target_link_libraries(data_logger_node yaml-cpp::yaml-cpp)
 
 target_include_directories(serial_test_node PRIVATE ${GPIODCXX_INCLUDE_DIR})
