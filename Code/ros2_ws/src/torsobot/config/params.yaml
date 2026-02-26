@@ -1,7 +1,7 @@
 /**:
   ros__parameters:
   # all parameters must be floats
-    desired_torso_pitch: 75.0 #degrees
+    desired_torso_pitch_deg: 135.0 #degrees (always float values)
     controller: 1 # 0 for PID or 1 for PDGC (PD + Gravity compensation)
     kp: 0.75
     ki: 0.0
