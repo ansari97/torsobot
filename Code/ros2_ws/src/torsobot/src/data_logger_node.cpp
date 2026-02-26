@@ -26,7 +26,7 @@
 using namespace std::chrono_literals;
 
 // Define the CSV header row based on your message fields
-const std::string CSV_HEADER = "timestamp,torso_pitch,torso_pitch_rate,wheel_pos,wheel_vel,wheel_torque,wheel_cmd_torque,mot_drv_mode,encoder_steps"; //,mot_pos,mot_vel";
+const std::string CSV_HEADER = "timestamp,torso_pitch,torso_pitch_rate,wheel_pos,wheel_vel,wheel_torque,wheel_cmd_torque,mot_drv_mode,encoder_steps,encoder_ang,encoder_speed"; //,mot_pos,mot_vel";
 
 // // parameters
 // volatile float desired_torso_pitch;
@@ -53,7 +53,7 @@ public:
     // directory name
     this->declare_parameter("datalogs_path", "default_logs");
     std::string directory_name_str = this->get_parameter("datalogs_path").as_string();
-    
+
     // std::string directory_name_str = "/home/pi/torsobot/Code/ros2_ws/data_logs";
     std::string csv_filename_str = timestamp_str + ".csv";
     std::string csv_full_path_str = directory_name_str + "/csvs/" + csv_filename_str;
@@ -159,7 +159,7 @@ private:
       // Write the timestamp in nanoseconds
       output_file_ << this->now().nanoseconds() << ",";
       // Write the data from the message, separated by commas
-      output_file_ << msg->torsobot_state.torso_pitch << "," << msg->torsobot_state.torso_pitch_rate << "," << msg->torsobot_state.wheel_pos << "," << msg->torsobot_state.wheel_vel << "," << msg->wheel_torque << "," << msg->wheel_cmd_torque << "," << static_cast<int>(msg->mot_drv_mode)<< "," << static_cast<int>(msg->encoder_steps); ; // << "," << msg->mot_pos << "," << msg->mot_vel;
+      output_file_ << msg->torsobot_state.torso_pitch << "," << msg->torsobot_state.torso_pitch_rate << "," << msg->torsobot_state.wheel_pos << "," << msg->torsobot_state.wheel_vel << "," << msg->wheel_torque << "," << msg->wheel_cmd_torque << "," << static_cast<int>(msg->mot_drv_mode) << "," << static_cast<int>(msg->encoder_steps) << "," << msg->encoder_ang << "," << msg->encoder_speed; // << "," << msg->mot_pos << "," << msg->mot_vel;
       // Add a newline character to finish the row
       output_file_ << "\n";
     }

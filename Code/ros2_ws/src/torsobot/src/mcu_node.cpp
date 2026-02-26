@@ -16,6 +16,8 @@
 #include "torsobot_interfaces/msg/torsobot_data.hpp"  //data from the torsobot including state variables
 #include "torsobot_interfaces/msg/torsobot_state.hpp" // torsobor state variables only
 
+#include "torsobot/shared_messages.h"
+
 // #include "torsobot_interfaces/srv/request_control_params.hpp" // service for requesting control parameters; not used
 
 using namespace std::chrono_literals;
@@ -27,7 +29,7 @@ public:
   {
     // call the reset mcu function to reset the mcu
     RCLCPP_INFO(this->get_logger(), "Resetting the MCU...");
-    this->resetMCU();
+    this->reset_mcu();
     RCLCPP_INFO(this->get_logger(), "Reset the MCU!");
 
     // Create publisher for "torsobot_state" topic
@@ -36,44 +38,31 @@ public:
     // Create publisher for "torsobot_state" topic
     data_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotData>("torsobot_data", 10);
 
-    // Create ROS2 parameters
-    this->declare_parameter("desired_torso_pitch_", 180.0); // default value of 180 in degrees
-    this->declare_parameter("kp_", 0.0);                    // default value of 0
-    this->declare_parameter("ki_", 0.0);                    // default value of 0
-    this->declare_parameter("kd_", 0.0);                    // default value of 0
-    this->declare_parameter("wheel_max_torque_", 0.0);      // default value of 0
-    this->declare_parameter("control_max_integral_", 0.0);  // default value of 0
-    this->declare_parameter("controller", 1);               // default value of 1 (GCPD controller)
+    double temp_pitch_deg = config_data_.desired_torso_pitch * 180.0 / SHARED_PI; // setting default value in deg
+    temp_pitch_deg = this->declare_parameter<double>("desired_torso_pitch_deg", temp_pitch_deg);
+    double temp_kp = this->declare_parameter<double>("kp", config_data_.kp);
+    double temp_ki = this->declare_parameter<double>("ki", config_data_.ki);
+    double temp_kd = this->declare_parameter<double>("kd", config_data_.kd);
+    double temp_wheel_max_torque = this->declare_parameter<double>("wheel_max_torque", config_data_.wheel_max_torque);
+    double temp_max_integral = this->declare_parameter<double>("control_max_integral", config_data_.control_max_integral);
+    int temp_controller = this->declare_parameter<int>("controller", config_data_.controller);
 
-    // get ROS2 parameters from the param file (listed in launch file) and assign to these variables (2nd argument)
-    // Create temporary variables for parameter retrieval
-    float temp_pitch, temp_kp, temp_ki, temp_kd, temp_wheel, temp_max_integral;
-    int temp_controller; // ROS2 parameter integers usually bind to int, not uint8_t directly
+    // cast back to 32 bit floats
+    config_data_.desired_torso_pitch = static_cast<float>(temp_pitch_deg * SHARED_PI / 180.0);
+    config_data_.kp = static_cast<float>(temp_kp);
+    config_data_.ki = static_cast<float>(temp_ki);
+    config_data_.kd = static_cast<float>(temp_kd);
+    config_data_.wheel_max_torque = static_cast<float>(temp_wheel_max_torque);
+    config_data_.control_max_integral = static_cast<float>(temp_max_integral);
+    config_data_.controller = static_cast<uint8_t>(temp_controller);
+    config_data_.checksum = calculate_checksum<mcuConfigData>(config_data_);
 
-    // Get parameters into the safe temporary variables
-    this->get_parameter("desired_torso_pitch_", temp_pitch);
-    this->get_parameter("kp_", temp_kp);
-    this->get_parameter("ki_", temp_ki);
-    this->get_parameter("kd_", temp_kd);
-    this->get_parameter("wheel_max_torque_", temp_wheel);
-    this->get_parameter("control_max_integral_", temp_max_integral);
-    this->get_parameter("controller", temp_controller);
-
-    // Copy the values into the packed struct
-    config_data_.desired_torso_pitch = temp_pitch;
-    config_data_.kp = temp_kp;
-    config_data_.ki = temp_ki;
-    config_data_.kd = temp_kd;
-    config_data_.wheel_max_torque = temp_wheel;
-    config_data_.control_max_integral = temp_max_integral;
-    config_data_.controller = static_cast<uint8_t>(temp_controller); // Safe cast to 8-bit
-
-    RCLCPP_INFO(this->get_logger(), "Desired torso pitch is %f: ", config_data_.desired_torso_pitch);
-    RCLCPP_INFO(this->get_logger(), "kp_ %f: ", config_data_.kp);
-    RCLCPP_INFO(this->get_logger(), "ki_ %f: ", config_data_.ki);
-    RCLCPP_INFO(this->get_logger(), "kd_ %f: ", config_data_.kd);
-    RCLCPP_INFO(this->get_logger(), "wheel_max_torque_ %f: ", config_data_.wheel_max_torque);
-    RCLCPP_INFO(this->get_logger(), "control_max_integral_ %f: ", config_data_.control_max_integral);
+    RCLCPP_INFO(this->get_logger(), "Desired torso pitch (rad) is %f: ", config_data_.desired_torso_pitch);
+    RCLCPP_INFO(this->get_logger(), "kp %f: ", config_data_.kp);
+    RCLCPP_INFO(this->get_logger(), "ki %f: ", config_data_.ki);
+    RCLCPP_INFO(this->get_logger(), "kd %f: ", config_data_.kd);
+    RCLCPP_INFO(this->get_logger(), "wheel_max_torque %f: ", config_data_.wheel_max_torque);
+    RCLCPP_INFO(this->get_logger(), "control_max_integral %f: ", config_data_.control_max_integral);
     RCLCPP_INFO(this->get_logger(), "controller %d: ", config_data_.controller);
 
     // for the i2c bus
@@ -107,7 +96,7 @@ public:
       exit_node();
     }
 
-    if (config_ack_ == 0)
+    if (config_ack_ == 0x00)
     {
       RCLCPP_FATAL(this->get_logger(), "mcu did not acknowledge config write!");
       exit_node();
@@ -141,58 +130,8 @@ private:
   static constexpr int I2C_BUS = 1;
   int i2c_handle_;
 
-  // i2c command variables
-  static constexpr uint8_t HEARTBEAT_ID_ = 0XAA;
-  static constexpr uint8_t MCU_CONTROLLER_CONFIG_ID_ = 0XBB;
-  static constexpr uint8_t INIT_DATA_ID_ = 0XCC;
-  static constexpr uint8_t STATE_DATA_ID = 0XDD;
-
-  // i2c structs
-  // hearbeat
-  struct __attribute__((packed)) Heartbeat
-  {
-    const uint8_t id = HEARTBEAT_ID_;
-    uint8_t counter;
-    uint8_t checksum;
-  };
-
-  // config data
-  struct __attribute__((packed)) mcuConfigData
-  {
-    const uint8_t id = MCU_CONTROLLER_CONFIG_ID_;
-    float desired_torso_pitch;
-    float kp;
-    float ki;
-    float kd;
-    float wheel_max_torque;
-    float control_max_integral;
-    uint8_t controller;
-    uint8_t checksum;
-  } config_data_;
-
-  // init data
-  struct __attribute__((packed)) InitData
-  {
-    float torso_pitch_init = std::numeric_limits<float>::quiet_NaN();
-    float wheel_rel_pos_init = std::numeric_limits<float>::quiet_NaN();
-    uint8_t checksum;
-  } init_data_;
-
-  // robot data
-  struct __attribute__((packed)) StateData
-  {
-    float torso_pitch;
-    float torso_pitch_rate;
-    float wheel_pos;
-    float wheel_vel;
-    int32_t encoder_steps;
-    float encoder_ang;
-    float encoder_speed;
-    uint8_t motor_drv_mode;
-    float wheel_cmd_torque;
-    float wheel_actual_torque;
-    uint8_t checksum;
-  };
+  mcuConfigData config_data_;
+  InitData init_data_;
 
   // config data okay
   uint8_t config_ack_ = 0;
@@ -238,7 +177,7 @@ private:
     if (data_callback_ctr++ == 350)
     {
       // read init data
-      int result = i2c_transaction<uint8_t, InitData>(INIT_DATA_ID_, &init_data_);
+      int result = i2c_transaction<uint8_t, InitData>(INIT_DATA_ID, &init_data_);
 
       if (result == 1)
       {
@@ -288,6 +227,9 @@ private:
       auto data_message = torsobot_interfaces::msg::TorsobotData();
       data_message.torsobot_state = state_message;
 
+      data_message.encoder_steps = state_data_.encoder_steps;
+      data_message.encoder_ang = state_data_.encoder_ang;
+      data_message.encoder_speed = state_data_.encoder_speed;
       data_message.wheel_torque = state_data_.wheel_actual_torque;
       data_message.mot_drv_mode = state_data_.motor_drv_mode;
       data_message.wheel_cmd_torque = state_data_.wheel_cmd_torque;
@@ -298,7 +240,7 @@ private:
 
       this->data_publisher_->publish(data_message);
 
-      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %f, %f, %d, %d", state_data_.torso_pitch, state_data_.torso_pitch_rate, state_data_.wheel_pos, state_data_.wheel_vel, state_data_.wheel_cmd_torque, state_data_.wheel_actual_torque, state_data_.motor_drv_mode, state_data_.encoder_steps);
+      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %f, %f, %d, %d, %f, %f", state_data_.torso_pitch, state_data_.torso_pitch_rate, state_data_.wheel_pos, state_data_.wheel_vel, state_data_.wheel_cmd_torque, state_data_.wheel_actual_torque, state_data_.motor_drv_mode, state_data_.encoder_steps, state_data_.encoder_ang, state_data_.encoder_speed);
     }
     else
     {
@@ -310,9 +252,9 @@ private:
   void send_heartbeat(void)
   {
     Heartbeat heartbeat_;
-    // no need to write heartbeat id since it is always constant
-    heartbeat_.counter = heartbeat_ctr_;                  // incremented by 1
-    heartbeat_.checksum = heartbeat_ctr_ ^ HEARTBEAT_ID_; // checksum to guard against data corrurption during i2c communication
+    // heartbeat_.id = HEARTBEAT_ID; // no need to do this since the default ID is set inside struct definition
+    heartbeat_.counter = heartbeat_ctr_;                             // incremented by 1
+    heartbeat_.checksum = calculate_checksum<Heartbeat>(heartbeat_); // checksum to guard against data corrurption during i2c communication
 
     // write heatrbeat to i2c
     int result = i2c_transaction<Heartbeat, uint8_t>(heartbeat_, &robot_status_);
@@ -324,19 +266,27 @@ private:
     }
     else if (result == 2)
     {
-      RCLCPP_FATAL(this->get_logger(), "Could not read status from mcu!");
+      RCLCPP_FATAL(this->get_logger(), "Could not read robot status from mcu!");
       exit_node();
     }
 
-    RCLCPP_INFO(this->get_logger(), "Sent hbeat: ID=0x%x, ctr=%d, csum=0x%x",
-                (int)heartbeat_.id, (int)heartbeat_.counter, (int)heartbeat_.checksum);
+    RCLCPP_INFO(this->get_logger(), "Sent hbeat: ID=0x%x, ctr=%d, csum=0x%02X",
+                heartbeat_.id, heartbeat_.counter, heartbeat_.checksum);
+
+    RCLCPP_INFO(this->get_logger(), "Robot status: 0x%02X", robot_status_);
+
+    if (robot_status_ != 0x00)
+    {
+      RCLCPP_FATAL(this->get_logger(), "Robot status not okay! robot_status: 0x%02X", robot_status_);
+      exit_node();
+    }
 
     heartbeat_ctr_++;
     heartbeat_ctr_ = heartbeat_ctr_ % 256; // wrap around 255
   }
 
   // Reset pico using the run pin
-  void resetMCU(void)
+  void reset_mcu(void)
   {
     chip_.open(GPIO_CHIP_NAME);
     mcu_run_line_ = chip_.get_line(RPI_GPIO_FOR_PICO_RUN);
@@ -359,22 +309,6 @@ private:
     exit(EXIT_FAILURE); // Terminate the program
   }
 
-  template <typename Type>
-  uint8_t calculate_checksum(const Type &data)
-  {
-    const uint8_t *data_buffer = reinterpret_cast<const uint8_t *>(&data);
-    size_t data_size = sizeof(data);
-
-    uint8_t checksum = 0;
-
-    for (size_t i = 0; i < data_size - 1; i++)
-    {
-      checksum ^= data_buffer[i];
-    }
-
-    return checksum;
-  }
-
   template <typename TxType, typename RxType>
   int i2c_transaction(const TxType &tx_data, RxType *rx_data = nullptr)
   {
@@ -385,6 +319,8 @@ private:
     {
       return 1; // write error
     }
+
+    usleep(50); // wait before sending read request
 
     // if we expect to read something back
     if (rx_data != nullptr)
