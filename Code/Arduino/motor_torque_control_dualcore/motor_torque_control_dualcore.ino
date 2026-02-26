@@ -9,6 +9,7 @@
 #include <Moteus.h>
 #include <cmath>
 #include "pico/mutex.h"  // for dual core
+#include "shared_messages.h"
 
 // ——————————————————————————————————————————————————————————————————————————————
 //  Pin definition
@@ -89,56 +90,10 @@ bool checkHeartbeatValidity(void);
 //   Variable declarations
 // ——————————————————————————————————————————————————————————————————————————————
 
-// struct definitions
-
-// i2c command variables
-static constexpr uint8_t HEARTBEAT_ID = 0XAA;
-static constexpr uint8_t MCU_CONTROLLER_CONFIG_ID = 0XBB;
-static constexpr uint8_t INIT_DATA_ID = 0XCC;
-static constexpr uint8_t STATE_DATA_ID = 0XDD;
-
 // i2c structs
-// hearbeat
-struct __attribute__((packed)) Heartbeat {
-  uint8_t id;
-  uint8_t counter;
-  uint8_t checksum;
-} heartbeat_;
-
-// config data
-struct __attribute__((packed)) mcuConfigData {
-  uint8_t id;
-  float desired_torso_pitch;
-  float kp;
-  float ki;
-  float kd;
-  float wheel_max_torque;
-  float control_max_integral;
-  uint8_t controller;
-  uint8_t checksum;
-} config_data_interrupt, config_data;
-
-// init data
-struct __attribute__((packed)) InitData {
-  float torso_pitch_init = std::numeric_limits<float>::quiet_NaN();
-  float wheel_rel_pos_init = std::numeric_limits<float>::quiet_NaN();
-  uint8_t checksum;
-} init_data;
-
-// robot data
-struct __attribute__((packed)) StateData {
-  float torso_pitch;
-  float torso_pitch_rate;
-  float wheel_pos;
-  float wheel_vel;
-  int32_t encoder_steps;
-  float encoder_ang;
-  float encoder_speed;
-  uint8_t motor_drv_mode;
-  float wheel_cmd_torque;
-  float wheel_actual_torque;
-  uint8_t checksum;
-} state_data;
+mcuConfigData config_data_interrupt, config_data;
+InitData init_data;
+StateData state_data;
 
 // config data okay
 volatile uint8_t config_ack = 0;
@@ -146,6 +101,8 @@ volatile uint8_t config_ack = 0;
 // I2C speed; try changing it to 50kHz
 const int I2C_BAUDRATE = 100 * 1000;  // I2C speed in Hz, must be the same on Pi
 int i2c_read_ctr = 0;                 // reads the number of times mcu is read from
+volatile uint8_t i2c_cmd_id;             // received command over i2c
+volatile uint8_t i2c_error_code = 0;
 
 // dual core variables
 volatile bool encoder_initialized = false;
@@ -175,11 +132,11 @@ volatile uint64_t heartbeat_timer = 0;  // = millis();
 uint32_t millis_since_last_heartbeat = 0;
 
 // hardware parameters
-const float gear_ratio = (38.0 / 16.0) * (48.0 / 16.0);
-const int num_spokes = 10;
+const float GEAR_RATIO = (38.0 / 16.0) * (48.0 / 16.0);
+const int NUM_SPOKES = 10;
 
-const float torso_mass = 1577.83e-3;  //mass in kg from Solidworks
-const float torso_com_length = sqrt(pow(83.6, 2) + pow(6.12, 2)) / 1000;
+const float TORSO_MASS = 1577.83e-3;  //mass in kg from Solidworks
+const float TORSO_COM_LENGTH = sqrt(pow(83.6, 2) + pow(6.12, 2)) / 1000;
 
 // gravity
 const float g = 9.81;                 // gravity m/s-2
@@ -192,7 +149,7 @@ float torso_pitch, torso_pitch_rate;
 float mot_vel, mot_pos, mot_torque;        // at the motor
 float wheel_pos, wheel_vel, wheel_torque;  // at the wheel
 float mot_pos_init, torso_pitch_init;
-float wheel_pos_init = -PI / num_spokes;  //assuming wheel going in positive direction
+float wheel_pos_init = -PI / NUM_SPOKES;  //assuming wheel going in positive direction
 
 // Encoder variables
 const float ENCODER_PPR = 2048.0;             // puses per rev
@@ -203,6 +160,7 @@ int32_t local_signed_encoder_steps;           // local encoder step variable
 float wheel_rel_pos, wheel_rel_pos_init;      // relative angle
 
 volatile float encoder_ang;
+
 float local_encoder_ang;
 
 volatile float wheel_rel_vel;
@@ -213,39 +171,6 @@ float gravity_x = 0;
 float gravity_y = 0;
 float gravity_z = 0;
 
-// data buuffers
-const int float_len = sizeof(float);  // 4 bytes
-char desired_torso_pitch_data[float_len];
-char torso_pitch_data[float_len];
-char torso_pitch_rate_data[float_len];
-char wheel_pos_data[float_len];
-char wheel_vel_data[float_len];
-char wheel_torque_data[float_len];
-char mot_drv_mode_data[sizeof(int8_t)];
-char encoder_steps_data[sizeof(int32_t)];
-char mot_vel_data[float_len];
-char mot_pos_data[float_len];
-char mot_pos_init_data[float_len];
-char torso_pitch_init_data[float_len];
-char wheel_rel_pos_init_data[float_len];
-
-char mot_max_torque_data[float_len];
-char kp_data[float_len];
-char ki_data[float_len];
-char kd_data[float_len];
-char control_max_integral_data[float_len];
-char controller_data[sizeof(int)];
-
-char wheel_cmd_torque_data[float_len];
-
-// char torso_pitch_init_data[float_len];
-// char wheel_cmd_torque_data[float_len];
-
-// char write_buff[float_len + 10];
-// char write_buff2[float_len + 10];
-
-volatile char i2c_cmd_id;
-
 float imu_angle_adjustment = 4.0f * DEG_TO_RAD;  // imu angle adjustment relative to COM in radians; adjusted in torso_pitch >> from the imu angle code
 float imu_scale_adjustment = PI / 2.9679;        //for some reason imu does not consider down to be 3.14
 
@@ -253,20 +178,9 @@ float imu_scale_adjustment = PI / 2.9679;        //for some reason imu does not 
 const float CONTROL_FREQ = 100;             // control torque write freq
 const int SENSORS_UPDATE_PERIOD_LOOPS = 1;  // get motor values every x loop
 
-// ------------Received from PI---------------
-volatile int controller = 1;  // 0 for PD/PID, 1 for PD + gravity compensation; 1 by default; not implmented on PI yet
+// max motor torque (default value, new config value received from Pi)
+volatile float mot_max_torque = 0.5;
 
-volatile float desired_torso_pitch = PI;  // default desired torso angle in radians; changed from PI
-
-volatile float kp = 0.65;  // N.m per rad
-volatile float ki = 0.0;   // N.m per (rad.s)
-volatile float kd = 0.08;  // N.m per (rad/s)
-
-// max motor torque
-volatile float mot_max_torque = 0.5, wheel_max_torque;
-
-// prevents integral windup
-volatile float max_integral = 100;  // rad.s
 // -------------------------------------------
 
 float control_error = 0, control_error_integral = 0;
@@ -283,7 +197,7 @@ uint64_t start_time = 0, wait_time = 2 * 1000;  //milliseconds
 uint64_t loop_count = 0;
 
 // for the reed switch
-volatile uint8_t robot_run_status = 0x00;  // 0x00 is false, 0xFF is true
+volatile uint8_t robot_run_status = 0x00;  // 0x00 is okay
 
 // IMU struct for euler angles
 euler_t ypr;
@@ -479,39 +393,11 @@ void setup() {
   position_cmd.watchdog_timeout = 0.2f;
   // position_cmd.maximum_torque = mot_max_torque; // moved to the loop since this value cannot be updated over I2C
 
-  // Copy to char buffers
-  // memcpy(desired_torso_pitch_data, const_cast<float *>(&desired_torso_pitch), sizeof(desired_torso_pitch));
-  // memcpy(mot_max_torque_data, const_cast<float *>(&mot_max_torque), sizeof(mot_max_torque));
-  // memcpy(kp_data, const_cast<float *>(&kp), sizeof(kp));
-  // memcpy(ki_data, const_cast<float *>(&ki), sizeof(ki));
-  // memcpy(kd_data, const_cast<float *>(&kd), sizeof(kd));
-
-  // // set nan values to all sensor buffers
-  // float nan_float = NaN;  // from mjbots
-  // memcpy(torso_pitch_data, &nan_float, sizeof(float));
-  // memcpy(torso_pitch_rate_data, &nan_float, sizeof(float));
-  // memcpy(wheel_pos_data, &nan_float, sizeof(float));
-  // memcpy(wheel_vel_data, &nan_float, sizeof(float));
-  // memcpy(wheel_torque_data, &nan_float, sizeof(float));
-  // memcpy(wheel_cmd_torque_data, &nan_float, sizeof(float));
-  // memcpy(mot_pos_data, &nan_float, sizeof(float));
-  // memcpy(mot_vel_data, &nan_float, sizeof(float));
-
-  torso_pitch = NaN;
-  torso_pitch_rate = NaN;
-  wheel_pos = NaN;
-  wheel_vel = NaN;
-  encoder_ang = NaN;
-  local_wheel_rel_vel = NaN;
-  wheel_cmd_torque = NaN;
-  wheel_torque = NaN;
-
-  mot_drv_mode = 255;
-
   Serial.println("Waiting for config write from PI...");
   while (!config_ack) {
     if (digitalRead(STOP_LED) == LOW) digitalWrite(STOP_LED, HIGH);
-    delay(10);
+    // delay(10);
+    // Serial.println(i2c_error_code);
   }
   Serial.println("Config was successful!");
   digitalWrite(STOP_LED, LOW);
@@ -519,15 +405,31 @@ void setup() {
   // briefly pause interrupts, copy the data, and turn them back on
   noInterrupts();                       // Pauses I2C temporarily
   config_data = config_data_interrupt;  // Instant, safe memory copy
-  interrupts();  // Resume normal I2C operation
-  
-  mot_max_torque = config_data.wheel_max_torque / gear_ratio;
+  interrupts();                         // Resume normal I2C operation
+
+  Serial.println("Received values from Pi:");
+  Serial.print("Desired torso pitch:\t");
+  Serial.println(config_data.desired_torso_pitch);
+  Serial.print("kp:\t");
+  Serial.println(config_data.kp);
+  Serial.print("ki:\t");
+  Serial.println(config_data.ki);
+  Serial.print("kd:\t");
+  Serial.println(config_data.kd);
+  Serial.print("wheel_max_torque:\t");
+  Serial.println(config_data.wheel_max_torque);
+  Serial.print("control_max_integral:\t");
+  Serial.println(config_data.control_max_integral);
+  Serial.print("controller:\t");
+  Serial.println(config_data.controller);
+
+  mot_max_torque = config_data.wheel_max_torque / GEAR_RATIO;  // set once; overwrites default value
 
   // waits for heatrbeat
   Serial.println("Waiting for heartbeat from the PI...");
   while (!was_heartbeat_rcvd) {
     if (digitalRead(STOP_LED) == LOW) digitalWrite(STOP_LED, HIGH);
-    delay(10);
+    // delay(10);
   }
   Serial.println("Heartbeat was received!");
   digitalWrite(STOP_LED, LOW);
@@ -548,7 +450,7 @@ void setup() {
   digitalWrite(OK_LED, HIGH);
 
   // Evaluate the gravity constant for the torso
-  // gravity_constant = torso_mass * g * torso_com_length;
+  // gravity_constant = TORSO_MASS * g * TORSO_COM_LENGTH;
   gravity_constant = 2.10;  // evaluated using three trial runs
 }
 
@@ -707,7 +609,7 @@ void loop() {
     // copy to buffer to be sent to pi
     // memcpy(mot_pos_data, &mot_pos, sizeof(float));
     // memcpy(mot_vel_data, &mot_vel, sizeof(float));  //
-    memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
+    // memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
     // memcpy(torso_pitch_init_data, &torso_pitch_init, sizeof(float));
     // memcpy(mot_pos_init_data, &mot_drv_momot_pos_initde, sizeof(float));
   }
@@ -724,12 +626,12 @@ void loop() {
   wheel_pos += wheel_pos_init;
 
   // wrap around [-PI/n, PI/n)
-  wheel_pos = fmod(wheel_pos, 2 * PI / num_spokes);
+  wheel_pos = fmod(wheel_pos, 2 * PI / NUM_SPOKES);
 
-  if (wheel_pos < -PI / num_spokes) {
-    wheel_pos += 2 * PI / num_spokes;
-  } else if (wheel_pos >= PI / num_spokes) {
-    wheel_pos -= 2 * PI / num_spokes;
+  if (wheel_pos < -PI / NUM_SPOKES) {
+    wheel_pos += 2 * PI / NUM_SPOKES;
+  } else if (wheel_pos >= PI / NUM_SPOKES) {
+    wheel_pos -= 2 * PI / NUM_SPOKES;
   } else {  //do nothing
   }
 
@@ -737,8 +639,8 @@ void loop() {
   // wheel_rel_vel = (encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
   wheel_vel = torso_pitch_rate + local_wheel_rel_vel;  // does not require init values for the mot or the torso
 
-  memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
-  memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
+  // memcpy(wheel_pos_data, &wheel_pos, sizeof(float));
+  // memcpy(wheel_vel_data, &wheel_vel, sizeof(float));
 
   // We intend to send control frames every 1000/CONTROL_FREQ milliseconds
   if (control_next_send_millis >= millis()) return;  //early return >> next loop
@@ -763,11 +665,11 @@ void loop() {
   // Serial.print("\t");
   // Serial.print(wheel_vel, 4);
   // // Serial.print("\t");
-  // // Serial.print(torso_mass, 4);
+  // // Serial.print(TORSO_MASS, 4);
   // // Serial.print("\t");
   // // Serial.print(g, 4);
   // Serial.print("\t");
-  // // Serial.print(torso_com_length, 4);
+  // // Serial.print(TORSO_COM_LENGTH, 4);
   // // Serial.print("\t");
   // // Serial.print(sin(torso_pitch), 4);
   // // Serial.print("\t");
@@ -803,7 +705,7 @@ void loop() {
     position_cmd.maximum_torque = mot_max_torque;
     position_cmd.feedforward_torque = 0;
     // // **Write to the motor
-    moteus.SetPosition(position_cmd, &position_fmt);
+    // moteus.SetPosition(position_cmd, &position_fmt);
 
     if (moteus.last_result().values.mode == mjbots::moteus::Mode::kPositionTimeout) {
       Serial.println("motor driver fault");
@@ -833,7 +735,7 @@ void loop() {
 
   // ***Calculate torque required***
   // Calculate error
-  control_error = desired_torso_pitch - torso_pitch;  // radians
+  control_error = config_data.desired_torso_pitch - torso_pitch;  // radians
 
   // wrap error so that it is always between -PI to PI radians
   if (control_error > PI) {
@@ -855,7 +757,7 @@ void loop() {
   // mot_cmd_torque += ki * control_error_integral;
   if (config_data.controller == 1) {  // term for gravity compensation
     gravity_compensation_term = gravity_constant * sin(torso_pitch);
-    mot_cmd_torque -= gravity_compensation_term / gear_ratio;  // add a gravity compensation term (adjusted for gear ratio) at the motor
+    mot_cmd_torque -= gravity_compensation_term / GEAR_RATIO;  // add a gravity compensation term (adjusted for gear ratio) at the motor
   }
 
   mot_cmd_torque = min(mot_max_torque, max(-mot_max_torque, mot_cmd_torque));  // second safety net; max torque has already been defined for the motor board but this line ensures no value greater than max is written
@@ -872,7 +774,7 @@ void loop() {
   // float check_pitch_nan;
   // memcpy(&check_pitch_nan, torso_pitch_data, sizeof(float));
 
-  moteus.SetPosition(position_cmd, &position_fmt);
+  // moteus.SetPosition(position_cmd, &position_fmt);
 
   // Serial.println(millis());
 
@@ -914,8 +816,8 @@ void loop() {
   // mot pos is relative to the torso
 
 
-  wheel_torque = mot_torque * gear_ratio;
-  wheel_cmd_torque = mot_cmd_torque * gear_ratio;
+  wheel_torque = mot_torque * GEAR_RATIO;
+  wheel_cmd_torque = mot_cmd_torque * GEAR_RATIO;
 
   // Serial.print("millis_since_last_heartbeat: ");
   // Serial.println(millis_since_last_heartbeat);
@@ -935,9 +837,9 @@ void loop() {
   // memcpy(mot_vel_data, &mot_vel, sizeof(float));                    //
 
 
-  memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
-  memcpy(wheel_torque_data, &wheel_torque, sizeof(float));
-  memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
+  // memcpy(wheel_cmd_torque_data, &wheel_cmd_torque, sizeof(float));  //
+  // memcpy(wheel_torque_data, &wheel_torque, sizeof(float));
+  // memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
 
   // restore_interrupts(status);
   // memcpy(mot_drv_mode_data, &mot_drv_mode, sizeof(int8_t));
@@ -965,14 +867,31 @@ void setup1() {
 
 void loop1() {
   // update encoder value
+  static float prev_encoder_ang;
+  static uint32_t prev_time;
+  static uint32_t loop1_ctr;
 
-  // mutex_enter_blocking(&encoder_mutex);
+  if (loop1_ctr++ == 0) {
+    prev_encoder_ang = 0;
+    prev_time = micros();
+  }
+
+  // update values
   encoder.update();
 
   signed_encoder_steps = -static_cast<int32_t>(encoder.step);  // sign depends on pin connections for channel A and B
-  encoder_ang = encoderCountsToRad(signed_encoder_steps);
-  wheel_rel_vel = -(encoder.speed / ENCODER_uSPR) * 2 * PI;  // relative velocity in rad/s
-  // mutex_exit(&encoder_mutex);
+  encoder_ang = encoderCountsToRad(signed_encoder_steps);      //encoder angle in rad
+  wheel_rel_vel = -(encoder.speed / ENCODER_uSPR) * 2 * PI;    // relative velocity in rad/s
+
+  // // wheel vel by finite difference
+  // uint32_t time_now = micros();
+  // uint32_t time_diff_micros = time_now - prev_time;
+
+  // if (time_diff_micros > 1000) {
+  //   wheel_rel_vel = ((encoder_ang - prev_encoder_ang) / time_diff_micros) * 1000 * 1000;
+  //   prev_encoder_ang = encoder_ang;
+  //   prev_time = time_now;
+  // }
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -983,7 +902,7 @@ void i2cRecv(int len) {
 
   if (len < 1) return;
 
-  uint8_t i2c_cmd_id = Wire.peek();  // or the ID
+  i2c_cmd_id = Wire.peek();  // or the ID
 
   if (i2c_cmd_id == HEARTBEAT_ID) {
     if (len == sizeof(Heartbeat)) {
@@ -1016,8 +935,8 @@ void i2cRecv(int len) {
   }
   //check for config_cmd
   else if (i2c_cmd_id == MCU_CONTROLLER_CONFIG_ID) {
+    i2c_error_code = 1;
     if (len == sizeof(mcuConfigData)) {
-
       mcuConfigData incoming_config_data;
 
       Wire.readBytes((uint8_t *)&incoming_config_data, sizeof(mcuConfigData));
@@ -1026,12 +945,14 @@ void i2cRecv(int len) {
 
       if (calculated_checksum == incoming_config_data.checksum) {
         config_data_interrupt = incoming_config_data;
-        config_ack = true;
+        config_ack = 1;
       } else {
-        config_ack = false;
+        i2c_error_code = 3;
+        config_ack = 0;
       }
 
     } else {
+      i2c_error_code = 2;
       while (Wire.available()) Wire.read();
     }
 
@@ -1268,18 +1189,4 @@ void emergencyStop(void) {
     // infinite while loop
     delay(1);
   }
-}
-
-template<typename Type>
-uint8_t calculate_checksum(const Type &data) {
-  const uint8_t *data_buffer = reinterpret_cast<const uint8_t *>(&data);
-  size_t data_size = sizeof(data);
-
-  uint8_t checksum = 0;
-
-  for (size_t i = 0; i < data_size - 1; i++) {
-    checksum ^= data_buffer[i];
-  }
-
-  return checksum;
 }
