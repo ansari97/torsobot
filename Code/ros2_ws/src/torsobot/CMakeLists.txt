@@ -92,12 +92,9 @@ install(DIRECTORY config
   DESTINATION share/${PROJECT_NAME}
 )
 
-  # Find all launch files in the launch directory
-file(GLOB LAUNCH_FILES launch/*.py)
-
 # Install the launch files
 install(
-  DIRECTORY launch/
+  DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
 
