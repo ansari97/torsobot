@@ -705,7 +705,7 @@ void loop() {
     position_cmd.maximum_torque = mot_max_torque;
     position_cmd.feedforward_torque = 0;
     // // **Write to the motor
-    // moteus.SetPosition(position_cmd, &position_fmt);
+    moteus.SetPosition(position_cmd, &position_fmt);
 
     if (moteus.last_result().values.mode == mjbots::moteus::Mode::kPositionTimeout) {
       Serial.println("motor driver fault");
@@ -774,7 +774,7 @@ void loop() {
   // float check_pitch_nan;
   // memcpy(&check_pitch_nan, torso_pitch_data, sizeof(float));
 
-  // moteus.SetPosition(position_cmd, &position_fmt);
+  moteus.SetPosition(position_cmd, &position_fmt);
 
   // Serial.println(millis());
 
@@ -865,33 +865,40 @@ void setup1() {
   core1_setup_complete = true;
 }
 
+
+const uint32_t encoder_update_period = 5000;
+
 void loop1() {
   // update encoder value
   static float prev_encoder_ang;
   static uint32_t prev_time;
-  static uint32_t loop1_ctr;
 
-  if (loop1_ctr++ == 0) {
-    prev_encoder_ang = 0;
-    prev_time = micros();
-  }
+  static bool is_initialized = false;
+  static uint32_t time_period;
 
   // update values
   encoder.update();
 
   signed_encoder_steps = -static_cast<int32_t>(encoder.step);  // sign depends on pin connections for channel A and B
   encoder_ang = encoderCountsToRad(signed_encoder_steps);      //encoder angle in rad
-  wheel_rel_vel = -(encoder.speed / ENCODER_uSPR) * 2 * PI;    // relative velocity in rad/s
 
-  // // wheel vel by finite difference
-  // uint32_t time_now = micros();
-  // uint32_t time_diff_micros = time_now - prev_time;
+  if (!is_initialized) {
+    prev_encoder_ang = 0;
+    time_period = micros();
+    prev_time = micros();
+    is_initialized = true;
+  }
 
-  // if (time_diff_micros > 1000) {
-  //   wheel_rel_vel = ((encoder_ang - prev_encoder_ang) / time_diff_micros) * 1000 * 1000;
-  //   prev_encoder_ang = encoder_ang;
-  //   prev_time = time_now;
-  // }
+  if (micros() - time_period < encoder_update_period) return;
+  time_period += encoder_update_period;
+
+  // wheel vel by finite difference
+  uint32_t time_now = micros();
+  uint32_t time_diff_micros = time_now - prev_time;
+
+  wheel_rel_vel = ((encoder_ang - prev_encoder_ang) / time_diff_micros) * 1000 * 1000;
+  prev_encoder_ang = encoder_ang;
+  prev_time = time_now;
 }
 
 ///////////////////////////////////////////////////////////////////
