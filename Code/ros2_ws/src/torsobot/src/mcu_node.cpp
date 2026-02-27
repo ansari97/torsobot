@@ -38,6 +38,7 @@ public:
     // Create publisher for "torsobot_state" topic
     data_publisher_ = this->create_publisher<torsobot_interfaces::msg::TorsobotData>("torsobot_data", 10);
 
+    // declare and get
     double temp_pitch_deg = config_data_.desired_torso_pitch * 180.0 / SHARED_PI; // setting default value in deg
     temp_pitch_deg = this->declare_parameter<double>("desired_torso_pitch_deg", temp_pitch_deg);
     double temp_kp = this->declare_parameter<double>("kp", config_data_.kp);
@@ -48,7 +49,7 @@ public:
     int temp_controller = this->declare_parameter<int>("controller", config_data_.controller);
 
     // cast back to 32 bit floats
-    config_data_.desired_torso_pitch = static_cast<float>(temp_pitch_deg * SHARED_PI / 180.0);
+    config_data_.desired_torso_pitch = static_cast<float>(temp_pitch_deg * SHARED_PI / 180.0); // convert to radians
     config_data_.kp = static_cast<float>(temp_kp);
     config_data_.ki = static_cast<float>(temp_ki);
     config_data_.kd = static_cast<float>(temp_kd);
@@ -205,7 +206,7 @@ private:
     // check for position mode
     if (state_data_.motor_drv_mode != 10)
     {
-      RCLCPP_ERROR(this->get_logger(), "Driver mode is not position mode!");
+      RCLCPP_ERROR_THROTTLE(this->get_logger(), *this->get_clock(), 250, "Driver mode is not position mode!");
       // exit_node();
     }
 
@@ -240,7 +241,8 @@ private:
 
       this->data_publisher_->publish(data_message);
 
-      RCLCPP_INFO(this->get_logger(), "%f, %f, %f, %f, %f, %f, %d, %d, %f, %f", state_data_.torso_pitch, state_data_.torso_pitch_rate, state_data_.wheel_pos, state_data_.wheel_vel, state_data_.wheel_cmd_torque, state_data_.wheel_actual_torque, state_data_.motor_drv_mode, state_data_.encoder_steps, state_data_.encoder_ang, state_data_.encoder_speed);
+      // print every 250m0.2s
+      RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 250, "%f, %f, %f, %f, %f, %f, %d, %d, %f, %f", state_data_.torso_pitch, state_data_.torso_pitch_rate, state_data_.wheel_pos, state_data_.wheel_vel, state_data_.wheel_cmd_torque, state_data_.wheel_actual_torque, state_data_.motor_drv_mode, state_data_.encoder_steps, state_data_.encoder_ang, state_data_.encoder_speed);
     }
     else
     {
@@ -270,10 +272,11 @@ private:
       exit_node();
     }
 
-    RCLCPP_INFO(this->get_logger(), "Sent hbeat: ID=0x%x, ctr=%d, csum=0x%02X",
-                heartbeat_.id, heartbeat_.counter, heartbeat_.checksum);
+    // commentde out to prevent clutter
+    // RCLCPP_INFO(this->get_logger(), "Sent hbeat: ID=0x%x, ctr=%d, csum=0x%02X",
+    //             heartbeat_.id, heartbeat_.counter, heartbeat_.checksum);
 
-    RCLCPP_INFO(this->get_logger(), "Robot status: 0x%02X", robot_status_);
+    // RCLCPP_INFO(this->get_logger(), "Robot status: 0x%02X", robot_status_);
 
     if (robot_status_ != 0x00)
     {
