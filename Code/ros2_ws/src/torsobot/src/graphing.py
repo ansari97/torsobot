@@ -164,7 +164,7 @@ axs[2].grid(which="both")
 # axs[2].set_xlabel("time (ms)")
 axs[2].set_ylabel("torso pitch rate (rad/s)")
 # axs[2].set_ylim([min_trq_lim, max_trq_lim])
-axs[2].legend()
+# axs[2].legend()
 
 # Subplot 3
 axs[3].plot(timestamp, wheel_pos, label="wheel_pos")
@@ -175,7 +175,7 @@ axs[3].axhline(-np.pi / 10, color="red")
 # axs[3].set_xlabel("time (ms)")
 axs[3].set_ylabel("wheel pos (rad)")
 # axs[3].set_ylim([min_trq_lim, max_trq_lim])
-axs[3].legend()
+# axs[3].legend()
 
 # Subplot 4
 axs[4].plot(timestamp, wheel_vel, label="wheel_vel")
@@ -184,7 +184,7 @@ axs[4].grid(which="both")
 axs[4].set_xlabel("time (ms)")
 axs[4].set_ylabel("wheel velocity (rad/s)")
 # axs[4].set_ylim([min_trq_lim, max_trq_lim])
-axs[4].legend()
+# axs[4].legend()
 
 plt.show()
 plt.savefig(save_file_path, dpi=300)
