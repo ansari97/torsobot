@@ -99,7 +99,7 @@ StateData state_data;
 volatile uint8_t config_ack = 0;
 
 // I2C speed; try changing it to 50kHz
-const int I2C_BAUDRATE = 100 * 1000;  // I2C speed in Hz, must be the same on Pi
+const int I2C_BAUDRATE = 400 * 1000;  // I2C speed in Hz, must be the same on Pi
 int i2c_read_ctr = 0;                 // reads the number of times mcu is read from
 volatile uint8_t i2c_cmd_id;             // received command over i2c
 volatile uint8_t i2c_error_code = 0;
@@ -866,7 +866,7 @@ void setup1() {
 }
 
 
-const uint32_t encoder_update_period = 5000;
+const uint32_t encoder_update_period_us = 5000;
 
 void loop1() {
   // update encoder value
@@ -889,8 +889,8 @@ void loop1() {
     is_initialized = true;
   }
 
-  if (micros() - time_period < encoder_update_period) return;
-  time_period += encoder_update_period;
+  if (micros() - time_period < encoder_update_period_us) return;
+  time_period += encoder_update_period_us;
 
   // wheel vel by finite difference
   uint32_t time_now = micros();
