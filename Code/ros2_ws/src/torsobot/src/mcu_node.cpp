@@ -107,7 +107,7 @@ public:
     heartbeat_timer_ = this->create_wall_timer(50ms, std::bind(&MCUNode::send_heartbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
-    data_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::i2c_data_callback, this)); // Use std::bind
+    data_timer_ = this->create_wall_timer(5ms, std::bind(&MCUNode::i2c_data_callback, this)); // Use std::bind
 
     RCLCPP_INFO(this->get_logger(), "Starting node!");
   }
@@ -152,6 +152,8 @@ private:
   // timer callback for getting data on i2c
   void i2c_data_callback(void)
   {
+    static uint64_t checksum_ctr = 0; 
+
     StateData state_data_;
     // print a warning for nan values
     if (nan_ctr >= 100)
@@ -187,7 +189,7 @@ private:
       }
       else if (result == 2)
       {
-        RCLCPP_FATAL(this->get_logger(), "Could not read state data from mcu!");
+        RCLCPP_FATAL(this->get_logger(), "Could not read init data from mcu!");
         exit_node();
       }
 
@@ -217,6 +219,8 @@ private:
     // if sensor_val_okay is 1
     if (state_checksum_okay)
     {
+      checksum_ctr = 0; // reset checksum counter
+
       auto state_message = torsobot_interfaces::msg::TorsobotState();
       state_message.torso_pitch = state_data_.torso_pitch;
       state_message.torso_pitch_rate = state_data_.torso_pitch_rate;
@@ -246,7 +250,16 @@ private:
     }
     else
     {
+      if (data_callback_ctr>350) checksum_ctr++; // increment checksum counter
+
       RCLCPP_ERROR(this->get_logger(), "Checksum invalid for state data from mcu");
+    }
+
+    // if there are too many checksum errors, exit node to prevent further issues
+    if (checksum_ctr > 100)
+    {
+      RCLCPP_FATAL(this->get_logger(), "Too many checksum errors!");
+      exit_node();
     }
   }
 
