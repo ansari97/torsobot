@@ -107,7 +107,7 @@ public:
     heartbeat_timer_ = this->create_wall_timer(50ms, std::bind(&MCUNode::send_heartbeat, this)); // Use std::bind
 
     // mcu data timer for 10ms (100Hz)
-    data_timer_ = this->create_wall_timer(5ms, std::bind(&MCUNode::i2c_data_callback, this)); // Use std::bind
+    data_timer_ = this->create_wall_timer(10ms, std::bind(&MCUNode::i2c_data_callback, this)); // Use std::bind
 
     RCLCPP_INFO(this->get_logger(), "Starting node!");
   }
