@@ -1,0 +1,3 @@
+3DX_Same_Sky_Supplier: Same Sky
+3DX_Same_Sky_Description: AMT13 Radial, Quadrature Line Driver, 2048 PPR, 10 mm Bore
+3DX_Same_Sky_Part Number: AMT132Q-2048-1000

@@ -11,7 +11,6 @@ browse.vc.db-wal
 **/log/
 
 # local project folders to stay offline
-Design/*
 Ordering/*
 Writing/*
 Old/*
