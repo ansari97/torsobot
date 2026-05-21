@@ -1,0 +1,71 @@
+# Visual Studio / Database Garbage
+browse.vc.db*
+browse.vc.db-shm
+browse.vc.db-wal
+.vscode/
+**/.vscode/
+
+# ROS2 build, install, and log files
+**/build/
+**/install/
+**/log/
+
+# local project folders to stay offline
+Design/*
+Ordering/*
+Writing/*
+Old/*
+videos/*
+
+# Document formats
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.xlsx
+*.xls
+
+# Image formats
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.svg
+
+# Video formats
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wmv
+*.flv
+
+# ===========================
+# MCU / C++ Compilation Junk
+# ===========================
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+.pio/
+*.mat
+
+# ==========================================
+# MCU / C++ / MATLAB Compilation Junk
+# ==========================================
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+.pio/
+
+# MATLAB temporary and data files
+*.mat
+*.asv
+*.slxc
+__cache__/
